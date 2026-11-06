@@ -1,0 +1,13 @@
+// Vérifie les chevauchements : symboles empilés, clics fidèles, étiquettes, navires sur la côte fine, temps de dessin.
+const { chromium } = require('playwright');
+(async () => { const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1440, height: 900 } }), errs = []; await p.route(/fonts\.g/, r => r.abort()); p.on('pageerror', e => errs.push(e.message)); await p.goto('file://' + __dirname + '/t.html'); await p.waitForTimeout(300);
+ const r = await p.evaluate(async () => { const A = __S; A.setLang('en'); A.home(false); document.getElementById('over').hidden = true; A.newGame(9, { sc: 'l5', deck: A.SC.l5.rec, contested: false, guided: false }); const S = A.s; S.running = false; for (let i = 0; i < 100; i++) A.step(.1); S.running = false;
+  const [x0, y0] = [640, 610], pile = S.ships.slice(0, 8); pile.forEach((s, i) => { s.x = x0 + i * .3; s.y = y0; s.path = []; s.visible = true; s.seen = true }); S.units.forEach((u, i) => { u.x = x0 + 2 + i; u.y = y0 + 1; u.path = [] });
+  const pairs = (f, sc) => { let n = 0; const it = [...pile, ...S.units]; for (let i = 0; i < it.length; i++)for (let j = i + 1; j < it.length; j++) { const a = f(it[i]), c = f(it[j]); if (Math.hypot(a[0] - c[0], a[1] - c[1]) * sc < 12) n++ } return n };
+  A.cam.x = x0; A.cam.y = y0; A.cam.z = 2; const avant = pairs(o => [o.x, o.y], 2); for (let i = 0; i < 40; i++)A.draw(); const apres = pairs(o => [o.x + (o._dx || 0) / 2, o.y + (o._dy || 0) / 2], 2);
+  const u = S.units[S.units.length - 1], sc = A.toScr(u.x, u.y), picked = A.pickAt(sc[0] + u._dx, sc[1] + u._dy); const dep = Math.max(...[...pile, ...S.units].map(o => Math.hypot(o._dx || 0, o._dy || 0)));
+  const t0 = performance.now(); for (let i = 0; i < 60; i++)A.draw(); const ms = (performance.now() - t0) / 60; return { avant, apres, clicFidele: picked === u, deplacementMax: Math.round(dep), ms: +ms.toFixed(1) } });
+ console.log(JSON.stringify(r));
+ const c = await p.evaluate(() => { const A = __S, out = {}; const ptIn = (q, r) => { let o = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [a, b] = r[i], [c, d] = r[j]; if ((b > q[1]) !== (d > q[1]) && q[0] < (c - a) * (q[1] - b) / (d - b) + a) o = !o } return o };
+  for (const sc of ['l5', 'g6', 'a6', 'e6', 'm6', 'c1']) { A.newGame(3, { sc, deck: A.SC[sc].rec, contested: false }); const S = A.s; S.running = false; const V = A.vecOf(A.thId || sc); let n = 0, l = 0; const G = A.vecLand ? A.vecLand() : null; for (let i = 0; i < 300; i++) { A.step(.5); if (S.over) break; S.running = false; S.ships.forEach(s => { n++; if (G && G.some(po => ptIn([s.x, s.y], po[0]))) l++ }) } out[sc] = [l, n] } return out });
+ console.log(JSON.stringify(c)); console.log('errs', errs); await b.close() })();

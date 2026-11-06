@@ -1,0 +1,555 @@
+# SEUIL : instructions du projet
+
+Ce fichier décrit le projet, ses règles et sa méthode de travail. Lis-le entièrement avant toute modification. Il prévaut sur les maquettes et sur les vidéos déjà produites, car elles montrent d'anciennes versions.
+
+## 1. Le projet en bref
+
+**Nom :** SEUIL en français, FOGLINE en anglais (clé `brand`). La disponibilité juridique du nom n'a pas été vérifié.
+
+SEUIL est un serious game de stratégie en temps réel, inspiré de DEFCON et de Jane's Fleet Command. Le joueur commande des forces dans un scénario fictif sur une carte réelle de la mer de Norvège, de la mer du Nord et de l'Atlantique Nord.
+
+Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir, à conserver sa liberté d'action et à maîtriser l'escalade. Il s'appuie sur le centre de gravité cognitif (CGC) de l'article de Naully Nicolas, « guerre cognitive », paru dans la Revue diplomatique n° 28 de l'IEGA.
+
+**Public visé :** officiers, cadres de gestion de crise et étudiants en stratégie, en français et en anglais.
+
+**État actuel :** prototype jouable, réalisé dans une seule page HTML. Il sert à tester les mécaniques et ne constitue pas le jeu final.
+
+| Ressource | Emplacement |
+|---|---|
+| Prototype publié | https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7 |
+| Dossier de conception | https://claude.ai/artifact/U99GmyMZnFxAMfjAn2JeLf |
+| Maquettes d'interface (anciennes valeurs) | https://claude.ai/artifact/HcNzWdmRQuTLhextmHsFQZ |
+| Base de scénarios | `proto/scenarios.json`, générée par `proto/gen_db.py` |
+
+## 2. Comment travailler avec Naully
+
+- Réponds en français, de façon concise, sans détailler chaque étape.
+- Dis clairement ce qui n'a pas été vérifié. Ne présente jamais un test automatique comme une preuve de plaisir de jeu ou de valeur pédagogique.
+- Annonce en une phrase ce que tu vas faire, puis fais-le. Ne demande une confirmation que pour un choix coûteux à refaire, réellement ambigu ou irréversible.
+- Termine par le résultat, les limites et, s'il y en a une, une prochaine étape naturelle.
+- Signale les décisions qui lui reviennent au lieu de les trancher en silence.
+- Quand tu cites un jeu, un article ou une doctrine, vérifie la source et ne prétends pas avoir joué au jeu.
+
+## 3. Garde-fous à ne pas franchir
+
+Ces règles valent même si une demande semble les contourner. Si un besoin les heurte, explique le conflit et propose une version compatible.
+
+1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. L'étiquette « EXERCICE FICTIF » reste visible à l'écran.
+2. **Armes abstraites.** Le combat a été décidé par Naully le 4 novembre 2026, avec des valeurs de jeu fictives. N'ajoute aucun paramètre réel d'armement : portée, charge, guidage, vulnérabilité, signature, procédure de tir ou modèle d'arme réel.
+3. **Pas de mode d'emploi offensif.** La cyberattaque, le sabotage, le brouillage et la désinformation restent décrits par leurs effets sur la décision. N'écris jamais de technique, d'outil, d'exploit ou de recette réutilisable.
+4. **Pas de frappe stratégique jouable.** Pas d'arme nucléaire et pas de frappe contre des villes. La destruction n'est jamais un spectacle ni une source directe de points.
+5. **Rouge reste non attribué par défaut.** Une vignette peut nommer un État réel seulement si elle est signalée comme fictive. Aujourd'hui, seule l'incursion aérienne parle d'appareils « présumés russes » : cette décision reste ouverte (section 13).
+6. **Faux contenus signalés.** Toute vidéo, rumeur ou preuve truquée reste textuelle ou synthétique, fictive et révélée au bilan.
+7. **Pas d'évaluation RH.** La note individuelle reste visible par le seul joueur. Un futur mode animateur ne recevra que des données agrégées.
+8. **Pas d'aide à la décision réelle.** Le jeu entraîne un raisonnement. Il ne mesure ni la préparation ni l'aptitude d'une unité.
+9. **Jauge heuristique.** Le CGC et le score sont des modèles de jeu, pas des mesures scientifiques. Dis-le dans les documents destinés à un public.
+
+## 4. Organisation des fichiers
+
+```
+seuil-projet/
+├── CLAUDE.md               ce fichier
+├── maps/theatre.jpg        carte de fond, 1440 × 900 en coordonnées du jeu
+└── proto/
+    ├── src.html            source du jeu : textes, moteur, rendu, interface
+    ├── th/                 données des théâtres, `vec.json` (côtes vectorielles) et `vec.mjs` qui le génère
+    ├── vendor/             MapLibre GL JS 4.7.1 (BSD-3) et three.js r159 (MIT), intégrés à la page
+    ├── gen_db.py           définition éditable des scénarios et des hypothèses
+    ├── scenarios.json      base générée par gen_db.py
+    ├── milsymbol.js        bibliothèque de symboles APP-6, avec milsymbol.LICENSE
+    ├── geo.json            ports et leurs coordonnées sur la carte
+    ├── mask.rle            masque terre et mer, grille de 360 × 225
+    ├── build.py            assemble la page publiable
+    ├── seuil-prototype.html  page assemblée, à publier
+    ├── t.html              même page pour les tests, générée par build.py
+    ├── bots.js             stratégies automatiques et fonction playGame
+    ├── stress.js           banc d'essai
+    ├── ui5.js              parcours complet avec de vrais clics
+    ├── uih.js              écran d'accueil : aide, catalogue, entrée en jeu, retour, 390 et 1920 px
+    ├── uit.js              tutoriel complet avec de vrais clics
+    ├── uig.js              règles de prise en main
+    ├── advbot.js           joueur qui ne suit que le conseil, comparé à la référence
+    ├── uiv.js              captures de l'interface sur ordinateur et mobile
+    ├── uid.js              règles de diplomatie
+    └── dipm.js             mesures de diplomatie par stratégie
+```
+
+**Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` et sert GitHub Pages. Il n'est jamais modifié à la main.
+
+**Assembler :**
+
+```bash
+cd proto
+python3 gen_db.py   # seulement si gen_db.py a changé
+python3 build.py
+```
+
+`build.py` remplace dans `src.html` les marqueurs `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__` et `__GEO__`. Ne modifie jamais `seuil-prototype.html` ni `scenarios.json` à la main : ils seraient écrasés.
+
+**Prérequis :** Python 3, Node.js et Playwright avec Chromium.
+
+**Sources :** si ce dossier n'est pas disponible dans la conversation, demande `seuil-projet.zip` à Naully. Ne reconstruis pas les sources à partir de la page publiée sans l'accord de Naully.
+
+## 5. Règles de jeu actuelles
+
+Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le dossier de conception.
+
+### 5.1 Déroulement
+
+1. Écran d'accueil : carte vivante en fond, langue et son en haut à droite. Sans partie enregistrée, le bouton principal lance le tutoriel. Ensuite : nouvelle opération, reprise, tirage au hasard, tutoriel, aide et légende.
+2. Choix du théâtre sur une carte du monde, puis du secteur. Catalogue filtrable par situation, domaine et niveau, ou tirage au hasard.
+3. Briefing : situation, premiers objectifs, hypothèses, niveau de commandement et forces recommandées. Les options d'exercice sont repliées.
+4. Modification des forces, facultative, en croyant le briefing.
+5. Changement de situation : certaines hypothèses cèdent et les achats sont figés.
+6. Partie, en 3 phases. Un ordre d'opération révèle les nouveaux objectifs.
+7. Bilan : score, étoiles, hypothèses, chaîne de décision, crises, alertes, contacts et rejeu sur la carte.
+
+### 5.2 Temps et ressources
+
+- Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
+- **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
+- Vitesses x1, x2 et x4. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
+- 4 jetons par tour, non reportables. CGC sous 40 : −2. CGC sous 55 : −1. CGC à 75 ou plus : +1 un tour sur deux. Réseau de commandement coupé : −1, minimum 1.
+- Déplacer une unité est gratuit. Collecter une preuve, décider, tirer ou coordonner coûte généralement 1 jeton.
+- Échelle d'affichage : 1 unité de carte vaut 1,7 mille. Ce sont des valeurs de jeu.
+
+### 5.3 Trois états à surveiller
+
+- **Infrastructures :** 0,5 × minimum + 0,5 × moyenne des câbles et des sites.
+- **Options :** Veille, Air, Mer, Réparer, Cyber et Parole. Chacune n'existe que si le moyen réel est disponible et non suspendu.
+- **Seuil :** `max(1, 4 − floor(tension / 1,4))`. La partie s'arrête si la tension atteint 5,6.
+
+Point de contrôle à chaque fin de phase : infrastructures à 60 % ou plus et au moins 3 options.
+
+### 5.4 Centre de gravité cognitif
+
+Trois piliers de 0 à 100 : Sécurité épistémique (`se`), Cohésion sociale (`cs`), Résilience institutionnelle (`ri`).
+
+`CGC = 0,5 × min(piliers) + 0,5 × moyenne(piliers)`
+
+Paliers : à partir de 75 Cohérent, de 55 Contesté, de 40 Fracturé, en dessous Paralysie délibérative. Si aucune crise n'a été perdue pendant le tour et que le CGC est sous 60, le pilier le plus bas gagne 3 points.
+
+### 5.5 Une seule boucle pour toutes les crises
+
+Alerte éventuelle, dossier d'hypothèses et de preuves, décision, effets, vérité au bilan. Deux preuves de même source ne comptent qu'une fois.
+
+| Type (`CR`) | Hypothèses | Délai | Réponses |
+|---|---|---|---|
+| `incursion` | sondage, erreur, feinte | 60 s | A escorter, B force, C radar |
+| `cyber` | crime, etat, faux | 55 s | isoler, chasser, contre-attaquer |
+| `desinfo` | manip, vraie, malcomp | 45 s | réfuter, point factuel |
+| `sar` | detresse, diversion | 70 s | unité navale, sauvetage civil |
+| `site` | reco, amateur, fausse | 60 s | sécuriser avec une unité |
+| `jam` | hostile, panne | 3 tours | repli, localiser l'émetteur |
+| `sabotage` | fiche du navire | aucun | chasser, arraisonner, tirer |
+| `ghost` | fiche du navire | sortie de zone | traquer, pavillon, arraisonner |
+| `sub` | sousmarin, bio, epave | selon la vérité | bouées, sonar, presser, classer, neutraliser |
+| `swarm` | pistes | vagues | autoriser, classement rapide ou strict |
+| `salvo` | pistes | vagues | autoriser, placer une défense |
+| `raid` | fiche des navires | retrait après 170 s | tirer, aveugler, repositionner |
+| `seize` | resolu, revend, embusc | 110 s | action directe, négociation, isolement |
+| `mine` | reel, partiel, bluff | 90 s | déminer, fermer, maintenir |
+| `evac` | calme, tendu, hostile | 120 s | civil, mer, force spéciale |
+| `seabed` | sonde, reco, sabot | 100 s | inspecter, pré-positionner, dénoncer |
+| `mirror` | defensif, test, offensif | 60 s | expliquer, revenir à Avertir, maintenir |
+
+La table `EFF` donne les effets `[SE, CS, RI, tension, infrastructure, issue]`. Une issue de 0,5 ou plus compte comme réussie. Crise perdue ou mal traitée, faux positif et cascade doivent rester lisibles dans le bilan.
+
+### 5.6 Unités et achats
+
+Budget : 40 points en local, 62 à l'international. Chaque tranche de 2 points non dépensés donne +1 en cohésion, jusqu'à +10. Toujours disponibles : liaisons de repli, message préparé, seconde source.
+
+| Clé | Unité | Coût | Max | Vitesse | Capteur | Armes et limites |
+|---|---|---|---:|---:|---:|---|
+| `recon` | Reconnaissance | 12 | 2 | 42 | 105 | Autonomie 110 s, 6 bouées |
+| `drone` | Drone | 7 | 2 | 20 | 62 | Dépend du satellite |
+| `armed` | Drone armé | 10 | 2 | 24 | 50 | 2 tirs, dépend du satellite |
+| `patrol` | Patrouilleur | 10 | 2 | 18 | 55 | Naval, 2 tirs, défense 5 |
+| `frigate` | Frégate | 18 | 1 | 26 | 85 | Naval, 4 tirs, défense 10, sonar |
+| `fighter` | Chasseurs | 12 | 1 | 95 | 48 | Autonomie 70 s, 3 tirs, défense 3 |
+| `repair` | Réparation | 10 | 1 | 14 | 30 | 1 point par seconde à proximité |
+| `sof` | Force spéciale | 14 | 1 | 55 | | Emplois limités, voir 5.15 |
+| `team` | Équipe cyber | 10 | 1 | | | Hors carte |
+| `analysis` | Cellule d'analyse | 5 | 1 | | | Analyse plus rapide, première gratuite |
+| `comm` | Cellule de communication | 6 | 1 | | | Première prise de parole gratuite |
+| `ally` | Patrouilleur allié | | | 18 | 55 | International, arrive après 1 tour, reste 4 tours |
+
+### 5.7 Détection, radar et posture
+
+- **Radar actif :** portée complète, mais Rouge voit l'unité.
+- **Silence radar :** portée × 0,45. Un saboteur ne remarque l'unité qu'à 14 de distance, contre 45. L'unité ne peut pas intercepter.
+- **Postures :** Avertir (départ), Contraindre, Engager. Changer coûte 1 jeton et demande une autorisation de 8 s, 16 s sans réseau de commandement. Une action qui exige une posture plus dure reste cliquable : son libellé annonce le passage de posture, elle coûte 1 jeton de plus et s'exécute à l'autorisation. Si elle devient impossible entre-temps, seul son propre jeton est rendu. Contraindre ajoute 0,06 de tension par tour, Engager 0,12.
+- **Arraisonner :** portée 34, durée 8 s. Avec base légale, posture Avertir. Sans base légale, posture Contraindre et coût politique plus élevé. La vérification du pavillon établit la base légale.
+
+### 5.8 Combat
+
+- **Tir offensif :** posture Engager, 1 jeton, portée 170. Le tir atteint avec une chance de 0,65 avant pénalités.
+- **Tir hostile :** portée 175, chance de 0,72 avant pénalités. Tirer révèle la position du raider.
+- **Interception :** automatique, sans posture, par une unité au radar actif ayant une réserve de défense à proximité.
+- **Dégâts :** 50 sur une unité, 25 pour un drone d'essaim. Une unité à 0 est perdue et non remplacée. 11 sur un site, un câble ou un convoi touché par un missile.
+- **Pénalités d'arme :** système de combat compromis 0,3, temps et position douteux 0,2.
+- **Escalade :** tirer le premier ajoute 0,6 de tension. Toucher un civil ajoute 1,5 et coûte 15, 15 et 8 points de piliers.
+- **Cyber offensif :** la contre-attaque exige Contraindre et l'équipe cyber. Contre un acteur étatique, elle retire une opération à Rouge. Contre un faux positif, elle coûte très cher. L'aveuglement prive un adversaire de tirs pendant 25 s.
+- **Directeur :** après un premier tir ou à un seuil de 2 ou moins, de nouveaux raids et salves peuvent survenir.
+
+### 5.8 bis Symbologie
+
+**Par défaut :** APP-6 pour tout sauf les navires. Voir 5.13 sexies. **Navires :** décision de Naully du 5 novembre 2026. Tous les navires sont des losanges propres au jeu (`drawDia`, `shipTone`) et non des symboles APP-6. Bleu : votre camp (frégate, patrouilleur, réparation, convoi). Gris : navire déclaré. Gris creux : contact sans transpondeur non identifié. Rouge : cible, jugée suspecte ou hostile. La couleur reflète ce que le joueur sait et ne révèle la vérité qu'au bilan. Attention : dans l'APP-6, le losange désigne l'identité hostile. Le reste ci-dessous concerne les avions, les sous-marins, les sites et les unités non navales.
+
+Les symboles suivent l'APP-6(E), NATO Joint Military Symbology. Ils sont dessinés par la bibliothèque milsymbol 3.0.5 (licence MIT), intégrée à la page, avec des SIDC de 30 chiffres en version 13. Les fonctions sont `sidc`, `unitSidc`, `shipSidc`, `symOf`, `symURL`, `drawSym` et `showLegend`.
+
+- **Identité :** elle montre ce que le joueur sait, jamais la vérité avant le bilan. AIS déclaré : neutre. Sans AIS, aucune preuve : en attente. Sans AIS, avec preuve : inconnu. Estimation automatique hostile au-dessus de 60 % : suspect. Classement du joueur : neutre, suspect ou hostile selon l'hypothèse.
+- **Contexte :** réalité, chiffre 0. Le contexte exercice ferait porter à l'hostile le cadre ami de Faker et fausserait l'apprentissage. L'étiquette « EXERCICE FICTIF » reste affichée.
+- **Non concernés :** les câbles, bouées, cercles de signal et zones restent des repères du jeu.
+- **Ajout d'un symbole :** vérifie le code d'entité dans `milsymbol`, puis ajoute-le à la légende.
+- **Limite :** le texte officiel de l'APP-6(E) n'a pas été consulté. Avant toute diffusion institutionnelle, fais valider les symboles et les choix d'identité par une personne qui dispose du document.
+
+### 5.9 Score
+
+```
+C = justesse des estimations, par score de Brier
+D = moyenne des issues − 0,1 × visites à tort − 0,1 × tirs à tort − 0,05 × dégâts − 0,08 × pertes
+T = 1 − charge de coordination / 3
+O = moyenne des options / 6
+eng = part des crises réellement traitées (× 1,25, plafonnée à 1)
+P = (0,35 C + 0,30 D + 0,15 T + 0,20 O) × (0,3 + 0,7 eng)
+MP = 0,7 × objectifs atteints + 0,3 × qualité des points de contrôle
+MS = missions secondaires réussies / 3
+S = 1000 × (0,40 P + 0,24 MP + 0,16 MS + (0,16 × CGC moyen + 0,04 × cohésion finale) / 100 × (0,5 + 0,5 eng))
+# Tutoriel, sans diplomatie : 0,20 × CGC moyen à la place de la parenthèse
+```
+
+- **Mission réussie :** tous les points de contrôle tenus et au moins 70 % des objectifs atteints.
+- **Plafonds :** 250 si le seuil 1 est franchi, 550 si la mission échoue, 650 si elle réussit avec un CGC final sous 40.
+- **Verdicts :** Victoire cohérente, Syndrome de Syracuse, Défaite lucide, Effondrement, Seuil 1 franchi.
+- **Étoiles :** 4 pour tous les objectifs, au moins 2 missions secondaires et CGC à 55 ou plus. 3 pour une mission réussie. 2 pour au moins la moitié des objectifs. 1 pour au moins un objectif. En commandement guidé, le maximum est 3.
+
+### 5.10 Hypothèses et changement de situation
+
+`drawAssumptions` utilise un générateur séparé, pour que le même tirage donne les mêmes changements. Le nombre d'hypothèses qui cèdent vaut la difficulté du scénario, de 1 à 3. Si au moins deux cèdent, la dernière reste cachée. Une partie sur quatre ajoute une bonne nouvelle.
+
+Hypothèses disponibles : `info.sources`, `info.late`, `info.share`, `comm.delay`, `comm.sat`, `comm.pnt`, `comm.c2`, `ally.slow`, `ally.none`, `sup.naval`, `sup.air`, `sup.fuel`, `sup.ana`, `sup.weap`, `adv.early`, `adv.double`, `adv.cycle`, `adv.dep`, `adv.weap`, `mis.zone`, `mis.extra`, et les bonus `pos.ally`, `pos.token`, `pos.calm`.
+
+**Horloge idéale :** `D_(x)` réduit les délais à 0,5 s au maximum. Elle sert à comparer et ne représente jamais la réalité.
+
+### 5.11 Prise en main
+
+- **Estimation automatique :** toute décision qui repose sur un dossier classe l'hypothèse en tête si le joueur n'a rien choisi. En commandement complet, il peut encore classer à la main avant.
+- **Commandement guidé, réglage par défaut :** panneau de conseil, pause automatique à chaque crise et à chaque nouvelle phase, reprise du temps dès qu'un ordre est donné, pause illimitée, coordination automatique (`S.debt` reste à 0), confiance publique sur une seule jauge. Silence radar et classement manuel sont masqués. 3 étoiles au plus.
+- **Commandement complet :** pause de 90 s, silence radar, coordination et classement manuel. Seul ce niveau donne la 4e étoile.
+- **Conseil (`advise`, `applyAdvice`) :** il ne doit jamais lire `truth`. Il part des preuves, des hypothèses et de ce qui est visible, et propose une action à la fois. Le bilan indique combien de décisions conseillées reposaient sur une hypothèse fausse.
+- **Tutoriel (`tuto`, tableau `COACH`) :** scénario de 5 tours, exclu du catalogue et du tirage. Une étape demande une action, et le temps n'avance que dans les étapes `run`. L'hypothèse choisie ne doit pas retarder les ordres, sinon le temps arrêté bloque le déplacement.
+- **Catalogue :** il s'ouvre sur « Accessible » tant qu'aucun scénario n'a été terminé.
+
+### 5.12 Diplomatie
+
+- **Partenaires :** Norvège et Royaume-Uni en local, avec Danemark et Islande à l'international. Le tutoriel n'a pas de diplomatie. Chaque relation va de 0 à 100. Départ : 62, 60, 58 et 55.
+- **Cohésion :** 0,5 × minimum + 0,5 × moyenne des relations. À 70 ou plus : +1 en cohésion sociale et en résilience chaque tour. Sous 35 : −1 et −2. Un partenaire retiré retire aussi 1 point de résilience par tour.
+- **États :** Soutien à partir de 60, Prudence à partir de 35, Réserve en dessous, Retrait sous 15. Le retour exige une relation de 25.
+- **Réactions :** tirer le premier, toucher une mauvaise cible, arraisonner à tort ou sans base légale, réussir un arraisonnement légal, ouvrir le canal et résoudre ou perdre une crise près d'un partenaire modifient les relations. Tous les partenaires ne réagissent pas de la même façon.
+- **Effets entre pays :** une variation d'au moins 6 touche aussi les voisins. Chaque tour, les relations se rapprochent de 5 % de la moyenne. Un retrait retire 4 points aux autres.
+- **Actions (`dipActions`) :** Consulter coûte 1 jeton, une fois par tour et par partenaire, et donne +7. Un soutien coûte 1 jeton et 5 points de relation, avec 2 tours d'attente. Norvège : patrouilleur allié, à partir de 50. Royaume-Uni : preuves sur 2 crises, à partir de 40. Danemark : droit de visite de 60 s, à partir de 50. Islande : ravitaillement aérien, à partir de 45.
+- **Canal avec l'adversaire :** possible à partir de 0,4 de tension, tous les 2 tours. Il retire 0,35 de tension et change les relations. Dans 40 % des cas, l'adversaire prépare une action. Ce risque n'est révélé qu'au bilan.
+- **Demandes :** 18 % de chance par tour en local et 26 % à l'international, avec 30 s pour répondre. Certaines opposent deux partenaires. Une proposition adverse d'accord séparé peut viser le partenaire le plus fragile. Sans réponse : −3 pour tous et −2 en résilience.
+- **Conseil :** il protège le partenaire le plus fragile, sans lire la vérité. Le choix conseillé peut donc être mauvais pour le plan.
+- **Limite :** les réactions des pays sont des valeurs de jeu fictives. Elles ne décrivent pas la position réelle de ces États.
+
+### 5.13 Interface de jeu
+
+- **Inspiration :** principes généraux des postes de situation (carte centrale, situation, options comparables). Ne reprends ni le logo, ni le nom, ni la charte, ni les écrans d'un produit existant.
+- **Carte :** plein écran, fond désaturé, centre utile calculé par `vc` pour rester dans la zone libre. Le bandeau « EXERCICE FICTIF » reste en haut de l'écran.
+- **Barre haute :** indicateurs avec état coloré et infobulle.
+- **Panneau gauche :** onglets Situations, Forces, Coalition et Suivi (`leftTab`). Les nouvelles crises rouvrent Situations en commandement guidé.
+- **Dossier à droite :** il n'apparaît qu'avec une sélection. Il suit l'ordre estimer, vérifier, décider.
+- **Réponses (`actsHtml`, `coaMeta`) :** chaque carte indique le coût, la faisabilité et le risque d'escalade. En guidé, elle ajoute les hypothèses pour lesquelles la réponse convient et le conseil. Ces indications lisent les preuves et la table `EFF`, jamais la vérité.
+- **Fenêtres :** les panneaux gauche et droit se réduisent, se redimensionnent à la souris ou au clavier et se rétablissent par double clic. La taille est gardée dans `seuil.win` (`WIN`, `applyWin`, `saveWin`). Sur téléphone, le dock réduit les fenêtres.
+- **Couches (`LAY`) :** Capteurs, Trafic, Vols et Noms.
+
+### 5.13 bis Identité de l'accueil
+
+L'anglais est la langue par défaut et FOGLINE le titre affiché ; un choix enregistré dans `seuil.lang` reste respecté. L'accueil adopte une lecture d'observation monochrome : carte grise, grain, balayage lent, repères d'angle (`.brk`), texte à chasse fixe, ambre pour ce qui reste à estimer, vert pour un théâtre déjà joué. Les étiquettes affichent de vraies données du jeu, jamais du décor. La référence est le principe du générique de Person of Interest (Imaginary Forces) : ni sa police, ni son code couleur, ni ses libellés, ni ses images ne sont repris. Les écrans de partie gardent l'interface de situation.
+
+### 5.13 ter Moteurs de rendu et placement
+
+Trois moteurs se partagent l'écran. Le moteur de jeu reste indépendant et ne connaît aucun d'eux.
+
+- **MapLibre (`baseInit`, `baseSync`) :** dessine sous le canevas la terre, les frontières et le quadrillage, à partir de Natural Earth 1:10 m (`world-atlas`). Les géométries sont projetées dans le repère 1440 × 900 du jeu. `fakeLL` les convertit en fausses longitudes et latitudes, de sorte que la projection de Mercator redevient linéaire et que la caméra du jeu s'applique sans déformation. Zoom maximal : 8.
+- **Canevas (`draw`) :** unités, navires, zones, symboles et étiquettes. Si MapLibre échoue ou ne charge pas en 6 s, `drawVecFallback` trace les mêmes côtes sur le canevas.
+- **three.js (`globeStart`) :** globe de l'accueil, arrêté dès qu'on quitte l'écran. Sans WebGL, l'accueil revient à la carte plate.
+- **Chevauchements (`spreadSyms`, `flushLabels`) :** seul l'affichage change, jamais les positions du jeu. Les symboles qui se recouvrent s'écartent de 30 px au plus, avec un trait de rappel vers leur position réelle. Les sites et l'objet sélectionné ne bougent pas. Les étiquettes essaient plusieurs emplacements par priorité. Noms de lieux, câbles et traces anciennes disparaissent s'il n'y a plus de place ; les priorités 3 et plus restent toujours affichées.
+- **Côtes fines (`landGrid`, `offLand`) :** à partir d'un zoom de 1,3, un navire qui croise sur une côte fine est affiché sur l'eau la plus proche, à 24 unités au plus. La navigation reste calculée sur le masque de 360 × 225.
+- **Clics (`pickAt`) :** ils visent la position affichée.
+
+### 5.13 quater Compte à rebours de décision
+
+Le briefing propose deux modes, gardés dans `seuil.timer`. **Facile :** 90 s par décision, pause à chaque crise en commandement guidé. **Difficile :** 30 s par décision, sans pause automatique, avec une réserve de pause de 90 s même en guidé. Ce mode ne dépend pas du niveau du scénario (`diff`).
+
+- **Crises concernées (`DECIDE`) :** `incursion`, `cyber`, `desinfo`, `sar`, `site`, `seize`, `mine`, `evac`, `seabed`, `mirror`. Les autres gardent leur rythme propre : `jam`, `sub`, `swarm`, `salvo`, `raid`, `ghost`, `sabotage`.
+- **Hypothèse `adv.cycle` :** elle réduit le délai en facile. En difficile, le délai ne descend jamais sous 30 s.
+- **Affichage (`renderClock`) :** le délai le plus court reste visible en haut de l'écran, ambre puis rouge, avec un son par seconde dans les 10 dernières. Un clic ouvre la crise. Il suit le temps simulé : il s'arrête en pause et va plus vite en x2 et x4.
+- **Tutoriel :** il garde ses délais.
+
+### 5.13 quinquies Faux positifs et zones de recherche
+
+- **Crise `alarm` :** hypothèses `fauxp` (70 %) et `vrai` (30 %). Réponses : classer sans suite, ou répondre. Répondre à tort compte comme une erreur (`falseEng`). Classer une vraie alerte coûte très cher. 2 alertes prévues en local et 3 à l'international, si le rythme le permet, plus le tirage du directeur.
+- **Faux échos (`falseEcho`) :** des cercles de signal sans navire. Les suivre coûte un jeton et se termine par « écho sans objet ».
+- **Bilan :** une ligne compte les faux positifs écartés et traités à tort.
+- **Zones :** signal 110 à 150, sous-marin 150, fantôme 140, mines 75, câble 70, alerte de sabotage 110. Les capteurs ne changent pas : chercher prend donc plus de temps. Limites d'emploi relevées : `recon` et `fighter` 8, 6, 5 ; `team` 9, 8, 6.
+
+### 5.13 sexies Lisibilité et niveau Simple
+
+Inspiration, d'après des sources écrites seulement : DEFCON (carte vectorielle, pas de production, un niveau d'alerte central) et ICBM (ordre court : sélectionner, choisir, cliquer ; moins de micro-gestion). Aucun de ces jeux n'a été joué.
+
+- **Symboles :** la forme donne le milieu et la couleur le camp (`mark`, `markURL`). Losange : navire. Triangle : aéronef. Triangle pointe en bas : sous-marin. Carré : site. Rond : force spéciale. Décision de Naully du 5 novembre 2026 : les symboles APP-6 sont actifs par défaut (`SYM.app6`, `seuil.app6`), sauf pour les navires qui gardent les losanges. Les marques simples restent une option de la légende.
+- **Carte, afficher par exception :** cercle de capteur de l'unité sélectionnée seulement, trafic neutre en petits points, routes et avions civils dans la couche Trafic détaillé, étiquette d'un site ou d'un câble seulement s'il est endommagé ou si l'on zoome. Un seul bouton Couches.
+- **Niveau Simple (`guided`, par défaut) :** pas de diplomatie ni de réglage de posture, une seule action Vérifier, l'hypothèse la plus probable sans barres, une crise de moins en parallèle, panneau gauche réduit à Situations et Forces. La barre haute garde seuil, jetons, infrastructures et confiance ; options et services n'y paraissent qu'en cas de problème.
+- **Niveau Complet :** garde tous les systèmes. Les tests `stress.js` jouent ce niveau, sauf avec `SIMPLE=1`.
+
+### 5.13 septies Objectifs variables et missions sans câble
+
+- **Objectifs tirés à chaque partie (`drawExtras`) :** 1 en local, 2 à l'international, en phases 2 et 3, comptés dans le total des objectifs. Types (`GUARD`) : garder un site au-dessus de 70 %, ne pas ouvrir le feu (hors scénarios de combat), aucune unité touchée, aucune réaction à tort, garder le seuil à 3 ou plus, identifier des contacts sans transpondeur. Ils réussissent en fin de phase s'ils n'ont pas été rompus, sauf l'identification, qui doit être atteinte.
+- **Missions sans câble :** tag `sanscable`, `n1`, `n2`, `g7`, `a7`, `e7`, `m7`. Sans câble, `sabotage` et `seabed` deviennent `ghost`, et `anchorPt` remplace les tirages sur les câbles.
+- **Lecture retenue :** « ne pas utiliser les câbles » est lu comme « des missions qui n'en dépendent pas ». Autre lecture possible, à confirmer : une consigne interdisant au joueur d'utiliser ces liaisons.
+
+### 5.14 Théâtres
+
+Six théâtres (`TH_ORDER`) : Atlantique Nord (`natl`), Europe (`eu`), golfe de Guinée (`gn`), golfe d'Aden et mer Rouge (`ad`), Méditerranée orientale (`em`), détroit de Malacca (`ml`). `useTheatre(id)` change carte, masque, sites, câbles, secteurs, trafic et partenaires. Hors Atlantique Nord, les partenaires sont désignés par leur rôle. Les données sont dans `proto/th/theatres.json`, les cartes dans `proto/th/`. Géographie réelle, événements fictifs, aucun conflit réel ni groupe nommé.
+
+### 5.15 Forces spéciales et limites d'emploi
+
+- **Unité `sof` :** 14 points, vitesse 55. `USES` limite les emplois selon la difficulté 1, 2 ou 3 : `sof` 3, 2, 1 ; `fighter` 5, 4, 3 ; `recon` 5, 4, 3 ; `team` 6, 5, 4. La fiche (`unitSpec`) et le bilan (`useEnd`) les affichent.
+- **Crise `seize` :** reprise d'un site ou d'un navire. Hypothèses résolu, revendication, embuscade ; délai 110 s. Elle n'apparaît que si la force spéciale est présente. `sc.req` impose une unité à un scénario. L'hypothèse `sup.sof` retire une partie de cette capacité.
+
+### 5.16 Crises de profondeur
+
+Ces crises s'inspirent de thèmes de titres d'épisodes du podcast Le Collimateur. Les épisodes n'ont pas été écoutés : ce sont des thèmes, jamais des contenus attribués au podcast.
+
+- **`mine` :** annonce de mines, vraie, partielle ou bluff. Déminer, fermer et dérouter, ou maintenir le trafic. Aucun paramètre d'arme.
+- **`evac` :** ressortissants, situation calme, tendue ou hostile. Moyens civils, mer (accord de l'État hôte requis, relation à 35 ou plus) ou force spéciale.
+- **`seabed` :** activité près d'un câble, sonde civile, reconnaissance ou préparation. Inspecter, pré-positionner la réparation ou dénoncer. Dénoncer une sonde civile coûte cher.
+- **`mirror` :** dilemme de sécurité. Durcir la posture provoque avec 35 % de chance une réponse adverse défensive, de test ou offensive. Expliquer, revenir à Avertir ou maintenir.
+- **`deepPick` :** choix commun du conseil et des scripts, fondé sur l'hypothèse dominante et jamais sur la vérité.
+
+## 6. Structure du code
+
+`src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
+
+| Zone | Éléments |
+|---|---|
+| Textes | `I18N.fr`, `I18N.en`, `t(clé, {a,b})`, `L10(objet)` |
+| Carte | `isLand`, `seaAt`, `nearSea`, `route`, `lane`, `qb` |
+| Données | `DBD`, `SC`, `ASM`, `SECT`, `SPOTS`, `UT`, `CR`, `EFF`, `SRC`, `DECK` |
+| Partie | `newGame`, `revealPhase`, `drawAssumptions`, `applyAsm`, `newTurn`, `step`, `stepOps` |
+| Preuves | `addEv`, `posterior`, `shared`, `classify`, `evText` |
+| Prise en main | `escAct`, `runAfterP`, `autoCls`, `leading`, `autoPause`, `resumeAfterOrder`, `advise`, `applyAdvice`, `COACH`, `coachEnter` |
+| Diplomatie | `mkDip`, `dipAdj`, `dipReact`, `dipTick`, `dipTurn`, `dipActions`, `dipBest`, `dipPanel`, `dipEnd`, tables `DIP`, `DIP_AFF`, `DIP_EV`, `DIP_REQ` |
+| Crises | `startCrisis`, `crisisActions`, `shipActions`, `doAct`, `respond`, `resolveChoice`, `failCrisis`, `closeCrisis`, `applyEff` |
+| Directeur | `launch`, `warn`, `director`, `friction` |
+| Combat | `stepCombat`, `stepSwarm`, `raiderAI`, `fireAt`, `hitUnit`, `hitShip`, `pkPen` |
+| Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
+| Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
+| Tests | `window.__S`, à garder à la fin du script |
+
+**Principe clé :** `crisisActions`, `shipActions` et `dipActions` sont la seule source des actions possibles. L'interface et les scripts lisent la même liste. Ne crée jamais un bouton ou une règle de test qui contourne cette liste.
+
+## 7. Modifier le contenu
+
+### Ajouter un scénario
+
+Dans `gen_db.py`, ajoute un appel `S.append(sc(...))` avant la boucle `for x in S:`.
+
+1. Donne un identifiant unique, le secteur (`shet`, `north`, `gap`, `nsea` ou `all`), le mode et la difficulté de 1 à 3.
+2. Écris le titre, la description et le briefing en français et en anglais. Le briefing doit paraître crédible et rester partiellement faux en hypothèses contestées.
+3. Propose une liste de forces recommandées dans le budget. `gen_db.py` affiche le coût pour le vérifier.
+4. Donne 4 ou 5 hypothèses, liées au thème.
+5. Définis 3 phases et leurs objectifs : `patrol`, `close`, `escort`, `hold`.
+6. Ajoute un `script` de crises `[tour, type, argument]`, et un `pool` pour le directeur.
+7. Prévois pour chaque objectif `close` une crise de ce type dans le script.
+8. Vérifie que le joueur omniscient peut réussir (section 8).
+
+### Ajouter une hypothèse
+
+Ajoute `H(id, famille, plan fr, plan en, changement fr, changement en)` dans `gen_db.py`, puis un `case` dans `applyAsm`. Le `case` renvoie `false` si l'effet est impossible avec le deck, par exemple sans unité navale. Mesure ensuite son effet avec `stress.js pair`.
+
+### Ajouter un type de crise
+
+1. Déclare-le dans `CR`, avec hypothèses, probabilités, délai et alerte.
+2. Crée-le dans `startCrisis` : `title`, `desc`, `zone`, données propres.
+3. Ajoute ses actions dans `crisisActions`.
+4. Ajoute ses effets dans `EFF` et sa résolution dans `resolveChoice`.
+5. Si elle évolue dans le temps, ajoute sa logique dans `stepOps` ou `stepCombat`.
+6. Ajoute ses textes : `c.x`, `c.x.d`, `w.x`, `hn.*`, `hy.*`, `ob.*`.
+7. Ajoute son dessin dans `draw`, sa prise en charge dans `bots.js` et un test isolé dans `stress.js`.
+
+### Ajouter une unité
+
+Déclare-la dans `UT`, puis dans `DECK` et dans chaque entrée de `SPOTS`. Ajoute `u.x`, `s.x` et `d.x` dans les deux langues. Mets à jour son prix dans le dictionnaire de contrôle de `gen_db.py`, et vérifie toutes les listes recommandées.
+
+### Textes
+
+- Tout texte visible passe par `I18N`, en français et en anglais, dans le même commit de travail.
+- Français : guillemets « », espace avant `:`, `;`, `?`, `!`, `%`. Apostrophe typographique dans les textes affichés.
+- Évite le jargon, les slogans et les tirets longs. Une action se nomme par un verbe. Une erreur explique pourquoi l'action est impossible.
+- `__S.missing()` doit rester vide.
+
+## 8. Tests obligatoires
+
+Après chaque modification du moteur :
+
+```bash
+cd proto
+python3 build.py
+TAG=essai node stress.js 2 monkey labo   # rapide
+```
+
+Avant toute publication :
+
+```bash
+TAG=essai node stress.js 4 inv exploit pair labo   # plus de 5 minutes
+node ui5.js                                        # parcours avec vrais clics et mobile
+node uih.js; node uis.js; node uiw.js; node uid.js; node uiq.js   # accueil, forces spéciales, théâtres, diplomatie, nouvelles crises
+node uit.js fr 390; node uit.js en 1440                # tutoriel
+node mkt.js 1                                          # clics au hasard par scénario, avec durées, environ 6 min
+node uim.js; node uim.js 844 390; node uim2.js          # écrans au format téléphone, compte à rebours et losanges
+TIMER=hard node stress.js 2 exploit                    # équilibre en mode difficile
+node scr.js f1,f2 4                                    # référence, omniscient, aucun ordre par scénario
+node uih.js                                        # écran d'accueil, entrée en jeu, retour, 390 et 1920 px
+node uit.js fr 1440 && node uit.js en 390          # tutoriel complet avec de vrais clics
+node uig.js                                        # escalade, pause automatique, conseil, mobile
+node advbot.js 2                                   # rien, conseil seul et référence, guidé ou complet
+node uid.js                                        # règles diplomatiques, demandes, mobile
+node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
+```
+
+Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
+
+| Partie | Ce qu'elle contrôle | Critère |
+|---|---|---|
+| `inv` | Valeurs invalides, bornes, terres, crises bloquées, reproductibilité | Aucun défaut sérieux, aucune partie non finie, même résultat à tirage identique |
+| `exploit` | Stratégies abusives et joueur omniscient | Omniscient > référence > aucun ordre. Spam, aucun ordre et deck vide très bas |
+| `pair` | Tenues, contestées, horloge idéale sur un même tirage | Écart interprété avec prudence, et hypothèses dont l'effet a le bon signe |
+| `labo` | Chaque mécanique isolée | Chaque système sert à quelque chose et reste jouable |
+| `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
+| `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
+
+**Objectifs actuels d'équilibre :**
+
+- Joueur omniscient : au moins 80 % de réussite, et jamais 0 % sur un scénario.
+- Référence : entre 50 et 70 %.
+- Aucun ordre et saturation de messages : moins de 10 %.
+- Tirer sans vérifier : nettement sous la référence et souvent au seuil 1.
+
+**Résultats après allongement, 5 novembre 2026, 2 parties par scénario, mode facile :** omniscient 761 et 92 %, référence 692 et 68 %, tir sans vérifier 441 et 33 %, aucun ordre 236 et 5 %. **Rythme sur 12 parties :** 4,8 crises par partie contre 6,3, écarts de moins de 45 s 11 % contre 63 %, temps avec 2 crises ou plus 2 % contre 13 %. 
+
+**Résultats précédents :** mode facile, omniscient 728 et 89 %, référence 662 et 59 %, tir sans vérifier 492 et 39 %, aucun ordre 222 et 3 %. Mode difficile, omniscient 730 et 91 %, référence 640 et 54 %, tir sans vérifier 480 et 39 %, aucun ordre 213 et 4 %. Les scripts réagissent toutes les 5 s et ne ressentent pas la pression : cet écart ne mesure pas le stress.
+
+**Résultats antérieurs**, 5 novembre 2026, 2 parties par scénario sur 69, à lire comme un ordre de grandeur : omniscient 730 et 90 %, référence 657 et 59 %, réponses sans preuve 639 et 61 %, arraisonner tout suspect 638 et 55 %, tir sans vérifier 490 et 38 %, saturation 223 et 4 %, aucun ordre 217 et 4 %, aucun achat 120 et 0 %.
+
+**Toujours :**
+
+- Annonce la taille d'échantillon. Avec 4 parties, seuls les grands écarts comptent.
+- Compare scénario par scénario, pas uniquement la moyenne.
+- Regarde au moins une capture après un changement d'interface. Teste aussi à 390 px de large : pas de défilement horizontal.
+- Ne cale pas les réglages jusqu'à obtenir exactement la cible sur un seul tirage.
+- Ne fais pas confiance à une moyenne qui contredit un résultat isolé : cherche la cause.
+
+## 9. Erreurs déjà rencontrées
+
+Vérifie ces points avant de chercher ailleurs :
+
+- `display:flex` annule l'attribut `hidden` : la règle `[hidden]{display:none!important}` doit rester.
+- `authAt` à 0 vaut faux en JavaScript : dans un test, utilise `0.01` si `S.t` vaut 0.
+- Une unité détournée doit libérer sa crise : voir le nettoyage au début de `crisisActions`.
+- Réparer un câble est interdit si un adversaire attaque n'importe quel point de ce câble, pas seulement à proximité de la réparation.
+- Les pertes survenues avant la révélation d'un objectif ne doivent pas le faire échouer : champ `since`.
+- Une crise exigée par un objectif ne doit pas rester bloquée dans la file : fonction `needed`.
+- Le script de test réagit toutes les 5 s. `BOTCAD` règle cette cadence. Un script à 1 s masque les problèmes de temps.
+- Le script ne ressent pas la pression. Ne conclus jamais que l'horloge est bonne à partir de lui seul.
+- Une hypothèse qui améliore le score doit être examinée : soit elle retire un coût caché, comme la traque de signaux, soit l'échantillon est trop petit.
+- Les navires doivent suivre `route` ou `retreat`, jamais une ligne droite à travers les terres.
+- Toute valeur aléatoire du moteur passe par `R()`, sinon la reproductibilité est perdue. `Math.random` reste réservé au son et au choix d'un nouveau tirage.
+- Le stockage local passe par `try/catch` : il peut être indisponible.
+
+## 10. Publication
+
+- Publie toujours `proto/seuil-prototype.html` sur le même artifact : https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7. Depuis une autre conversation, lis-le d'abord avec l'action de lecture, puis publie avec son URL.
+- Ne publie pas si un test obligatoire échoue ou si un texte manque.
+- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google.
+- Après publication, résume le changement en une phrase. Le lien apparaît déjà dans la carte.
+- L'artifact est privé tant que Naully ne le partage pas.
+
+## 11. Mise à jour du dossier de conception
+
+Le dossier suit le jeu. La section « Mécanique refondue et prototype » prévaut sur les sections plus anciennes. Après un changement de règle :
+
+1. Lis les modifications depuis ta dernière lecture.
+2. Corrige les règles concernées, sans créer de doublon.
+3. Remplace les résultats périmés en précisant l'échantillon.
+4. Ajoute les sources consultées dans la section Sources.
+5. Mets à jour ce fichier, notamment les sections 5, 8 et 13.
+
+## 12. Définition de « terminé »
+
+Une évolution est terminée si :
+
+- elle fonctionne dans les deux langues et à 390 px ;
+- les tests adaptés passent et les résultats sont lus ;
+- `bots.js` et `stress.js` savent la jouer ;
+- le joueur peut comprendre pourquoi une action est impossible ;
+- le bilan permet de comprendre ses effets ;
+- les garde-fous restent respectés ;
+- le dossier et ce fichier sont à jour ;
+- la réponse à Naully indique clairement ce qui n'a pas été vérifié.
+
+## 13. Points ouverts
+
+### Décisions qui reviennent à Naully
+
+1. **Attribution :** garder « présumés russes » dans l'incursion, ou anonymiser.
+2. **Durée :** un tour de 30 s convient-il à un joueur réel pour analyser ?
+3. **Maquettes et vidéos :** les aligner sur cette version ou les archiver.
+4. **Suite technique :** quand passer du prototype à TypeScript et three.js.
+5. **Noms de pays :** garder Norvège, Royaume-Uni, Danemark et Islande dans le scénario fictif, ou les remplacer avant toute diffusion publique ou institutionnelle.
+6. **Force du conseil :** le garder assez fort pour qu'un débutant gagne, ou l'affaiblir pour renforcer l'esprit critique.
+
+### Défauts connus du jeu
+
+1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
+2. L'horloge idéale n'apporte presque rien selon les scripts : 635.
+3. Tirer ne change presque pas le score moyen : 620 contre 621. Le combat doit devenir plus décisif, sans récompenser la gâchette.
+4. Dans Le second choc, jouer sans avion peut rapporter davantage.
+5. Port sous tension punit trop peu les réponses sans preuve.
+6. Engagement en mer de Norvège reste très dur : 5 réussites sur 10 pour l'omniscient, 2 sur 10 pour le script.
+7. Après la dernière baisse de prix, la valeur de l'équipe cyber, du drone armé et de la cellule d'analyse n'a pas été remesurée.
+8. La carte reste chargée autour des Féroé et de Bergen, même si les couches permettent de l'alléger.
+9. Arraisonner tout suspect a fait mieux que la référence sur un tirage précédent (63 % contre 48 %), puis autant sur le tirage suivant (52 %). L'échantillon est petit : à confirmer.
+10. Répondre ou non à la diplomatie change peu le score moyen : 657 contre 645, sur un petit échantillon. Les retraits sont rares, sauf pour le tir sans vérifier (10 %).
+11. Répondre sans preuve (61 %) reste au niveau de la référence (59 %) sur le dernier tirage : à vérifier scénario par scénario.
+12. Suivre seulement le conseil réussit une mission sur deux en simulation, sans aucune réflexion du joueur.
+
+13. Déminage, évacuation, fonds marins et réponse à la posture sont équilibrés par scripts sur très peu de parties. Leur intérêt reste à vérifier avec des joueurs.
+
+14. La navigation repose encore sur un masque de 4 unités de côté, plus grossier que la côte affichée. Selon le scénario, 0,3 à 4 % des positions de navires tombent sur la côte fine : elles sont décalées à l'affichage, mais la route reste la même.
+
+15. Le losange bleu contredit la forme du cadre ami de l'APP-6. À trancher avant toute diffusion à un public militaire.
+16. Le stress du compte à rebours n'est pas mesurable par les scripts. Il reste à observer avec de vrais joueurs.
+
+17. Double prise (`d3`) reste très dure dans les deux modes : 0 % pour l'omniscient sur 2 à 4 parties. Détroit disputé (`a5`) et Contact au centre du bassin (`e3`) restent irréguliers. Échantillon trop petit pour conclure.
+
+18. Avec la zone de 150, les bouées détectent moins souvent le sous-marin : 38 % contre 71 % sur le banc isolé. À surveiller avec de vrais joueurs.
+19. La référence monte à 68 %, en haut de la cible. L'omniscient reste à 0 % sur `e3` en 4 parties, à cause de la recherche du sous-marin.
+
+20. Le niveau Simple retire la diplomatie sans pénalité. Son intérêt pédagogique et l'écart avec le niveau Complet restent à vérifier avec de vrais joueurs.
+
+### Absent de cette version
+
+Niveaux de difficulté réglables, missions secondaires au choix, multijoueur, mode animateur et groupes tactiques en formation.
+
+## 14. Priorités recommandées
+
+1. Faire jouer 5 à 8 personnes sur 3 scénarios, avec observation et entretien court : c'est le manque le plus important.
+2. Mesurer le temps réel de décision et les erreurs de compréhension.
+3. Rendre le tir plus décisif et corriger les défauts 1 à 7 à partir de ces observations.
+4. Observer si le tutoriel suffit et si le conseil remplace la réflexion, puis ajouter les niveaux de difficulté.
+5. Prévoir ensuite un mode animateur avec données agrégées et conforme au RGPD et à la nLPD.
+6. Migrer vers la cible technique seulement quand la boucle de jeu est validée.

@@ -1,0 +1,13 @@
+// Clics au hasard scénario par scénario avec durée. Usage : node mkt.js [pas] [debut]
+const { chromium } = require('playwright');
+(async () => { const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1440, height: 900 } }); const errs = [];
+ await p.route(/fonts\.g/, r => r.abort()); p.on('pageerror', e => { errs.push(e.message); console.log('ERR', e.message) }); p.on('console', m => { if (m.text().startsWith('MK')) console.log(m.text()) });
+ await p.addInitScript(() => { window.__noBase = 1; window.requestAnimationFrame = cb => { window.__raf = cb; return 1 } }); await p.goto('file://' + __dirname + '/t.html');
+ const r = await p.evaluate(async ([step, st]) => { const A = __S, tick = t => { const c = __raf; __raf = null; c && c(t) }; let ts = 1000, clicks = 0, stuck = 0, x = 777; const rn = () => (x = (x * 16807) % 2147483647) / 2147483647;
+  for (const lang of ['fr', 'en']) { A.setLang(lang); const ids = Object.keys(A.SC).filter((_, i) => i % step === (lang === 'fr' ? st : st + 1) % step); for (const sc of ids) { const t0 = performance.now(); let dr = 0, cl = 0, slow = '';
+    window.__noEsc = false; A.newGame(rn() * 1e6 | 0, { sc, deck: A.SC[sc].rec, contested: true, guided: rn() < .5 }); A.startJams(); const S = A.s; S.running = true; S.speed = 4;
+    for (let i = 0; i < 500 && !S.over; i++) { ts += 100; let q = performance.now(); tick(ts); dr += performance.now() - q; if (i % 2 === 0) { const bs = [...document.querySelectorAll('#app [data-a]:not([disabled])')].filter(e => !['mute', 'quit', 'coachquit'].includes(e.dataset.a)); const e = bs[Math.floor(rn() * bs.length)]; q = performance.now(); if (e) { e.click(); clicks++ } const d = performance.now() - q; cl += d; if (d > 300) slow = e.dataset.a + ':' + (e.dataset.v || '') + ' ' + Math.round(d); S.running = true } if (i % 5 === 0) { const c = document.getElementById('c'), r = c.getBoundingClientRect(), o = { clientX: r.left + rn() * r.width, clientY: r.top + rn() * r.height, pointerId: 1, bubbles: true }; c.setPointerCapture = () => { }; c.dispatchEvent(new PointerEvent('pointerdown', o)); c.dispatchEvent(new PointerEvent('pointerup', o)); clicks++ } }
+    for (let i = 0; i < 8000 && !S.over; i++) A.step(.1); ts += 100; tick(ts); const ov = document.getElementById('over'); if (S.over && !ov.querySelector('.go[data-a=again],.go[data-a=play]')) { stuck++; console.log('MK BLOQUE', sc) }
+    console.log('MK', lang, sc, Math.round(performance.now() - t0), 'dessin', Math.round(dr), 'clics', Math.round(cl), slow); await new Promise(z => setTimeout(z, 0)) } }
+  return { clicks, stuck, missing: A.missing() } }, [+process.argv[2] || 3, +process.argv[3] || 0]);
+ console.log('FIN', JSON.stringify(r), 'errs', errs.length); await b.close() })();

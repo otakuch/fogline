@@ -1,0 +1,9385 @@
+{
+ "version": 1,
+ "scenarios": [
+  {
+   "id": "tuto",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Première garde",
+    "en": "First watch"
+   },
+   "desc": {
+    "fr": "Le tutoriel : déplacer, vérifier, décider, arraisonner.",
+    "en": "The tutorial: move, check, decide, board."
+   },
+   "brief": {
+    "fr": "Vous prenez votre première garde près de Bergen. Une rumeur et un navire sans transpondeur vont vous mettre à l’épreuve.",
+    "en": "You are taking your first watch near Bergen. A rumour and a ship without a transponder will put you to the test."
+   },
+   "turns": 5,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone"
+   ],
+   "hyp": [
+    "ally.slow"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 700,
+        "y": 642,
+        "r": 40
+       },
+       "need": 8
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     2,
+     "desinfo"
+    ],
+    [
+     3,
+     "ghost"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ],
+   "tuto": true
+  },
+  {
+   "id": "la",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Port sous tension",
+    "en": "Port under strain"
+   },
+   "desc": {
+    "fr": "Cyberattaque portuaire, rumeurs et drones autour d’une plateforme.",
+    "en": "Port cyberattack, rumours and drones around a platform."
+   },
+   "brief": {
+    "fr": "Le port de Bergen reprend son activité après un exercice. Le renseignement n’annonce rien de précis, mais plusieurs alarmes ont été relevées.",
+    "en": "The port of Bergen is resuming work after an exercise. Intelligence reports nothing specific, but several alarms have been noted."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone",
+    "repair",
+    "team"
+   ],
+   "hyp": [
+    "info.sources",
+    "comm.delay",
+    "sup.naval",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "desinfo": 2,
+    "site": 2,
+    "sabotage": 1,
+    "sar": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 722,
+        "y": 565,
+        "r": 60
+       },
+       "need": 48,
+       "onFail": [
+        [
+         "site"
+        ]
+       ]
+      }
+     ],
+     "k": "la1"
+    },
+    {
+     "until": 11,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber",
+       "onFail": [
+        [
+         "desinfo"
+        ]
+       ]
+      }
+     ],
+     "k": "la2"
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "la3"
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "cyber",
+     "PORT"
+    ],
+    [
+     10,
+     "cyber",
+     "PORT"
+    ],
+    [
+     13,
+     "site"
+    ],
+    [
+     14,
+     "cyber",
+     "C2"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ]
+  },
+  {
+   "id": "lb",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "sous-marin"
+   ],
+   "title": {
+    "fr": "Trafic de routine",
+    "en": "Routine traffic"
+   },
+   "desc": {
+    "fr": "Un câble, un navire en détresse et un navire fantôme dans le trafic habituel.",
+    "en": "A cable, a ship in distress and a ghost ship hidden in ordinary traffic."
+   },
+   "brief": {
+    "fr": "Patrouille de temps de paix au-dessus de la liaison L1. Le trafic est habituel et rien ne laisse prévoir d’incident.",
+    "en": "Peacetime patrol over link L1. Traffic is normal and nothing suggests an incident."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "sup.air",
+    "info.late",
+    "mis.zone",
+    "adv.early"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "sar": 1,
+    "desinfo": 1,
+    "site": 1,
+    "mine": 1,
+    "seabed": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 592,
+        "r": 55
+       },
+       "need": 48,
+       "onFail": [
+        [
+         "sabotage"
+        ]
+       ]
+      }
+     ],
+     "k": "lb1"
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost",
+       "onFail": [
+        [
+         "sabotage"
+        ]
+       ]
+      }
+     ],
+     "k": "lb2"
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "lb3"
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sabotage"
+    ],
+    [
+     6,
+     "ghost"
+    ],
+    [
+     8,
+     "sar"
+    ],
+    [
+     11,
+     "sub"
+    ],
+    [
+     14,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ]
+  },
+  {
+   "id": "l3",
+   "sector": "north",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "info",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Terminal sous surveillance",
+    "en": "Terminal under watch"
+   },
+   "desc": {
+    "fr": "Drones et rumeurs autour d’un terminal gazier du Grand Nord.",
+    "en": "Drones and rumours around a gas terminal in the far north."
+   },
+   "brief": {
+    "fr": "Un terminal gazier signale des survols. Le préfet maritime demande une présence visible et un discours clair.",
+    "en": "A gas terminal reports overflights. The maritime authority wants a visible presence and a clear message."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone",
+    "repair",
+    "team"
+   ],
+   "hyp": [
+    "info.sources",
+    "sup.naval",
+    "comm.sat",
+    "mis.extra"
+   ],
+   "assets": [
+    "L4",
+    "LNG",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "site": 3,
+    "desinfo": 2,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 815,
+        "y": 300,
+        "r": 65
+       },
+       "need": 48,
+       "onFail": [
+        [
+         "site"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "site"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     10,
+     "site"
+    ],
+    [
+     11,
+     "cyber",
+     "LNG"
+    ],
+    [
+     14,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    820,
+    310,
+    1.6
+   ]
+  },
+  {
+   "id": "l4",
+   "sector": "north",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer"
+   ],
+   "title": {
+    "fr": "Sillage suspect",
+    "en": "Suspicious wake"
+   },
+   "desc": {
+    "fr": "Un pétrolier change de nom près des fjords, et une liaison côtière faiblit.",
+    "en": "A tanker changes its name near the fjords, and a coastal link weakens."
+   },
+   "brief": {
+    "fr": "Un armateur signale un pétrolier au pavillon incertain, attendu demain dans votre secteur. Vous avez le temps de vous placer.",
+    "en": "A shipowner reports a tanker with an uncertain flag, due in your sector tomorrow. You have time to get in position."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "adv.early",
+    "sup.air",
+    "info.late",
+    "adv.dep"
+   ],
+   "assets": [
+    "L4",
+    "LNG",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "desinfo": 1,
+    "sar": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 815,
+        "y": 300,
+        "r": 65
+       },
+       "need": 48,
+       "onFail": [
+        [
+         "ghost"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     8,
+     "sabotage"
+    ],
+    [
+     11,
+     "sabotage"
+    ],
+    [
+     13,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    820,
+    310,
+    1.6
+   ]
+  },
+  {
+   "id": "l5",
+   "sector": "gap",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Écho dans le passage",
+    "en": "Echo in the gap"
+   },
+   "desc": {
+    "fr": "Un contact sous-marin incertain entre Islande et Féroé.",
+    "en": "An uncertain subsurface contact between Iceland and the Faroes."
+   },
+   "brief": {
+    "fr": "Un pêcheur signale un bruit anormal entre l’Islande et les Féroé. L’avion de patrouille est prêt, avec une dotation complète en bouées.",
+    "en": "A fisherman reports an abnormal noise between Iceland and the Faroes. The patrol aircraft is ready, with a full load of buoys."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "sup.fuel",
+    "sup.air",
+    "comm.pnt",
+    "adv.double"
+   ],
+   "assets": [
+    "L3",
+    "L2",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "sub": 1,
+    "sar": 1,
+    "desinfo": 1,
+    "mine": 1,
+    "seabed": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 475,
+        "y": 450,
+        "r": 62
+       },
+       "need": 48
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub",
+       "onFail": [
+        [
+         "sabotage"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sub"
+    ],
+    [
+     8,
+     "sar"
+    ],
+    [
+     10,
+     "sabotage"
+    ],
+    [
+     13,
+     "sub"
+    ]
+   ],
+   "cam": [
+    480,
+    460,
+    1.6
+   ]
+  },
+  {
+   "id": "l6",
+   "sector": "gap",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "mer"
+   ],
+   "title": {
+    "fr": "Station muette",
+    "en": "Silent station"
+   },
+   "desc": {
+    "fr": "Une station de surveillance cesse de répondre en pleine tempête d’alertes.",
+    "en": "A monitoring station stops responding amid a storm of alerts."
+   },
+   "brief": {
+    "fr": "Maintenance de routine sur la station de Reykjavik. Les communications restent assurées et une équipe de garde reste joignable.",
+    "en": "Routine maintenance on the Reykjavik station. Communications remain up and an on-call team is reachable."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "team",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "comm.c2",
+    "comm.delay",
+    "sup.ana",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L3",
+    "L2",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "sar": 1,
+    "sabotage": 1,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.jam",
+       "c": "jam"
+      },
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "STAT"
+    ],
+    [
+     6,
+     "jam",
+     "sat"
+    ],
+    [
+     8,
+     "sar"
+    ],
+    [
+     11,
+     "cyber",
+     "C2"
+    ],
+    [
+     13,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    480,
+    460,
+    1.6
+   ]
+  },
+  {
+   "id": "l7",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Mer du Nord sous tension",
+    "en": "North Sea under strain"
+   },
+   "desc": {
+    "fr": "Réseau électrique, liaison et opinion sont visés en même temps.",
+    "en": "The power grid, a link and public opinion are targeted at once."
+   },
+   "brief": {
+    "fr": "Un pic de tension sur le réseau électrique a été attribué à une panne. La presse locale pose des questions, sans plus.",
+    "en": "A voltage spike on the power grid has been put down to a fault. Local press is asking questions, nothing more."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "team",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "comm.delay",
+    "adv.dep",
+    "sup.ana"
+   ],
+   "assets": [
+    "L5",
+    "L1",
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "desinfo": 2,
+    "sabotage": 1,
+    "site": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 665,
+        "r": 62
+       },
+       "need": 48,
+       "onFail": [
+        [
+         "cyber",
+         "GRID"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     10,
+     "sabotage"
+    ],
+    [
+     13,
+     "cyber",
+     "PORT"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ]
+  },
+  {
+   "id": "l8",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 3,
+   "tags": [
+    "mer"
+   ],
+   "title": {
+    "fr": "Le chalutier qui ne pêche pas",
+    "en": "The trawler that does not fish"
+   },
+   "desc": {
+    "fr": "Des navires ordinaires stationnent là où rien ne se pêche.",
+    "en": "Ordinary vessels loiter where there is nothing to catch."
+   },
+   "brief": {
+    "fr": "Un chalutier stationne depuis deux jours au-dessus de la liaison L5. Il répond poliment et son identité paraît valide.",
+    "en": "A trawler has been loitering over link L5 for two days. It answers politely and its identity seems valid."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "patrol",
+    "recon",
+    "comm"
+   ],
+   "hyp": [
+    "adv.double",
+    "adv.dep",
+    "sup.naval",
+    "info.sources"
+   ],
+   "assets": [
+    "L5",
+    "L1",
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 3,
+    "desinfo": 1,
+    "ghost": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable2",
+       "c": "sabotage",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     2,
+     "sabotage"
+    ],
+    [
+     5,
+     "ghost"
+    ],
+    [
+     8,
+     "sabotage"
+    ],
+    [
+     11,
+     "sabotage"
+    ],
+    [
+     13,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ]
+  },
+  {
+   "id": "l9",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "essaim",
+    "info"
+   ],
+   "title": {
+    "fr": "L’essaim du matin",
+    "en": "Morning swarm"
+   },
+   "desc": {
+    "fr": "Des pistes lentes approchent une unité navale, mêlées à des drones civils.",
+    "en": "Slow tracks approach a naval unit, mixed with civilian drones."
+   },
+   "brief": {
+    "fr": "Exercice de défense rapprochée au large de Bergen. Les drones civils du secteur sont déclarés et les autorisations sont déjà accordées.",
+    "en": "Close-defence exercise off Bergen. Civilian drones in the area are declared and authorisations are already granted."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "info.sources",
+    "ally.slow",
+    "comm.pnt",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "site": 1,
+    "sabotage": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm2",
+       "c": "swarm",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "swarm"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     10,
+     "swarm"
+    ],
+    [
+     13,
+     "swarm"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ]
+  },
+  {
+   "id": "l10",
+   "sector": "gap",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Appel de détresse",
+    "en": "Distress call"
+   },
+   "desc": {
+    "fr": "Vos seuls moyens doivent choisir entre sauver et surveiller.",
+    "en": "Your few assets must choose between rescuing and watching."
+   },
+   "brief": {
+    "fr": "Saison de pêche chargée au large des Féroé. Les secours civils sont disponibles et votre mission reste la surveillance des liaisons.",
+    "en": "Busy fishing season off the Faroes. Civil rescue is available and your task remains watching the links."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "repair",
+    "comm"
+   ],
+   "hyp": [
+    "sup.naval",
+    "info.late",
+    "mis.extra",
+    "adv.double"
+   ],
+   "assets": [
+    "L3",
+    "L2",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sar": 3,
+    "sabotage": 1,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sar"
+    ],
+    [
+     6,
+     "sabotage"
+    ],
+    [
+     8,
+     "sar"
+    ],
+    [
+     11,
+     "desinfo"
+    ],
+    [
+     13,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    480,
+    460,
+    1.6
+   ]
+  },
+  {
+   "id": "ia",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "air",
+    "sous-marin"
+   ],
+   "title": {
+    "fr": "Flotte fantôme",
+    "en": "Ghost fleet"
+   },
+   "desc": {
+    "fr": "Traquer et arraisonner des navires fantômes pendant que d’autres crises surgissent.",
+    "en": "Track and board ghost ships while other crises break out."
+   },
+   "brief": {
+    "fr": "La coalition vous confie la surveillance des voies maritimes de mer de Norvège. Le renseignement allié partage ses pistes et un premier navire fantôme est attendu.",
+    "en": "The coalition assigns you sea-lane surveillance in the Norwegian Sea. Allied intelligence is sharing leads and a first ghost ship is expected."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "drone",
+    "patrol",
+    "patrol",
+    "fighter",
+    "repair"
+   ],
+   "hyp": [
+    "info.share",
+    "ally.none",
+    "sup.naval",
+    "adv.early",
+    "mis.zone"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "ghost": 1,
+    "desinfo": 2,
+    "incursion": 1,
+    "site": 1,
+    "sar": 1,
+    "cyber": 1,
+    "mine": 1,
+    "seabed": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 680,
+        "y": 420,
+        "r": 85
+       },
+       "need": 72,
+       "onFail": [
+        [
+         "ghost"
+        ]
+       ]
+      },
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ],
+     "k": "ia1"
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost2",
+       "c": "ghost",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ],
+     "k": "ia2"
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "ia3"
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     6,
+     "sabotage"
+    ],
+    [
+     10,
+     "ghost"
+    ],
+    [
+     11,
+     "jam",
+     "pnt"
+    ],
+    [
+     13,
+     "incursion"
+    ],
+    [
+     16,
+     "sub"
+    ],
+    [
+     18,
+     "desinfo"
+    ],
+    [
+     19,
+     "sabotage"
+    ]
+   ]
+  },
+  {
+   "id": "ib",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "cyber",
+    "air",
+    "mer"
+   ],
+   "title": {
+    "fr": "Le second choc",
+    "en": "The second shock"
+   },
+   "desc": {
+    "fr": "Cyberattaques et pannes de services, rétablis puis coupés de nouveau.",
+    "en": "Cyberattacks and service outages, restored and then cut again."
+   },
+   "brief": {
+    "fr": "Une première panne satellite vient d’être réparée et les opérateurs annoncent un retour à la normale. Vous poursuivez votre patrouille.",
+    "en": "A first satellite outage has just been fixed and operators announce a return to normal. You continue your patrol."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "drone",
+    "patrol",
+    "fighter",
+    "repair",
+    "team"
+   ],
+   "hyp": [
+    "comm.sat",
+    "comm.c2",
+    "ally.slow",
+    "sup.ana",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "desinfo": 1,
+    "incursion": 1,
+    "site": 1,
+    "sar": 1,
+    "cyber": 2,
+    "sub": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 620,
+        "y": 545,
+        "r": 70
+       },
+       "need": 64,
+       "onFail": [
+        [
+         "cyber",
+         "GRID"
+        ]
+       ]
+      },
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ],
+     "k": "ib1"
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.jam",
+       "c": "jam"
+      },
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ],
+     "k": "ib2"
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "ib3"
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     5,
+     "cyber",
+     "GRID"
+    ],
+    [
+     8,
+     "jam",
+     "sat"
+    ],
+    [
+     11,
+     "incursion"
+    ],
+    [
+     13,
+     "sabotage"
+    ],
+    [
+     16,
+     "cyber",
+     "C2"
+    ],
+    [
+     18,
+     "jam",
+     "sat"
+    ],
+    [
+     19,
+     "site"
+    ]
+   ]
+  },
+  {
+   "id": "ic",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "sous-marin",
+    "air"
+   ],
+   "title": {
+    "fr": "Voie Nord",
+    "en": "Northern Lane"
+   },
+   "desc": {
+    "fr": "Reconnaître la route, escorter un convoi de Tromsø à Aberdeen, puis tenir la zone.",
+    "en": "Scout the route, escort a convoy from Tromsø to Aberdeen, then hold the zone."
+   },
+   "brief": {
+    "fr": "Un convoi logistique doit appareiller de Tromsø au tour 5. La route a été reconnue la semaine dernière et aucune menace sous-marine n’est signalée.",
+    "en": "A logistics convoy is due to sail from Tromsø on turn 5. The route was scouted last week and no subsurface threat is reported."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "fighter",
+    "repair"
+   ],
+   "hyp": [
+    "mis.zone",
+    "adv.early",
+    "sup.fuel",
+    "info.late",
+    "sup.naval"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "desinfo": 1,
+    "incursion": 1,
+    "site": 1,
+    "sar": 1,
+    "sub": 1,
+    "mine": 1,
+    "seabed": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 800,
+        "y": 360,
+        "r": 85
+       },
+       "need": 64,
+       "onFail": [
+        [
+         "sub"
+        ]
+       ]
+      }
+     ],
+     "k": "ic1"
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "escort",
+       "key": "ob.escort"
+      },
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      }
+     ],
+     "k": "ic2",
+     "convoy": [
+      "Tromso",
+      "Aberdeen"
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "ic3"
+    }
+   ],
+   "script": [
+    [
+     5,
+     "desinfo"
+    ],
+    [
+     10,
+     "sub"
+    ],
+    [
+     11,
+     "sabotage",
+     "convoy"
+    ],
+    [
+     14,
+     "sabotage",
+     "convoy"
+    ],
+    [
+     18,
+     "incursion"
+    ],
+    [
+     19,
+     "ghost"
+    ]
+   ]
+  },
+  {
+   "id": "i4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "info",
+    "air",
+    "cyber"
+   ],
+   "title": {
+    "fr": "La vérité en retard",
+    "en": "Truth comes late"
+   },
+   "desc": {
+    "fr": "Le renseignement correctif arrive après vos premiers engagements.",
+    "en": "The corrective intelligence arrives after your first commitments."
+   },
+   "brief": {
+    "fr": "Une vidéo met vos forces en cause. Le renseignement allié promet une analyse complète sous deux tours, et l’opinion reste calme pour l’instant.",
+    "en": "A video implicates your forces. Allied intelligence promises a full analysis within two turns, and public opinion is calm for now."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "drone",
+    "patrol",
+    "fighter",
+    "comm",
+    "analysis",
+    "repair"
+   ],
+   "hyp": [
+    "info.late",
+    "info.share",
+    "sup.ana",
+    "adv.cycle",
+    "info.sources"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 3,
+    "incursion": 1,
+    "cyber": 1,
+    "sabotage": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      },
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo2",
+       "c": "desinfo",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     8,
+     "incursion"
+    ],
+    [
+     10,
+     "cyber"
+    ],
+    [
+     13,
+     "desinfo"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "desinfo"
+    ]
+   ]
+  },
+  {
+   "id": "i5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "air",
+    "essaim"
+   ],
+   "title": {
+    "fr": "Fenêtre étroite",
+    "en": "Narrow window"
+   },
+   "desc": {
+    "fr": "Mêmes pistes ambiguës, mais chaque délai est réduit de 40 %.",
+    "en": "The same ambiguous tracks, but every deadline is cut by 40%."
+   },
+   "brief": {
+    "fr": "Les règles d’engagement ont été préautorisées pour raccourcir vos décisions. L’état-major reste joignable à tout moment.",
+    "en": "Rules of engagement have been pre-authorised to shorten your decisions. Headquarters can be reached at any time."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "fighter",
+    "recon",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "ally.slow",
+    "comm.delay",
+    "comm.c2",
+    "adv.early",
+    "sup.air"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "fewLost",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "incursion": 2,
+    "swarm": 1,
+    "desinfo": 1,
+    "site": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air2",
+       "c": "incursion",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "incursion"
+    ],
+    [
+     8,
+     "swarm"
+    ],
+    [
+     11,
+     "desinfo"
+    ],
+    [
+     14,
+     "incursion"
+    ],
+    [
+     18,
+     "swarm"
+    ],
+    [
+     19,
+     "site"
+    ]
+   ],
+   "clockF": 0.6
+  },
+  {
+   "id": "i6",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "essaim",
+    "mer"
+   ],
+   "title": {
+    "fr": "Essaim en mer",
+    "en": "Swarm at sea"
+   },
+   "desc": {
+    "fr": "Vagues successives de drones contre un groupe naval, brouillage en plus.",
+    "en": "Successive drone waves against a naval group, with jamming on top."
+   },
+   "brief": {
+    "fr": "Un groupe naval multinational teste sa défense contre les drones. Les liaisons sont stables et les temps de réaction ont été mesurés à l’entraînement.",
+    "en": "A multinational naval group is testing its drone defence. Links are stable and reaction times were measured in training."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "patrol",
+    "recon",
+    "repair"
+   ],
+   "hyp": [
+    "comm.pnt",
+    "comm.delay",
+    "ally.slow",
+    "info.sources",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noLoss",
+    "fewLost",
+    "cs55"
+   ],
+   "pool": {
+    "swarm": 2,
+    "sabotage": 1,
+    "desinfo": 1,
+    "site": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm2",
+       "c": "swarm",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "close",
+       "key": "ob.jam",
+       "c": "jam"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "swarm"
+    ],
+    [
+     8,
+     "swarm"
+    ],
+    [
+     10,
+     "jam",
+     "pnt"
+    ],
+    [
+     13,
+     "sabotage"
+    ],
+    [
+     14,
+     "swarm"
+    ],
+    [
+     18,
+     "desinfo"
+    ]
+   ]
+  },
+  {
+   "id": "i7",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Commandement fracturé",
+    "en": "Fractured command"
+   },
+   "desc": {
+    "fr": "Les hypothèses de coordination cèdent les unes après les autres.",
+    "en": "Coordination assumptions give way one after another."
+   },
+   "brief": {
+    "fr": "Le plan suppose une coordination multinationale fluide, un réseau disponible et un partage complet des données entre états-majors.",
+    "en": "The plan assumes smooth multinational coordination, an available network and full data sharing between headquarters."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "drone",
+    "patrol",
+    "fighter",
+    "team",
+    "repair"
+   ],
+   "hyp": [
+    "ally.none",
+    "info.share",
+    "comm.c2",
+    "comm.sat",
+    "ally.slow"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "fewLost",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "desinfo": 2,
+    "sabotage": 1,
+    "incursion": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 640,
+        "y": 500,
+        "r": 80
+       },
+       "need": 64
+      },
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.jam",
+       "c": "jam"
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "C2"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     10,
+     "jam",
+     "sat"
+    ],
+    [
+     13,
+     "cyber",
+     "GRID"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "incursion"
+    ]
+   ]
+  },
+  {
+   "id": "i8",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Passage du Nord-Atlantique",
+    "en": "North Atlantic gap"
+   },
+   "desc": {
+    "fr": "Plusieurs contacts sous-marins se succèdent, et tous ne sont pas réels.",
+    "en": "Several subsurface contacts follow one another, and not all of them are real."
+   },
+   "brief": {
+    "fr": "Une bouée alliée a capté un écho isolé. Deux avions de patrouille sont annoncés en appui et la coalition partage ses relevés.",
+    "en": "An allied buoy picked up a single echo. Two patrol aircraft are promised in support and the coalition is sharing its readings."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "recon",
+    "frigate",
+    "patrol",
+    "repair"
+   ],
+   "hyp": [
+    "sup.fuel",
+    "info.share",
+    "sup.air",
+    "adv.double",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noLoss",
+    "fewLost",
+    "cs55"
+   ],
+   "pool": {
+    "sub": 2,
+    "sabotage": 1,
+    "sar": 1,
+    "desinfo": 1,
+    "mine": 1,
+    "seabed": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 480,
+        "y": 440,
+        "r": 85
+       },
+       "need": 64
+      },
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub2",
+       "c": "sub",
+       "n": 2,
+       "fail": 2
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sub"
+    ],
+    [
+     8,
+     "sub"
+    ],
+    [
+     11,
+     "sar"
+    ],
+    [
+     14,
+     "sub"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "desinfo"
+    ]
+   ]
+  },
+  {
+   "id": "i9",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "air",
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Bastion du Nord",
+    "en": "Northern bastion"
+   },
+   "desc": {
+    "fr": "Air, mer et fond de mer sont sollicités à la fois.",
+    "en": "Air, sea and seabed are all under pressure at once."
+   },
+   "brief": {
+    "fr": "Une activité aérienne saisonnière est attendue au nord-est. Vos appareils sont en alerte et vos dépôts sont pleins.",
+    "en": "Seasonal air activity is expected to the north-east. Your aircraft are on alert and your depots are full."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "frigate",
+    "fighter",
+    "patrol",
+    "repair"
+   ],
+   "hyp": [
+    "sup.fuel",
+    "sup.air",
+    "adv.early",
+    "adv.double",
+    "comm.sat"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "incursion": 2,
+    "sub": 1,
+    "ghost": 1,
+    "sabotage": 1,
+    "mine": 1,
+    "seabed": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      },
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air2",
+       "c": "incursion",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "incursion"
+    ],
+    [
+     6,
+     "sub"
+    ],
+    [
+     10,
+     "ghost"
+    ],
+    [
+     13,
+     "incursion"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "incursion"
+    ]
+   ]
+  },
+  {
+   "id": "i10",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "mer",
+    "essaim"
+   ],
+   "title": {
+    "fr": "Convoi de mer du Nord",
+    "en": "North Sea convoy"
+   },
+   "desc": {
+    "fr": "Un convoi vers Rotterdam, des saboteurs et des drones.",
+    "en": "A convoy bound for Rotterdam, saboteurs and drones."
+   },
+   "brief": {
+    "fr": "Un convoi humanitaire partira de Bergen vers Rotterdam. Il passera loin de toute zone contestée, avec une escorte légère.",
+    "en": "A relief convoy will sail from Bergen to Rotterdam. It will stay far from any contested area, with a light escort."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "adv.early",
+    "mis.zone",
+    "sup.naval",
+    "adv.dep",
+    "info.late"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "noLoss",
+    "fewLost"
+   ],
+   "pool": {
+    "sabotage": 2,
+    "desinfo": 1,
+    "site": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 760,
+        "y": 720,
+        "r": 80
+       },
+       "need": 64
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "escort",
+       "key": "ob.escort"
+      },
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ],
+     "convoy": [
+      "Bergen",
+      "Rotterdam"
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "desinfo"
+    ],
+    [
+     10,
+     "sabotage",
+     "convoy"
+    ],
+    [
+     11,
+     "swarm",
+     "convoy"
+    ],
+    [
+     14,
+     "sabotage",
+     "convoy"
+    ],
+    [
+     18,
+     "sabotage"
+    ],
+    [
+     19,
+     "site"
+    ]
+   ]
+  },
+  {
+   "id": "i11",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Réseau sous pression",
+    "en": "Grid under pressure"
+   },
+   "desc": {
+    "fr": "Trois attaques numériques, et une attribution que tout le monde réclame.",
+    "en": "Three digital attacks, and everyone demanding attribution."
+   },
+   "brief": {
+    "fr": "Une alarme isolée touche le réseau électrique. Vos partenaires proposent une enquête commune et vos équipes sont disponibles.",
+    "en": "A single alarm hits the power grid. Your partners offer a joint investigation and your teams are available."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "patrol",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "info.share",
+    "sup.ana",
+    "comm.c2",
+    "adv.dep",
+    "info.sources"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noFalse"
+   ],
+   "pool": {
+    "cyber": 3,
+    "desinfo": 2,
+    "site": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "close",
+       "key": "ob.jam",
+       "c": "jam"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     10,
+     "jam",
+     "pnt"
+    ],
+    [
+     13,
+     "cyber",
+     "PORT"
+    ],
+    [
+     16,
+     "desinfo"
+    ],
+    [
+     19,
+     "cyber",
+     "C2"
+    ]
+   ]
+  },
+  {
+   "id": "i12",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Blocus gris",
+    "en": "Grey blockade"
+   },
+   "desc": {
+    "fr": "Trois navires fantômes, peu d’unités et une opinion qui surveille chaque visite.",
+    "en": "Three ghost ships, few units and a public watching every boarding."
+   },
+   "brief": {
+    "fr": "La coalition vous demande de contrôler un trafic douteux, sans incident. Elle vous garantit un renfort naval et une base légale claire.",
+    "en": "The coalition asks you to control doubtful traffic, without incident. It guarantees naval reinforcement and a clear legal basis."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "recon",
+    "comm"
+   ],
+   "hyp": [
+    "ally.none",
+    "adv.double",
+    "sup.naval",
+    "info.sources",
+    "mis.extra"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 2,
+    "sabotage": 1,
+    "sar": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost2",
+       "c": "ghost",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "ghost"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     8,
+     "ghost"
+    ],
+    [
+     13,
+     "ghost"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "desinfo"
+    ]
+   ]
+  },
+  {
+   "id": "i13",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer"
+   ],
+   "title": {
+    "fr": "Biais de familiarité",
+    "en": "Familiarity bias"
+   },
+   "desc": {
+    "fr": "Les saboteurs émettent rarement et imitent le trafic que vous connaissez.",
+    "en": "Saboteurs rarely transmit and mimic the traffic you know."
+   },
+   "brief": {
+    "fr": "Le trafic de la saison est stable et bien connu de vos équipes. Le renseignement n’attend qu’un incident isolé.",
+    "en": "Seasonal traffic is stable and well known to your teams. Intelligence expects only an isolated incident."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "recon",
+    "drone",
+    "drone",
+    "patrol",
+    "patrol",
+    "repair"
+   ],
+   "hyp": [
+    "adv.dep",
+    "info.late",
+    "adv.double",
+    "sup.air",
+    "mis.zone"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "sabotage": 3,
+    "ghost": 1,
+    "sar": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 640,
+        "y": 510,
+        "r": 90
+       },
+       "need": 72
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cable2",
+       "c": "sabotage",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "sabotage"
+    ],
+    [
+     10,
+     "sabotage"
+    ],
+    [
+     13,
+     "ghost"
+    ],
+    [
+     16,
+     "sabotage"
+    ],
+    [
+     19,
+     "desinfo"
+    ]
+   ],
+   "quiet": true
+  },
+  {
+   "id": "i14",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "air"
+   ],
+   "title": {
+    "fr": "Tempête sur la mer de Norvège",
+    "en": "Storm over the Norwegian Sea"
+   },
+   "desc": {
+    "fr": "Capteurs réduits, navires en difficulté, et des opportunistes.",
+    "en": "Reduced sensors, ships in difficulty, and opportunists."
+   },
+   "brief": {
+    "fr": "Une dépression passe au large de la Norvège. La météo annonce une accalmie rapide et les secours sont en place.",
+    "en": "A depression is passing off Norway. Forecasters expect a quick lull and rescue services are in place."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "drone",
+    "repair"
+   ],
+   "hyp": [
+    "sup.air",
+    "adv.early",
+    "comm.sat",
+    "sup.fuel",
+    "mis.extra"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "sar": 2,
+    "sabotage": 2,
+    "desinfo": 1,
+    "incursion": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar2",
+       "c": "sar",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "close",
+       "key": "ob.cable",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sar"
+    ],
+    [
+     6,
+     "sabotage"
+    ],
+    [
+     10,
+     "sar"
+    ],
+    [
+     13,
+     "sabotage"
+    ],
+    [
+     16,
+     "incursion"
+    ],
+    [
+     19,
+     "sar"
+    ]
+   ],
+   "storm": true
+  },
+  {
+   "id": "l11",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "combat",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Riposte côtière",
+    "en": "Coastal response"
+   },
+   "desc": {
+    "fr": "Un raider tire sur vos unités pendant qu’on attaque vos systèmes.",
+    "en": "A raider fires on your units while your systems are attacked."
+   },
+   "brief": {
+    "fr": "Une unité inconnue a été aperçue au nord des Shetland. Le plan prévoit de l’identifier sans ouvrir le feu.",
+    "en": "An unknown unit was sighted north of Shetland. The plan is to identify it without opening fire."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "recon",
+    "team"
+   ],
+   "hyp": [
+    "sup.weap",
+    "adv.weap",
+    "ally.slow",
+    "info.late"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "noLoss",
+    "fewLost"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "raid": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 592,
+        "r": 58
+       },
+       "need": 48
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid",
+       "onFail": [
+        [
+         "salvo"
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "raid"
+    ],
+    [
+     8,
+     "cyber",
+     "CBT"
+    ],
+    [
+     11,
+     "salvo"
+    ],
+    [
+     13,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ],
+   "combat": true
+  },
+  {
+   "id": "l12",
+   "sector": "north",
+   "mode": "local",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "mer"
+   ],
+   "title": {
+    "fr": "Tir de semonce",
+    "en": "Warning shot"
+   },
+   "desc": {
+    "fr": "Un navire fantôme escorté, et une escorte qui ouvre le feu.",
+    "en": "An escorted ghost ship, and an escort that opens fire."
+   },
+   "brief": {
+    "fr": "Un pétrolier au pavillon douteux doit être arraisonné dans les fjords du nord. Il voyage seul, selon le renseignement.",
+    "en": "A tanker with a doubtful flag must be boarded in the northern fjords. It is travelling alone, according to intelligence."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "recon",
+    "patrol"
+   ],
+   "hyp": [
+    "sup.weap",
+    "adv.early",
+    "info.sources",
+    "sup.air"
+   ],
+   "assets": [
+    "L4",
+    "LNG",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "noLoss",
+    "fewLost"
+   ],
+   "pool": {
+    "raid": 1,
+    "desinfo": 1,
+    "sabotage": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo",
+       "c": "salvo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "ghost"
+    ],
+    [
+     6,
+     "raid"
+    ],
+    [
+     11,
+     "salvo"
+    ],
+    [
+     13,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    820,
+    310,
+    1.6
+   ],
+   "combat": true
+  },
+  {
+   "id": "i15",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "mer",
+    "air"
+   ],
+   "title": {
+    "fr": "Engagement en mer de Norvège",
+    "en": "Engagement in the Norwegian Sea"
+   },
+   "desc": {
+    "fr": "Deux raids, des salves et un système de combat visé.",
+    "en": "Two raids, salvos and a targeted combat system."
+   },
+   "brief": {
+    "fr": "La coalition déploie un groupe naval pour dissuader. Les règles d’engagement sont défensives et les stocks sont pleins.",
+    "en": "The coalition deploys a naval group to deter. Rules of engagement are defensive and stocks are full."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "fighter",
+    "armed"
+   ],
+   "hyp": [
+    "sup.weap",
+    "adv.weap",
+    "ally.none",
+    "comm.pnt",
+    "adv.double"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "noLoss",
+    "fewLost"
+   ],
+   "pool": {
+    "incursion": 1,
+    "cyber": 1,
+    "desinfo": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo",
+       "c": "salvo"
+      },
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid2",
+       "c": "raid",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "raid"
+    ],
+    [
+     8,
+     "cyber",
+     "CBT"
+    ],
+    [
+     11,
+     "salvo"
+    ],
+    [
+     13,
+     "incursion"
+    ],
+    [
+     16,
+     "raid"
+    ]
+   ],
+   "combat": true
+  },
+  {
+   "id": "i16",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "combat",
+    "info"
+   ],
+   "title": {
+    "fr": "Escalade contrôlée",
+    "en": "Controlled escalation"
+   },
+   "desc": {
+    "fr": "Tenir sans tirer le premier, puis répondre sans franchir le seuil.",
+    "en": "Hold without firing first, then respond without crossing the threshold."
+   },
+   "brief": {
+    "fr": "Temps de paix tendu. Le gouvernement veut éviter tout incident armé. Vos partenaires ne soutiendront pas une escalade.",
+    "en": "Tense peacetime. The government wants to avoid any armed incident. Your partners will not back an escalation."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "fighter",
+    "comm"
+   ],
+   "hyp": [
+    "ally.none",
+    "info.sources",
+    "adv.early",
+    "sup.weap",
+    "comm.delay"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "incursion": 1,
+    "ghost": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 680,
+        "y": 440,
+        "r": 85
+       },
+       "need": 64
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     8,
+     "incursion"
+    ],
+    [
+     11,
+     "ghost"
+    ],
+    [
+     14,
+     "raid"
+    ],
+    [
+     18,
+     "salvo"
+    ],
+    [
+     19,
+     "desinfo"
+    ]
+   ],
+   "combat": true
+  },
+  {
+   "id": "i17",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Salves sur le réseau",
+    "en": "Salvos on the grid"
+   },
+   "desc": {
+    "fr": "Missiles et cyberattaques convergent sur les mêmes sites.",
+    "en": "Missiles and cyberattacks converge on the same sites."
+   },
+   "brief": {
+    "fr": "Des préparatifs de tir sont signalés sans cible précise. La défense aérienne de zone est annoncée opérationnelle.",
+    "en": "Firing preparations are reported with no precise target. Area air defence is announced operational."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "fighter",
+    "team",
+    "repair"
+   ],
+   "hyp": [
+    "adv.weap",
+    "sup.naval",
+    "info.late",
+    "comm.c2",
+    "sup.weap"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noLoss",
+    "fewLost",
+    "cs55"
+   ],
+   "pool": {
+    "salvo": 1,
+    "cyber": 2,
+    "desinfo": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo",
+       "c": "salvo"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo2",
+       "c": "salvo",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     6,
+     "salvo"
+    ],
+    [
+     10,
+     "cyber",
+     "CBT"
+    ],
+    [
+     13,
+     "salvo"
+    ],
+    [
+     16,
+     "cyber",
+     "PORT"
+    ],
+    [
+     18,
+     "salvo"
+    ]
+   ],
+   "combat": true
+  },
+  {
+   "id": "i18",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "cyber",
+    "essaim"
+   ],
+   "title": {
+    "fr": "Guerre hybride",
+    "en": "Hybrid war"
+   },
+   "desc": {
+    "fr": "Drones, raid, rumeurs et contre-attaque cyber dans la même opération.",
+    "en": "Drones, a raid, rumours and cyber counter-attack in one operation."
+   },
+   "brief": {
+    "fr": "Rouge reste en dessous du seuil depuis des semaines. Le plan suppose qu’il continuera et que l’attribution restera possible à temps.",
+    "en": "Red has stayed below the threshold for weeks. The plan assumes it will continue and that attribution remains possible in time."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "armed",
+    "team",
+    "patrol"
+   ],
+   "hyp": [
+    "adv.cycle",
+    "info.share",
+    "comm.sat",
+    "adv.weap",
+    "ally.slow"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "cyber": 2,
+    "swarm": 1,
+    "raid": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     5,
+     "cyber",
+     "GRID"
+    ],
+    [
+     10,
+     "swarm"
+    ],
+    [
+     13,
+     "cyber",
+     "C2"
+    ],
+    [
+     16,
+     "raid"
+    ],
+    [
+     19,
+     "salvo"
+    ]
+   ],
+   "combat": true
+  },
+  {
+   "id": "d1",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Plateforme Aurore",
+    "en": "Aurora Platform"
+   },
+   "desc": {
+    "fr": "Un groupe armé fictif s’empare d’une plateforme. Vérifier, isoler, puis agir ou négocier.",
+    "en": "A fictional armed group seizes a platform. Verify, isolate, then act or negotiate."
+   },
+   "brief": {
+    "fr": "La plateforme Aurore reprend son activité. Le renseignement signale une menace imprécise contre le site. Votre force spéciale est en alerte.",
+    "en": "Aurora Platform is resuming operations. Intelligence reports a vague threat against the site. Your special forces are on alert."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "comm.delay",
+    "adv.early",
+    "sup.sof"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 592,
+        "r": 58
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "seize",
+     "PLAT"
+    ],
+    [
+     8,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ],
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "d2",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "action",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Le cargo détourné",
+    "en": "The hijacked freighter"
+   },
+   "desc": {
+    "fr": "Un navire est détourné pendant une attaque informatique et une rumeur.",
+    "en": "A ship is hijacked during a cyberattack and a rumour."
+   },
+   "brief": {
+    "fr": "Le trafic reste dense en mer du Nord. Le plan suppose que vos moyens restent disponibles et que les alertes arrivent à temps.",
+    "en": "North Sea traffic remains dense. The plan assumes your assets stay available and that alerts arrive on time."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "recon"
+   ],
+   "hyp": [
+    "sup.sof",
+    "info.late",
+    "comm.sat",
+    "adv.early"
+   ],
+   "assets": [
+    "L5",
+    "L1",
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize.s",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "seize",
+     "ship"
+    ],
+    [
+     11,
+     "cyber",
+     "PORT"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ],
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "d3",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "action",
+    "combat"
+   ],
+   "title": {
+    "fr": "Double prise",
+    "en": "Double seizure"
+   },
+   "desc": {
+    "fr": "Deux sites capturés, une seule action spéciale : il faut choisir.",
+    "en": "Two captured sites, one special action: you must choose."
+   },
+   "brief": {
+    "fr": "Plusieurs alertes visent des sites énergétiques. Votre force spéciale est très sollicitée, et vos partenaires attendent une réponse mesurée.",
+    "en": "Several alerts target energy sites. Your special forces are in high demand, and your partners expect a measured response."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "sof",
+    "frigate",
+    "recon",
+    "team",
+    "analysis"
+   ],
+   "hyp": [
+    "adv.double",
+    "info.share",
+    "comm.c2",
+    "ally.slow",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "PORT",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "raid": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize2",
+       "c": "seize",
+       "fail": 2
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     8,
+     "seize",
+     "PLAT"
+    ],
+    [
+     11,
+     "seize",
+     "GRID"
+    ],
+    [
+     18,
+     "raid"
+    ]
+   ],
+   "req": [
+    "sof"
+   ],
+   "combat": true
+  },
+  {
+   "id": "g1",
+   "sector": "gn_c",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Plateforme du delta",
+    "en": "Delta platform"
+   },
+   "desc": {
+    "fr": "Un groupe armé fictif s’empare d’une plateforme au large du delta.",
+    "en": "A fictional armed group seizes a platform off the delta."
+   },
+   "brief": {
+    "fr": "La plateforme du delta reprend sa production. Le renseignement signale une menace imprécise. Votre force spéciale est en alerte.",
+    "en": "The delta platform is resuming production. Intelligence reports a vague threat. Your special forces are on alert."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "comm.delay",
+    "adv.early",
+    "sup.sof"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 835,
+        "y": 441,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "seize",
+     "PLAT"
+    ],
+    [
+     8,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    835,
+    441,
+    1.6
+   ],
+   "th": "gn",
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "g2",
+   "sector": "gn_w",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Route côtière",
+    "en": "Coastal route"
+   },
+   "desc": {
+    "fr": "Un navire fantôme et une rumeur perturbent la route commerciale.",
+    "en": "A ghost ship and a rumour disrupt the trade route."
+   },
+   "brief": {
+    "fr": "La route côtière reste très fréquentée. Le plan suppose des sources fiables et des patrouilleurs disponibles.",
+    "en": "The coastal route remains busy. The plan assumes reliable sources and available patrol vessels."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "sup.naval",
+    "comm.delay",
+    "adv.dep"
+   ],
+   "assets": [
+    "L1",
+    "L3",
+    "PORT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 405,
+        "y": 457,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    405,
+    457,
+    1.6
+   ],
+   "th": "gn"
+  },
+  {
+   "id": "g3",
+   "sector": "gn_s",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Pétrolier retenu",
+    "en": "Tanker held"
+   },
+   "desc": {
+    "fr": "Un appel de détresse précède le détournement d’un pétrolier.",
+    "en": "A distress call precedes the hijacking of a tanker."
+   },
+   "brief": {
+    "fr": "Le sud du golfe reste calme. Votre force spéciale couvre une zone étendue, et le plan suppose que les alertes arrivent à temps.",
+    "en": "The southern gulf remains calm. Your special forces cover a wide area, and the plan assumes alerts arrive on time."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "recon"
+   ],
+   "hyp": [
+    "sup.sof",
+    "info.late",
+    "comm.sat",
+    "adv.early"
+   ],
+   "assets": [
+    "L4",
+    "L5",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sar": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize.s",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "sar"
+    ],
+    [
+     6,
+     "seize",
+     "ship"
+    ],
+    [
+     11,
+     "cyber",
+     "LNG"
+    ]
+   ],
+   "cam": [
+    935,
+    665,
+    1.6
+   ],
+   "th": "gn",
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "g4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Golfe sous tension",
+    "en": "Gulf under strain"
+   },
+   "desc": {
+    "fr": "Cyberattaques, navires suspects et demandes concurrentes entre partenaires.",
+    "en": "Cyberattacks, suspect ships and competing requests from partners."
+   },
+   "brief": {
+    "fr": "Plusieurs ports du golfe signalent des incidents isolés. Le plan suppose un partage rapide du renseignement.",
+    "en": "Several gulf ports report isolated incidents. The plan assumes rapid intelligence sharing."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "team",
+    "patrol",
+    "comm"
+   ],
+   "hyp": [
+    "info.share",
+    "comm.c2",
+    "ally.slow",
+    "adv.cycle",
+    "adv.dep"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "ghost": 2,
+    "cyber": 1,
+    "sar": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "cyber",
+     "PORT"
+    ],
+    [
+     10,
+     "ghost"
+    ],
+    [
+     16,
+     "desinfo"
+    ]
+   ],
+   "th": "gn"
+  },
+  {
+   "id": "g5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "action",
+    "combat"
+   ],
+   "title": {
+    "fr": "Terminal en otage",
+    "en": "Terminal held hostage"
+   },
+   "desc": {
+    "fr": "Deux sites énergétiques capturés, une seule action spéciale, puis un raid.",
+    "en": "Two energy sites captured, one special action, then a raid."
+   },
+   "brief": {
+    "fr": "Les alertes se multiplient autour des sites énergétiques. Vos moyens spéciaux sont comptés, et vos partenaires attendent une réponse mesurée.",
+    "en": "Alerts are growing around energy sites. Your special assets are limited, and your partners expect a measured response."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "sof",
+    "frigate",
+    "recon",
+    "team",
+    "analysis"
+   ],
+   "hyp": [
+    "adv.double",
+    "info.share",
+    "comm.c2",
+    "ally.slow",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "raid": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize2",
+       "c": "seize",
+       "fail": 2
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     8,
+     "seize",
+     "PLAT"
+    ],
+    [
+     11,
+     "seize",
+     "LNG"
+    ],
+    [
+     18,
+     "raid"
+    ]
+   ],
+   "th": "gn",
+   "req": [
+    "sof"
+   ],
+   "combat": true
+  },
+  {
+   "id": "a1",
+   "sector": "ad_b",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Veille au détroit",
+    "en": "Watch at the strait"
+   },
+   "desc": {
+    "fr": "Présence navale, navire fantôme et rumeur à Bab-el-Mandeb.",
+    "en": "Naval presence, a ghost ship and a rumour at Bab-el-Mandeb."
+   },
+   "brief": {
+    "fr": "Le trafic du détroit reste soutenu. Le plan suppose que vos sources restent fiables et que vos ordres arrivent sans délai.",
+    "en": "Strait traffic remains heavy. The plan assumes your sources stay reliable and your orders arrive without delay."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "comm.delay",
+    "adv.dep",
+    "sup.naval"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 706,
+        "y": 640,
+        "r": 46
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    706,
+    640,
+    1.6
+   ],
+   "th": "ad"
+  },
+  {
+   "id": "a2",
+   "sector": "ad_g",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Cargo détourné au large",
+    "en": "Freighter hijacked offshore"
+   },
+   "desc": {
+    "fr": "Un cargo est détourné dans le golfe : vérifier, isoler, puis décider.",
+    "en": "A freighter is hijacked in the gulf: verify, isolate, then decide."
+   },
+   "brief": {
+    "fr": "Le golfe reste animé. Le plan suppose que votre force spéciale garde tous ses moyens et que l’alerte précède l’incident.",
+    "en": "The gulf remains busy. The plan assumes your special forces keep all their assets and that alerts precede incidents."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "recon"
+   ],
+   "hyp": [
+    "sup.sof",
+    "info.late",
+    "comm.sat",
+    "adv.early"
+   ],
+   "assets": [
+    "L4",
+    "L5",
+    "LNG",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "sar": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize.s",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "seize",
+     "ship"
+    ],
+    [
+     11,
+     "sar"
+    ]
+   ],
+   "cam": [
+    954,
+    625,
+    1.6
+   ],
+   "th": "ad",
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "a3",
+   "sector": "ad_n",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "mer"
+   ],
+   "title": {
+    "fr": "Câbles de la mer Rouge",
+    "en": "Red Sea cables"
+   },
+   "desc": {
+    "fr": "Un sabotage de câble se cache derrière une alerte informatique.",
+    "en": "A cable sabotage hides behind a cyber alert."
+   },
+   "brief": {
+    "fr": "Les câbles de la mer Rouge portent une grande part du trafic régional. Le plan suppose que votre réparation reste disponible.",
+    "en": "Red Sea cables carry much of the regional traffic. The plan assumes your repair ship stays available."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "repair",
+    "comm"
+   ],
+   "hyp": [
+    "comm.c2",
+    "adv.dep",
+    "info.late",
+    "comm.sat"
+   ],
+   "assets": [
+    "L2",
+    "L3",
+    "GRID",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 1,
+    "sabotage": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sab",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 530,
+        "y": 387,
+        "r": 46
+       },
+       "need": 40
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     8,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    530,
+    387,
+    1.6
+   ],
+   "th": "ad"
+  },
+  {
+   "id": "a4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "combat",
+    "essaim"
+   ],
+   "title": {
+    "fr": "Corridor commercial",
+    "en": "Commercial corridor"
+   },
+   "desc": {
+    "fr": "Drones sur le corridor, rumeurs et attaque informatique.",
+    "en": "Drones over the corridor, rumours and a cyberattack."
+   },
+   "brief": {
+    "fr": "Un corridor commercial doit rester ouvert. Le plan suppose des munitions suffisantes et des partenaires réactifs.",
+    "en": "A commercial corridor must stay open. The plan assumes sufficient munitions and responsive partners."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "armed",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "sup.weap",
+    "ally.slow",
+    "info.share",
+    "adv.early",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "swarm": 1,
+    "cyber": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "desinfo"
+    ],
+    [
+     10,
+     "swarm"
+    ],
+    [
+     16,
+     "cyber",
+     "PORT"
+    ]
+   ],
+   "th": "ad",
+   "combat": true
+  },
+  {
+   "id": "a5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Détroit disputé",
+    "en": "Contested strait"
+   },
+   "desc": {
+    "fr": "Raid, salve et cyberattaques mettent le seuil à l’épreuve.",
+    "en": "A raid, a salvo and cyberattacks test the threshold."
+   },
+   "brief": {
+    "fr": "Les incidents se rapprochent du détroit. Vos partenaires hésitent, et un tir de trop peut tout faire basculer.",
+    "en": "Incidents are moving closer to the strait. Your partners hesitate, and one shot too many could tip everything over."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "team",
+    "analysis"
+   ],
+   "hyp": [
+    "adv.double",
+    "adv.weap",
+    "comm.c2",
+    "ally.none",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "raid": 1,
+    "desinfo": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo",
+       "c": "salvo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "cyber",
+     "C2"
+    ],
+    [
+     10,
+     "raid"
+    ],
+    [
+     18,
+     "salvo"
+    ]
+   ],
+   "th": "ad",
+   "combat": true
+  },
+  {
+   "id": "e1",
+   "sector": "em_w",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Veille au sud de la Crète",
+    "en": "Watch south of Crete"
+   },
+   "desc": {
+    "fr": "Présence, appel de détresse et rumeur virale.",
+    "en": "Presence, a distress call and a viral rumour."
+   },
+   "brief": {
+    "fr": "Le trafic s’intensifie au sud de la Crète. Le plan suppose que l’information arrive vite et reste fiable.",
+    "en": "Traffic is growing south of Crete. The plan assumes information arrives fast and stays reliable."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone",
+    "recon",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "info.late",
+    "comm.delay",
+    "adv.dep"
+   ],
+   "assets": [
+    "L1",
+    "L4",
+    "STAT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sar": 1,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 497,
+        "y": 372,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sar",
+       "c": "sar"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "sar"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    497,
+    372,
+    1.6
+   ],
+   "th": "em"
+  },
+  {
+   "id": "e2",
+   "sector": "em_e",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Plateforme Thétis",
+    "en": "Thetis platform"
+   },
+   "desc": {
+    "fr": "La plateforme fictive Thétis est capturée pendant une campagne de rumeurs.",
+    "en": "The fictional Thetis platform is captured during a rumour campaign."
+   },
+   "brief": {
+    "fr": "La plateforme Thétis, fictive, entre en service. Le plan suppose une alerte précoce et une force spéciale au complet.",
+    "en": "The fictional Thetis platform enters service. The plan assumes early warning and full special forces."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "sup.sof",
+    "info.late",
+    "adv.early",
+    "comm.delay"
+   ],
+   "assets": [
+    "L3",
+    "L5",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "site": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "seize",
+     "PLAT"
+    ],
+    [
+     11,
+     "site"
+    ]
+   ],
+   "cam": [
+    974,
+    451,
+    1.6
+   ],
+   "th": "em",
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "e3",
+   "sector": "em_c",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Contact au centre du bassin",
+    "en": "Contact in the central basin"
+   },
+   "desc": {
+    "fr": "Un contact sous-marin incertain menace un câble, ou rien du tout.",
+    "en": "An uncertain underwater contact threatens a cable, or nothing at all."
+   },
+   "brief": {
+    "fr": "Une alerte acoustique signale une activité inhabituelle. Le plan suppose que vos capteurs et vos unités restent disponibles.",
+    "en": "An acoustic alert reports unusual activity. The plan assumes your sensors and units stay available."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "recon",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "sup.fuel",
+    "adv.dep",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "LNG",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "sub": 1,
+    "desinfo": 1,
+    "mine": 1,
+    "seabed": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 765,
+        "y": 490,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "sub"
+    ],
+    [
+     11,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    765,
+    490,
+    1.6
+   ],
+   "th": "em"
+  },
+  {
+   "id": "e4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "info",
+    "cyber"
+   ],
+   "title": {
+    "fr": "Rumeurs sur le gaz",
+    "en": "Rumours over gas"
+   },
+   "desc": {
+    "fr": "Désinformation, cyberattaque et demandes opposées entre partenaires.",
+    "en": "Disinformation, a cyberattack and opposing requests from partners."
+   },
+   "brief": {
+    "fr": "Une rumeur sur des gisements fictifs enflamme les réseaux. Le plan suppose que vos partenaires parlent d’une seule voix.",
+    "en": "A rumour about fictional gas fields is spreading online. The plan assumes your partners speak with one voice."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "team",
+    "comm",
+    "analysis"
+   ],
+   "hyp": [
+    "info.share",
+    "ally.slow",
+    "info.sources",
+    "adv.cycle",
+    "comm.c2"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "cyber": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     10,
+     "cyber",
+     "PORT"
+    ],
+    [
+     16,
+     "incursion"
+    ]
+   ],
+   "th": "em"
+  },
+  {
+   "id": "e5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "air"
+   ],
+   "title": {
+    "fr": "Haute mer",
+    "en": "High seas"
+   },
+   "desc": {
+    "fr": "Incursion, raid et essaim : garder la maîtrise de l’escalade.",
+    "en": "An incursion, a raid and a swarm: keep control of escalation."
+   },
+   "brief": {
+    "fr": "Les incidents se multiplient en haute mer. Chaque réponse sera lue par vos partenaires et par l’adversaire.",
+    "en": "Incidents are multiplying on the high seas. Each response will be read by your partners and the adversary."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "fighter",
+    "recon",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "adv.double",
+    "adv.weap",
+    "comm.c2",
+    "ally.slow",
+    "sup.air"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "incursion": 1,
+    "desinfo": 1,
+    "raid": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "incursion"
+    ],
+    [
+     10,
+     "raid"
+    ],
+    [
+     18,
+     "swarm"
+    ]
+   ],
+   "th": "em",
+   "combat": true
+  },
+  {
+   "id": "m1",
+   "sector": "ml_s",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Détroit de Singapour",
+    "en": "Singapore Strait"
+   },
+   "desc": {
+    "fr": "Navire fantôme au milieu d’un trafic très dense.",
+    "en": "A ghost ship amid very dense traffic."
+   },
+   "brief": {
+    "fr": "Le trafic du détroit n’a jamais été aussi dense. Le plan suppose que le transpondeur suffit pour trier les navires.",
+    "en": "Strait traffic has never been denser. The plan assumes transponders are enough to sort the ships."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "adv.dep",
+    "comm.delay",
+    "sup.naval"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 757,
+        "y": 516,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    757,
+    516,
+    1.6
+   ],
+   "th": "ml"
+  },
+  {
+   "id": "m2",
+   "sector": "ml_n",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "action",
+    "mer"
+   ],
+   "title": {
+    "fr": "Équipage retenu",
+    "en": "Crew held"
+   },
+   "desc": {
+    "fr": "Un navire est détourné au nord du détroit, loin de vos bases.",
+    "en": "A ship is hijacked in the northern strait, far from your bases."
+   },
+   "brief": {
+    "fr": "Le nord du détroit paraît calme. Le plan suppose que votre force spéciale reste disponible et que l’alerte arrive à temps.",
+    "en": "The northern strait seems calm. The plan assumes your special forces stay available and that alerts arrive on time."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "sof",
+    "patrol",
+    "recon"
+   ],
+   "hyp": [
+    "sup.sof",
+    "info.late",
+    "comm.delay",
+    "adv.early"
+   ],
+   "assets": [
+    "L2",
+    "L3",
+    "STAT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "sar": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 490,
+        "y": 249,
+        "r": 52
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize.s",
+       "c": "seize"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "seize",
+     "ship"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    490,
+    249,
+    1.6
+   ],
+   "th": "ml",
+   "req": [
+    "sof"
+   ]
+  },
+  {
+   "id": "m3",
+   "sector": "ml_e",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "mer"
+   ],
+   "title": {
+    "fr": "Terminal à l’arrêt",
+    "en": "Terminal offline"
+   },
+   "desc": {
+    "fr": "Une attaque informatique vise un terminal, puis un câble.",
+    "en": "A cyberattack targets a terminal, then a cable."
+   },
+   "brief": {
+    "fr": "Le terminal des approches tourne à plein régime. Le plan suppose que votre équipe cyber reste disponible.",
+    "en": "The approaches terminal is running at full capacity. The plan assumes your cyber team stays available."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "team",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "comm.c2",
+    "adv.dep",
+    "sup.ana",
+    "comm.delay"
+   ],
+   "assets": [
+    "L4",
+    "L5",
+    "LNG",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 1,
+    "desinfo": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sab",
+       "c": "sabotage"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "LNG"
+    ],
+    [
+     8,
+     "sabotage"
+    ],
+    [
+     13,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    1041,
+    449,
+    1.6
+   ],
+   "th": "ml"
+  },
+  {
+   "id": "m4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Convergence",
+    "en": "Convergence"
+   },
+   "desc": {
+    "fr": "Deux navires fantômes, une rumeur et une attaque informatique.",
+    "en": "Two ghost ships, a rumour and a cyberattack."
+   },
+   "brief": {
+    "fr": "Plusieurs États suivent la même flotte suspecte. Le plan suppose qu’ils partagent ce qu’ils voient.",
+    "en": "Several states are tracking the same suspect fleet. The plan assumes they share what they see."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "info.share",
+    "ally.slow",
+    "adv.cycle",
+    "comm.sat",
+    "adv.dep"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 1,
+    "cyber": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     10,
+     "desinfo"
+    ],
+    [
+     13,
+     "ghost"
+    ],
+    [
+     18,
+     "cyber",
+     "PORT"
+    ]
+   ],
+   "th": "ml"
+  },
+  {
+   "id": "m5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "action",
+    "combat"
+   ],
+   "title": {
+    "fr": "Double détournement",
+    "en": "Double hijacking"
+   },
+   "desc": {
+    "fr": "Deux navires détournés, une seule action spéciale, puis un raid.",
+    "en": "Two hijacked ships, one special action, then a raid."
+   },
+   "brief": {
+    "fr": "Les alertes se succèdent de part et d’autre du détroit. Vous ne pourrez pas tout faire avec la force spéciale.",
+    "en": "Alerts follow one another on both sides of the strait. You will not be able to do everything with special forces."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "sof",
+    "frigate",
+    "recon",
+    "team",
+    "analysis"
+   ],
+   "hyp": [
+    "adv.double",
+    "info.share",
+    "comm.c2",
+    "ally.slow",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "raid": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seize2",
+       "c": "seize",
+       "fail": 2
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "PORT"
+    ],
+    [
+     8,
+     "seize",
+     "ship"
+    ],
+    [
+     11,
+     "seize",
+     "ship"
+    ],
+    [
+     18,
+     "raid"
+    ]
+   ],
+   "th": "ml",
+   "req": [
+    "sof"
+   ],
+   "combat": true
+  },
+  {
+   "id": "c1",
+   "sector": "eu_w",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Réveil au port",
+    "en": "Port wake-up call"
+   },
+   "desc": {
+    "fr": "Le système du port s’arrête, puis une rumeur annonce une pénurie.",
+    "en": "The port system stops, then a rumour announces shortages."
+   },
+   "brief": {
+    "fr": "Le port de Rotterdam fonctionne normalement. Plusieurs alertes de sécurité restent à trier. Le plan suppose que vos sources sont fiables.",
+    "en": "The Port of Rotterdam is operating normally. Several security alerts remain to be sorted. The plan assumes your sources are reliable."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol"
+   ],
+   "hyp": [
+    "info.sources",
+    "comm.delay",
+    "adv.dep",
+    "sup.ana"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "PORT"
+    ],
+    [
+     8,
+     "desinfo"
+    ],
+    [
+     13,
+     "cyber",
+     "STAT"
+    ]
+   ],
+   "cam": [
+    551,
+    439,
+    1.6
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "c2",
+   "sector": "eu_c",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber"
+   ],
+   "title": {
+    "fr": "Panne en chaîne",
+    "en": "Cascading outage"
+   },
+   "desc": {
+    "fr": "Une alerte sur le réseau électrique touche ensuite les données et le commandement.",
+    "en": "An alert on the power grid then affects data and command."
+   },
+   "brief": {
+    "fr": "Le réseau électrique central connaît une pointe de consommation. Le plan suppose que vos communications de commandement resteront disponibles.",
+    "en": "The central power grid is at peak demand. The plan assumes your command communications will stay available."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol"
+   ],
+   "hyp": [
+    "comm.c2",
+    "comm.delay",
+    "adv.dep",
+    "info.late"
+   ],
+   "assets": [
+    "L2",
+    "L3",
+    "PLAT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 2,
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 2
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     6,
+     "jam",
+     "pnt"
+    ],
+    [
+     8,
+     "cyber",
+     "PLAT"
+    ],
+    [
+     13,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    754,
+    445,
+    1.6
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "c3",
+   "sector": "eu_w",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Hôpitaux sous pression",
+    "en": "Hospitals under pressure"
+   },
+   "desc": {
+    "fr": "Les soins sont perturbés. Faut-il isoler le réseau au risque de ralentir les services ?",
+    "en": "Care is disrupted. Should the network be isolated, at the risk of slowing services?"
+   },
+   "brief": {
+    "fr": "Le réseau hospitalier signale des lenteurs. Une fausse alerte reste possible, et une réponse trop lourde pénaliserait les patients.",
+    "en": "The hospital network reports slowdowns. A false alarm remains possible, and too heavy a response would penalise patients."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol"
+   ],
+   "hyp": [
+    "info.sources",
+    "sup.ana",
+    "info.late",
+    "adv.early"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "STAT"
+    ],
+    [
+     6,
+     "desinfo"
+    ],
+    [
+     11,
+     "cyber",
+     "PORT"
+    ]
+   ],
+   "cam": [
+    551,
+    439,
+    1.6
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "c4",
+   "sector": "eu_n",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "mer"
+   ],
+   "title": {
+    "fr": "Baltique connectée",
+    "en": "Connected Baltic"
+   },
+   "desc": {
+    "fr": "Terminal gazier, brouillage et rumeur : s’agit-il d’une seule opération ?",
+    "en": "Gas terminal, jamming and a rumour: is this one operation?"
+   },
+   "brief": {
+    "fr": "Le terminal gazier de la Baltique entre en pleine charge. Le plan suppose que la navigation par satellite reste fiable.",
+    "en": "The Baltic gas terminal is reaching full load. The plan assumes satellite navigation stays reliable."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol"
+   ],
+   "hyp": [
+    "comm.pnt",
+    "comm.sat",
+    "adv.early",
+    "info.sources"
+   ],
+   "assets": [
+    "L4",
+    "L3",
+    "LNG",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 853,
+        "y": 253,
+        "r": 66
+       },
+       "need": 40
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "jam",
+     "sat"
+    ],
+    [
+     5,
+     "cyber",
+     "LNG"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    853,
+    253,
+    1.6
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "c5",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "cyber",
+    "info"
+   ],
+   "title": {
+    "fr": "Scrutin sous pression",
+    "en": "Vote under pressure"
+   },
+   "desc": {
+    "fr": "Pendant un scrutin fictif, rumeurs et alertes se répondent dans plusieurs pays.",
+    "en": "During a fictional vote, rumours and alerts echo across several countries."
+   },
+   "brief": {
+    "fr": "Plusieurs pays fictivement engagés dans un scrutin signalent des campagnes de rumeurs. Vos partenaires attendent une parole commune.",
+    "en": "Several countries holding a fictional vote report rumour campaigns. Your partners expect a common message."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol",
+    "recon"
+   ],
+   "hyp": [
+    "info.share",
+    "info.sources",
+    "ally.slow",
+    "adv.cycle",
+    "comm.c2"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 2,
+    "cyber": 2
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 2
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     8,
+     "cyber",
+     "PLAT"
+    ],
+    [
+     13,
+     "desinfo"
+    ],
+    [
+     18,
+     "cyber",
+     "GRID"
+    ]
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "c6",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "cyber"
+   ],
+   "title": {
+    "fr": "Tempête numérique",
+    "en": "Digital storm"
+   },
+   "desc": {
+    "fr": "Plusieurs secteurs tombent en cascade, et l’équipe cyber ne peut pas tout traiter.",
+    "en": "Several sectors fall in a cascade, and the cyber team cannot handle everything."
+   },
+   "brief": {
+    "fr": "Les alertes montent dans toute l’Europe. L’équipe cyber a un nombre d’opérations limité : il faudra choisir ce qui compte le plus.",
+    "en": "Alerts are rising across Europe. The cyber team has a limited number of operations: you must choose what matters most."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "team",
+    "analysis",
+    "comm",
+    "drone",
+    "patrol",
+    "repair"
+   ],
+   "hyp": [
+    "adv.double",
+    "comm.c2",
+    "info.share",
+    "adv.cycle",
+    "sup.ana"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 3
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber2",
+       "c": "cyber",
+       "n": 2,
+       "fail": 3
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     6,
+     "cyber",
+     "PORT"
+    ],
+    [
+     10,
+     "jam",
+     "pnt"
+    ],
+    [
+     11,
+     "cyber",
+     "C2"
+    ],
+    [
+     14,
+     "desinfo"
+    ],
+    [
+     18,
+     "cyber",
+     "STAT"
+    ]
+   ],
+   "th": "eu"
+  },
+  {
+   "id": "f1",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Voie fermée ?",
+    "en": "Lane closed?"
+   },
+   "desc": {
+    "fr": "Une simple annonce de mines peut bloquer une route commerciale.",
+    "en": "A mere mine announcement can block a commercial route."
+   },
+   "brief": {
+    "fr": "Une annonce anonyme évoque des mines en mer du Nord. Le plan suppose que le renseignement peut trancher à temps.",
+    "en": "An anonymous announcement mentions mines in the North Sea. The plan assumes intelligence can settle the matter in time."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "recon",
+    "repair",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "info.sources",
+    "adv.dep",
+    "comm.delay"
+   ],
+   "assets": [
+    "L5",
+    "L1",
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "mine": 1,
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 665,
+        "r": 62
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.mine",
+       "c": "mine"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "mine"
+    ],
+    [
+     10,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ],
+   "th": "natl"
+  },
+  {
+   "id": "f2",
+   "sector": "shet",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Le fond des mers",
+    "en": "The seabed"
+   },
+   "desc": {
+    "fr": "Une présence près d’un câble : sonde civile, reconnaissance ou préparation ?",
+    "en": "A presence near a cable: civil survey, reconnaissance or preparation?"
+   },
+   "brief": {
+    "fr": "Les fonds marins deviennent un espace de rivalité. Le plan suppose que vos unités peuvent inspecter sans provoquer d’incident.",
+    "en": "The seabed is becoming a space of rivalry. The plan assumes your units can inspect without causing an incident."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "repair",
+    "drone"
+   ],
+   "hyp": [
+    "sup.naval",
+    "adv.dep",
+    "info.late",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "seabed": 1,
+    "sabotage": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 592,
+        "r": 58
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seabed",
+       "c": "seabed"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sab",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "seabed"
+    ],
+    [
+     11,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    700,
+    590,
+    1.6
+   ],
+   "th": "natl"
+  },
+  {
+   "id": "f3",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "info"
+   ],
+   "title": {
+    "fr": "Le miroir",
+    "en": "The mirror"
+   },
+   "desc": {
+    "fr": "Chaque mesure défensive peut être lue comme une menace.",
+    "en": "Every defensive measure can be read as a threat."
+   },
+   "brief": {
+    "fr": "Les deux camps renforcent leurs moyens en se disant défensifs. Le plan suppose que vos signaux seront compris comme vous les envoyez.",
+    "en": "Both sides are reinforcing while calling it defensive. The plan assumes your signals will be understood as you send them."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "team",
+    "patrol",
+    "comm"
+   ],
+   "hyp": [
+    "adv.cycle",
+    "ally.slow",
+    "info.share",
+    "adv.early",
+    "comm.c2"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "mirror": 1,
+    "cyber": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.air",
+       "c": "incursion"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.raid",
+       "c": "raid"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     5,
+     "mirror"
+    ],
+    [
+     10,
+     "incursion"
+    ],
+    [
+     13,
+     "mirror"
+    ],
+    [
+     18,
+     "raid"
+    ]
+   ],
+   "th": "natl",
+   "combat": true
+  },
+  {
+   "id": "f4",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "combat",
+    "essaim"
+   ],
+   "title": {
+    "fr": "Bouclier saturé",
+    "en": "Saturated shield"
+   },
+   "desc": {
+    "fr": "La défense ne couvrira pas tout : quels sites protéger en priorité ?",
+    "en": "Defences will not cover everything: which sites come first?"
+   },
+   "brief": {
+    "fr": "Le plan compte sur une défense étendue. Elle reste limitée, et les attaques peuvent la saturer avant d’atteindre leur but.",
+    "en": "The plan relies on a wide defence. It remains limited, and attacks may saturate it before reaching their target."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "recon",
+    "repair",
+    "analysis"
+   ],
+   "hyp": [
+    "sup.weap",
+    "adv.double",
+    "comm.pnt",
+    "ally.slow",
+    "adv.weap"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "cs55",
+    "fewLost",
+    "infra70"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.salvo",
+       "c": "salvo"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "swarm"
+    ],
+    [
+     10,
+     "salvo"
+    ],
+    [
+     16,
+     "desinfo"
+    ]
+   ],
+   "th": "natl",
+   "combat": true
+  },
+  {
+   "id": "f5",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "info",
+    "infra"
+   ],
+   "title": {
+    "fr": "L’arrière tient-il ?",
+    "en": "Will the rear hold?"
+   },
+   "desc": {
+    "fr": "Loin du front, le réseau, le dépôt et la confiance du public peuvent céder ensemble.",
+    "en": "Far from the front, the grid, the depot and public trust can give way together."
+   },
+   "brief": {
+    "fr": "Coupures, rumeurs et sabotage possible pèsent sur l’arrière. Le plan suppose que vos réserves et vos analystes tiendront tout l’exercice.",
+    "en": "Outages, rumours and possible sabotage weigh on the rear. The plan assumes your reserves and analysts will last the whole exercise."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "repair",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "sup.fuel",
+    "sup.ana",
+    "info.late",
+    "adv.cycle"
+   ],
+   "assets": [
+    "L5",
+    "L1",
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 1,
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.sab",
+       "c": "sabotage"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "cyber",
+     "GRID"
+    ],
+    [
+     8,
+     "desinfo"
+    ],
+    [
+     11,
+     "sabotage"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ],
+   "th": "natl"
+  },
+  {
+   "id": "n1",
+   "sector": "nsea",
+   "mode": "local",
+   "diff": 1,
+   "tags": [
+    "info",
+    "sanscable",
+    "mer"
+   ],
+   "title": {
+    "fr": "Les quais d’abord",
+    "en": "The docks first"
+   },
+   "desc": {
+    "fr": "Aucune liaison sous-marine ici : tout se joue autour du port et du réseau.",
+    "en": "No subsea link here: everything turns on the port and the grid."
+   },
+   "brief": {
+    "fr": "Aucune liaison sous-marine n’entre en jeu dans cet exercice. Le port et le réseau reprennent après une alerte, et le plan suppose que vos sources tiendront.",
+    "en": "No subsea link is involved in this exercise. The port and the grid are resuming after an alert, and the plan assumes your sources will hold."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "comm.delay",
+    "adv.dep",
+    "sup.ana"
+   ],
+   "assets": [
+    "GRID",
+    "PORT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "cyber": 1,
+    "desinfo": 1,
+    "site": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 715,
+        "y": 665,
+        "r": 62
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "cyber",
+     "GRID"
+    ],
+    [
+     11,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    710,
+    670,
+    1.6
+   ],
+   "th": "natl"
+  },
+  {
+   "id": "n2",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "sanscable",
+    "info"
+   ],
+   "title": {
+    "fr": "Haute mer sans fil",
+    "en": "Open sea, no wire"
+   },
+   "desc": {
+    "fr": "Plateformes, stations et terminal : la menace vise la surface, pas le fond.",
+    "en": "Platforms, stations and terminal: the threat is on the surface, not the seabed."
+   },
+   "brief": {
+    "fr": "Aucun câble dans ce scénario fictif : les sites isolés dépendent de vos patrouilles et de la confiance du public.",
+    "en": "No cable in this fictional scenario: isolated sites depend on your patrols and on public trust."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "recon",
+    "team",
+    "patrol",
+    "comm"
+   ],
+   "hyp": [
+    "ally.slow",
+    "info.share",
+    "adv.cycle",
+    "sup.naval",
+    "comm.sat"
+   ],
+   "assets": [
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "site": 1,
+    "desinfo": 1,
+    "cyber": 1,
+    "sar": 1,
+    "mine": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "site"
+    ],
+    [
+     11,
+     "ghost"
+    ],
+    [
+     18,
+     "cyber",
+     "STAT"
+    ]
+   ],
+   "th": "natl"
+  },
+  {
+   "id": "g7",
+   "sector": "gn_c",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "sanscable"
+   ],
+   "title": {
+    "fr": "Rade de Lagos",
+    "en": "Lagos roadstead"
+   },
+   "desc": {
+    "fr": "Un mouillage encombré, des rumeurs et un navire suspect, sans liaison à défendre.",
+    "en": "A crowded anchorage, rumours and a suspect ship, with no link to defend."
+   },
+   "brief": {
+    "fr": "Le mouillage est saturé. Le plan suppose que le trafic se déclare correctement, et aucun câble n’est en jeu.",
+    "en": "The anchorage is saturated. The plan assumes traffic declares itself correctly, and no cable is at stake."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "adv.dep",
+    "comm.delay",
+    "sup.naval"
+   ],
+   "assets": [
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 1,
+    "desinfo": 1,
+    "sar": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 835,
+        "y": 441,
+        "r": 66
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "ghost"
+    ],
+    [
+     11,
+     "desinfo"
+    ]
+   ],
+   "cam": [
+    835,
+    441,
+    1.6
+   ],
+   "th": "gn"
+  },
+  {
+   "id": "a7",
+   "sector": "ad_b",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "sanscable"
+   ],
+   "title": {
+    "fr": "Convoi de surface",
+    "en": "Surface traffic"
+   },
+   "desc": {
+    "fr": "Le détroit reste ouvert grâce aux patrouilles, sans enjeu de câble.",
+    "en": "The strait stays open through patrols, with no cable at stake."
+   },
+   "brief": {
+    "fr": "Aucun câble n’est considéré dans cet exercice. Le plan suppose que les annonces en mer sont fiables.",
+    "en": "No cable is considered in this exercise. The plan assumes announcements at sea are reliable."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "adv.early",
+    "comm.delay",
+    "sup.fuel"
+   ],
+   "assets": [
+    "PORT",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "mine": 1,
+    "ghost": 1,
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 706,
+        "y": 640,
+        "r": 46
+       },
+       "need": 40
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.mine",
+       "c": "mine"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     5,
+     "mine"
+    ],
+    [
+     11,
+     "ghost"
+    ]
+   ],
+   "cam": [
+    706,
+    640,
+    1.6
+   ],
+   "th": "ad"
+  },
+  {
+   "id": "e7",
+   "sector": "em_c",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "info",
+    "sanscable"
+   ],
+   "title": {
+    "fr": "Gaz et rumeurs",
+    "en": "Gas and rumours"
+   },
+   "desc": {
+    "fr": "La rumeur et l’intrusion visent les sites gaziers, pas le fond de la mer.",
+    "en": "Rumour and intrusion target the gas sites, not the seabed."
+   },
+   "brief": {
+    "fr": "Ce scénario fictif laisse les câbles de côté. Le plan suppose que les opérateurs partagent leurs données.",
+    "en": "This fictional scenario leaves cables aside. The plan assumes operators share their data."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "patrol",
+    "team",
+    "comm"
+   ],
+   "hyp": [
+    "info.share",
+    "sup.ana",
+    "adv.dep",
+    "comm.c2"
+   ],
+   "assets": [
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "site": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     8,
+     "cyber"
+    ],
+    [
+     13,
+     "site"
+    ]
+   ],
+   "cam": [
+    765,
+    490,
+    1.6
+   ],
+   "th": "em"
+  },
+  {
+   "id": "m7",
+   "sector": "ml_s",
+   "mode": "local",
+   "diff": 3,
+   "tags": [
+    "mer",
+    "sanscable"
+   ],
+   "title": {
+    "fr": "Le détroit encombré",
+    "en": "The crowded strait"
+   },
+   "desc": {
+    "fr": "Un trafic dense, des contacts muets et des fausses alertes, sans liaison à protéger.",
+    "en": "Dense traffic, silent contacts and false alarms, with no link to protect."
+   },
+   "brief": {
+    "fr": "Le plan suppose que chaque contact muet sera vite identifié. Aucun câble n’est en jeu.",
+    "en": "The plan assumes each silent contact will soon be identified. No cable is at stake."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "adv.double",
+    "sup.naval",
+    "comm.pnt"
+   ],
+   "assets": [
+    "PORT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "ghost": 2,
+    "desinfo": 1,
+    "sar": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.site",
+       "c": "site"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 757,
+        "y": 516,
+        "r": 66
+       },
+       "need": 40
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "ghost"
+    ],
+    [
+     10,
+     "site"
+    ]
+   ],
+   "cam": [
+    757,
+    516,
+    1.6
+   ],
+   "th": "ml"
+  },
+  {
+   "id": "g6",
+   "sector": "gn_c",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "info",
+    "mer"
+   ],
+   "title": {
+    "fr": "Partir à temps",
+    "en": "Leaving in time"
+   },
+   "desc": {
+    "fr": "Évacuer trop tôt inquiète, évacuer trop tard devient dangereux.",
+    "en": "Evacuating too early causes alarm, too late becomes dangerous."
+   },
+   "brief": {
+    "fr": "La situation se dégrade près du port. L’État hôte veut éviter tout signal alarmiste, et vos ressortissants attendent une consigne.",
+    "en": "The situation is deteriorating near the port. The host state wants to avoid any alarmist signal, and your nationals await instructions."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "drone",
+    "comm"
+   ],
+   "hyp": [
+    "info.late",
+    "ally.slow",
+    "comm.delay",
+    "info.sources"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "PLAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "evac": 1,
+    "mine": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.evac",
+       "c": "evac"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.patrol",
+       "zone": {
+        "x": 835,
+        "y": 441,
+        "r": 66
+       },
+       "need": 32
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "evac",
+     "PORT"
+    ]
+   ],
+   "cam": [
+    835,
+    441,
+    1.6
+   ],
+   "th": "gn"
+  },
+  {
+   "id": "e6",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "info",
+    "action"
+   ],
+   "title": {
+    "fr": "Évacuation sous regard",
+    "en": "Evacuation under watch"
+   },
+   "desc": {
+    "fr": "Chaque partenaire suit l’évacuation, et une rumeur peut tout compliquer.",
+    "en": "Every partner is watching the evacuation, and a rumour may complicate everything."
+   },
+   "brief": {
+    "fr": "Des ressortissants attendent à Limassol, dans un scénario fictif. L’accord de l’État hôte reste indispensable pour une évacuation navale.",
+    "en": "Nationals are waiting in Limassol, in a fictional scenario. The host state’s agreement remains vital for a naval evacuation."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "sof",
+    "recon",
+    "comm",
+    "analysis"
+   ],
+   "hyp": [
+    "ally.slow",
+    "info.share",
+    "sup.sof",
+    "adv.dep",
+    "comm.delay"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "desinfo": 1,
+    "cyber": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.evac",
+       "c": "evac"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.cyber",
+       "c": "cyber"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     8,
+     "evac",
+     "PORT"
+    ],
+    [
+     16,
+     "cyber",
+     "GRID"
+    ]
+   ],
+   "th": "em"
+  },
+  {
+   "id": "a6",
+   "sector": "ad_b",
+   "mode": "local",
+   "diff": 2,
+   "tags": [
+    "mer",
+    "info"
+   ],
+   "title": {
+    "fr": "Le détroit et l’annonce",
+    "en": "The strait and the announcement"
+   },
+   "desc": {
+    "fr": "Fermer le détroit sur une rumeur, ou risquer un navire ?",
+    "en": "Close the strait on a rumour, or risk a ship?"
+   },
+   "brief": {
+    "fr": "Une annonce de mines circule à Bab-el-Mandeb. Le trafic commercial attend une décision. Le plan suppose que vos sources sont solides.",
+    "en": "A mine announcement is circulating at Bab-el-Mandeb. Commercial traffic awaits a decision. The plan assumes your sources are sound."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "recon",
+    "comm"
+   ],
+   "hyp": [
+    "info.sources",
+    "adv.early",
+    "comm.delay",
+    "sup.naval"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "STAT"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "mine": 1,
+    "desinfo": 1,
+    "ghost": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.mine",
+       "c": "mine"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.ghost",
+       "c": "ghost"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "desinfo"
+    ],
+    [
+     6,
+     "mine"
+    ],
+    [
+     11,
+     "ghost"
+    ]
+   ],
+   "cam": [
+    706,
+    640,
+    1.6
+   ],
+   "th": "ad"
+  },
+  {
+   "id": "m6",
+   "sector": "ml_s",
+   "mode": "local",
+   "diff": 3,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Sous le détroit",
+    "en": "Beneath the strait"
+   },
+   "desc": {
+    "fr": "Trafic dense, câbles vulnérables et annonce de mines en même temps.",
+    "en": "Dense traffic, vulnerable cables and a mine announcement all at once."
+   },
+   "brief": {
+    "fr": "Le sud du détroit concentre câbles et trafic. Le plan suppose que vous aurez une unité disponible pour chaque alerte.",
+    "en": "The southern strait concentrates cables and traffic. The plan assumes you will have a unit available for each alert."
+   },
+   "turns": 16,
+   "budget": 40,
+   "rec": [
+    "frigate",
+    "repair",
+    "drone"
+   ],
+   "hyp": [
+    "sup.naval",
+    "adv.double",
+    "info.late",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "PORT",
+    "GRID"
+   ],
+   "maxA": 2,
+   "dyn": 0.25,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "mine": 1,
+    "seabed": 1,
+    "ghost": 1
+   },
+   "phases": [
+    {
+     "until": 5,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.seabed",
+       "c": "seabed"
+      }
+     ]
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.mine",
+       "c": "mine"
+      }
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 757,
+        "y": 516,
+        "r": 66
+       },
+       "need": 40
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "seabed"
+    ],
+    [
+     8,
+     "mine"
+    ]
+   ],
+   "cam": [
+    757,
+    516,
+    1.6
+   ],
+   "th": "ml"
+  }
+ ],
+ "assumptions": [
+  {
+   "id": "info.sources",
+   "family": "info",
+   "plan": {
+    "fr": "Les sources de renseignement sont fiables.",
+    "en": "Intelligence sources are reliable."
+   },
+   "changed": {
+    "fr": "Une source clé est compromise : davantage de fausses alertes et de preuves faibles.",
+    "en": "A key source is compromised: more false alerts and weaker evidence."
+   }
+  },
+  {
+   "id": "info.late",
+   "family": "info",
+   "plan": {
+    "fr": "Le renseignement préviendra un tour à l’avance.",
+    "en": "Intelligence will give one turn of warning."
+   },
+   "changed": {
+    "fr": "Les alertes n’arrivent plus à temps : les crises surgissent sans préavis.",
+    "en": "Alerts no longer arrive in time: crises break out without warning."
+   }
+  },
+  {
+   "id": "info.share",
+   "family": "info",
+   "plan": {
+    "fr": "Les partenaires partagent leurs données.",
+    "en": "Partners share their data."
+   },
+   "changed": {
+    "fr": "Le partage de données est suspendu : plus de preuve venant d’un partenaire.",
+    "en": "Data sharing is suspended: no more partner evidence."
+   }
+  },
+  {
+   "id": "comm.delay",
+   "family": "comm",
+   "plan": {
+    "fr": "Les ordres sont transmis sans délai.",
+    "en": "Orders are transmitted without delay."
+   },
+   "changed": {
+    "fr": "Réseau saturé : chaque ordre de mouvement part avec du retard.",
+    "en": "Network saturated: every movement order leaves late."
+   }
+  },
+  {
+   "id": "comm.sat",
+   "family": "comm",
+   "plan": {
+    "fr": "Le satellite est disponible.",
+    "en": "The satellite is available."
+   },
+   "changed": {
+    "fr": "Le service satellite est dégradé dès le départ.",
+    "en": "The satellite service is degraded from the start."
+   }
+  },
+  {
+   "id": "comm.pnt",
+   "family": "comm",
+   "plan": {
+    "fr": "Le temps et la position sont fiables.",
+    "en": "Time and position are reliable."
+   },
+   "changed": {
+    "fr": "Le temps et la position sont douteux dès le départ.",
+    "en": "Time and position are doubtful from the start."
+   }
+  },
+  {
+   "id": "comm.c2",
+   "family": "comm",
+   "plan": {
+    "fr": "Le réseau de commandement est sûr.",
+    "en": "The command network is secure."
+   },
+   "changed": {
+    "fr": "Le réseau de commandement est coupé pour trois tours.",
+    "en": "The command network is down for three turns."
+   }
+  },
+  {
+   "id": "ally.slow",
+   "family": "ally",
+   "plan": {
+    "fr": "Les autorisations sont rapides.",
+    "en": "Authorisations are quick."
+   },
+   "changed": {
+    "fr": "La chaîne d’autorisation s’allonge : tout prend trois fois plus de temps.",
+    "en": "The authorisation chain grows longer: everything takes three times as long."
+   }
+  },
+  {
+   "id": "ally.none",
+   "family": "ally",
+   "plan": {
+    "fr": "Un renfort allié reste possible.",
+    "en": "Allied reinforcement remains possible."
+   },
+   "changed": {
+    "fr": "Un allié retire son soutien : aucun renfort ne viendra.",
+    "en": "An ally withdraws its support: no reinforcement will come."
+   }
+  },
+  {
+   "id": "sup.naval",
+   "family": "sup",
+   "plan": {
+    "fr": "Toutes vos unités navales sont prêtes.",
+    "en": "All your naval units are ready."
+   },
+   "changed": {
+    "fr": "Une unité navale est en avarie pendant trois tours.",
+    "en": "One naval unit is out of action for three turns."
+   }
+  },
+  {
+   "id": "sup.air",
+   "family": "sup",
+   "plan": {
+    "fr": "Vos appareils sont prêts.",
+    "en": "Your aircraft are ready."
+   },
+   "changed": {
+    "fr": "Un appareil est cloué au sol pendant trois tours.",
+    "en": "One aircraft is grounded for three turns."
+   }
+  },
+  {
+   "id": "sup.fuel",
+   "family": "sup",
+   "plan": {
+    "fr": "Carburant et bouées sont à pleine dotation.",
+    "en": "Fuel and buoys are at full allocation."
+   },
+   "changed": {
+    "fr": "Dépôts insuffisants : autonomie et bouées réduites.",
+    "en": "Depots fall short: endurance and buoys reduced."
+   }
+  },
+  {
+   "id": "sup.sof",
+   "family": "sup",
+   "plan": {
+    "fr": "La force spéciale dispose de tous ses moyens.",
+    "en": "Special forces have all their assets."
+   },
+   "changed": {
+    "fr": "La force spéciale perd un emploi.",
+    "en": "Special forces lose one use."
+   }
+  },
+  {
+   "id": "sup.ana",
+   "family": "sup",
+   "plan": {
+    "fr": "Les analyses sont traitées rapidement.",
+    "en": "Analyses are processed quickly."
+   },
+   "changed": {
+    "fr": "Cellule d’analyse saturée : chaque preuve prend bien plus de temps.",
+    "en": "Analysis cell saturated: each item of evidence takes far longer."
+   }
+  },
+  {
+   "id": "adv.early",
+   "family": "adv",
+   "plan": {
+    "fr": "Rouge suit le calendrier attendu.",
+    "en": "Red follows the expected timetable."
+   },
+   "changed": {
+    "fr": "Rouge a avancé son calendrier d’un tour.",
+    "en": "Red has moved its timetable forward by one turn."
+   }
+  },
+  {
+   "id": "adv.double",
+   "family": "adv",
+   "plan": {
+    "fr": "La menace reste isolée.",
+    "en": "The threat remains isolated."
+   },
+   "changed": {
+    "fr": "Ce n’est pas un incident isolé : deux menaces supplémentaires sont en route.",
+    "en": "This is no isolated incident: two additional threats are on their way."
+   }
+  },
+  {
+   "id": "adv.cycle",
+   "family": "adv",
+   "plan": {
+    "fr": "Vous disposez des délais habituels.",
+    "en": "You have the usual time."
+   },
+   "changed": {
+    "fr": "Rouge vise votre cycle de décision : tous les délais sont réduits d’un tiers.",
+    "en": "Red targets your decision cycle: all deadlines are cut by a third."
+   }
+  },
+  {
+   "id": "adv.dep",
+   "family": "adv",
+   "plan": {
+    "fr": "Rouge se trahit par ses émissions.",
+    "en": "Red gives itself away through its emissions."
+   },
+   "changed": {
+    "fr": "Rouge a changé ses habitudes : ses navires émettent deux fois moins.",
+    "en": "Red has changed its habits: its ships transmit half as often."
+   }
+  },
+  {
+   "id": "mis.zone",
+   "family": "mis",
+   "plan": {
+    "fr": "La zone de patrouille reste celle du plan.",
+    "en": "The patrol area remains as planned."
+   },
+   "changed": {
+    "fr": "La zone de patrouille a été déplacée depuis le briefing.",
+    "en": "The patrol area has moved since the briefing."
+   }
+  },
+  {
+   "id": "mis.extra",
+   "family": "mis",
+   "plan": {
+    "fr": "La mission se limite à l’ordre reçu.",
+    "en": "The mission is limited to the order received."
+   },
+   "changed": {
+    "fr": "Tâche supplémentaire : répondre à une rumeur qui enfle.",
+    "en": "Additional task: respond to a growing rumour."
+   }
+  },
+  {
+   "id": "sup.weap",
+   "family": "sup",
+   "plan": {
+    "fr": "Les stocks d’armes sont pleins.",
+    "en": "Weapon stocks are full."
+   },
+   "changed": {
+    "fr": "Stocks insuffisants : missiles et défense réduits de moitié.",
+    "en": "Stocks fall short: missiles and defence cut by half."
+   }
+  },
+  {
+   "id": "adv.weap",
+   "family": "adv",
+   "plan": {
+    "fr": "Vos systèmes de combat sont fiables.",
+    "en": "Your combat systems are reliable."
+   },
+   "changed": {
+    "fr": "Un système de combat est compromis pendant trois tours : armes moins fiables.",
+    "en": "A combat system is compromised for three turns: weapons less reliable."
+   }
+  },
+  {
+   "id": "pos.ally",
+   "family": "bonus",
+   "plan": {
+    "fr": "",
+    "en": ""
+   },
+   "changed": {
+    "fr": "Bonne nouvelle : un patrouilleur allié est disponible plus tôt que prévu.",
+    "en": "Good news: an allied patrol vessel is available earlier than planned."
+   }
+  },
+  {
+   "id": "pos.token",
+   "family": "bonus",
+   "plan": {
+    "fr": "",
+    "en": ""
+   },
+   "changed": {
+    "fr": "Bonne nouvelle : la cellule de crise est renforcée, un jeton de plus au tour 1.",
+    "en": "Good news: the crisis cell is reinforced, one extra token on turn 1."
+   }
+  },
+  {
+   "id": "pos.calm",
+   "family": "bonus",
+   "plan": {
+    "fr": "",
+    "en": ""
+   },
+   "changed": {
+    "fr": "Bonne nouvelle : le théâtre est plus calme que prévu, moins d’aléas.",
+    "en": "Good news: the theatre is calmer than expected, fewer incidents."
+   }
+  }
+ ]
+}

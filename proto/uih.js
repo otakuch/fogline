@@ -1,0 +1,13 @@
+const { chromium } = require('playwright');
+(async()=>{const b=await chromium.launch();const errs=[];
+const open=async(o)=>{const c=await b.newContext(o);const p=await c.newPage();p.on('pageerror',e=>errs.push(e.message));await p.goto('file://'+__dirname+'/t.html');await p.waitForTimeout(1500);return p};
+const p=await open({viewport:{width:1440,height:860},locale:'fr-FR'});await p.screenshot({path:__dirname+'/h_fr.png'});
+await p.click('[data-a=howto]');await p.waitForTimeout(150);await p.screenshot({path:__dirname+'/h_how.png'});await p.click('[data-a=home]');await p.waitForTimeout(300);
+await p.click('[data-a=lang][data-v=en]');await p.waitForTimeout(800);await p.click('.hs [data-a=legend]');await p.waitForTimeout(150);await p.click('[data-a=legclose]');await p.waitForTimeout(150);
+await p.click('[data-a=play]');await p.click('.card[data-a=theatre][data-v=natl]');await p.waitForTimeout(200);await p.screenshot({path:__dirname+'/h_cat.png'});await p.click('.dlg [data-a=play]');await p.click('[data-a=home]');await p.waitForTimeout(500);
+await p.click('[data-a=play]');await p.click('.card[data-a=theatre][data-v=natl]');await p.click('[data-a=sc][data-v=la]');await p.click('[data-a=todeck]');await p.click('[data-a=tobrief]');await p.click('[data-a=begin]');await p.waitForTimeout(250);await p.click('[data-a=ack]');await p.waitForTimeout(500);
+console.log('jeu',await p.evaluate(()=>({home:document.body.classList.contains('home'),turn:__S.s.turn,hud:getComputedStyle(document.getElementById('hud')).display,run:__S.s.running})));await p.screenshot({path:__dirname+'/h_game.png'});
+await p.evaluate(()=>{const S=__S.s;let i=0;while(!S.over&&i++<6000)__S.step(.1)});await p.waitForTimeout(300);await p.click('[data-a=home]');await p.waitForTimeout(900);await p.screenshot({path:__dirname+'/h_after.png'});
+const m=await open({viewport:{width:390,height:844},hasTouch:true,isMobile:true,locale:'fr-FR'});console.log('mob',await m.evaluate(()=>[document.documentElement.scrollWidth,innerWidth]));await m.screenshot({path:__dirname+'/h_m.png'});
+const w=await open({viewport:{width:1920,height:1080},locale:'en-US'});await w.screenshot({path:__dirname+'/h_w.png'});
+console.log('manq',await p.evaluate(()=>__S.missing()),await m.evaluate(()=>__S.missing()),'errs',errs);await b.close()})();

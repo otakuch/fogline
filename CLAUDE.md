@@ -54,6 +54,7 @@ seuil-projet/
     ├── src.html            source du jeu : textes, moteur, rendu, interface
     ├── th/                 données des théâtres, `vec.json` (côtes vectorielles) et `vec.mjs` qui le génère
     ├── vendor/             MapLibre GL JS 4.7.1 (BSD-3) et three.js r159 (MIT), intégrés à la page
+    ├── son-pack.json       sons de la salle en mp3 base64, avec `docs/third-party/SOUND-CREDITS.md`
     ├── gen_db.py           définition éditable des scénarios et des hypothèses
     ├── scenarios.json      base générée par gen_db.py
     ├── milsymbol.js        bibliothèque de symboles APP-6
@@ -86,7 +87,7 @@ python3 gen_db.py   # seulement si gen_db.py a changé
 python3 build.py
 ```
 
-`build.py` remplace dans `src.html` les marqueurs `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__` et `__GEO__`. Ne modifie jamais `seuil-prototype.html` ni `scenarios.json` à la main : ils seraient écrasés.
+`build.py` remplace dans `src.html` les marqueurs `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__` et `__GEO__`. Ne modifie jamais `seuil-prototype.html` ni `scenarios.json` à la main : ils seraient écrasés.
 
 **Prérequis :** Python 3, Node.js et Playwright avec Chromium.
 
@@ -313,6 +314,15 @@ Inspiration, d'après des sources écrites seulement : DEFCON (carte vectorielle
 - **Missions sans câble :** tag `sanscable`, `n1`, `n2`, `g7`, `a7`, `e7`, `m7`. Sans câble, `sabotage` et `seabed` deviennent `ghost`, et `anchorPt` remplace les tirages sur les câbles.
 - **Lecture retenue :** « ne pas utiliser les câbles » est lu comme « des missions qui n'en dépendent pas ». Autre lecture possible, à confirmer : une consigne interdisant au joueur d'utiliser ces liaisons.
 
+### 5.13 octies Son
+
+Fond de salle en 3 boucles (`room`, `srv`, `ops`), mixé selon l'état : accueil, briefing, partie, pause, bilan. La charge sonore vaut `0,55 × crises ouvertes / 3 + 0,45 × tension / 4,2` et ne lit jamais `truth`. Le bouton a trois états : ambiance, effets seuls, coupé (`seuil.snd`, `sndCycle`, `sndKey`).
+
+- **Crises :** `sub` et `seabed` sonar, `jam` parasite et souffle, `cyber` accroc, `desinfo` téléscripteur, `sar`, `evac` et `mine` radio, `alarm` réglage radio. Compte à rebours : `tick`, `tick2`.
+- **Garde-fous :** aucun bruit d'arme ni d'explosion. Les bruits passent par `Math.random`, jamais par `R()`. Le son ne porte aucune information exclusive.
+- **Test :** `uia.js` contrôle le chargement, les modes et les événements, pas la qualité à l'oreille.
+- **Avant diffusion :** confirmer sur Freesound les licences de kyles 452454, thaighaudio 349689, dergraph 832122 et cloyen 800349.
+
 ### 5.14 Théâtres
 
 Six théâtres (`TH_ORDER`) : Atlantique Nord (`natl`), Europe (`eu`), golfe de Guinée (`gn`), golfe d'Aden et mer Rouge (`ad`), Méditerranée orientale (`em`), détroit de Malacca (`ml`). `useTheatre(id)` change carte, masque, sites, câbles, secteurs, trafic et partenaires. Hors Atlantique Nord, les partenaires sont désignés par leur rôle. Les données sont dans `proto/th/theatres.json`, les cartes dans `proto/th/`. Géographie réelle, événements fictifs, aucun conflit réel ni groupe nommé.
@@ -476,7 +486,7 @@ Vérifie ces points avant de chercher ailleurs :
 
 - Publie toujours `proto/seuil-prototype.html` sur le même artifact : https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7. Depuis une autre conversation, lis-le d'abord avec l'action de lecture, puis publie avec son URL.
 - Ne publie pas si un test obligatoire échoue ou si un texte manque.
-- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google.
+- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 6,3 Mo.
 - Après publication, résume le changement en une phrase. Le lien apparaît déjà dans la carte.
 - L'artifact est privé tant que Naully ne le partage pas.
 

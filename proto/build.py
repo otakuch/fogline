@@ -7,6 +7,7 @@ for k, v in th.items():
     if k.startswith('__'): continue
     v['img'] = 'data:image/jpeg;base64,' + base64.b64encode(open(d + '/th/' + k + '.jpg', 'rb').read()).decode()
 s = s.replace('__TH__', json.dumps(th, ensure_ascii=False)).replace('__WORLD__', 'data:image/jpeg;base64,' + base64.b64encode(open(d + '/th/world.jpg', 'rb').read()).decode())
+s = s.replace('__SND__', open(d + '/son-pack.json', encoding='utf-8').read())
 s = s.replace('__MILSYMBOL__', open(d + '/milsymbol.js', encoding='utf-8').read())
 s = s.replace('__VEC__', open(d + '/th/vec.json', encoding='utf-8').read())
 s = s.replace('__MAPLIBRE__', open(d + '/vendor/maplibre-gl.js', encoding='utf-8').read().replace('</script', '<\\/script'))

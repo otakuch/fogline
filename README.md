@@ -12,7 +12,7 @@ Open `index.html` in a recent browser. No install or server is needed. Internet 
 
 To publish it, enable GitHub Pages on the `main` branch, root folder.
 
-Demo videos: [English](docs/video/fogline-demo-en.mp4) and [French](docs/video/seuil-demo-fr.mp4). The demo is scripted and some sequences are accelerated.
+Demo videos: [English](docs/video/fogline-demo-en.mp4) and [French](docs/video/seuil-demo-fr.mp4). The demo is scripted and some sequences are accelerated. It was recorded before the current sound design.
 
 ## The game
 
@@ -78,6 +78,7 @@ node uim.js                                    # phone-width screens
 - [three.js](https://threejs.org/), MIT: globe
 - [Natural Earth](https://www.naturalearthdata.com/), public domain, through [world-atlas](https://github.com/topojson/world-atlas): map data
 - IBM Plex and Saira, loaded from Google Fonts
+- Sound: CC0-declared recordings from Freesound and other sources, listed in `docs/third-party/SOUND-CREDITS.md`. Some licences still need confirming before wider distribution
 
 Licences are in `docs/third-party/`. The licence for this project's own code and content has not been chosen yet, so all rights are reserved until one is added.
 

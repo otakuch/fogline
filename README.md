@@ -1,60 +1,94 @@
-# FOGLINE (SEUIL)
+# FOGLINE (SEUIL in French)
 
-A real-time strategy serious game about deciding under uncertainty. You command a small force through fictional crises on real maps: verify, decide before the countdown ends, keep your options open and control escalation.
+A real-time strategy serious game for learning to decide under uncertainty. You command a small force through fictional crises on real maps: verify first, then decide before the countdown ends.
 
-**Status: playable prototype, looking for beta testers.** The game has mostly been tested by scripts so far, so human feedback on gameplay is what it needs most.
+**Fictional exercise. Prototype.** Events, actors and game values are invented. There are no nuclear weapons and no strikes on cities.
 
-*[Version française plus bas.](#version-française)*
+![Home screen with a globe of the six theatres](docs/screenshots/01-home.png)
 
 ## Play
 
-Open `index.html` in a recent browser, or enable GitHub Pages on this repository (Settings > Pages > Deploy from a branch > `main` / root). The whole game is in that one file. It needs no build and no server. Only the fonts load from the network.
+Open `index.html` in a recent browser. No install or server is needed. Internet access only loads the web fonts.
 
-## At a glance
+To publish it, enable GitHub Pages on the `main` branch, root folder.
 
-- Six regions and 74 missions, in English and French
-- Missions of about 8 to 11 minutes at normal speed
-- Easy (90 s per decision) or Hard (30 s), Simple or Full command level
-- False alarms, changing plan assumptions and a debrief that reveals the truth
-- No nuclear weapons and no strikes on cities
+Demo videos: [English](docs/video/fogline-demo-en.mp4) and [French](docs/video/seuil-demo-fr.mp4). The demo is scripted and some sequences are accelerated.
 
-## Feedback wanted
+## The game
 
-Please open an issue about anything that felt unclear, unfair or dull. The most useful questions: what did you do in your first five minutes? Did the pacing hold up? Were the 30-second decisions tense or just unfair? Did the map stay readable?
+- **Six theatres:** North Atlantic, continental Europe, Gulf of Guinea, Gulf of Aden and Red Sea, Eastern Mediterranean, Strait of Malacca
+- **74 missions and a tutorial**, in English and French, including missions with no subsea cables
+- **8 to 11 minutes** per mission at normal speed
+- **Two decision clocks:** 90 s on Easy, 30 s on Hard
+- **Two command levels:** Simple (default) and Full, which adds diplomacy, posture and manual assessments
+- **False positives:** many alerts reveal nothing, and reacting wrongly has a cost
+- **Varying objectives** drawn for each game
+- **Debrief:** reveals the truth, your errors of judgement and a replay on the map
 
-## Important limits
+| | |
+|---|---|
+| ![A crisis with its countdown](docs/screenshots/05-crisis-countdown.png) | ![A false alarm file](docs/screenshots/06-false-alarm.png) |
+| A crisis and its countdown | An alert to verify |
+| ![Vector map at high zoom](docs/screenshots/08-sharp-coast.png) | ![Debrief screen](docs/screenshots/09-debrief.png) |
+| Vector map at high zoom | Debrief |
+| ![Mission briefing](docs/screenshots/04-briefing.png) | ![Choice of theatre](docs/screenshots/02-theatres.png) |
+| Briefing | Choice of theatre |
 
-- All events are fictional. Real geography does not imply any real situation or attribution.
-- Weapons and effects use fictional game values. The game teaches no offensive technique.
-- The score and the gauges are game models, not scientific measurements. They do not measure a person's or a unit's ability.
-- This is a training exercise, not a real decision aid.
+<img src="docs/screenshots/12-mobile-game.png" alt="The game at phone width" width="300">
 
-## Build from source
+## Project status
 
-Requires Python 3. Tests also need Node.js and Playwright with Chromium.
+This is a prototype for testing the mechanics. Automated scripts test stability and balance, but they cannot measure fun, stress or learning. **Beta testers are wanted**, especially for gameplay feedback.
+
+Scores and gauges, including the cognitive centre of gravity (CGC), are game models, not scientific measurements. The game trains reasoning. It is not a decision aid and does not assess people or units.
+
+Ships use diamonds specific to this game. Other symbols follow APP-6(E) through milsymbol, but the official text was not consulted and the choices have not been validated by a specialist.
+
+## How AI was used
+
+The concept and design decisions are by Naully Nicolas. Claude (Anthropic) wrote most of the code, helped draft the scenarios and built the test scripts.
+
+## Build
 
 ```bash
 cd proto
 python3 gen_db.py   # only if gen_db.py changed
-python3 build.py    # writes ../index.html
+python3 build.py    # writes ../index.html, seuil-prototype.html and t.html
 ```
 
-Edit `proto/src.html` and `proto/gen_db.py`, never `index.html`. `CLAUDE.md` holds the rules, code map and test procedure (in French).
+Edit `proto/src.html` and `proto/gen_db.py`. Never edit `index.html` or `scenarios.json` by hand.
+
+## Tests
+
+They need Node.js and Playwright with Chromium.
+
+```bash
+cd proto
+TAG=check node stress.js 2 inv exploit labo    # stability and balance, long
+node ui5.js                                    # full run with real clicks
+node uim.js                                    # phone-width screens
+```
+
+`CLAUDE.md` holds the full rules, code map and known defects, in French.
 
 ## Credits
 
-Design: Naully Nicolas, drawing on his article on cognitive warfare in *Revue diplomatique* no. 28 (IEGA). Inspired by DEFCON and Jane's Fleet Command, with no affiliation. Code written largely with Claude (Anthropic). Third-party components are listed in `NOTICE.md`.
+- [milsymbol](https://github.com/spatialillusions/milsymbol), MIT: APP-6 symbols
+- [MapLibre GL JS](https://maplibre.org/), BSD-3-Clause: vector map
+- [three.js](https://threejs.org/), MIT: globe
+- [Natural Earth](https://www.naturalearthdata.com/), public domain, through [world-atlas](https://github.com/topojson/world-atlas): map data
+- IBM Plex and Saira, loaded from Google Fonts
 
-© 2026 Naully Nicolas. All rights reserved for now, except third-party components.
+Licences are in `docs/third-party/`. The licence for this project's own code and content has not been chosen yet, so all rights are reserved until one is added.
 
 ---
 
-## Version française
+## En français
 
-SEUIL est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude. Vous commandez une petite force dans des crises fictives sur des cartes réelles : vérifier, décider avant la fin du compte à rebours, garder des options et maîtriser l'escalade.
+SEUIL est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude. Tous les événements sont fictifs, sur des cartes réelles.
 
-**État : prototype jouable, à la recherche de bêta-testeurs.** Le jeu a surtout été testé par des scripts. Les retours humains sur le gameplay sont donc le plus utile.
+![Écran d'accueil en français](docs/screenshots/10-accueil-fr.png)
 
-Pour jouer, ouvrez `index.html` dans un navigateur récent, ou activez GitHub Pages sur ce dépôt. Pour tout retour, ouvrez une issue.
+Ouvrez `index.html` pour jouer, puis choisissez Français en haut de l'écran. [Vidéo de démonstration en français](docs/video/seuil-demo-fr.mp4).
 
-Tous les événements sont fictifs. Le score et les jauges sont des modèles de jeu, pas des mesures scientifiques. Ce jeu entraîne un raisonnement et n'est pas une aide à la décision réelle.
+Le projet cherche des bêta-testeurs, surtout pour le gameplay. Les scores et les jauges sont des modèles de jeu, pas des mesures scientifiques.

@@ -17,4 +17,6 @@ print(len(s))
 page = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="description" content="FOGLINE (SEUIL) is a real-time strategy serious game about deciding under uncertainty. Fictional exercise, prototype.">\n'
         + s.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', ''))
 open(d + '/../index.html', 'w', encoding='utf-8').write(page)
+page = '<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' + s
+open(d + '/../index.html', 'w', encoding='utf-8').write(page)  # page publiée par GitHub Pages
 open(d + '/t.html', 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' + s)

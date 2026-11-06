@@ -1,7 +1,7 @@
-proto/t.html
+t.html
 proto/seuil-prototype.html
 proto/*.png
-*.mp4
+*.mp4.tmp
 node_modules/
 __pycache__/
 .DS_Store

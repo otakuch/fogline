@@ -56,7 +56,7 @@ seuil-projet/
     ├── vendor/             MapLibre GL JS 4.7.1 (BSD-3) et three.js r159 (MIT), intégrés à la page
     ├── gen_db.py           définition éditable des scénarios et des hypothèses
     ├── scenarios.json      base générée par gen_db.py
-    ├── milsymbol.js        bibliothèque de symboles APP-6, avec milsymbol.LICENSE
+    ├── milsymbol.js        bibliothèque de symboles APP-6
     ├── geo.json            ports et leurs coordonnées sur la carte
     ├── mask.rle            masque terre et mer, grille de 360 × 225
     ├── build.py            assemble la page publiable
@@ -75,6 +75,8 @@ seuil-projet/
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` et sert GitHub Pages. Il n'est jamais modifié à la main.
+
+**Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures.
 
 **Assembler :**
 

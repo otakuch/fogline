@@ -1,0 +1,18 @@
+const { chromium } = require('playwright'), path = require('path');
+const R = process.argv[2], PG = process.argv[3], OUT = R + '/docs/screenshots/';
+(async () => { const b = await chromium.launch({ args: ['--allow-file-access-from-files'] }), errs = [];
+ const mk = async (o, lang) => { const c = await b.newContext(o), p = await c.newPage(); await p.route(/fonts\.g/, r => r.abort()); p.on('pageerror', e => errs.push(e.message)); await p.addInitScript(l => { try { localStorage.setItem('seuil.lang', l); localStorage.setItem('seuil.tuto', '1') } catch (_) { } }, lang); await p.goto('file://' + PG); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(3600); return p };
+ const go = async (p, sc, setup, cam) => { await p.evaluate(([sc, setup, cam]) => { const A = __S; A.home(false); document.getElementById('over').hidden = true; A.newGame(21, { sc, deck: A.SC[sc].rec, contested: false, guided: true, timer: 'easy' }); const S = A.s; S.running = false; S.sched = {}; S.pendingK = []; S.sc = { ...S.sc, dyn: 0 }; for (let i = 0; i < 160; i++) { A.step(.1); S.running = false } A.applyCamX(); new Function('A', 'S', setup)(A, S); if (cam) { A.cam.x = cam[0]; A.cam.y = cam[1]; A.cam.z = cam[2] } }, [sc, setup, cam]); await p.waitForTimeout(1600) };
+ const shot = (p, n) => p.screenshot({ path: OUT + n + '.png' });
+ let p = await mk({ viewport: { width: 1440, height: 900 } }, 'en'); await shot(p, '01-home');
+ await p.click('.hs-go[data-a=play]'); await p.waitForTimeout(500); await shot(p, '02-theatres');
+ await p.locator('.card[data-a=theatre][data-v=natl]').first().click(); await p.waitForTimeout(300); if (await p.locator('[data-a=fdiff][data-v="0"]').count()) await p.click('[data-a=fdiff][data-v="0"]'); await p.waitForTimeout(300); await shot(p, '03-catalogue');
+ await p.locator('[data-a=sc][data-v=ia]').first().click(); await p.waitForTimeout(400); await shot(p, '04-briefing');
+ await go(p, 'ia', "const n=S.crises.length;A.startCrisis('desinfo');const c=S.crises[n];c.truth='manip';S.sel=c;"); await shot(p, '05-crisis-countdown');
+ await go(p, 'ia', "const n=S.crises.length;A.startCrisis('alarm');const c=S.crises[n];c.truth='fauxp';S.sel=c;"); await shot(p, '06-false-alarm');
+ await go(p, 'ml', "", null).catch(() => { }); await p.evaluate(() => { }); await go(p, 'm6', "const u=S.units[0];S.sel=u;", [720, 500, 3]); await shot(p, '07-malacca-zoom');
+ await go(p, 'ia', "S.sel=null;", [770, 565, 6.5]); await shot(p, '08-sharp-coast');
+ await p.evaluate(() => { const A = __S; document.getElementById('over').hidden = true; A.setLang('en') }); await p.addScriptTag({ path: path.dirname(PG) + '/bots.js' }).catch(() => { }); await p.addScriptTag({ path: R + '/proto/bots.js' }); await p.evaluate(() => { for (const sd of [1234, 77, 501, 90]) { const g = playGame(sd, 'ia', { contested: true, guided: true, timer: 'hard' }, mkBot({})); if (g.ok) break } __S.applyCamX() }); await p.waitForTimeout(900); await shot(p, '09-debrief'); await p.close();
+ p = await mk({ viewport: { width: 1440, height: 900 } }, 'fr'); await shot(p, '10-accueil-fr'); await p.close();
+ p = await mk({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }, 'en'); await shot(p, '11-mobile-home'); await go(p, 'ia', "S.sel=null;"); await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(400); await shot(p, '12-mobile-game'); await p.close();
+ console.log('errs', errs); await b.close() })();

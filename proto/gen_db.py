@@ -285,6 +285,11 @@ H('sup.ana', 'sup', 'Les analyses sont traitées rapidement.', 'Analyses are pro
  H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, un jeton de plus au tour 1.', 'Good news: the crisis cell is reinforced, one extra token on turn 1.'),
  H('pos.calm', 'bonus', '', '', 'Bonne nouvelle : le théâtre est plus calme que prévu, moins d’aléas.', 'Good news: the theatre is calmer than expected, fewer incidents.'),
 ]
+# Réglage du 7 novembre 2026 : câblier ajouté à Double prise (d3) et à Contact au centre du bassin (e3)
+for x in S:
+    if x['id'] in ('d3', 'e3'):
+        x['rec'] = x['rec'] + ['repair']
+        x['budget'] = {'d3': 70, 'e3': 46}[x['id']]
 out = {'version': 1, 'scenarios': S, 'assumptions': ASM}
 json.dump(out, open('scenarios.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 ids = [a['id'] for a in ASM]

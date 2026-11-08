@@ -83,10 +83,10 @@ const want = k => !parts.length || parts.includes(k);
   }
   if (want('monkey')) {
     // clics au hasard sur toute l'interface, dans les deux langues, avec la vraie boucle de rendu
-    const q = await mk(() => { window.__noBase = 1; window.requestAnimationFrame = cb => { window.__raf = cb; return 1; }; });
-    const r = await q.evaluate(async (step) => {
+    const q = await mk(() => { window.requestAnimationFrame = cb => { window.__raf = cb; return 1; }; });
+    const r = await q.evaluate(async () => {
       const A = __S, tick = (t) => { const c = __raf; __raf = null; c && c(t); }; let ts = 1000, clicks = 0, stuck = 0; let x = 777; const rn = () => (x = (x * 16807) % 2147483647) / 2147483647;
-      for (const lang of ['fr', 'en']) { A.setLang(lang); for (const sc of Object.keys(A.SC).filter((_, i) => i % step === (lang === 'fr' ? 0 : 1))) {
+      for (const lang of ['fr', 'en']) { A.setLang(lang); for (const sc of Object.keys(A.SC)) {
         window.__noEsc = false; A.newGame(rn() * 1e6 | 0, { sc, deck: A.SC[sc].rec, contested: true, guided: rn() < .5 }); A.startJams(); const S = A.s; S.running = true; S.speed = 4;
         for (let i = 0; i < 500 && !S.over; i++) { ts += 100; tick(ts);
           if (i % 2 === 0) { const bs = [...document.querySelectorAll('#app [data-a]:not([disabled])')].filter(e => !['mute','quit','coachquit'].includes(e.dataset.a)); const e = bs[Math.floor(rn() * bs.length)]; if (e) { e.click(); clicks++; } if (!S.running && e && e.dataset.a === 'speed') { } S.running = true; }
@@ -96,7 +96,7 @@ const want = k => !parts.length || parts.includes(k);
         const ov = document.getElementById('over'); if (S.over && !ov.querySelector('.go[data-a=again],.go[data-a=play]')) stuck++;
       } }
       return { clicks, stuck, missing: A.missing() };
-    }, +process.env.MKSTEP || 1);
+    });
     OUT.monkey = r; console.log('== CLICS AU HASARD', JSON.stringify(r));
   }
   console.log('ERREURS PAGE', [...new Set(errs)].length); [...new Set(errs)].slice(0, 12).forEach(e => console.log('  ', e));

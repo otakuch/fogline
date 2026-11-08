@@ -6,6 +6,7 @@
 | [three.js](https://threejs.org/) r159 | Home globe | MIT | `proto/vendor/three.LICENSE` |
 | [milsymbol](https://github.com/spatialillusions/milsymbol) 3.0.5 | APP-6 symbols | MIT | `proto/milsymbol.LICENSE` |
 | [Natural Earth](https://www.naturalearthdata.com/) via [world-atlas](https://github.com/topojson/world-atlas) | Coastlines and borders | Public domain, ISC for world-atlas | |
+| OpenStreetMap contributors, through [geo-maps](https://github.com/simonepri/geo-maps) earth-lands-100m 0.6.0 | Detailed coastlines (`proto/th/hicoast.json`) | ODbL 1.0, © OpenStreetMap contributors | |
 | IBM Plex and Saira Semi Condensed, through Google Fonts | Fonts, loaded at runtime | SIL OFL 1.1 | |
 
 No third-party name or logo implies any endorsement. APP-6 symbols have not been validated against the official text of the standard.

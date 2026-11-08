@@ -10,11 +10,15 @@ window.mkBot = (o = {}) => (S) => {
     const lo = A.dipL().slice().sort((a, b) => a.rel - b.rel)[0], cs = A.dipActions().find(z => z.id === 'c:' + lo.k); if (lo.rel < 30 && S.tokens > 2 && cs && cs.ok) A.doAct(cs);
     if (o.support) for (const x of A.dipActions().filter(z => z.id.startsWith('s:'))) if (x.ok && S.tokens > 2) A.doAct(x);
   }
+  { const d = o.doc || (o.trigger ? 'free' : null); if (d && S.doc !== d && S.tokens > 0 && A.setDoc) A.setDoc(d); }
   if (S.debt > 1.5 && S.tokens > 1 && !o.noCoord) A.coord();
   if (S.posture < (o.posture || 2) && !S.postureAt && S.tokens > 0) A.setPosture(o.posture || 2);
-  const navs = S.units.filter(u => A.UT[u.type].naval && !u.board && !u.assist && !u.pressing && u.ready <= S.t);
+  if (o.grp && !S.units.some(u => u.grpL) && (S._gT || 0) <= S.t) { const L = S.units.find(u => u.type === 'frigate' && !u.grp) || S.units.find(u => A.UT[u.type].naval && !u.grp); if (L && A.grpCands(L).length) A.grpForm(L); S._gT = S.t + 30; }
+  for (const ob of S.objs.filter(x => x.k === 'identify' && !x.st)) { const need = ob.n - A.s.ships.concat(A.s.gone || []).filter(z => !z.ais && z.ev && z.ev.some(e => e.t >= (ob.turn0 || 0) && e.kind !== 'ais')).length; let k = 0; for (const z of S.ships.filter(z => z.seen && !z.ais && !z.gone && !z.ev.some(e => e.kind !== 'ais')).slice(0, Math.max(0, need))) { const a = A.shipActions(z).find(q => q.id === 'traj'); if (a && a.ok && S.tokens > 1 && k++ < 1) A.doAct(a) } }
+  const navs = S.units.filter(u => A.UT[u.type].naval && !u.board && !u.assist && !u.pressing && u.ready <= S.t && !(o.grp && u.grp));
   const pz = S.objs.find(x => x.k === 'patrol' && !x.st);
-  if (pz && navs[0] && !navs[0].chase && !navs[0].path.length && !navs[0].escort && dist(navs[0], pz.zone) > pz.zone.r * .7) A.orderMove(navs[0], pz.zone.x, pz.zone.y);
+  if (o.patrol && pz && navs[0] && !navs[0].patrol && !navs[0].chase && !navs[0].escort) { const u = navs[0], R = pz.zone.r + A.sensorR(u) * .5, pts = [0, 2.1, 4.2].map(k => ({ x: pz.zone.x + Math.cos(k) * R, y: pz.zone.y + Math.sin(k) * R })); A.patrolStart(u, pts); }
+  else if (pz && navs[0] && !navs[0].patrol && !navs[0].chase && !navs[0].path.length && !navs[0].escort && !A.covers(navs[0], pz)) A.orderMove(navs[0], pz.zone.x, pz.zone.y);
   if (S.convoy && !S.convoy.arrived && !S.convoy.lost && navs.length) { const e = navs[navs.length - 1]; if (!e.escort && !e.chase) { e.escort = true; e.task = null; } }
   for (const c of S.crises.filter(c => c.type === 'swarm' && !c.closed)) { const au = A.crisisActions(c).find(a => a.id === 'auth'); if (au && au.ok && S.tokens > 0) A.doAct(au); const nv = navs[0], pr = c.prot; if (nv && pr.hp !== undefined && !nv.path.length && dist(nv, pr) > 90) A.orderMove(nv, pr.x, pr.y); }
   for (const c of S.crises.filter(c => c.type === 'sub' && !c.closed)) {
@@ -56,7 +60,7 @@ window.mkBot = (o = {}) => (S) => {
       if (c.type === 'desinfo') A.doAct(act('facts'));
     } else {
       if (c.type === 'incursion') { const k = o.oracle ? ({ sondage: 'A', erreur: 'C', feinte: 'C' }[c.truth]) : (c.sig === 'sondage' ? 'A' : 'C'); A.doAct(act(k) && act(k).ok ? act(k) : act('C')); }
-      if (c.type === 'cyber') { const k = act('hunt') && act('hunt').ok && best !== 'faux' ? 'hunt' : (best === 'faux' && left > 6 ? null : 'iso'); if (k) A.doAct(act(k)); }
+      if (c.type === 'cyber') { const k = act('hunt') && act('hunt').ok && best !== 'faux' ? 'hunt' : (best === 'faux' ? null : 'iso'); if (k) A.doAct(act(k)); }
       if (c.type === 'desinfo') A.doAct(act(best === 'manip' ? 'refute' : 'facts'));
     }
     if (c.type === 'sar') { if (!c.assistU && act('assist') && act('assist').ok) A.doAct(act('assist')); else if (!c.assistU) A.doAct(act('deleg')); }
@@ -100,7 +104,7 @@ window.mkBot = (o = {}) => (S) => {
   if (e && !e.path.length) { const c = [...A.assets].sort((a, b) => a.hp - b.hp)[0]; if (c.hp < 85) { const q = c.pts ? { x: c.pts[1][0], y: c.pts[1][1] } : c; if (dist(e, q) > 30) A.orderMove(e, q.x, q.y); } }
 };
 window.playGame = (seed, sc, cfg, pol, chk) => {
-  window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER }); A.startJams();
+  window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
   const S = A.s; S.running = false; let i = 0;
   for (; i < 9000 && !S.over; i++) { A.step(.1); if (i % (window.BOTCAD || 50) === 0 && pol) pol(S); if (i % 10 === 0 && chk) chk(S, sc); }
   const r = A.score();

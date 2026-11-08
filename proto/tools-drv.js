@@ -1,0 +1,10 @@
+// Pilote de navigateur persistant : POST /  {w,h,mobile,lang?} puis {do:[...]} ; chaque étape : {c:sel} {t:text} {k:key} {m:[x,y]} {e:js} {w:ms} {s:name}
+const { chromium } = require('playwright'); const http = require('http'); const P = process.argv[2], O = process.argv[3]; let b, p, errs = [];
+async function open(o) { if (p) await p.context().close(); const ctx = await b.newContext({ viewport: { width: o.w, height: o.h }, isMobile: !!o.mobile, hasTouch: !!o.mobile, deviceScaleFactor: 1 }); p = await ctx.newPage(); errs = []; p.on('pageerror', e => errs.push(e.message)); await p.route(/fonts\.g/, r => r.abort()); await p.goto('file://' + P + '/t.html'); await p.waitForTimeout(900) }
+async function run(steps) { const out = []; for (const s of steps) { try {
+  if (s.c) await p.click(s.c, { timeout: 4000 }); if (s.t) await p.getByText(s.t, { exact: false }).first().click({ timeout: 4000 }); if (s.k) await p.keyboard.press(s.k); if (s.m) await p.mouse.click(s.m[0], s.m[1]);
+  if (s.e) out.push(await p.evaluate(s.e)); if (s.w) await p.waitForTimeout(s.w); if (s.s) { await p.waitForTimeout(250); await p.screenshot({ path: O + '/' + s.s + '.png' }); out.push('shot ' + s.s) }
+  if (s.txt) out.push(await p.evaluate(sel => { const e = document.querySelector(sel); return e ? e.innerText.replace(/\n{2,}/g, '\n').slice(0, 2500) : '(absent)' }, s.txt));
+  if (s.btns) out.push(await p.evaluate(() => [...document.querySelectorAll('button:not([hidden])')].filter(b => b.offsetParent && b.getBoundingClientRect().width > 0).map(b => (b.dataset.a || '') + (b.dataset.v ? '=' + b.dataset.v : '') + ':' + b.innerText.replace(/\s+/g, ' ').slice(0, 40)).slice(0, 80)));
+ } catch (e) { out.push('ERR ' + e.message.split('\n')[0]) } } out.push({ errs: errs.slice(0, 3) }); return out }
+(async () => { b = await chromium.launch(); http.createServer((q, r) => { let d = ''; q.on('data', c => d += c); q.on('end', async () => { let res, o = {}; try { o = JSON.parse(d || "{}"); res = o.open ? (await open(o.open), 'ok') : await run(o.do || []) } catch (e) { res = 'ERR ' + e.message } r.end(JSON.stringify(res, null, 1)) }) }).listen(7788); console.log('ready') })();

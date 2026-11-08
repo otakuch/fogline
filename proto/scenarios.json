@@ -4313,13 +4313,14 @@
     "en": "Several alerts target energy sites. Your special forces are in high demand, and your partners expect a measured response."
    },
    "turns": 22,
-   "budget": 62,
+   "budget": 70,
    "rec": [
     "sof",
     "frigate",
     "recon",
     "team",
-    "analysis"
+    "analysis",
+    "repair"
    ],
    "hyp": [
     "adv.double",
@@ -5804,11 +5805,12 @@
     "en": "An acoustic alert reports unusual activity. The plan assumes your sensors and units stay available."
    },
    "turns": 16,
-   "budget": 40,
+   "budget": 46,
    "rec": [
     "frigate",
     "recon",
-    "comm"
+    "comm",
+    "repair"
    ],
    "hyp": [
     "info.sources",

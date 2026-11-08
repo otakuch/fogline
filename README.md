@@ -1,48 +1,61 @@
 # FOGLINE (SEUIL in French)
 
-A real-time strategy serious game for learning to decide under uncertainty. You command a small force through fictional crises on real maps: verify first, then decide before the countdown ends.
+A real-time strategy serious game for learning to decide under uncertainty, in hybrid and cognitive warfare. You command a small force through fictional crises on real maps: verify first, then decide before the countdown ends. The truth is only revealed at the debrief.
 
-**Fictional exercise. Prototype.** Events, actors and game values are invented. There are no nuclear weapons and no strikes on cities.
+**Fictional exercise. Prototype in development.** Events, actors and game values are invented. There are no nuclear weapons, no strikes on cities and no real weapon parameters.
 
-![Home screen with a globe of the six theatres](docs/screenshots/01-home.png)
+**Play in your browser:** https://otakuch.github.io/fogline/ (choose English or Français at the top of the home screen)
 
-## Play
+[Lire en français](#en-français)
 
-Open `index.html` in a recent browser. No install or server is needed. Internet access only loads the web fonts.
-
-To publish it, enable GitHub Pages on the `main` branch, root folder.
-
-Demo videos: [English](docs/video/fogline-demo-en.mp4) and [French](docs/video/seuil-demo-fr.mp4). The demo is scripted and some sequences are accelerated. It was recorded before the current sound design.
+![FOGLINE home screen](docs/screenshots/en/01-home.png)
 
 ## The game
 
 - **Six theatres:** North Atlantic, continental Europe, Gulf of Guinea, Gulf of Aden and Red Sea, Eastern Mediterranean, Strait of Malacca
-- **74 missions and a tutorial**, in English and French, including missions with no subsea cables
-- **8 to 11 minutes** per mission at normal speed
+- **74 missions and a tutorial**, in English and French: viral videos, cyber intrusions, threatened subsea cables, ships without AIS, jamming, false alarms, and direct action missions with naval raids, salvos, drone swarms and the recapture of seized sites or ships
+- **Quick exercise:** compose a mission by choosing force size, adversary behaviour and level, theatre, situation, weather and time of day
+- **Fixed order of battle:** each mission starts with US platforms under their real names (P-8A Poseidon, MQ-4C Triton, Arleigh Burke-class destroyer, Freedom-class LCS and others). All values are fictional game values
+- **Attention as a resource:** every check costs a token. You cannot verify everything
+- **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
+- **Force morale** and coalition cohesion, both counted in the score
+- **Two command levels:** Simple (default, with advice) and Full (diplomacy, posture, manual assessments, fire allocation)
 - **Two decision clocks:** 90 s on Easy, 30 s on Hard
-- **Two command levels:** Simple (default) and Full, which adds diplomacy, posture and manual assessments
-- **False positives:** many alerts reveal nothing, and reacting wrongly has a cost
-- **Varying objectives** drawn for each game
-- **Debrief:** reveals the truth, your errors of judgement and a replay on the map
+- **In-game menu:** settings, legend, restart or return to the home screen
+- **Debrief:** truth of each crisis, key lessons, your errors of judgement, losses and a replay on the map
+
+## Screenshots
 
 | | |
 |---|---|
-| ![A crisis with its countdown](docs/screenshots/05-crisis-countdown.png) | ![A false alarm file](docs/screenshots/06-false-alarm.png) |
-| A crisis and its countdown | An alert to verify |
-| ![Vector map at high zoom](docs/screenshots/08-sharp-coast.png) | ![Debrief screen](docs/screenshots/09-debrief.png) |
-| Vector map at high zoom | Debrief |
-| ![Mission briefing](docs/screenshots/04-briefing.png) | ![Choice of theatre](docs/screenshots/02-theatres.png) |
-| Briefing | Choice of theatre |
+| ![Choice of theatre](docs/screenshots/en/02-theatres.png) | ![Mission catalogue](docs/screenshots/en/03-catalogue.png) |
+| Choice of theatre | Mission catalogue |
+| ![Briefing](docs/screenshots/en/04-briefing.png) | ![Quick exercise](docs/screenshots/en/05-quick-exercise.png) |
+| Briefing and order of battle | Quick exercise |
+| ![Cognitive warfare](docs/screenshots/en/06-cognitive-warfare.png) | ![Cyber intrusion](docs/screenshots/en/07-cyber-intrusion.png) |
+| Cognitive warfare: a viral video, one check done | Cyber intrusion and the escalation option |
+| ![Direct action](docs/screenshots/en/08-direct-action.png) | ![False alarm](docs/screenshots/en/09-false-alarm.png) |
+| Direct action: a naval raid, still unseen | A false alarm to verify, Simple level |
+| ![In-game menu](docs/screenshots/en/10-menu.png) | ![Debrief](docs/screenshots/en/11-debrief.png) |
+| In-game menu | Debrief |
 
-<img src="docs/screenshots/12-mobile-game.png" alt="The game at phone width" width="300">
+<img src="docs/screenshots/en/12-mobile-home.png" alt="Home screen at phone width" width="260"> <img src="docs/screenshots/en/13-mobile-game.png" alt="The game at phone width" width="260">
+
+Demo videos: [cognitive and cyber warfare, French, 79 s](docs/video/seuil-demo-cognitif-cyber-fr.mp4). Older demos, recorded on a previous version: [English](docs/video/fogline-demo-en.mp4) and [French](docs/video/seuil-demo-fr.mp4). The demos are scripted and some sequences are accelerated.
 
 ## Project status
 
-This is a prototype for testing the mechanics. Automated scripts test stability and balance, but they cannot measure fun, stress or learning. **Beta testers are wanted**, especially for gameplay feedback.
+This is a prototype for testing the mechanics. Automated scripts test stability and balance, but they cannot measure fun, stress or learning. **Beta testers are wanted**, especially officers, crisis managers and strategy students. Feedback is welcome through GitHub issues or at sayhi@naullynicolas.ch.
 
 Scores and gauges, including the cognitive centre of gravity (CGC), are game models, not scientific measurements. The game trains reasoning. It is not a decision aid and does not assess people or units.
 
-Ships use diamonds specific to this game. Other symbols follow APP-6(E) through milsymbol, but the official text was not consulted and the choices have not been validated by a specialist.
+Cyber, sabotage, jamming and disinformation are described only by their effects on decisions, never by techniques.
+
+Symbols follow APP-6(E) through milsymbol; ships can also be shown as the game's own diamonds (menu setting). The official text of the standard was not consulted and the choices have not been validated by a specialist.
+
+## Background
+
+The game builds on the cognitive centre of gravity described by Naully Nicolas in « Le centre de gravité cognitif : la guerre cognitive à l'ère de l'IA, de Syracuse aux algorithmes », Revue diplomatique n° 28, Institut d'études de géopolitique appliquée (IEGA), 2026. Design inspirations include DEFCON, Jane's Fleet Command and Command: Modern Operations; no text, interface or data from these games is reused.
 
 ## How AI was used
 
@@ -56,7 +69,9 @@ python3 gen_db.py   # only if gen_db.py changed
 python3 build.py    # writes ../index.html, seuil-prototype.html and t.html
 ```
 
-Edit `proto/src.html` and `proto/gen_db.py`. Never edit `index.html` or `scenarios.json` by hand.
+Edit `proto/src.html` and `proto/gen_db.py`. Never edit `index.html` or `scenarios.json` by hand. GitHub Pages serves `index.html` from the `main` branch.
+
+Screenshots: after building, run `node tools/shots.js $PWD en` and `node tools/shots.js $PWD fr` from the repository root.
 
 ## Tests
 
@@ -66,10 +81,11 @@ They need Node.js and Playwright with Chromium.
 cd proto
 TAG=check node stress.js 2 inv exploit labo    # stability and balance, long
 node ui5.js                                    # full run with real clicks
-node uim.js                                    # phone-width screens
+node uimenu.js                                 # in-game menu
+node uiqx.js                                   # quick exercise and fire allocation
 ```
 
-`CLAUDE.md` holds the full rules, code map and known defects, in French.
+`CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
 
 ## Credits
 
@@ -77,19 +93,61 @@ node uim.js                                    # phone-width screens
 - [MapLibre GL JS](https://maplibre.org/), BSD-3-Clause: vector map
 - [three.js](https://threejs.org/), MIT: globe
 - [Natural Earth](https://www.naturalearthdata.com/), public domain, through [world-atlas](https://github.com/topojson/world-atlas): map data
+- Detailed coastlines: OpenStreetMap contributors, ODbL, through geo-maps
 - IBM Plex and Saira, loaded from Google Fonts
 - Sound: CC0-declared recordings from Freesound and other sources, listed in `docs/third-party/SOUND-CREDITS.md`. Some licences still need confirming before wider distribution
 
-Licences are in `docs/third-party/`. The licence for this project's own code and content has not been chosen yet, so all rights are reserved until one is added.
+Licences are in `docs/third-party/` and `NOTICE.md`. The licence for this project's own code and content has not been chosen yet, so all rights are reserved until one is added.
 
 ---
 
 ## En français
 
-SEUIL est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude. Tous les événements sont fictifs, sur des cartes réelles.
+SEUIL est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude, dans la guerre hybride et la guerre cognitive. Vous commandez une petite force face à des crises fictives, sur des cartes réelles : vérifier d'abord, puis décider avant la fin du compte à rebours. La vérité n'arrive qu'au bilan.
 
-![Écran d'accueil en français](docs/screenshots/10-accueil-fr.png)
+**Exercice fictif. Prototype en développement.** Les événements, les acteurs et les valeurs de jeu sont inventés. Pas d'arme nucléaire, pas de frappe contre des villes, aucun paramètre d'arme réel.
 
-Ouvrez `index.html` pour jouer, puis choisissez Français en haut de l'écran. [Vidéo de démonstration en français](docs/video/seuil-demo-fr.mp4).
+**Jouer dans le navigateur :** https://otakuch.github.io/fogline/ (choisissez Français en haut de l'écran d'accueil)
 
-Le projet cherche des bêta-testeurs, surtout pour le gameplay. Les scores et les jauges sont des modèles de jeu, pas des mesures scientifiques.
+![Écran d'accueil de SEUIL](docs/screenshots/fr/01-home.png)
+
+### Le jeu
+
+- **Six théâtres :** Atlantique Nord, Europe continentale, golfe de Guinée, golfe d'Aden et mer Rouge, Méditerranée orientale, détroit de Malacca
+- **74 missions et un tutoriel**, en français et en anglais : vidéo virale, intrusion cyber, câbles sous-marins menacés, navires sans AIS, brouillage, fausses alertes, et missions d'action directe avec raids navals, salves, essaims de drones et reprise de sites ou de navires capturés
+- **Exercice rapide :** composez une mission en choisissant le volume des forces, le comportement et le niveau de l'adversaire, le théâtre, la situation, la météo et le moment
+- **Ordre de bataille fixe :** chaque mission démarre avec des plateformes américaines sous leur vrai nom (P-8A Poseidon, MQ-4C Triton, destroyer classe Arleigh Burke, LCS classe Freedom, etc.). Toutes les valeurs sont des valeurs de jeu fictives
+- **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
+- **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
+- **Moral des forces** et cohésion de la coalition, comptés dans le score
+- **Deux niveaux de commandement :** Simple (par défaut, avec conseil) et Complet (diplomatie, posture, estimations à la main, allocation des tirs)
+- **Deux horloges de décision :** 90 s en facile, 30 s en difficile
+- **Menu de partie :** paramètres, légende, recommencer ou revenir à l'accueil
+- **Bilan :** vérité de chaque crise, leçons à retenir, erreurs de jugement, pertes et rejeu sur la carte
+
+### Captures
+
+| | |
+|---|---|
+| ![Choix du théâtre](docs/screenshots/fr/02-theatres.png) | ![Catalogue des missions](docs/screenshots/fr/03-catalogue.png) |
+| Choix du théâtre | Catalogue des missions |
+| ![Briefing](docs/screenshots/fr/04-briefing.png) | ![Exercice rapide](docs/screenshots/fr/05-quick-exercise.png) |
+| Briefing et ordre de bataille | Exercice rapide |
+| ![Guerre cognitive](docs/screenshots/fr/06-cognitive-warfare.png) | ![Intrusion cyber](docs/screenshots/fr/07-cyber-intrusion.png) |
+| Guerre cognitive : une vidéo virale, une vérification faite | Intrusion cyber et option d'escalade |
+| ![Action directe](docs/screenshots/fr/08-direct-action.png) | ![Fausse alerte](docs/screenshots/fr/09-false-alarm.png) |
+| Action directe : un raid naval encore invisible | Une fausse alerte à vérifier, niveau Simple |
+| ![Menu de partie](docs/screenshots/fr/10-menu.png) | ![Bilan](docs/screenshots/fr/11-debrief.png) |
+| Menu de partie | Bilan |
+
+<img src="docs/screenshots/fr/12-mobile-home.png" alt="Accueil au format téléphone" width="260"> <img src="docs/screenshots/fr/13-mobile-game.png" alt="Le jeu au format téléphone" width="260">
+
+[Vidéo de démonstration : guerre cognitive et guerre cyber, 79 s](docs/video/seuil-demo-cognitif-cyber-fr.mp4). La séquence est scriptée et la fin de partie est accélérée.
+
+### État du projet
+
+Ce prototype sert à tester les mécaniques. Les scripts automatiques vérifient la stabilité et l'équilibre, mais ils ne mesurent ni le plaisir de jeu, ni le stress, ni l'apprentissage. **Le projet cherche des bêta-testeurs**, en particulier des officiers, des cadres de gestion de crise et des étudiants en stratégie. Vos retours sont les bienvenus dans les issues GitHub ou à sayhi@naullynicolas.ch.
+
+Les scores et les jauges, dont le centre de gravité cognitif, sont des modèles de jeu, pas des mesures scientifiques. Le jeu entraîne un raisonnement ; ce n'est pas une aide à la décision et il n'évalue ni des personnes ni des unités. Le cyber, le sabotage, le brouillage et la désinformation sont décrits par leurs effets sur la décision, jamais par des techniques.
+
+Le jeu s'appuie sur l'article de Naully Nicolas « Le centre de gravité cognitif : la guerre cognitive à l'ère de l'IA, de Syracuse aux algorithmes », Revue diplomatique n° 28, IEGA, 2026.

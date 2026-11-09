@@ -77,6 +77,9 @@ seuil-projet/
     ├── uigrp.js            groupe tactique, clic droit, raccourcis, contacts, pause automatique, bilan, 1440 et 390 px
     ├── grpcmp.js           référence contre référence qui forme un groupe autour de la frégate
     ├── uiob.js             ordre de bataille, ordre d'opération, fiche d'unité, allure, zoom, 1440 et 390 px
+    ├── uimenu.js           menu de partie, 1440 et 390 px
+    ├── uiqx.js             exercice rapide, allocation des tirs, esquive, avance rapide
+    ├── pace2.js            rythme : crises par partie, première crise, part du temps sans crise ouverte
     └── th/hicoast.json     côtes détaillées OpenStreetMap par théâtre (varints base64), générées par tools/hires.js
     └── dipm.js             mesures de diplomatie par stratégie
 ```
@@ -121,7 +124,7 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 
 - Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
 - **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
-- Vitesses x1, x2 et x4. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
+- Vitesses x1, x2 et x4, et avance rapide × 8 jusqu'au prochain événement (bouton ⏭, ou « Avancer jusqu'au prochain événement » dans le panneau quand aucune crise n'est ouverte). L'avance rapide s'arrête pour une crise, une alerte du renseignement, un aléa ou une demande, pas pour un simple contact ni un signal. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
 - 4 jetons par tour, non reportables. CGC sous 40 : −2. CGC sous 55 : −1. CGC à 75 ou plus : +1 un tour sur deux. Réseau de commandement coupé : −1, minimum 1.
 - Déplacer une unité est gratuit. Collecter une preuve, décider, tirer ou coordonner coûte généralement 1 jeton.
 - Échelle d'affichage : 1 unité de carte vaut 1,7 mille. Ce sont des valeurs de jeu.
@@ -197,8 +200,9 @@ Plus d'achat depuis le 7 novembre 2026 : chaque mission fixe son ordre de batail
 ### 5.8 Combat
 
 - **Tir offensif :** posture Engager, 1 jeton, portée 170. Le tir atteint avec une chance de 0,65 avant pénalités.
-- **Tir hostile :** portée 175, chance de 0,72 avant pénalités. Tirer révèle la position du raider.
-- **Interception :** automatique, sans posture, par une unité au radar actif ayant une réserve de défense à proximité.
+- **Tir hostile :** portée 175. Un tir non intercepté touche avec une chance de 0,72 (0,62 pour un adversaire novice et 0,80 pour un expert, en exercice rapide), moins 0,12 si l'unité visée esquive. Tirer révèle la position du raider.
+- **Interception :** automatique, sans posture, par une unité au radar actif ayant une réserve de défense à proximité. Chance de 0,72, moins les pénalités d'arme. Une tentative par missile.
+- **Raid (`raidOut`) :** issue = 1 − coups reçus / (2/3 des missiles adverses, `c.nm`). Le raid est repoussé si un tiers des missiles au plus touche : 2 sur 6 pour un navire, 4 sur 12 pour deux. Un raid encore en cours à la fin de la partie, depuis 60 s au moins, est jugé sur les coups déjà reçus.
 - **Dégâts :** 50 sur une unité, 25 pour un drone d'essaim. Une unité à 0 est perdue et non remplacée. 11 sur un site, un câble ou un convoi touché par un missile.
 - **Pénalités d'arme :** système de combat compromis 0,3, temps et position douteux 0,2.
 - **Escalade :** tirer le premier ajoute 0,6 de tension. Toucher un civil ajoute 1,5 et coûte 15, 15 et 8 points de piliers.
@@ -235,8 +239,9 @@ Sans coalition : 0,18 × CGC moyen au lieu de 0,14 CGC + 0,04 cohésion.
 ```
 
 - **Mission réussie :** tous les points de contrôle tenus, aucune consigne rompue (`isGuard` : objectifs tirés sauf `identify`) et au moins 80 % des tâches (`WIN_SHARE`). Une tâche « clore » dont la crise n'a jamais eu lieu est sans objet (`st === 3`, `objNA`) et sort du total ; si la crise est survenue moins de fois que demandé et toujours maîtrisée, la tâche est atteinte.
+- **Fin de partie :** une crise ouverte depuis moins de 60 s ne fait pas échouer la tâche « clore » qui l'attend (`objNA(true)`).
 - **Plafonds :** 250 si le seuil 1 est franchi, 550 si la mission échoue, 650 si elle réussit avec un CGC final sous 40 ou un moral final sous 35.
-- **Verdicts :** Victoire cohérente, Syndrome de Syracuse, Défaite lucide, Effondrement, Seuil 1 franchi.
+- **Verdicts :** Victoire cohérente (mission réussie, CGC final à 55 ou plus), Victoire fragile (mission réussie, CGC de 40 à 54, ajouté en version 31), Syndrome de Syracuse (mission réussie, CGC sous 40), Défaite lucide, Effondrement, Seuil 1 franchi. Chaque verdict a une phrase d'explication au bilan (`v.*.d`). Le score et les étoiles ne dépendent pas du libellé.
 - **Étoiles :** 4 pour tous les objectifs, au moins 2 missions secondaires CGC à 55 ou plus et moral final à 60 ou plus. 3 pour une mission réussie. 2 pour au moins la moitié des objectifs. 1 pour au moins un objectif. En commandement guidé, le maximum est 3.
 
 ### 5.10 Hypothèses et changement de situation
@@ -250,9 +255,9 @@ Hypothèses disponibles : `info.sources`, `info.late`, `info.share`, `comm.delay
 ### 5.11 Prise en main
 
 - **Estimation automatique :** toute décision qui repose sur un dossier classe l'hypothèse en tête si le joueur n'a rien choisi. En commandement complet, il peut encore classer à la main avant.
-- **Commandement guidé, réglage par défaut :** panneau de conseil, pause automatique à chaque crise et à chaque nouvelle phase, reprise du temps dès qu'un ordre est donné, pause illimitée, coordination automatique (`S.debt` reste à 0), confiance publique sur une seule jauge. Silence radar et classement manuel sont masqués. 3 étoiles au plus.
+- **Commandement guidé, réglage par défaut :** conseil sur demande depuis la version 31 (bouton « Demander un conseil », voir 5.22), pause automatique à chaque crise et à chaque nouvelle phase, reprise du temps dès qu'un ordre est donné, pause illimitée, coordination automatique (`S.debt` reste à 0), confiance publique sur une seule jauge. Silence radar et classement manuel sont masqués. 3 étoiles au plus.
 - **Commandement complet :** pause de 90 s, silence radar, coordination et classement manuel. Seul ce niveau donne la 4e étoile.
-- **Conseil (`advise`, `applyAdvice`) :** il ne doit jamais lire `truth`. Il part des preuves, des hypothèses et de ce qui est visible, et propose une action à la fois. Le bilan indique combien de décisions conseillées reposaient sur une hypothèse fausse.
+- **Conseil (`advise`, `applyAdvice`, `advOn`, `ADVM`, `ADVK`) :** il ne doit jamais lire `truth`. Il part des preuves, des hypothèses et de ce qui est visible, et propose une action à la fois. Le bilan indique combien de décisions conseillées reposaient sur une hypothèse fausse.
 - **Tutoriel (`tuto`, tableau `COACH`) :** scénario de 5 tours, exclu du catalogue et du tirage. Une étape demande une action, et le temps n'avance que dans les étapes `run`. L'hypothèse choisie ne doit pas retarder les ordres, sinon le temps arrêté bloque le déplacement.
 - **Catalogue :** il s'ouvre sur « Accessible » tant qu'aucun scénario n'a été terminé.
 
@@ -273,10 +278,10 @@ Hypothèses disponibles : `info.sources`, `info.late`, `info.share`, `comm.delay
 
 - **Inspiration :** principes généraux des postes de situation (carte centrale, situation, options comparables). Ne reprends ni le logo, ni le nom, ni la charte, ni les écrans d'un produit existant.
 - **Carte :** plein écran, fond désaturé, centre utile calculé par `vc` pour rester dans la zone libre. Le bandeau « EXERCICE FICTIF » reste en haut de l'écran.
-- **Barre haute :** indicateurs avec état coloré et infobulle.
-- **Panneau gauche :** onglets Situations, Forces, Coalition et Suivi (`leftTab`). Les nouvelles crises rouvrent Situations en commandement guidé.
-- **Dossier à droite :** il n'apparaît qu'avec une sélection. Il suit l'ordre estimer, vérifier, décider.
-- **Réponses (`actsHtml`, `coaMeta`) :** chaque carte indique le coût, la faisabilité et le risque d'escalade. En guidé, elle ajoute les hypothèses pour lesquelles la réponse convient et le conseil. Ces indications lisent les preuves et la table `EFF`, jamais la vérité.
+- **Barre haute :** titre de la mission, tour, puis indicateurs avec état coloré et infobulle. Une variation de jauge s'affiche 3,4 s à la place du libellé (`hudDelta`). Services SAT, PNT et C2 seulement s'ils sont dégradés.
+- **Panneau gauche :** onglets Crises (clé `sit`), Forces, Contacts, Coalition et Suivi (`leftTab`). L'onglet Crises montre d'abord les crises et alertes, puis « à traiter », puis l'ordre d'opération. Les nouvelles crises rouvrent cet onglet en commandement guidé. Hauteur ajustée au contenu ; 340 px de large au moins au niveau Complet.
+- **Dossier à droite :** il n'apparaît qu'avec une sélection. Il suit l'ordre estimer, vérifier, décider. Sur ordinateur, le compte à rebours du haut de la carte ne montre que les crises autres que celle du dossier ouvert.
+- **Réponses (`actsHtml`, `coaMeta`) :** chaque carte indique le coût, la faisabilité et le risque d'escalade. En guidé, elle ajoute les hypothèses pour lesquelles la réponse convient (« Adapté si », « Adapté à toutes les hypothèses », « Réponse partielle »), le coût en infrastructure, les emplois restants de l'équipe cyber et, si le joueur l'a demandé, la pastille « Conseillé ». Ces indications lisent les preuves et la table `EFF`, jamais la vérité.
 - **Fenêtres :** les panneaux gauche et droit se réduisent, se redimensionnent à la souris ou au clavier et se rétablissent par double clic. La taille est gardée dans `seuil.win` (`WIN`, `applyWin`, `saveWin`). Sur téléphone, le dock réduit les fenêtres.
 - **Couches (`LAY`) :** Capteurs, Trafic, Vols et Noms.
 
@@ -488,6 +493,58 @@ Demande de Naully du 7 novembre 2026, 22 h 27. Parcours joués par Claude avec u
 
 **Non corrigé, à observer avec de vrais joueurs** : barre haute dense (seuil, jetons, infrastructures, options, confiance, moral, badges SAT, PNT, C2) ; bandeau d'ordre d'opération qui reste sur la carte ; option de tir proposée « faisable » sur un navire fantôme dans le tutoriel ; ordre d'opération encore chargé au niveau Simple ; suivre le conseil sans réfléchir suffit souvent.
 
+### 5.22 Passe complète (version 31)
+
+Demande de Naully du 9 novembre 2026 : « retravailler tout le RTS ». Portée choisie : passe complète, sans changer l'architecture ni les règles de fond. Gênes déclarées : interface chargée, jeu complexe, rythme et intérêt, bugs et finition. Audit fait par Claude avec un navigateur piloté (français et anglais, 1440 et 390 px, niveaux Simple et Complet) et par relecture ciblée du code. Ce n'est pas un test avec de vrais joueurs.
+
+**Bugs corrigés**
+
+- **Rythme faussé (`S.lastC`) :** la même variable datait la dernière crise close et la dernière alerte de contact. Chaque contact sans transpondeur repoussait de 30 s la crise suivante. Les alertes de contact utilisent maintenant `S.lastCt`.
+- **« Adapté si » :** calculé au niveau Simple, puis retiré par le filtre des cartes de décision. Le joueur ne voyait que « Conseillé ».
+- **Replis :** un bloc `details` se refermait à chaque redessin du panneau. `dOpen(clé)` et `DOPEN` gardent l'état.
+- **Briefing :** choisir une option d'exercice ouvrait « Conseils pour cette mission » au lieu de garder « Options d'exercice » ouvert.
+- **Conseil :** sur une cyberattaque jugée fausse alerte, il recommandait d'isoler le système à la dernière seconde (issue 0). Il propose l'enquête si elle est possible, sinon de laisser le délai s'écouler (`adv.pass`).
+- **Fiche d'unité au niveau Simple :** allure, groupe, réaction et silence radar y figuraient, contrairement à la règle 5.11.
+- **Textes :** « 1 scénarios joués », titre « Temps de décision » sans capitales, « crise close » devenu « crise maîtrisée ».
+- **Tirs adverses :** la chance de 0,72 servait de chance d'interception, et un tir non intercepté touchait toujours. L'esquive (« moins de chances de toucher ») et le niveau de l'adversaire de l'exercice rapide agissaient donc à l'envers. La chance s'applique maintenant au tir, et l'interception a sa propre chance (5.8).
+- **Raid :** avec 12 missiles pour deux navires, le seuil de 4 coups rendait la tâche « Repousser le raid » presque impossible (6 échecs sur 6 pour l'omniscient sur `d3`). Le seuil suit maintenant le nombre de missiles (`raidOut`). Un raid lancé en fin de partie restait ouvert et faisait échouer la tâche : il est jugé à la fin.
+- **Fin de partie :** une crise exigée par une tâche et lancée dans la dernière minute faisait échouer cette tâche sans que le joueur puisse y répondre.
+- **Banc d'essai :** le test isolé de réparation mesurait un cas où la réparation est interdite (saboteur encore sur le câble).
+
+**Interface**
+
+- **Barre haute :** titre de la mission à la place de la marque (en français, « SEUIL » apparaissait deux fois). Services affichés seulement s'ils sont dégradés, à tous les niveaux. Moral masqué au niveau Simple tant qu'il est Ferme. Variation d'une jauge affichée 3,4 s à la place de son libellé (`hudDelta`, horloge réelle, jamais lue par le moteur).
+- **Panneau gauche :** crises et alertes d'abord, puis « à traiter », puis l'ordre d'opération. Progression en une ligne (« 1/5 tâches accomplies · il en faut 4 »). Au niveau Simple : conditions de contrôle en trois pastilles, bloc Moral seulement s'il n'est plus Ferme. Règle de réussite repliée (« Comment réussir la mission »). Onglet « Situations » renommé « Crises ». Hauteur ajustée au contenu.
+- **Dossier :** un seul compte à rebours quand le dossier est ouvert. Cartes de décision enrichies au niveau Simple (5.13).
+- **Fiche d'unité :** niveau Simple sans ordres avancés. Niveau Complet : allure, groupe, réaction et émissions repliés dans « Ordres avancés » (`unitAdv`). Touches G et E et groupe du clic droit inactifs au niveau Simple.
+- **Commandement (Complet) :** esquive et retour des chasseurs repliés dans « Consignes permanentes ».
+- **Catalogue :** secteur et niveau visibles, situation et domaine repliés, nombre de missions affiché.
+- **Briefing :** objectifs et hypothèses côte à côte, forces en ligne ; il tient sur un écran de 900 px de haut.
+- **Bilan :** verdict expliqué en une phrase, score en tête, pastilles (crises maîtrisées, partielles, perdues, estimations justes), tableau des crises avec la colonne « Vous », puis hypothèses. Axes du score, pertes, chaîne de décision, alertes et contacts sont dans « Détails pour l'analyse », replié au niveau Simple.
+- **Téléphone :** échelle de la carte à gauche, hors de la zone des boutons de zoom.
+
+**Rythme et intérêt**
+
+- **Temps calmes :** bouton « Avancer jusqu'au prochain événement » dans l'onglet Crises quand aucune crise n'est ouverte. L'avance rapide ne s'arrête plus pour un contact ni un signal (`logm(m, 2)`).
+- **Conseil sur demande (`ADVM`, `ADVK`, `advOn`, `seuil.adv`) :** au niveau Simple, le panneau ne montre qu'un bouton « Demander un conseil ». Le conseil, sa raison et la pastille « Conseillé » n'apparaissent qu'après la demande, pour la situation en cours. Réglage du menu : « Sur demande » (défaut) ou « Toujours affiché ». Le tutoriel l'affiche toujours. Le bouton de réduction du panneau disparaît.
+- **Directeur :** le poids d'un type de crise imprévue est divisé par 1 + le nombre de crises de ce type déjà survenues. Le script du scénario ne change pas.
+- **Verdict « Victoire fragile » :** mission réussie avec un CGC final de 40 à 54 (5.9).
+
+**Mesures, scripts seulement**
+
+- Rythme (`pace2.js`, 12 scénarios × 2 parties, niveau Simple) : 5,2 crises par partie contre 4,6 en version 30 ; première crise à 68 s contre 86 s ; 71 % du temps sans crise ouverte contre 76 % (le script décide en 5 s).
+- Équilibre, niveau Complet, 2 parties par scénario : omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. La référence dépasse la cible de 50 à 70 %, comme depuis la version 27.
+- Conseil seul (`advbot.js 1`) : `advbot.js 1`, 74 scénarios × 1 partie : conseil seul 702 et 66 % au niveau Simple, 683 et 78 % au niveau Complet ; référence 730 et 70 %, puis 720 et 73 %
+- Tests : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim2`, `uia` et `uic` sans erreur ni texte manquant.
+
+**Non vérifié, à observer avec de vrais joueurs**
+
+- Si le conseil sur demande fait davantage réfléchir, ou s'il gêne un débutant.
+- Si les pastilles des cartes de décision suffisent à comprendre un choix sans le conseil.
+- Le confort de l'avance rapide et la durée réelle d'une partie.
+- La lisibilité de la variation des jauges.
+- Les scripts ne lisent pas l'interface : aucune de ces mesures ne dit si le jeu est plus clair ou plus intéressant.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -509,6 +566,7 @@ Demande de Naully du 7 novembre 2026, 22 h 27. Parcours joués par Claude avec u
 | Groupes et commandes | `grpForm`, `grpBreak`, `grpLeave`, `grpStep`, `uSpd`, `grpHtml`, `contHtml`, `ponHit`, `ctxShow`, `ctxDo`, `hotkey`, `briefDoc`, `briefTips`, `expEnd` |
 | Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
+| Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Tests | `window.__S`, à garder à la fin du script |
 
 **Principe clé :** `crisisActions`, `shipActions` et `dipActions` sont la seule source des actions possibles. L'interface et les scripts lisent la même liste. Ne crée jamais un bouton ou une règle de test qui contourne cette liste.
@@ -573,6 +631,8 @@ node uip.js                                            # parcours de patrouille,
 node uicmo.js; node uicmo_end.js                      # doctrine, réaction, zone d'exclusion, bilan, 1440 et 390 px
 node uigrp.js; node grpcmp.js 2                        # groupe tactique, clic droit, raccourcis, contacts, pertes ; référence contre groupe
 node uiob.js                                           # ordre de bataille, ordre d'opération, fiche, allure, zoom, côtes
+node uimenu.js; node uiqx.js                           # menu de partie ; exercice rapide, allocation, esquive, avance rapide
+node pace2.js t.html 2 simple                          # rythme : crises par partie, première crise, temps sans crise
 node ../cmo_all.js                                     # référence, réactions, zone et gâchette sur 74 scénarios
 node uit.js fr 390; node uit.js en 1440                # tutoriel
 node mkt.js 1                                          # clics au hasard par scénario, avec durées, environ 6 min
@@ -597,6 +657,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `labo` | Chaque mécanique isolée | Chaque système sert à quelque chose et reste jouable |
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
+
+**Résultats du 9 novembre 2026, version 31 (passe complète), niveau Complet, 2 parties par scénario :** omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. La référence dépasse la cible de 50 à 70 %, comme depuis la version 27. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 500, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple, script) : 5,2 crises par partie contre 4,6 en version 30 ; première crise à 68 s contre 86 s ; 71 % du temps sans crise ouverte contre 76 % (le script décide en 5 s). Tests d'interface : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim2`, `uia` et `uic` sans erreur ni texte manquant.
 
 **Résultats du 7 novembre 2026, version 29 (menu, corrections), niveau Complet, 2 parties par scénario :** omniscient 792 et 94 % (plus aucun scénario à 0 %), référence 719 et 71 %, tir sans vérifier 453 et 20 % avec 47 % de seuil 1, saturation 294 et 3 %, aucun ordre 276 et 3 %, aucune force 189 et 0 %. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 414, aucun blocage. `uimenu`, `uiqx`, `uiob`, `uigrp`, `uip`, `ui5`, `uit fr 390`, `uit en 1440`, `uih` sans erreur.
 
@@ -645,6 +707,10 @@ Vérifie ces points avant de chercher ailleurs :
 - Les navires doivent suivre `route` ou `retreat`, jamais une ligne droite à travers les terres.
 - Toute valeur aléatoire du moteur passe par `R()`, sinon la reproductibilité est perdue. `Math.random` reste réservé au son et au choix d'un nouveau tirage.
 - Le stockage local passe par `try/catch` : il peut être indisponible.
+- Une variable d'état ne sert qu'à une chose. `S.lastC` datait à la fois la dernière crise close et la dernière alerte de contact : chaque contact retardait la crise suivante (corrigé en version 31, `S.lastCt`).
+- Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
+- Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
+- Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
 
 ## 10. Publication
 
@@ -696,12 +762,15 @@ Une évolution est terminée si :
 15. **Exercice rapide :** les réglages de l'adversaire pèsent peu. Les renforcer, ou les garder discrets.
 13. **Moral :** tranché le 7 novembre 2026, il entre dans le score (10 %). Reste ouvert : autres déclencheurs (tir sur un civil, crise perdue).
 8. **Prix de la réaction et de la zone d'exclusion :** les garder légers (coordination, tension) ou y ajouter un coût diplomatique quand ils visent des civils.
+16. **Conseil sur demande (version 31) :** au niveau Simple, le conseil n'apparaît plus qu'à la demande, avec un réglage « Toujours affiché » dans le menu. Garder ce défaut, ou revenir au conseil permanent. Lié à la décision 6.
+17. **Verdict « Victoire fragile » (version 31) :** mission réussie avec un CGC de 40 à 54. Garder ce libellé intermédiaire, ou revenir à cinq verdicts.
+18. **Rythme (version 31) :** la correction de `S.lastC` donne environ une demi-crise de plus par partie. Garder l'écart de 60 s entre deux crises, ou le régler après observation de vrais joueurs.
 
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
 2. L'horloge idéale n'apporte presque rien selon les scripts : 635.
-3. Tirer ne change presque pas le score moyen : 620 contre 621. Le combat doit devenir plus décisif, sans récompenser la gâchette.
+3. Tirer changeait à peine le score moyen : 620 contre 621. Version 31, après correction des tirs adverses : référence 728 et 73 %, sans aucun tir 713 et 67 %, tir sans vérifier 438 et 21 %. L'écart reste faible et n'est mesuré que par scripts.
 4. Dans Le second choc, jouer sans avion peut rapporter davantage.
 5. Port sous tension punit trop peu les réponses sans preuve.
 6. Engagement en mer de Norvège reste très dur : 5 réussites sur 10 pour l'omniscient, 2 sur 10 pour le script.
@@ -710,7 +779,7 @@ Une évolution est terminée si :
 9. Arraisonner tout suspect a fait mieux que la référence sur un tirage précédent (63 % contre 48 %), puis autant sur le tirage suivant (52 %). L'échantillon est petit : à confirmer.
 10. Répondre ou non à la diplomatie change peu le score moyen : 657 contre 645, sur un petit échantillon. Les retraits sont rares, sauf pour le tir sans vérifier (10 %).
 11. Répondre sans preuve (61 %) reste au niveau de la référence (59 %) sur le dernier tirage : à vérifier scénario par scénario.
-12. Suivre seulement le conseil réussit 61 % des missions au niveau Simple et 78 % au niveau Complet (version 30, 74 scénarios × 1), presque autant que la référence : le conseil peut remplacer la réflexion.
+12. Suivre seulement le conseil réussit encore beaucoup de missions (`advbot.js 1`, 74 scénarios × 1 partie : conseil seul 702 et 66 % au niveau Simple, 683 et 78 % au niveau Complet ; référence 730 et 70 %, puis 720 et 73 %). Depuis la version 31, il n'apparaît plus qu'à la demande au niveau Simple, mais rien ne mesure si les joueurs réfléchissent davantage.
 
 13. Déminage, évacuation, fonds marins et réponse à la posture sont équilibrés par scripts sur très peu de parties. Leur intérêt reste à vérifier avec des joueurs.
 
@@ -719,7 +788,7 @@ Une évolution est terminée si :
 15. Le losange bleu, désormais en option, contredit la forme du cadre ami de l'APP-6. Les symboles OTAN sont actifs par défaut ; les choix d'identité et d'échelon restent à faire valider par une personne qui dispose du texte de l'APP-6(E).
 16. Le stress du compte à rebours n'est pas mesurable par les scripts. Il reste à observer avec de vrais joueurs.
 
-17. Double prise (`d3`) reste très dure dans les deux modes : 0 % pour l'omniscient sur 2 à 4 parties. Détroit disputé (`a5`) et Contact au centre du bassin (`e3`) restent irréguliers. Échantillon trop petit pour conclure.
+17. Double prise (`d3`) restait très dure : la tâche « Repousser le raid » échouait 6 fois sur 6 avec le seuil fixe de 4 coups. Version 31 : `d3` donne 75 % à l'omniscient comme à la référence sur 4 parties. `m5`, `a5`, `l10` et `i18` restent irréguliers, et la référence y dépasse parfois l'omniscient sur 2 parties. Échantillon trop petit pour conclure.
 
 18. Avec la zone de 150, les bouées détectent moins souvent le sous-marin : 38 % contre 71 % sur le banc isolé. À surveiller avec de vrais joueurs.
 19. La référence monte à 68 %, en haut de la cible. L'omniscient reste à 0 % sur `e3` en 4 parties, à cause de la recherche du sous-marin.
@@ -728,7 +797,7 @@ Une évolution est terminée si :
 
 21. Une route navale frôle parfois une case de côte du masque, en déplacement ordinaire comme en patrouille. L'utilité de la patrouille pour un joueur réel n'a pas été observée.
 22. La couverture par le rayon de détection rend les objectifs de présence plus faciles. L'effet sur l'équilibre reste à mesurer sur plus de parties.
-23. `gen_db.py` à jour est perdu depuis la réinitialisation du 7 novembre : à reconstruire à partir de `scenarios.json` avant d'ajouter des scénarios.
+23. Résolu le 8 novembre 2026 : `gen_db.py` est restauré depuis le dépôt GitHub.
 24. Réagir à tout contact inconnu a fait mieux que la référence sur 16 parties (666 contre 611), mais presque pareil sur 74 scénarios × 1 (717 et 77 % contre 708 et 74 %). Trois réactions sur quatre visent alors un civil. Écart non significatif : à observer avec des joueurs.
 25. La zone d'exclusion n'a qu'un prix de tension (+0,15). Elle marque surtout des civils (environ 7 sur 10 dans les essais), ce qui est voulu, mais ne coûte rien en relations.
 26. Le groupe tactique améliore le script (+38 points, +10 points de réussite sur 48 parties). Il pourrait devenir le réglage évident : à observer avec des joueurs avant de lui donner un coût.
@@ -736,6 +805,10 @@ Une évolution est terminée si :
 28. Au fort zoom, la navigation reste calculée sur une grille d'environ 12 km : un navire peut sembler couper un îlot ou une pointe des côtes détaillées.
 29. Corrigé le 7 novembre (version 29) : l'omniscient échouait sur `ib` à cause d'une erreur du script, pas du jeu. La référence reste à 71 %, au-dessus de la cible.
 30. Échap ouvre le menu quand rien n'est sélectionné : un joueur qui appuie plusieurs fois pour annuler peut l'ouvrir sans le vouloir.
+31. Un objectif de présence peut être rempli sans aucun ordre : dans « Port sous tension », l'unité part déjà dans la zone. La première phase ne demande alors aucune décision. Dans `l11`, ne donner aucun ordre réussit une partie sur deux (4 parties, versions 30 et 31) : présence, défense automatique et consignes suffisent.
+32. Face à une cyberattaque, « Chasser l'intrus » réussit quelle que soit la vérité (table `EFF`). Tant que l'équipe cyber a des emplois, ce choix n'est pas un dilemme.
+33. Une mission peut être réussie en perdant la plupart des crises, si les tâches et les contrôles tiennent. Le verdict « Victoire fragile » le signale, mais le score reste élevé.
+34. Même avec la version 31, le script passe 71 % du temps sans crise ouverte. Un joueur réel décide plus lentement, mais les temps calmes restent longs sans l'avance rapide.
 
 ### Absent de cette version
 

@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
  // sélection par la liste des forces
  await p.click('[data-a=ltab][data-v=forces]'); await p.click(`[data-a=selU][data-v="${u.id}"]`); await p.waitForTimeout(150);
  out.bouton = await p.locator('#right [data-a=patnew]').count(); await p.click('#right [data-a=patnew]'); await p.waitForTimeout(100);
- const pts = await p.evaluate(u => { const A = __S, o = []; for (const [dx, dy] of [[60, -40], [120, 10], [40, 70]]) { const q = A.patrolPt(A.s.units.find(x => x.id === u.id), u.x + dx, u.y + dy); if (q) o.push(q) } return o }, u);
+ const pts = await p.evaluate(u => { const A = __S, o = []; for (const [dx, dy] of [[-60, -40], [-120, 10], [-40, 70]]) { const q = A.patrolPt(A.s.units.find(x => x.id === u.id), u.x + dx, u.y + dy); if (q) o.push(q) } return o }, u);
  for (const q of pts) { const [sx, sy] = await scr(p, q.x, q.y); await p.mouse.click(sx, sy); await p.waitForTimeout(80) }
  out.points = await p.evaluate(() => __S.patrolEdit && __S.patrolEdit.pts.length); await p.screenshot({ path: __dirname + '/../../p_edit.png' });
  await p.click('#right [data-a=patgo]'); await p.waitForTimeout(100);

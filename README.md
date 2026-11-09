@@ -19,10 +19,11 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
-- **Two command levels:** Simple (default, with advice) and Full (diplomacy, posture, manual assessments, fire allocation)
+- **Two command levels:** Simple (default, advice on request) and Full (diplomacy, posture, manual assessments, fire allocation)
+- **No dead time:** when nothing is urgent, one button skips to the next event
 - **Two decision clocks:** 90 s on Easy, 30 s on Hard
 - **In-game menu:** settings, legend, restart or return to the home screen
-- **Debrief:** truth of each crisis, key lessons, your errors of judgement, losses and a replay on the map
+- **Debrief:** an explained verdict, the truth of each crisis next to your own assessment, key lessons, losses and a replay on the map
 
 ## Screenshots
 
@@ -120,10 +121,11 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score
-- **Deux niveaux de commandement :** Simple (par défaut, avec conseil) et Complet (diplomatie, posture, estimations à la main, allocation des tirs)
+- **Deux niveaux de commandement :** Simple (par défaut, conseil sur demande) et Complet (diplomatie, posture, estimations à la main, allocation des tirs)
+- **Pas de temps mort :** quand rien ne presse, un bouton avance jusqu'au prochain événement
 - **Deux horloges de décision :** 90 s en facile, 30 s en difficile
 - **Menu de partie :** paramètres, légende, recommencer ou revenir à l'accueil
-- **Bilan :** vérité de chaque crise, leçons à retenir, erreurs de jugement, pertes et rejeu sur la carte
+- **Bilan :** verdict expliqué, vérité de chaque crise à côté de votre estimation, leçons à retenir, pertes et rejeu sur la carte
 
 ### Captures
 

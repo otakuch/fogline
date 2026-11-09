@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   let p = await page({ width: 1440, height: 900 }, 0, lang); const o = out[lang] = {};
   const f = await p.evaluate(() => { const u = __S.s.units[0]; return { id: u.id, x: u.x, y: u.y } });
   await p.click('[data-a=ltab][data-v=forces]'); await p.click(`[data-a=selU][data-v="${f.id}"]`); await p.waitForTimeout(150);
-  await p.click('#right [data-a=grpform]'); await p.waitForTimeout(150);
+  await p.evaluate(() => { const d = document.querySelector('#right details.uadv'); if (d && !d.open) d.querySelector('summary').click() }); await p.waitForTimeout(80); await p.click('#right [data-a=grpform]'); await p.waitForTimeout(150);
   o.groupe = await p.evaluate(() => __S.s.units.map(u => u.grp ? u.grp.lead : u.grpL ? 'L' : '-').join(','));
   o.dissoudre = await p.locator('#right [data-a=grpbreak]').count();
   if (lang === 'fr') await p.screenshot({ path: D + '/grp-panneau.png' });

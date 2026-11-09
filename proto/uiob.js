@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
   o.opord = await p.evaluate(() => ({ taches: document.querySelectorAll('.opord .obj').length, regle: !!document.querySelector('.op-rule'), cond: document.querySelectorAll('.opord .row').length }));
   // fiche d'unité et allure
   await p.click('[data-a=ltab][data-v=forces]'); const id = await p.evaluate(() => __S.s.units.find(u => u.type === 'patrol').id); await p.click(`[data-a=selU][data-v="${id}"]`); await p.waitForTimeout(100);
-  await p.click('#right [data-a=thr][data-v="0"]'); o.allure = await p.evaluate(() => __S.s.sel.thr);
+  await p.click('#right details.uadv>summary'); await p.click('#right [data-a=thr][data-v="0"]'); o.allure = await p.evaluate(() => __S.s.sel.thr);
   o.vitesse = await p.evaluate(() => { const S = __S.s, u = S.sel, A = __S, r = []; S.sched = {}; S.pendingK = []; for (const th of [0, 2]) { A.setThr(u, th); u.path = [{ x: u.x + (th ? -200 : 200), y: u.y }]; const x0 = u.x, y0 = u.y; for (let i = 0; i < 10; i++) A.step(.1); r.push(+Math.hypot(u.x - x0, u.y - y0).toFixed(1)) } return r });
   o.fiche = await p.locator('#right .us-row').count();
   o.moral = await p.evaluate(() => { const S = __S.s, A = __S, m0 = S.mor, L = S.units.filter(x => x !== S.sel); A.hitUnit(L[0], 100); const m1 = S.mor, t0 = A.morT(); if (L[1]) A.hitUnit(L[1], 100); A.moral(-30); return [m0, Math.round(m1), Math.round(S.mor), t0, A.morT(), document.getElementById('hMor').textContent] });

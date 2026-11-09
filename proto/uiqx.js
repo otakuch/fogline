@@ -13,7 +13,7 @@ const { chromium } = require('playwright');
   // doctrine
   await p.click('[data-a=ltab][data-v=forces]').catch(() => { }); await p.waitForTimeout(100);
   o.docBtns = await p.locator('[data-a=evade],[data-a=wstate]').count();
-  if (o.docBtns) { await p.click('[data-a=evade][data-v="0"]'); await p.click('[data-a=wstate][data-v=winch]') }
+  if (o.docBtns) { await p.click('details[data-d=cons]>summary'); await p.click('[data-a=evade][data-v="0"]'); await p.click('[data-a=wstate][data-v=winch]') }
   o.doctrine = await p.evaluate(() => [__S.s.evade, __S.s.wstate]);
   // allocation : un raid, un raider visible et localisé
   o.alloc = await p.evaluate(() => { const A = __S, S = A.s; S.evade = true; const c = A.startCrisis('raid'); if (!c || !c.raiders) return 'noraid'; const r = c.raiders[0]; const u = S.units.find(x => A.UT[x.type].ssm && A.UT[x.type].naval) || S.units.find(x => A.UT[x.type].ssm); r.visible = true; r.seen = true; r.located = true; r.hact = true; r.x = u.x + 60; r.y = u.y; S.sel = r; const L = A.shipActions(r).filter(a => a.kind === 'alloc'); return { n: L.length, ok: L.filter(a => a.ok).length, why: L.filter(a => !a.ok).map(a => a.why).slice(0, 3), pk: Math.round(A.pkOf(r) * 100) } });

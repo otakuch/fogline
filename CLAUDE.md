@@ -765,6 +765,7 @@ Une évolution est terminée si :
 16. **Conseil sur demande (version 31) :** au niveau Simple, le conseil n'apparaît plus qu'à la demande, avec un réglage « Toujours affiché » dans le menu. Garder ce défaut, ou revenir au conseil permanent. Lié à la décision 6.
 17. **Verdict « Victoire fragile » (version 31) :** mission réussie avec un CGC de 40 à 54. Garder ce libellé intermédiaire, ou revenir à cinq verdicts.
 18. **Rythme (version 31) :** la correction de `S.lastC` donne environ une demi-crise de plus par partie. Garder l'écart de 60 s entre deux crises, ou le régler après observation de vrais joueurs.
+19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
 
 ### Défauts connus du jeu
 

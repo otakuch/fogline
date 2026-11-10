@@ -82,6 +82,7 @@ seuil-projet/
     ├── pace2.js            rythme : crises par partie, première crise, part du temps sans crise ouverte
     └── th/hicoast.json     côtes détaillées OpenStreetMap par théâtre (varints base64), générées par tools/hires.js
     └── dipm.js             mesures de diplomatie par stratégie
+    └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -610,6 +611,24 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 
 **Non vérifié :** aucun vrai joueur ; lisibilité des pictogrammes de 11 px à distance ; le mode daltonisme n'a été contrôlé ni par simulation ni par une personne concernée ; `zoom` du mode présentation testé sous Chromium seulement.
 
+### 5.25 Bilan « Décision ou chance ? » (prototype du 10 novembre 2026, à valider par Naully)
+
+**Origine :** question de Caroline Brooks sur LinkedIn : comment distinguer une bonne décision sous incertitude d'un résultat favorable obtenu par chance. Le bloc est sur la branche `dq-bilan-decision-chance` ; il n'est ni fusionné ni publié.
+
+- **Principe :** pour chaque crise à dossier, le bilan compare ce que valait le choix avec les preuves détenues au moment de décider, puis l'issue réelle. Quatre cas : bon choix réussi, bon choix et malchance, choix fragile et chance, choix fragile perdu. Un cinquième : décidé trop tard (unité envoyée, délai écoulé avant son arrivée).
+- **Relevé (`dqSnap`) :** quand une décision part (`dec` dans `crisisActions`), le jeu note l'estimation `posterior`, les preuves, le temps restant et les réponses alors possibles (`kind: 'decide'`, `ok`), plus « ne pas répondre ». Quand le délai s'écoule sans réponse, `dqNone` fait le même relevé.
+- **Valeur d'une réponse (`dqOut`) :** part des cas où elle réussit (issue de 0,5 ou plus) et issue moyenne, pour chaque hypothèse, pondérées par l'estimation. Les tirages de `resolveChoice` (chasse et contre-attaque cyber, sauvetage délégué) y sont recopiés. C'est un calcul exact : aucun tirage n'est consommé.
+- **Bon choix :** issue moyenne à 0,15 au plus de la meilleure réponse disponible (`DQ_GAP`). L'affichage donne la part de réussite sur 20 (« réussit 14 fois sur 20 »).
+- **Décidé sans vérifier :** aucune preuve en main, une preuve collectable, et au moins la durée d'une analyse plus 10 s avant la fin du délai. Ce signal complète le classement, qui juge le choix à preuves données et ne dit rien de l'effort de vérification.
+- **Types couverts (`DQT`) :** `incursion`, `cyber`, `desinfo`, `sar`, `alarm`, `mine`, `evac`, `seabed`, `mirror`, `site`. Non couverts : `seize` (plusieurs décisions successives), `jam`, et les crises à navires ou de combat (`sabotage`, `ghost`, `sub`, `swarm`, `salvo`, `raid`), dont l'issue dépend du déroulement dans le temps.
+- **Sans effet sur le moteur ni sur le score :** aucun tirage, aucun état de partie modifié. 600 parties rejouées avant et après (75 scénarios, 2 tirages, 4 stratégies) donnent des résultats identiques.
+- **À maintenir :** tout tirage modifié dans `resolveChoice` doit être recopié dans `dqOut`. `stress.js dq` le contrôle sur la ligne « tirages recopiés ».
+- **Affichage :** troisième colonne du bilan, après « Estimations et réalité » : pastilles de synthèse, six crises au plus, une phrase d'explication par cas. Visible du seul joueur (garde-fou 7). La note rappelle qu'il s'agit d'un modèle de jeu (garde-fou 9).
+
+**Résultats du 10 novembre 2026, 2 parties par scénario sur 75, scripts :** référence 94 % de bons choix, 1 % sans vérifier ; réponses sans preuve 100 % de bons choix, mais 98 % sans vérifier ; hasard 74 % de bons choix ; aucun ordre 0 %. Omniscient : 83 % de bons choix pour 98 % de réussites, donc 17 % rangés en « chance », puisqu'il réussit sans preuve. Calibrage, stratégies qui ignorent la vérité : réussite annoncée 39 %, 67 % et 90 % ; observée 42 %, 69 % et 90 % (326, 660 et 860 décisions). Tirages recopiés : 74 % attendus, 74 % observés (1 852 décisions).
+
+**Limites :** l'estimation est celle du jeu, pas celle que le joueur avait en tête. Les effets sur les piliers, la tension et les infrastructures ne sont pas comptés. Une issue partielle de 0,5 à 0,69 compte comme réussie, alors que le tableau des crises l'affiche « Partielle ». `mine` est moins bien calibré (81 % annoncés, 91 % observés, 54 décisions). Aucun vrai joueur.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -630,6 +649,7 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 | Objectifs et fiches | `opordHtml`, `objCond`, `objCount`, `objNA`, `isGuard`, `WIN_SHARE`, `screenDeck`, `obSheet`, `unitSheet`, `setThr`, `trackHtml`, `hiGeo`, `drawScale` |
 | Groupes et commandes | `grpForm`, `grpBreak`, `grpLeave`, `grpStep`, `uSpd`, `grpHtml`, `contHtml`, `ponHit`, `ctxShow`, `ctxDo`, `hotkey`, `briefDoc`, `briefTips`, `expEnd` |
 | Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
+| Décision ou chance | `DQT`, `DQ_GAP`, `dqOut`, `dqSnap`, `dqMark`, `dqNone`, `dqEval`, `dqAll`, `dqHtml` |
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
@@ -712,6 +732,7 @@ node uig.js                                        # escalade, pause automatique
 node advbot.js 2                                   # rien, conseil seul et référence, guidé ou complet
 node uid.js                                        # règles diplomatiques, demandes, mobile
 node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
+node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -724,6 +745,7 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `labo` | Chaque mécanique isolée | Chaque système sert à quelque chose et reste jouable |
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
+| `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
 **Résultats du 10 novembre 2026, version 32 (retours de bêta, charte), niveau Complet, 2 parties par scénario :** omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. Identique à la version 31 : les changements sont d'interface, de charte et de règles de temps que les scripts ne ressentent pas. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 500, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple) : 5,2 crises par partie, première crise à 68 s, 71 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`, 74 × 1) : 702 et 66 % au niveau Simple, 683 et 78 % au niveau Complet ; référence 730 et 70 %, puis 720 et 73 %. Tests d'interface : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim 844`, `uim2`, `uia` et `uic` sans erreur ni texte manquant ; `ui5`, `uimenu`, `uim`, `uim 844` et `uim2` relancés sur l'assemblage final après le correctif du bandeau mobile.
 
@@ -839,6 +861,9 @@ Une évolution est terminée si :
 22. **Écarts avec la charte (version 33) :** onglet Synthèse qui montre aussi les décisions, pas de pastille « Option prudente », tour de jeu au lieu de l'heure UTC, corps à 13 px (5.24). Les garder, ou s'aligner strictement sur le pack.
 23. **Force spéciale et unités hors carte :** elles gardent l'APP-6 faute de pictogramme dans le pack. Faire dessiner les pictogrammes manquants, ou garder ce mélange.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
+24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public.
+25. **Qualité de décision dans le score :** aujourd'hui l'axe D note l'issue réelle. Le remplacer en partie par la valeur du choix à preuves données (5.25) récompenserait le jugement et non la chance, mais change la formule 5.9 et tous les résultats de référence.
+26. **Ne pas répondre :** le calcul de 5.25 le traite comme un choix. Quand l'estimation penche pour une fausse alerte, il peut être la meilleure réponse, alors que l'axe d'engagement du score le pénalise. Garder cet écart, ou l'expliquer au bilan.
 
 ### Défauts connus du jeu
 
@@ -887,6 +912,8 @@ Une évolution est terminée si :
 36. Le retour automatique à ×1 (FL-001) rallonge les parties jouées surtout en ×4 : effet sur le confort à observer avec de vrais joueurs.
 37. Version 33 : sur téléphone, une seule vue sous la carte à la fois. Le journal et les contacts restent accessibles par les onglets du panneau, pas par la barre basse. À observer : un joueur trouve-t-il le dossier, et revient-il aux crises.
 38. Version 33 : les pictogrammes mesurent environ 11 px dans un cadre de 22 px. Leur lecture à distance, sur projecteur, n'est pas vérifiée.
+39. Bilan « Décision ou chance ? » : une stratégie qui répond toujours sans preuve obtient 100 % de bons choix, car le classement juge le choix à preuves données. Seul le signal « Décidé sans vérifier » la distingue (98 % contre 1 % pour la référence). La valeur d'une preuve supplémentaire n'est pas mesurée.
+40. Bilan « Décision ou chance ? » : les crises à navires et de combat ne sont pas évaluées (5.25), alors qu'elles portent le tir, où la confusion entre chance et jugement est la plus forte.
 
 ### Absent de cette version
 

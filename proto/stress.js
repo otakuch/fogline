@@ -1,4 +1,4 @@
-// Banc d'essai. Usage : node stress.js [seeds] [partie...]  parties : inv exploit pair labo monkey deck
+// Banc d'essai. Usage : node stress.js [seeds] [partie...]  parties : inv exploit pair labo monkey deck dq
 const { chromium } = require('playwright');
 const fs = require('fs');
 const seeds = +(process.argv[2] || 6), parts = process.argv.slice(3);
@@ -80,6 +80,25 @@ const want = k => !parts.length || parts.includes(k);
       for (const sc of Object.keys(A.SC)) { const B = A.SC[sc].budget, rows = []; for (let d = 0; d < 14; d++) { const deck = []; let left = B, tries = 0; while (tries++ < 30) { const k = cards[Math.floor(rn() * cards.length)]; if (cost(k) <= left && deck.filter(y => y === k).length < max(k)) { deck.push(k); left -= cost(k); } } let s = 0, ok = 0; for (let sd = 1; sd <= seeds; sd++) { const g = playGame(sd * 19 + d, sc, { contested: true, deck }, mkBot()); s += g.s; ok += g.ok; } rows.push({ deck, s: s / seeds, ok: ok / seeds }); } out[sc] = rows; } return out; }, Math.max(2, seeds >> 1));
     OUT.deck = r; const all = Object.values(r).flat(), cards = ['armed', 'recon', 'drone', 'patrol', 'frigate', 'fighter', 'repair', 'team', 'analysis', 'comm'];
     console.log('== CARTES : score moyen avec et sans, sur decks tirés au hasard'); cards.forEach(k => { const w = all.filter(x => x.deck.includes(k)), wo = all.filter(x => !x.deck.includes(k)), m = a => a.reduce((s, y) => s + y.s, 0) / Math.max(1, a.length); console.log('  ', k.padEnd(9), m(w).toFixed(0), m(wo).toFixed(0), 'écart', (m(w) - m(wo)).toFixed(0), 'n', w.length); });
+  }
+  if (want('dq')) {
+    // « Décision ou chance ? » : la part de réussite annoncée au bilan correspond-elle à la part observée, et sépare-t-elle les stratégies ?
+    const r = await p.evaluate((seeds) => {
+      const A = __S; let x = 4242; const rn = () => (x = (x * 16807) % 2147483647) / 2147483647;
+      const hasard = (S) => { for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice && A.DQT.includes(c.type))) { const ac = A.crisisActions(c).filter(a => a.kind === 'decide' && a.ok); if (ac.length && S.tokens > 0) A.doAct(ac[Math.floor(rn() * ac.length)]); } };
+      const pols = { reference: () => mkBot(), sansPreuve: () => mkBot({ safe: true }), omniscient: () => mkBot({ oracle: true }), hasard: () => hasard, aucunOrdre: () => null }, out = {};
+      for (const [n, mkp] of Object.entries(pols)) { const rows = []; for (const sc of Object.keys(A.SC)) for (let sd = 1; sd <= seeds; sd++) { playGame(sd * 23 + 5, sc, { contested: true }, mkp()); A.dqAll().forEach(e => rows.push({ ty: e.c.type, cell: e.cell, ps: e.me.ps, e: e.me.e, out: e.c.out, pt: e.pt, best: e.best.ps, win: e.win ? 1 : 0, key: e.q.key, done: e.c.key === e.q.key ? 1 : 0, src: e.q.src, blind: e.blind ? 1 : 0 })); } out[n] = rows; }
+      return out;
+    }, seeds);
+    OUT.dq = r; const m = (a, k) => a.length ? a.reduce((s, y) => s + y[k], 0) / a.length : NaN, pc = v => Number.isFinite(v) ? (v * 100).toFixed(0) + '%' : '·';
+    console.log('== DÉCISION OU CHANCE : n | réussite annoncée / observée | issue moyenne annoncée / observée | bon choix | réussi-bon, malchance, chance, perdu-fragile, trop tard | sources | sans vérifier');
+    for (const [n, a] of Object.entries(r)) { const sh = k => pc(a.filter(y => y.cell === k).length / Math.max(1, a.length)); console.log('  ', n.padEnd(11), String(a.length).padStart(4), '|', pc(m(a, 'ps')), '/', pc(m(a, 'win')), '|', pc(m(a, 'e')), '/', pc(m(a, 'out')), '|', pc(a.filter(y => y.cell[0] === 's').length / Math.max(1, a.length)), '|', sh('sw'), sh('sl'), sh('uw'), sh('ul'), sh('late'), '|', m(a, 'src').toFixed(1), '|', pc(m(a, 'blind'))); }
+    const all = ['reference', 'sansPreuve', 'hasard'].flatMap(n => r[n]), bins = [[0, .25], [.25, .5], [.5, .75], [.75, 1.01]];
+    console.log('   calibrage, stratégies qui ignorent la vérité (annoncé → observé, n) :', bins.map(([lo, hi]) => { const b = all.filter(y => y.ps >= lo && y.ps < hi); return pc(m(b, 'ps')) + ' → ' + pc(m(b, 'win')) + ' (' + b.length + ')'; }).join(' | '));
+    const done = all.filter(y => y.done); console.log('   tirages recopiés, vérité connue (attendu → observé, n) :', pc(m(done, 'pt')), '→', pc(m(done, 'win')), '(' + done.length + ')');
+    const byT = {}; all.forEach(y => (byT[y.ty] = byT[y.ty] || []).push(y)); console.log('   par type (annoncé → observé, n) :', Object.entries(byT).map(([k, a]) => k + ' ' + pc(m(a, 'ps')) + ' → ' + pc(m(a, 'win')) + ' (' + a.length + ')').join(' | '));
+    const gap = Math.abs(m(r.reference, 'ps') - m(r.reference, 'win')), weak = a => a.filter(y => y.cell[0] === 'u').length / Math.max(1, a.length);
+    if (gap > .12) console.log('   ALERTE : écart de calibrage de la référence', pc(gap)); if (weak(r.hasard) <= weak(r.reference)) console.log('   ALERTE : le hasard ne fait pas plus de choix fragiles que la référence');
   }
   if (want('monkey')) {
     // clics au hasard sur toute l'interface, dans les deux langues, avec la vraie boucle de rendu

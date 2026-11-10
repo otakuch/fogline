@@ -211,7 +211,7 @@ Plus d'achat depuis le 7 novembre 2026 : chaque mission fixe son ordre de batail
 
 ### 5.8 bis Symbologie
 
-**Par défaut depuis le 7 novembre 2026 (demande de Naully) :** symboles OTAN classiques APP-6 pour tout, navires compris (`SYM.ships = 'nato'`, `natoShips`, clé `seuil.shipsym`). Navires amis : FF frégate (`120204`), PG patrouilleur (`120502`), AR réparation (`130111`), convoi ami marchand (`140101`). Contacts : identité selon ce que le joueur sait (`shipSidc`), en attente, inconnu, suspect, neutre ou hostile. Échelons sur les unités hors carte (`ech`) : force spéciale Ø équipe (`11`), équipe cyber, cellule d'analyse et de communication •• section (`13`). La légende garde un bouton pour revenir aux losanges du jeu sur les navires. **Ancienne règle, toujours disponible en option :** décision de Naully du 5 novembre 2026. Tous les navires sont des losanges propres au jeu (`drawDia`, `shipTone`) et non des symboles APP-6. Bleu : votre camp (frégate, patrouilleur, réparation, convoi). Gris : navire déclaré. Gris creux : contact sans transpondeur non identifié. Rouge : cible, jugée suspecte ou hostile. La couleur reflète ce que le joueur sait et ne révèle la vérité qu'au bilan. Attention : dans l'APP-6, le losange désigne l'identité hostile. Le reste ci-dessous concerne les avions, les sous-marins, les sites et les unités non navales.
+**Par défaut depuis le 10 novembre 2026 (décision de Naully, version 32) : symboles V2 de la charte pour les navires et contacts (`SYM.ships = 'v2'`, voir 5.23) ; le reste suit l'APP-6.** Ancien défaut du 7 novembre 2026, toujours disponible : symboles OTAN classiques APP-6 pour tout, navires compris (`SYM.ships = 'nato'`, `natoShips`, clé `seuil.shipsym`). Navires amis : FF frégate (`120204`), PG patrouilleur (`120502`), AR réparation (`130111`), convoi ami marchand (`140101`). Contacts : identité selon ce que le joueur sait (`shipSidc`), en attente, inconnu, suspect, neutre ou hostile. Échelons sur les unités hors carte (`ech`) : force spéciale Ø équipe (`11`), équipe cyber, cellule d'analyse et de communication •• section (`13`). La légende garde un bouton pour revenir aux losanges du jeu sur les navires. **Ancienne règle, toujours disponible en option :** décision de Naully du 5 novembre 2026. Tous les navires sont des losanges propres au jeu (`drawDia`, `shipTone`) et non des symboles APP-6. Bleu : votre camp (frégate, patrouilleur, réparation, convoi). Gris : navire déclaré. Gris creux : contact sans transpondeur non identifié. Rouge : cible, jugée suspecte ou hostile. La couleur reflète ce que le joueur sait et ne révèle la vérité qu'au bilan. Attention : dans l'APP-6, le losange désigne l'identité hostile. Le reste ci-dessous concerne les avions, les sous-marins, les sites et les unités non navales.
 
 Les symboles suivent l'APP-6(E), NATO Joint Military Symbology. Ils sont dessinés par la bibliothèque milsymbol 3.0.5 (licence MIT), intégrée à la page, avec des SIDC de 30 chiffres en version 13. Les fonctions sont `sidc`, `unitSidc`, `shipSidc`, `symOf`, `symURL`, `drawSym` et `showLegend`.
 
@@ -320,7 +320,7 @@ Le briefing propose deux modes, gardés dans `seuil.timer`. **Facile :** 90 s pa
 
 Inspiration, d'après des sources écrites seulement : DEFCON (carte vectorielle, pas de production, un niveau d'alerte central) et ICBM (ordre court : sélectionner, choisir, cliquer ; moins de micro-gestion). Aucun de ces jeux n'a été joué.
 
-- **Symboles :** la forme donne le milieu et la couleur le camp (`mark`, `markURL`). Losange : navire. Triangle : aéronef. Triangle pointe en bas : sous-marin. Carré : site. Rond : force spéciale. Décision de Naully du 5 novembre 2026 : les symboles APP-6 sont actifs par défaut (`SYM.app6`, `seuil.app6`), sauf pour les navires qui gardent les losanges. Les marques simples restent une option de la légende.
+- **Symboles :** la forme donne le milieu et la couleur le camp (`mark`, `markURL`). Losange : navire. Triangle : aéronef. Triangle pointe en bas : sous-marin. Carré : site. Rond : force spéciale. Décision de Naully du 5 novembre 2026 : les symboles APP-6 sont actifs par défaut (`SYM.app6`, `seuil.app6`). Depuis le 10 novembre 2026, les navires suivent les symboles V2 de la charte (5.23) ; OTAN et losanges restent des options. Les marques simples restent une option de la légende.
 - **Carte, afficher par exception :** cercle de capteur de l'unité sélectionnée seulement, trafic neutre en petits points, routes et avions civils dans la couche Trafic détaillé, étiquette d'un site ou d'un câble seulement s'il est endommagé ou si l'on zoome. Un seul bouton Couches.
 - **Niveau Simple (`guided`, par défaut) :** pas de diplomatie ni de réglage de posture, une seule action Vérifier, l'hypothèse la plus probable sans barres, une crise de moins en parallèle, panneau gauche réduit à Situations et Forces. La barre haute garde seuil, jetons, infrastructures et confiance ; options et services n'y paraissent qu'en cas de problème.
 - **Niveau Complet :** garde tous les systèmes. Les tests `stress.js` jouent ce niveau, sauf avec `SIMPLE=1`.
@@ -545,6 +545,31 @@ Demande de Naully du 9 novembre 2026 : « retravailler tout le RTS ». Portée c
 - La lisibilité de la variation des jauges.
 - Les scripts ne lisent pas l'interface : aucune de ces mesures ne dit si le jeu est plus clair ou plus intéressant.
 
+### 5.23 Retours de bêta et charte Veille satellitaire (version 32)
+
+Demande de Naully du 10 novembre 2026 : corriger le projet avec les retours d'un audit bêta externe (rapport du 10 novembre, 22 constats FL-001 à FL-022, établi sur la version 30 de `main`) et retravailler la charte graphique à partir du pack « SEUIL_FOGLINE_VEILLE_SATELLITAIRE_REFERENCES_v2 » (direction « Veille satellitaire », charte, tokens, maquettes, symboles NTDS-inspirés). Décisions de Naully du 10 novembre : symboles V2 par défaut, retour automatique à ×1, distinction des estimations au bilan, code sous licence MIT.
+
+**Corrigé en version 32**
+
+- **FL-001 (P0), chrono accéléré :** l'ouverture d'une crise à échéance ramène la vitesse à ×1 et coupe l'avance rapide, à tous les niveaux (`startCrisis`, message `l.x1`). Hors tutoriel.
+- **FL-002, estimation silencieuse :** un classement automatique est marqué (`f.cls.auto`, `classify(f,h,auto)`, journal `l.cls.auto`). Le bilan distingue la mention « auto » dans la colonne « Vous » et compte « Formulées par vous : X sur Y » (`end.younb`).
+- **FL-008, trois polices :** IBM Plex Sans retirée. Deux familles : Saira Semi Condensed (titres) et IBM Plex Mono (texte et données).
+- **FL-009, bandeau :** « EXERCICE FICTIF » passe à 28 px, ambre `#F3C05A`, texte `#030C15` 14 px Saira ; 22 px et une seule ligne à 390 px. Il n'est plus masqué sur téléphone.
+- **FL-010, cibles tactiles :** `.btn` et onglets à 44 px minimum sous 980 px ou en pointeur tactile.
+- **FL-012, charte :** tokens appliqués (fond `#030C15`, mer `#051B2B`, panneau `#071827`, surface `#102538`, bordure `#28536B`, texte `#EAF4FC`, cyan `#6AD9EF`, ambre `#F5BF54`, rouge `#EA6C68`, succès `#8DDCA9`), focus clavier ivoire `#E6DFC8`, `prefers-reduced-motion`, couleurs de carte (`VCOL`) alignées.
+- **FL-013, tactile :** appui long (550 ms, sans déplacement) sur la carte = clic droit, menu contextuel.
+- **FL-014, Échap :** n'ouvre plus le menu ; M et le bouton ☰ restent.
+- **FL-022, licence :** code sous MIT (`LICENSE`), README harmonisé (EN et FR) ; contenus et données tiers crédités dans `NOTICE.md`.
+- Déjà corrigé en version 31 (l'audit portait sur la 30) : seuil du raid de `d3` (FL-005 en partie), hiérarchie du HUD et services par exception (FL-011 en partie), conseil sur demande (FL-003 en partie).
+
+**Symboles de contacts V2 (`SYM.ships='v2'`, par défaut)**
+
+D'après les pictogrammes NTDS-inspirés du pack (dessinés pour SEUIL, non homologués APP-6/NTDS). Le statut CONNU du joueur donne la forme et la couleur : vos unités navales et navires amis, carré cyan `#6AD9EF` à point central ; neutre identifié (AIS), carré `#7FD1F4` ; inconnu ou en attente, cercle `#C8D3DC` ; suspect, losange tireté `#F2B544` ; hostile confirmé, double losange `#E35A5A`. Fonctions `drawV2`, `v2St`, `v2URL`, `v2Ships`. Les avions, sous-marins, sites et unités hors carte restent en APP-6. Réglages : menu « Navires » à trois choix (symboles du jeu, OTAN, losanges) et bouton de la légende ; `seuil.shipsym` ∈ v2, nato, dia. La légende décrit les cinq états (`leg.d2`, `leg.v2.*`).
+
+**Constats non traités de l'audit** (voir section 13) : FL-003 (force du conseil, décision 6/16), FL-004 à 006 (équilibre, mesures à relancer sur de gros échantillons), FL-007 (grille de navigation contre côte fine, défaut 14), FL-015 à 021 (pédagogie du score, parcours progressif, poids de la page, sonar, tests E2E, mesure de l'apprentissage, validation APP-6).
+
+**Non vérifié :** aucun test avec de vrais joueurs ; la lisibilité projetée, le contraste WCAG du rendu réel et le confort tactile restent à observer. Mesures et tests : voir section 8, résultats du 10 novembre 2026.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -567,6 +592,7 @@ Demande de Naully du 9 novembre 2026 : « retravailler tout le RTS ». Portée c
 | Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
+| Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships` |
 | Tests | `window.__S`, à garder à la fin du script |
 
 **Principe clé :** `crisisActions`, `shipActions` et `dipActions` sont la seule source des actions possibles. L'interface et les scripts lisent la même liste. Ne crée jamais un bouton ou une règle de test qui contourne cette liste.
@@ -657,6 +683,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `labo` | Chaque mécanique isolée | Chaque système sert à quelque chose et reste jouable |
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
+
+**Résultats du 10 novembre 2026, version 32 (retours de bêta, charte), niveau Complet, 2 parties par scénario :** omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. Identique à la version 31 : les changements sont d'interface, de charte et de règles de temps que les scripts ne ressentent pas. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 500, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple) : 5,2 crises par partie, première crise à 68 s, 71 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`, 74 × 1) : 702 et 66 % au niveau Simple, 683 et 78 % au niveau Complet ; référence 730 et 70 %, puis 720 et 73 %. Tests d'interface : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim 844`, `uim2`, `uia` et `uic` sans erreur ni texte manquant ; `ui5`, `uimenu`, `uim`, `uim 844` et `uim2` relancés sur l'assemblage final après le correctif du bandeau mobile.
 
 **Résultats du 9 novembre 2026, version 31 (passe complète), niveau Complet, 2 parties par scénario :** omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. La référence dépasse la cible de 50 à 70 %, comme depuis la version 27. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 500, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple, script) : 5,2 crises par partie contre 4,6 en version 30 ; première crise à 68 s contre 86 s ; 71 % du temps sans crise ouverte contre 76 % (le script décide en 5 s). Tests d'interface : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim2`, `uia` et `uic` sans erreur ni texte manquant.
 
@@ -765,6 +793,8 @@ Une évolution est terminée si :
 16. **Conseil sur demande (version 31) :** au niveau Simple, le conseil n'apparaît plus qu'à la demande, avec un réglage « Toujours affiché » dans le menu. Garder ce défaut, ou revenir au conseil permanent. Lié à la décision 6.
 17. **Verdict « Victoire fragile » (version 31) :** mission réussie avec un CGC de 40 à 54. Garder ce libellé intermédiaire, ou revenir à cinq verdicts.
 18. **Rythme (version 31) :** la correction de `S.lastC` donne environ une demi-crise de plus par partie. Garder l'écart de 60 s entre deux crises, ou le régler après observation de vrais joueurs.
+20. **Symbologie V2 (version 32) :** les symboles de contacts de la charte (carré, cercle, losange tireté, double losange) sont le défaut. Ils sont originaux et non homologués : avant diffusion institutionnelle, les faire valider avec les choix APP-6 (décision liée au défaut 15).
+21. **Rouge accessible :** la charte prévoit `#FFABA7` pour du texte rouge sur surfaces actives ; appliqué nulle part pour l'instant, le rouge `#EA6C68` passe le seuil AA sur les panneaux. À trancher si des textes rouges apparaissent sur des fonds clairs.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
 
 ### Défauts connus du jeu
@@ -802,14 +832,16 @@ Une évolution est terminée si :
 24. Réagir à tout contact inconnu a fait mieux que la référence sur 16 parties (666 contre 611), mais presque pareil sur 74 scénarios × 1 (717 et 77 % contre 708 et 74 %). Trois réactions sur quatre visent alors un civil. Écart non significatif : à observer avec des joueurs.
 25. La zone d'exclusion n'a qu'un prix de tension (+0,15). Elle marque surtout des civils (environ 7 sur 10 dans les essais), ce qui est voulu, mais ne coûte rien en relations.
 26. Le groupe tactique améliore le script (+38 points, +10 points de réussite sur 48 parties). Il pourrait devenir le réglage évident : à observer avec des joueurs avant de lui donner un coût.
-27. Le menu contextuel n'existe pas au toucher (pas d'appui long). Sur téléphone, les mêmes ordres restent dans la fiche d'unité.
+27. Résolu le 10 novembre 2026 (version 32) : appui long de 550 ms sur la carte = clic droit. Les mêmes ordres restent aussi dans la fiche d'unité.
 28. Au fort zoom, la navigation reste calculée sur une grille d'environ 12 km : un navire peut sembler couper un îlot ou une pointe des côtes détaillées.
 29. Corrigé le 7 novembre (version 29) : l'omniscient échouait sur `ib` à cause d'une erreur du script, pas du jeu. La référence reste à 71 %, au-dessus de la cible.
-30. Échap ouvre le menu quand rien n'est sélectionné : un joueur qui appuie plusieurs fois pour annuler peut l'ouvrir sans le vouloir.
+30. Résolu le 10 novembre 2026 (version 32) : Échap n'ouvre plus le menu (FL-014). M et le bouton ☰ restent.
 31. Un objectif de présence peut être rempli sans aucun ordre : dans « Port sous tension », l'unité part déjà dans la zone. La première phase ne demande alors aucune décision. Dans `l11`, ne donner aucun ordre réussit une partie sur deux (4 parties, versions 30 et 31) : présence, défense automatique et consignes suffisent.
 32. Face à une cyberattaque, « Chasser l'intrus » réussit quelle que soit la vérité (table `EFF`). Tant que l'équipe cyber a des emplois, ce choix n'est pas un dilemme.
 33. Une mission peut être réussie en perdant la plupart des crises, si les tâches et les contrôles tiennent. Le verdict « Victoire fragile » le signale, mais le score reste élevé.
 34. Même avec la version 31, le script passe 71 % du temps sans crise ouverte. Un joueur réel décide plus lentement, mais les temps calmes restent longs sans l'avance rapide.
+35. Audit bêta du 10 novembre (sur la version 30) : constats non traités en version 32, à mesurer ou décider : conseil trop fort (FL-003), preuves trop peu décisives dans certaines missions (FL-004), scénarios trop durs (FL-005, en partie corrigé en v31), mécaniques à faible effet (FL-006), navigation plus grossière que la côte affichée (FL-007, défaut 14), pédagogie du score (FL-015), parcours progressif après le tutoriel (FL-016), poids de la page ~8 Mo (FL-017), sonar (FL-018), tests E2E sans injection (FL-019), mesure de l'apprentissage (FL-020), validation APP-6 (FL-021).
+36. Le retour automatique à ×1 (FL-001) rallonge les parties jouées surtout en ×4 : effet sur le confort à observer avec de vrais joueurs.
 
 ### Absent de cette version
 

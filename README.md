@@ -98,7 +98,7 @@ node uiqx.js                                   # quick exercise and fire allocat
 - IBM Plex and Saira, loaded from Google Fonts
 - Sound: CC0-declared recordings from Freesound and other sources, listed in `docs/third-party/SOUND-CREDITS.md`. Some licences still need confirming before wider distribution
 
-Licences are in `docs/third-party/` and `NOTICE.md`. The licence for this project's own code and content has not been chosen yet, so all rights are reserved until one is added.
+The project's own code is released under the MIT licence (see `LICENSE`). Third-party components, map data (Natural Earth, public domain; detailed coastlines © OpenStreetMap contributors, ODbL) and sounds have their own licences, listed in `NOTICE.md` and `docs/third-party/`; some sound licences still need confirming before wider distribution.
 
 ---
 
@@ -153,3 +153,5 @@ Ce prototype sert à tester les mécaniques. Les scripts automatiques vérifient
 Les scores et les jauges, dont le centre de gravité cognitif, sont des modèles de jeu, pas des mesures scientifiques. Le jeu entraîne un raisonnement ; ce n'est pas une aide à la décision et il n'évalue ni des personnes ni des unités. Le cyber, le sabotage, le brouillage et la désinformation sont décrits par leurs effets sur la décision, jamais par des techniques.
 
 Le jeu s'appuie sur l'article de Naully Nicolas « Le centre de gravité cognitif : la guerre cognitive à l'ère de l'IA, de Syracuse aux algorithmes », Revue diplomatique n° 28, IEGA, 2026.
+
+Le code du projet est sous licence MIT (fichier `LICENSE`). Les composants tiers, les données de carte et les sons ont leurs propres licences, listées dans `NOTICE.md` et `docs/third-party/`.

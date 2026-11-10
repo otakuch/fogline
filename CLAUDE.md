@@ -570,6 +570,46 @@ D'après les pictogrammes NTDS-inspirés du pack (dessinés pour SEUIL, non homo
 
 **Non vérifié :** aucun test avec de vrais joueurs ; la lisibilité projetée, le contraste WCAG du rendu réel et le confort tactile restent à observer. Mesures et tests : voir section 8, résultats du 10 novembre 2026.
 
+### 5.24 Charte Veille satellitaire complète (version 33)
+
+Demande de Naully du 10 novembre 2026 : appliquer les pans restants du pack V2, gardé tel quel. Périmètre choisi : écrans de jeu, pictogrammes pour tout, téléphone et salle de cours, carte et accessibilité. Aucune règle de jeu ne change.
+
+**Écrans de jeu**
+
+- **Barre haute :** cinq jauges permanentes avec libellé, valeur et barre segmentée (`.gb`, identifiants `gSeuil`, `gTok`, `gInfra`, `gCgc`, `gMor`) : escalade (tension / 5,6), attention (jetons), infrastructures, confiance, moral. Le moral reste affiché au niveau Simple. La bordure gauche garde l'état (ok, alerte, critique).
+- **Compte à rebours (`hms`, `renderClock`) :** format `H-mm:ss`, mot d'état NORMAL, ATTENTION ou URGENT (`dc.s1` à `dc.s3`), plus de clignotement.
+- **Dossier (`dosHead`, `DTAB`, action `dtab`) :** en-tête « Dossier de crise · identifiant », pastille d'échéance, onglets Synthèse, Hypothèses, Preuves, Décisions, Historique (Synthèse, Preuves, Décisions au niveau Simple ; aucun onglet au tutoriel). Synthèse montre tout sauf l'historique. Sections `.dsec[data-s]` filtrées par `#rightC[data-tab]`.
+- **Preuves (`evBlocks`, `relN`) :** bloc P-01, source, texte, tour et provenance, fiabilité ÉLEVÉE, MOYENNE ou FAIBLE avec 3, 2 ou 1 barres. La fiabilité vient de la valeur nominale de la source (`SRC[kind].r`, seuils 0,85 et 0,7), jamais des malus cachés de la partie.
+- **Décisions :** cartes numérotées D1, D2 ; risque d'escalade chiffré (`coa.rn`, part de la tension maximale 5,6) à la place de faible, moyenne, forte. Hypothèses numérotées H1 à H3.
+- **Historique (`histHtml`) :** ouverture, preuves reçues, estimation (formulée ou automatique), décision, par tour. Niveau Complet.
+- **Bilan (`showEnd`, classes `.endx`, `.e-*`) :** bandeau de verdict coloré, score et étoiles, puis trois colonnes : évolution des indicateurs (départ → fin, `S.ind0` capturé au premier affichage) et résultats opérationnels ; chronologie des décisions et encadré « Révélation du scénario · vérité finale » ; estimations et réalité, puis « À retenir ». Une colonne sous 1100 px.
+
+**Pictogrammes V2 pour tout (`V2D`, `v2Glyph`, `V2K`, `V2S`)**
+
+Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-marin, aéronef, groupe aérien, missile, port, infrastructure, station de communication, navire de soutien, convoi. Tracés repris du pack (dessinés pour SEUIL, non homologués). S'appliquent aux unités, contacts, sites, convoi, pistes d'essaim et de salve, missiles, vols civils, incursion et sous-marin. Sans pictogramme dans le pack, la force spéciale et les unités hors carte gardent l'APP-6. Le réglage « Symboles » du menu remplace « Navires » ; « Symboles du jeu » vaut pour tout.
+
+**Téléphone et salle de cours**
+
+- **Navigation basse (`renderNav`, `MV`, action `mnav`, `#mnav`) :** sous 980 px, Carte, Crises, Dossier, Forces, et Coalition au niveau Complet. Une seule vue sous la carte à la fois (`body[data-mv]`). Toute sélection ouvre la vue Dossier ; une crise qui s'ouvre l'affiche donc seule.
+- **Mode présentation (`PRES`, `seuil.pres`, `body.pres`) :** texte et panneaux agrandis de 20 % par `zoom`, carte inchangée, valeurs inchangées.
+
+**Carte et accessibilité**
+
+- **Légende sur la carte (`renderMleg`, `#mleg`, couche `LAY.leg`) :** statuts connus et motifs de trait (câble plein, trajet en tirets, zone incertaine en pointillés). Réduite aux quatre statuts sur téléphone.
+- **Sélection :** liseré cyan ; le rouge reste réservé à l'alerte.
+- **Mode daltonisme (`CVD`, `seuil.cvd`, `body.cvd`, `applyA11y`) :** vert remplacé par bleu ciel `#56B4E9`, rouge par vermillon `#F0794A` ; formes et libellés inchangés.
+- **Rouge accessible :** tout texte rouge utilise `--redT` (`#FFABA7`) ; `--red` reste pour les bordures et les remplissages.
+
+**Écarts avec la charte, imposés par le jeu**
+
+- Onglet Synthèse : il montre aussi les décisions, pour ne pas ajouter un clic sous compte à rebours.
+- Pastille « Option prudente » non reprise : le jeu a déjà « Conseillé », affiché à la demande.
+- Horodatage UTC des preuves : remplacé par le tour de jeu, pour ne pas inventer une heure.
+- Tailles de texte : corps à 13 px (la charte demande 14 px) pour tenir à 390 px ; le mode présentation compense en salle.
+- Boutons « Planifier » et « Comparer » des maquettes : sans équivalent dans le jeu.
+
+**Non vérifié :** aucun vrai joueur ; lisibilité des pictogrammes de 11 px à distance ; le mode daltonisme n'a été contrôlé ni par simulation ni par une personne concernée ; `zoom` du mode présentation testé sous Chromium seulement.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -592,7 +632,8 @@ D'après les pictogrammes NTDS-inspirés du pack (dessinés pour SEUIL, non homo
 | Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
-| Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships` |
+| Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
 
 **Principe clé :** `crisisActions`, `shipActions` et `dipActions` sont la seule source des actions possibles. L'interface et les scripts lisent la même liste. Ne crée jamais un bouton ou une règle de test qui contourne cette liste.
@@ -794,7 +835,9 @@ Une évolution est terminée si :
 17. **Verdict « Victoire fragile » (version 31) :** mission réussie avec un CGC de 40 à 54. Garder ce libellé intermédiaire, ou revenir à cinq verdicts.
 18. **Rythme (version 31) :** la correction de `S.lastC` donne environ une demi-crise de plus par partie. Garder l'écart de 60 s entre deux crises, ou le régler après observation de vrais joueurs.
 20. **Symbologie V2 (version 32) :** les symboles de contacts de la charte (carré, cercle, losange tireté, double losange) sont le défaut. Ils sont originaux et non homologués : avant diffusion institutionnelle, les faire valider avec les choix APP-6 (décision liée au défaut 15).
-21. **Rouge accessible :** la charte prévoit `#FFABA7` pour du texte rouge sur surfaces actives ; appliqué nulle part pour l'instant, le rouge `#EA6C68` passe le seuil AA sur les panneaux. À trancher si des textes rouges apparaissent sur des fonds clairs.
+21. **Rouge accessible :** résolu en version 33, tout texte rouge utilise `#FFABA7`.
+22. **Écarts avec la charte (version 33) :** onglet Synthèse qui montre aussi les décisions, pas de pastille « Option prudente », tour de jeu au lieu de l'heure UTC, corps à 13 px (5.24). Les garder, ou s'aligner strictement sur le pack.
+23. **Force spéciale et unités hors carte :** elles gardent l'APP-6 faute de pictogramme dans le pack. Faire dessiner les pictogrammes manquants, ou garder ce mélange.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
 
 ### Défauts connus du jeu
@@ -842,6 +885,8 @@ Une évolution est terminée si :
 34. Même avec la version 31, le script passe 71 % du temps sans crise ouverte. Un joueur réel décide plus lentement, mais les temps calmes restent longs sans l'avance rapide.
 35. Audit bêta du 10 novembre (sur la version 30) : constats non traités en version 32, à mesurer ou décider : conseil trop fort (FL-003), preuves trop peu décisives dans certaines missions (FL-004), scénarios trop durs (FL-005, en partie corrigé en v31), mécaniques à faible effet (FL-006), navigation plus grossière que la côte affichée (FL-007, défaut 14), pédagogie du score (FL-015), parcours progressif après le tutoriel (FL-016), poids de la page ~8 Mo (FL-017), sonar (FL-018), tests E2E sans injection (FL-019), mesure de l'apprentissage (FL-020), validation APP-6 (FL-021).
 36. Le retour automatique à ×1 (FL-001) rallonge les parties jouées surtout en ×4 : effet sur le confort à observer avec de vrais joueurs.
+37. Version 33 : sur téléphone, une seule vue sous la carte à la fois. Le journal et les contacts restent accessibles par les onglets du panneau, pas par la barre basse. À observer : un joueur trouve-t-il le dossier, et revient-il aux crises.
+38. Version 33 : les pictogrammes mesurent environ 11 px dans un cadre de 22 px. Leur lecture à distance, sur projecteur, n'est pas vérifiée.
 
 ### Absent de cette version
 

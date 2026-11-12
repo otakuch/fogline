@@ -61,7 +61,7 @@ const { chromium } = require('playwright');
     o.ew = /brouillé|jammed/.test(await p.locator('#right').innerText()); need(o.ew, tag + ' état « brouillé » dans le dossier');
     if (!mob) { await st(p, () => { __S.s.sel = __S.s.units.find(x => x.id === 'DDG-1'); __S.redraw(); __S.setView('tac'); }); await p.waitForTimeout(300); await p.screenshot({ path: D + '/v35-brouillage.png' }); await st(p, () => { __S.setView('tac'); __S.s.sel = window.__z; __S.redraw(); }); await p.waitForTimeout(200); }
     await p.click('#right [data-a=act][data-v=cslow]'); await p.waitForTimeout(200);
-    o.cyb = await st(p, () => { const S = __S.s, z = window.__z; return [S.cybN, S.teamUses < S.teamUsesMax, z.slowT > S.t ? 'ralenti' : 'sans effet', S.cybDet || 0, S.pendingK.length]; }); need(o.cyb[0] === 1 && o.cyb[1], tag + ' cyberattaque lancée : ' + o.cyb);
+    o.cyb = await st(p, () => { const S = __S.s, z = window.__z; return [S.cybN, S.teamUses < S.teamUsesMax, z.slowT > S.t ? 'ralenti' : 'sans effet', S.cybDet || 0, S.cybQ || 0]; }); need(o.cyb[0] === 1 && o.cyb[1], tag + ' cyberattaque lancée : ' + o.cyb);
     // 5. crise « cyberattaque révélée » : ouverture, coût immédiat, réponses, bilan
     o.rev = await st(p, () => { const A = __S, S = A.s, cs = S.cs; S.tokens = 4; const c = A.startCrisis('expose'); S.running = false; S.sel = c; window.__c = c; A.redraw(); return [c.title, cs - S.cs, c.hyp.join(',')]; }); need(o.rev[1] === 4 && o.rev[2] === 'etaye,accus,tiers', tag + ' crise ouverte, opinion touchée : ' + o.rev);
     await p.waitForTimeout(300); if (mob) { await p.click('#mnav [data-v=dos]'); await p.waitForTimeout(150); }

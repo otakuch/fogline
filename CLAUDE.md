@@ -84,6 +84,8 @@ seuil-projet/
     └── dipm.js             mesures de diplomatie par stratégie
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
+    └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
     └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
 ```
 
@@ -757,6 +759,57 @@ Les décisions plus anciennes de la section 13 restent ouvertes.
 
 **Mesures après ces corrections :** voir section 8.
 
+### 5.28 Vues, ordres par domaine, guerre électronique et cyberattaque révélée (version 35)
+
+Demande de Naully du 12 novembre 2026, avec deux vidéos. « Mode macro » : réponse de Naully « Les deux » (vue d'ensemble et vue tactique, plus des ordres par domaine). Les deux vidéos sont des tutoriels du jeu *Sea Power* (version 0.1.0.x), analysés par images toutes les 25 s ; le commentaire n'a pas été transcrit et le jeu n'a pas été joué. Retenu de la vidéo sur la guerre électronique : un brouilleur agit dans un secteur dessiné sur la carte, et l'unité qui émet se dévoile. Aucune valeur ni aucun nom de système n'est repris. Existaient déjà : la détection des émissions (cercles de signal, `emitSignal`) et le brouillage adverse (crise `jam`). Branche `v34-fleet-command`, non fusionnée dans `main`.
+
+**Vues (`VIEW`, `setView`, `viewFree`, `tacPt`, `TAC_R`, `renderMacro`)**
+
+- **Vue d'ensemble**, bouton de la colonne de zoom ou touche V : tout le théâtre, trafic déclaré masqué, crises nommées avec leur délai, bandeau par domaine (nombre d'unités, dernier ordre) qui ouvre l'onglet Forces sur ce domaine. Le même bouton rend la caméra précédente.
+- **Vue tactique**, bouton ou touche T : la carte se centre sur la sélection (unité, contact ou crise), zoome sur un rayon d'environ 190 et la suit. Cercles de distance à 50, 100 et 150, cercle d'identification à vue, cercle de brouillage, capteurs de toutes les unités. Sans sélection, elle s'explique et ne s'active pas.
+- Déplacer la carte quitte la vue ; zoomer quitte la vue d'ensemble. Affichage seulement : aucune règle n'en dépend. Disponibles aux deux niveaux.
+
+**Ordres par domaine (`DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, action `domo`)**
+
+- Dans l'onglet Forces, sous l'onglet Terre, Mer ou Air. Terre : rallier les crises, tenir la position. Mer : rallier les crises, protéger les sites, tenir la position. Air : rallier les crises, rappeler, tenir la position.
+- Ils ne touchent que les unités libres : ni en visite, secours, action directe, pression, escorte ou retour, ni membres d'un groupe, ni câblier, ni allié, ni hélicoptère embarqué.
+- « Rallier les crises » envoie chaque unité vers la crise ouverte ou le contact sans transpondeur non identifié le plus proche, une cible différente par unité tant qu'il en reste. À terre, seules les crises proches d'un site comptent.
+- Ce sont des déplacements ordinaires (`orderMove`) : gratuits, soumis aux mêmes retards. Pas au tutoriel. Le bilan compte les ordres donnés.
+
+**Brouillage (`jamShip`, `JAM_R` 150, `UT[k].jam`, action `jam`)**
+
+- Destroyer et chasseurs portent un brouilleur. Niveau Complet, contact sans transpondeur visible, unité à moins de 150 : 1 jeton, posture Contraindre.
+- Pendant 30 s, un navire armé brouillé ne vise plus qu'à 110 au lieu de 175 et ses tirs perdent 0,2 de chance. L'unité qui brouille repasse en radar actif : l'adversaire la voit. Secteur violet sur la carte.
+- Tension +0,05 contre un navire armé, saboteur ou fantôme. Contre un autre navire : −1, −2 et −1 sur les piliers, sans message, révélé au bilan (le journal ne dit pas la vérité).
+
+**Cyberattaque sur un contact (`cyberStrike`, `CYB`, actions `blind` et `cslow`)**
+
+- Aveugler (25 s sans tir, existant) ou ralentir (vitesse × 0,5 pendant 40 s, niveau Complet). Équipe cyber, 1 jeton, posture Contraindre.
+- **Changement de règle :** l'aveuglement réussissait toujours. La cyberattaque réussit maintenant avec une chance de 0,75, 0,85 si le contact est identifié.
+- **Repérage :** chance de 0,3, +0,2 si l'attaque a échoué, +0,25 si la cible n'était ni navire armé, ni saboteur, ni fantôme. Repérée, elle ouvre une crise publique dans 55 % des cas (toujours si la cible n'était pas hostile), 20 à 40 s plus tard ; sinon tension +0,2 et −2 en cohésion sociale. La carte de décision affiche « Repérage : 30 % au moins ».
+- Garde-fou 3 : effets seulement, aucune technique.
+
+**Crise `expose`, « Cyberattaque révélée »**
+
+- Hypothèses : accusation étayée (40 %), accusation sans preuve (35 %), révélation par un tiers (25 %). Délai 60 s, compte à rebours de décision. À l'ouverture : −2, −4 et −1 sur les piliers (−6 en cohésion sociale si la cible n'était pas hostile).
+- Vérifier : recoupement de sources, partenaire. Répondre : assumer et expliquer, démentir, ne pas commenter (gratuit).
+- Issues (`EFF.expose`) : assumer 0,9 / 0,3 / 0,8 ; démentir 0 / 0,8 / 0,2 ; ne pas commenter 0,3 / 0,7 / 0,5 ; sans réponse 0 / 0,4 / 0,1. Assumer une accusation sans preuve donne à l'adversaire l'aveu qui lui manquait.
+- Prise en charge par le conseil et les scripts (`deepPick`), par le bilan « Décision ou chance ? » (`DQT`).
+
+**Bilan et fiches :** cyberattaques, repérées et crises publiques ; brouillages, dont sur un navire non hostile ; ordres par domaine. Dossier d'un contact : ligne « Guerre électronique » (brouillé, aveuglé, ralenti). Fiche d'unité : brouilleur.
+
+**Corrigé au passage :** sur téléphone, les boutons +, − et Couches étaient sous la carte et ne recevaient pas les clics.
+
+**Mesures du 12 novembre 2026, scripts seulement**
+
+- Équilibre, niveau Complet, 2 parties par scénario : identique à la version 34 corrigée (section 8). Les scripts de référence n'emploient pas ces mécaniques.
+- Bancs isolés : 200 cyberattaques par cas. Contre un navire armé : effet 74 %, repérée 34 %, crise publique 17 %. Contre un navire civil : effet 70 %, repérée 62 %, crise publique 62 %. Brouillage : un navire armé à 140 du destroyer tire dans les 25 s 8 fois sur 8 sans brouillage, 0 fois sur 8 avec.
+- @@EW@@
+- Tests : `uiv35.js` (vrais clics, FR 1440 et EN 390, niveaux Complet et Simple) et les 21 autres tests d'interface sans erreur ni texte manquant ; clics au hasard sans blocage.
+- Un raid de « Double prise » joué pas à pas (`pt34.js`) : le navire armé tire à 175 alors que le brouilleur porte à 150 ; il faut s'approcher ou envoyer les chasseurs.
+
+**Non vérifié :** aucun vrai joueur. L'utilité des deux vues et des ordres par domaine n'est mesurée par aucun script. Le dilemme de la crise publique n'a été lu que sur ses tables. Le commentaire des vidéos n'a pas été entendu.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -781,6 +834,7 @@ Les décisions plus anciennes de la section 13 restent ouvertes.
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 35 | `VIEW`, `setView`, `viewFree`, `tacPt`, `renderMacro`, `DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, `JAM_R`, `CYB`, `ewHost`, `cyberStrike`, `jamShip`, `ewHtml` |
 | Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
@@ -863,6 +917,7 @@ node uid.js                                        # règles diplomatiques, dema
 node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
 node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
+node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -877,7 +932,9 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
-**Résultats du 12 novembre 2026, version 34 (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
+**Résultats du 12 novembre 2026, version 35 et version 34 après les corrections des parties jouées, niveau Complet, 2 parties par scénario :** omniscient 788 et 92 %, référence 741 et 82 %, sans aucun tir 740 et 81 %, tir sans vérifier 464 et 24 % avec 45 % de seuil 1, saturation 296 et 3 %, aucun ordre 275 et 3 %, aucune force 188 et 0 %. Les deux versions donnent les mêmes chiffres : les scripts n'emploient ni brouillage ni cyberattaque. Omniscient à 0 % sur `e3` et `n1` en 2 parties, puis 6 réussites sur 6 sur un autre tirage (`scr.js e3,n1,d3 6`) : effet d'échantillon. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`) : 4,9 crises par partie, première crise à 71 s, 76 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`) : 747 et 82 % au niveau Simple, 708 et 78 % au niveau Complet ; référence 767 et 80 %, puis 745 et 74 %. Détail de la version 35 : section 5.28.
+
+**Résultats du 12 novembre 2026, version 34 avant ces corrections (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
 
 **Résultats du 10 novembre 2026, version 33 (charte complète) puis branche `dq-bilan-decision-chance`, niveau Complet, 2 parties par scénario :** omniscient 795 et 94 %, référence 728 et 74 %, tir sans vérifier 434 et 20 %, aucun ordre 275 et 2 % (moyennes par partie, tutoriel exclu). Les 2 100 parties du volet `exploit` donnent le même score et la même issue en version 32, en version 33 et avec le bilan « Décision ou chance ? » : ni la charte ni ce bilan ne touchent au moteur. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 414, aucun blocage, aucun texte manquant, aucune erreur. `stress.js dq` : voir 5.25. Tests d'interface sur la branche du bilan : `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
 
@@ -1005,6 +1062,13 @@ Une évolution est terminée si :
 30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs. **Tranché le 12 novembre 2026 :** pas de durcissement avant des essais avec de vrais joueurs.
 31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet. **Tranché le 12 novembre 2026 :** l'hélicoptère reste au niveau Complet.
 
+32. **Cyberattaque qui peut échouer (version 35) :** l'aveuglement réussissait toujours ; il échoue maintenant une fois sur quatre et peut être repéré. Valider ce changement de règle, ou garder l'ancien effet certain.
+33. **Chances de repérage (version 35) :** 30 % au moins, puis crise publique dans 55 % des cas. Garder ces valeurs et leur affichage au joueur, ou les cacher.
+34. **Navire fantôme (version 35) :** compté comme cible légitime d'un brouillage ou d'une cyberattaque, avec le navire armé et le saboteur. Confirmer.
+35. **Ordres par domaine (version 35) :** gratuits, sans charge de coordination. Les garder ainsi, ou leur donner un coût au niveau Complet.
+36. **Brouillage (version 35) :** réservé au niveau Complet, comme le ralentissement. L'ouvrir au niveau Simple, ou non.
+37. **Mode Réaliste (5.18) :** la cyberattaque peut viser un contact mal identifié et compte alors comme une attaque à tort. Cohérent avec la règle « cibles militaires seulement », à confirmer.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1058,6 +1122,11 @@ Une évolution est terminée si :
 41. Version 34 : la batterie côtière défend tout objet visé à moins de 120, y compris un navire au large proche de la côte. Simplification de jeu.
 42. Version 34 : l'hélicoptère n'a pas de limite de sorties, seulement 45 s de remise en condition. À régler si les joueurs en abusent.
 43. Version 34 : les scripts de test n'emploient pas les formations ni l'hélicoptère de reconnaissance. Leur valeur n'est pas mesurée.
+
+44. Version 35 : le brouilleur porte moins loin (150) que le tir d'un navire armé (175). Il faut s'approcher sous le feu ou envoyer les chasseurs. À observer.
+45. Version 35 : la crise publique s'ouvre 20 à 40 s après le repérage ; une cyberattaque lancée dans la dernière minute n'a donc presque jamais de suite publique.
+46. Version 35 : « assumer » reste la meilleure réponse sans preuve (issue attendue 0,67 contre 0,49 et 0,33). Le dilemme ne naît que si le joueur vérifie.
+47. Version 35 : les ordres par domaine et les deux vues ne sont employés par aucun script.
 
 ### Absent de cette version
 

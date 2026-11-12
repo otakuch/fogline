@@ -834,6 +834,10 @@ Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « P
 
 **Non vérifié :** aucun vrai joueur. Lisibilité d'un dôme de 26 px sur projecteur ; deux tirs d'une même salve partent presque du même point et se recouvrent au début. Les teintes de la planche diffèrent un peu de celles de la charte (5.23) et le mode daltonisme ne les change pas.
 
+### 5.30 Décisions validées le 12 novembre 2026 (versions 35 et 36)
+
+Naully : « valide toutes les décision ». Lu comme la validation des choix déjà en place pour les décisions 32 à 40 : cyberattaque qui peut échouer et être repérée, chances de repérage gardées et affichées, navire fantôme cible légitime, ordres par domaine gratuits, brouillage et ralentissement au niveau Complet, attaque à tort sur un contact mal identifié, teintes de la planche pour les pistes, piste incertaine sans règle nouvelle, drones d'essaim avec le pictogramme d'aéronef. Aucun code ne change. La fusion dans `main`, qui met à jour le jeu public, n'est pas une de ces décisions de règle : elle n'a pas été faite.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1088,16 +1092,16 @@ Une évolution est terminée si :
 30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs. **Tranché le 12 novembre 2026 :** pas de durcissement avant des essais avec de vrais joueurs.
 31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet. **Tranché le 12 novembre 2026 :** l'hélicoptère reste au niveau Complet.
 
-32. **Cyberattaque qui peut échouer (version 35) :** l'aveuglement réussissait toujours ; il échoue maintenant une fois sur quatre et peut être repéré. Valider ce changement de règle, ou garder l'ancien effet certain.
-33. **Chances de repérage (version 35) :** 30 % au moins, puis crise publique dans 55 % des cas. Garder ces valeurs et leur affichage au joueur, ou les cacher.
-34. **Navire fantôme (version 35) :** compté comme cible légitime d'un brouillage ou d'une cyberattaque, avec le navire armé et le saboteur. Confirmer.
-35. **Ordres par domaine (version 35) :** gratuits, sans charge de coordination. Les garder ainsi, ou leur donner un coût au niveau Complet.
-36. **Brouillage (version 35) :** réservé au niveau Complet, comme le ralentissement. L'ouvrir au niveau Simple, ou non.
-37. **Mode Réaliste (5.18) :** la cyberattaque peut viser un contact mal identifié et compte alors comme une attaque à tort. Cohérent avec la règle « cibles militaires seulement », à confirmer.
+32. **Cyberattaque qui peut échouer (version 35) :** l'aveuglement réussissait toujours ; il échoue maintenant une fois sur quatre et peut être repéré. Valider ce changement de règle, ou garder l'ancien effet certain. **Tranché le 12 novembre 2026 :** l'aveuglement peut échouer et être repéré.
+33. **Chances de repérage (version 35) :** 30 % au moins, puis crise publique dans 55 % des cas. Garder ces valeurs et leur affichage au joueur, ou les cacher. **Tranché le 12 novembre 2026 :** valeurs gardées et affichées au joueur.
+34. **Navire fantôme (version 35) :** compté comme cible légitime d'un brouillage ou d'une cyberattaque, avec le navire armé et le saboteur. Confirmer. **Tranché le 12 novembre 2026 :** le navire fantôme est une cible légitime.
+35. **Ordres par domaine (version 35) :** gratuits, sans charge de coordination. Les garder ainsi, ou leur donner un coût au niveau Complet. **Tranché le 12 novembre 2026 :** ordres par domaine gratuits.
+36. **Brouillage (version 35) :** réservé au niveau Complet, comme le ralentissement. L'ouvrir au niveau Simple, ou non. **Tranché le 12 novembre 2026 :** brouillage et ralentissement réservés au niveau Complet.
+37. **Mode Réaliste (5.18) :** la cyberattaque peut viser un contact mal identifié et compte alors comme une attaque à tort. Cohérent avec la règle « cibles militaires seulement », à confirmer. **Tranché le 12 novembre 2026 :** une cyberattaque sur un contact mal identifié compte comme une attaque à tort.
 
-38. **Teintes des pistes (version 36) :** celles de la planche (`#FF8080`, `#FFFF80`, `#80E0FF`), un peu différentes de la charte Veille satellitaire. Les garder, ou les aligner sur la charte et sur le mode daltonisme.
-39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider.
-40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non.
+38. **Teintes des pistes (version 36) :** celles de la planche (`#FF8080`, `#FFFF80`, `#80E0FF`), un peu différentes de la charte Veille satellitaire. Les garder, ou les aligner sur la charte et sur le mode daltonisme. **Tranché le 12 novembre 2026 :** teintes de la planche gardées.
+39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider. **Tranché le 12 novembre 2026 :** la piste incertaine reste un affichage de la pénalité existante, sans règle nouvelle.
+40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non. **Tranché le 12 novembre 2026 :** les drones d'essaim gardent le pictogramme d'aéronef.
 
 ### Défauts connus du jeu
 

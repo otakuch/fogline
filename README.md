@@ -20,6 +20,7 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **Naval play inspired by Jane's Fleet Command:** embarked helicopter, contacts that go from detected to classified to identified, task group formations (ring, forward screen, column, radar picket) and time compression up to ×16
 - **Overview and tactical view:** one key for the whole theatre, one to centre and zoom on the selected unit, contact or crisis, with range rings. Orders can be given to a whole domain (land, sea, air) in one click
 - **Electronic warfare and cyber:** jam a contact from an equipped unit, which then gives its own position away; blind or slow a contact by cyberattack. A cyberattack can fail, can be spotted, and may then turn into a public crisis that calls for an answer and weighs on public trust. Described by effects only
+- **Missile tracks:** every shot in flight is a numbered track with its heading; the icon shows whether it is in flight, uncertain, intercepted, arrived or lost, and the crisis file lists which defence can engage it
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
@@ -90,6 +91,7 @@ node uimenu.js                                 # in-game menu
 node uiqx.js                                   # quick exercise and fire allocation
 node uiv34.js                                  # domains, land units, helicopter, formations
 node uiv35.js                                  # overview, tactical view, domain orders, jamming, cyber
+node uiv36.js                                  # missile tracks: icons, states, crisis file, legend
 ```
 
 `CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
@@ -128,6 +130,7 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **Jeu naval inspiré de Jane's Fleet Command :** hélicoptère embarqué, contacts détectés, classés puis identifiés, formations du groupe (cercle, écran avant, ligne de file, piquet radar) et temps accéléré jusqu'à ×16
 - **Vue d'ensemble et vue tactique :** une touche pour tout le théâtre, une autre pour centrer et zoomer sur l'unité, le contact ou la crise sélectionnés, avec des cercles de distance. Un ordre peut être donné à tout un domaine (terre, mer, air) en un clic
 - **Guerre électronique et cyber :** brouiller un contact depuis une unité équipée, qui se dévoile alors ; aveugler ou ralentir un contact par cyberattaque. Une cyberattaque peut échouer, être repérée, puis devenir une crise publique qui demande une réponse et pèse sur la confiance publique. Décrit par les effets seulement
+- **Pistes de missile :** chaque tir en vol est une piste numérotée avec son cap ; l'icône dit si elle est en vol, incertaine, interceptée, arrivée ou perdue, et le dossier de crise indique quelle défense peut l'engager
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score

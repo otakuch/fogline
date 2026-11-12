@@ -85,6 +85,7 @@ seuil-projet/
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
     └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
     └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
 ```
@@ -810,6 +811,29 @@ Demande de Naully du 12 novembre 2026, avec deux vidéos. « Mode macro » : ré
 
 **Non vérifié :** aucun vrai joueur. L'utilité des deux vues et des ordres par domaine n'est mesurée par aucun script. Le dilemme de la crise publique n'a été lu que sur ses tables. Le commentaire des vidéos n'a pas été entendu.
 
+### 5.29 Pistes de missile (version 36)
+
+Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « Pistes de missile » (https://claude.ai/artifact/6QaAkmmTAiNJQbviNGrhQf) et les brancher sur les mécaniques d'attaque et d'interception. Planche : dôme à double arc, trait de cap, numéro de piste, grille 48 × 48, trait 2,5 ; cinq états et cinq identités. Branche `v34-fleet-command`.
+
+- **Où :** avec les symboles du jeu (`v2Ships()`, défaut), chaque tir en vol (`S.mis`) et chaque piste de salve (`c.tracks` d'une crise `salvo`) est un dôme avec son trait de cap et son numéro. Les drones d'essaim gardent le pictogramme d'aéronef. Les réglages OTAN et losanges gardent leurs anciens symboles de missile.
+- **Numéro (`trkNo`, `S.trkN`) :** quatre chiffres, à partir de 0401, attribué au tir. Fictif. Aucun tirage : la reproductibilité ne change pas.
+- **Identité (`TRKC`) :** teintes de la planche. Hostile `#FF8080` (tir adverse, piste de salve classée), non classée `#FFFF80` (piste de salve détectée, pas encore classée), ami `#80E0FF` (tir du joueur). Suspect (tireté) et neutre `#AAFFAA` sont dessinés mais sans emploi aujourd'hui.
+- **États, tirés de la mécanique existante :**
+  - En vol : trait plein.
+  - Piste incertaine (arc tireté) : `pkPen() > 0`, c'est-à-dire système de combat compromis ou temps et position douteux. C'est la pénalité d'interception de 5.8, rendue visible ; aucune règle nouvelle.
+  - Interceptée (croix) : interception réussie dans `stepCombat`, ou piste de salve abattue dans `stepSwarm`.
+  - Arrivée (cercle) : le tir touche (unité, site, câble, convoi ; pour un tir du joueur, la cible).
+  - Perdue (trait pointillé) : le tir manque.
+- **Marque d'issue (`trkFx`, `S.trkFx`, `TRKFX` 5 s) :** l'icône de l'issue reste 5 s simulées à l'endroit de l'événement, puis s'efface.
+- **Dossier d'une crise `raid` ou `salvo` (`trkHtml`, `trkRows`, `trkDef`) :** « Pistes en vol » : numéro, cible, distance, et la défense qui peut l'engager (unité au radar actif avec réserve, à moins de 110 de la piste, même critère que `stepCombat`), ou « pas encore à portée ». Compte des pistes interceptées, arrivées et perdues de la crise (`c.tk`).
+- **Dossier d'un contact (`ownTrkHtml`) :** « Vos tirs en vol » : numéro, tireur, chance, distance.
+- **Journal :** « DDG-1 intercepte la piste 0412 », « DDG-1 manque la piste 0412 » (nouveau message), « La piste 0412 manque sa cible ».
+- **Légende et bilan :** cinq états et deux identités dans la légende ; ligne « Pistes adverses : interceptées · arrivées · perdues » (`S.tk`) au bilan des pertes.
+- **Sans effet sur le moteur :** aucun tirage ajouté, aucune chance modifiée. @@V36@@
+- **Tests :** `uiv36.js` (FR 1440 et EN 390) : pistes numérotées en vol, liste au dossier, état incertain, compte des issues égal aux coups reçus, numéro au journal, tir ami, légende, pas de défilement horizontal, aucun texte manquant.
+
+**Non vérifié :** aucun vrai joueur. Lisibilité d'un dôme de 26 px sur projecteur ; deux tirs d'une même salve partent presque du même point et se recouvrent au début. Les teintes de la planche diffèrent un peu de celles de la charte (5.23) et le mode daltonisme ne les change pas.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -834,6 +858,7 @@ Demande de Naully du 12 novembre 2026, avec deux vidéos. « Mode macro » : ré
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 36 | `TRKC`, `TRKFX`, `trkNo`, `trkFx`, `drawTrk`, `trkSVG`, `trkDef`, `trkName`, `trkRows`, `trkHtml`, `ownTrkHtml` |
 | Version 35 | `VIEW`, `setView`, `viewFree`, `tacPt`, `renderMacro`, `DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, `JAM_R`, `CYB`, `ewHost`, `cyberStrike`, `jamShip`, `ewHtml` |
 | Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
@@ -918,6 +943,7 @@ node dipm.js 1                                     # cohésion, retraits, demand
 node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
+node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -1069,6 +1095,10 @@ Une évolution est terminée si :
 36. **Brouillage (version 35) :** réservé au niveau Complet, comme le ralentissement. L'ouvrir au niveau Simple, ou non.
 37. **Mode Réaliste (5.18) :** la cyberattaque peut viser un contact mal identifié et compte alors comme une attaque à tort. Cohérent avec la règle « cibles militaires seulement », à confirmer.
 
+38. **Teintes des pistes (version 36) :** celles de la planche (`#FF8080`, `#FFFF80`, `#80E0FF`), un peu différentes de la charte Veille satellitaire. Les garder, ou les aligner sur la charte et sur le mode daltonisme.
+39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider.
+40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1127,6 +1157,8 @@ Une évolution est terminée si :
 45. Version 35 : la crise publique s'ouvre 20 à 40 s après le repérage ; une cyberattaque lancée dans la dernière minute n'a donc presque jamais de suite publique.
 46. Version 35 : « assumer » reste la meilleure réponse sans preuve (issue attendue 0,67 contre 0,49 et 0,33). Le dilemme ne naît que si le joueur vérifie.
 47. Version 35 : les ordres par domaine et les deux vues ne sont employés par aucun script.
+
+48. Version 36 : les états « suspect » et « neutre » de la planche ne correspondent à aucune piste du jeu. Le pictogramme « Missile » de la légende V2 ne sert plus qu'aux réglages OTAN et losanges.
 
 ### Absent de cette version
 

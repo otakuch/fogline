@@ -686,7 +686,26 @@ Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet
 
 **Corrigé au passage :** les onglets du dossier (5 au niveau Complet) élargissaient la page sur téléphone en anglais (`.dtabs`, défaut de la version 33).
 
-@@RES@@
+**Mesures du 12 novembre 2026, scripts seulement, niveau Complet, 2 parties par scénario (148 parties par stratégie, tutoriel exclu)**
+
+| Stratégie | Version 33 | Version 34 |
+|---|---|---|
+| Omniscient | 795 et 94 % | 797 et 95 % |
+| Référence | 728 et 74 % | 734 et 82 % |
+| Sans aucun tir | 713 et 68 % | 728 et 79 % |
+| Tir sans vérifier | 434 et 20 %, seuil 1 dans 52 % | 458 et 24 %, seuil 1 dans 47 % |
+| Saturation de messages | 293 et 2 % | 295 et 3 % |
+| Aucun ordre | 275 et 2 % | 274 et 3 % |
+| Aucune force | 190 et 0 % | 188 et 0 % |
+
+- **La référence passe à 82 %, nettement au-dessus de la cible de 50 à 70 %.** Causes probables, non isolées une à une : la preuve à vue gratuite, les unités terrestres ajoutées à 36 ordres de bataille, des navires adverses plus lents. Aucun réglage n'a été fait pour revenir dans la cible (décision 30).
+- Omniscient à 0 % sur `n1` en 2 parties, puis 6 réussites sur 6 sur un second tirage (`scr.js n1 6`) : effet d'échantillon. Aucun ordre réussit parfois `l11`, `c4`, `f2` et `n1` (défaut 31).
+- Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur.
+- Bancs isolés (8 parties chacun) : hélicoptère, contact identifié 8 fois sur 8 et appareil toujours récupéré ; batterie seule près de l'objet visé par une salve, 1,25 coup reçu contre 6 sans défense ; peloton déjà sur le site, sécurisé sans délai contre 9 s pour un patrouilleur à distance ; navire fantôme rattrapé en 90 s pour 131 s sur zone (68 s pour 92 s en version 33).
+- Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple) : 5,0 crises par partie, première crise à 71 s, 74 % du temps sans crise ouverte (5,2, 68 s et 71 % en version 33).
+- Conseil seul (`advbot.js 1`, 74 × 1) : 744 et 81 % au niveau Simple, 704 et 78 % au niveau Complet ; référence 775 et 82 %, puis 741 et 74 %. Le conseil seul reste presque aussi efficace que la référence (défaut 12).
+- Bilan « Décision ou chance ? » : référence 95 % de bons choix, hasard 77 %, aucun ordre 0 % ; calibrage 40 %, 67 % et 90 % annoncés pour 42 %, 67 % et 89 % observés.
+- Tests d'interface : `uiv34`, `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
 
 **Non vérifié :** aucun vrai joueur. Les scripts n'utilisent ni l'hélicoptère (sauf pour les bouées, sans avion), ni les formations, ni les sous-menus : leur intérêt en jeu n'est pas mesuré. La batterie et le peloton sont mesurés sur un banc isolé de 8 parties. Le ressenti du ralentissement et du temps × 8 et × 16 n'est pas observé.
 
@@ -809,6 +828,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 12 novembre 2026, version 34 (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
 
 **Résultats du 10 novembre 2026, version 33 (charte complète) puis branche `dq-bilan-decision-chance`, niveau Complet, 2 parties par scénario :** omniscient 795 et 94 %, référence 728 et 74 %, tir sans vérifier 434 et 20 %, aucun ordre 275 et 2 % (moyennes par partie, tutoriel exclu). Les 2 100 parties du volet `exploit` donnent le même score et la même issue en version 32, en version 33 et avec le bilan « Décision ou chance ? » : ni la charte ni ce bilan ne touchent au moteur. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 414, aucun blocage, aucun texte manquant, aucune erreur. `stress.js dq` : voir 5.25. Tests d'interface sur la branche du bilan : `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
 

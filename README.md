@@ -18,6 +18,8 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **Fixed order of battle:** each mission starts with US platforms under their real names (P-8A Poseidon, MQ-4C Triton, Arleigh Burke-class destroyer, Freedom-class LCS and others). All values are fictional game values
 - **Four domains:** land, sea, air and cyber tabs for your forces. Land units include a SEAL team, a security platoon and a defensive coastal battery
 - **Naval play inspired by Jane's Fleet Command:** embarked helicopter, contacts that go from detected to classified to identified, task group formations (ring, forward screen, column, radar picket) and time compression up to ×16
+- **Overview and tactical view:** one key for the whole theatre, one to centre and zoom on the selected unit, contact or crisis, with range rings. Orders can be given to a whole domain (land, sea, air) in one click
+- **Electronic warfare and cyber:** jam a contact from an equipped unit, which then gives its own position away; blind or slow a contact by cyberattack. A cyberattack can fail, can be spotted, and may then turn into a public crisis that calls for an answer and weighs on public trust. Described by effects only
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
@@ -87,6 +89,7 @@ node ui5.js                                    # full run with real clicks
 node uimenu.js                                 # in-game menu
 node uiqx.js                                   # quick exercise and fire allocation
 node uiv34.js                                  # domains, land units, helicopter, formations
+node uiv35.js                                  # overview, tactical view, domain orders, jamming, cyber
 ```
 
 `CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
@@ -123,6 +126,8 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **Ordre de bataille fixe :** chaque mission démarre avec des plateformes américaines sous leur vrai nom (P-8A Poseidon, MQ-4C Triton, destroyer classe Arleigh Burke, LCS classe Freedom, etc.). Toutes les valeurs sont des valeurs de jeu fictives
 - **Quatre domaines :** onglets Terre, Mer, Air et Cyber pour vos forces. À terre : équipe SEAL, peloton de protection et batterie côtière défensive
 - **Jeu naval inspiré de Jane's Fleet Command :** hélicoptère embarqué, contacts détectés, classés puis identifiés, formations du groupe (cercle, écran avant, ligne de file, piquet radar) et temps accéléré jusqu'à ×16
+- **Vue d'ensemble et vue tactique :** une touche pour tout le théâtre, une autre pour centrer et zoomer sur l'unité, le contact ou la crise sélectionnés, avec des cercles de distance. Un ordre peut être donné à tout un domaine (terre, mer, air) en un clic
+- **Guerre électronique et cyber :** brouiller un contact depuis une unité équipée, qui se dévoile alors ; aveugler ou ralentir un contact par cyberattaque. Une cyberattaque peut échouer, être repérée, puis devenir une crise publique qui demande une réponse et pèse sur la confiance publique. Décrit par les effets seulement
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score

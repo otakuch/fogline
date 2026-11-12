@@ -1,0 +1,8 @@
+// Version 35 : référence contre référence qui brouille (jam) ou lance une cyberattaque (cyb) sur un contact qui a tiré.
+// Scénarios dont le script prévoit un raid et qui ont l'équipe cyber ou une unité de brouillage. Usage : node ewcmp.js [parties]
+const { chromium } = require('playwright');
+(async () => { const b = await chromium.launch(), p = await b.newPage(), errs = []; p.on('pageerror', e => errs.push(e.message)); await p.route(/fonts\.g/, r => r.abort()); await p.goto('file://' + __dirname + '/t.html'); await p.addScriptTag({ path: __dirname + '/bots.js' }); await p.waitForTimeout(300);
+ const r = await p.evaluate(N => { const A = __S, ids = Object.keys(A.SC).filter(k => !A.SC[k].tuto && (A.SC[k].script || []).some(x => x[1] === 'raid')), out = { scenarios: ids.join(',') };
+  for (const [nm, o] of [['ref', {}], ['brouillage', { jam: true }], ['cyber', { cyb: true }], ['les deux', { jam: true, cyb: true }]]) { let s = 0, ok = 0, n = 0, ul = 0, hit = 0, cy = 0, det = 0, k = 0, jm = 0, cs = 0; for (const sc of ids) for (let i = 1; i <= N; i++) { const g = playGame(i * 37 + 11, sc, { contested: true, guided: false }, mkBot(o)); s += g.s; ok += g.ok; n++; ul += g.ul; hit += A.s.losses; cy += A.s.cybN || 0; det += A.s.cybDet || 0; k += A.s.cybK || 0; jm += A.s.jamN || 0; cs += A.s.cs } out[nm] = { parties: n, score: Math.round(s / n), reussite: Math.round(100 * ok / n) + '%', pertes: (ul / n).toFixed(2), coups: (hit / n).toFixed(2), brouillages: (jm / n).toFixed(1), cyber: (cy / n).toFixed(1), reperees: (det / n).toFixed(2), crises: (k / n).toFixed(2), cohesionSociale: Math.round(cs / n) } }
+  return out }, +process.argv[2] || 2);
+ console.log(JSON.stringify(r, null, 1)); console.log('errs', errs.slice(0, 3)); await b.close() })();

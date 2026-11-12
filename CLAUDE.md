@@ -829,7 +829,7 @@ Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « P
 - **Dossier d'un contact (`ownTrkHtml`) :** « Vos tirs en vol » : numéro, tireur, chance, distance.
 - **Journal :** « DDG-1 intercepte la piste 0412 », « DDG-1 manque la piste 0412 » (nouveau message), « La piste 0412 manque sa cible ».
 - **Légende et bilan :** cinq états et deux identités dans la légende ; ligne « Pistes adverses : interceptées · arrivées · perdues » (`S.tk`) au bilan des pertes.
-- **Sans effet sur le moteur :** aucun tirage ajouté, aucune chance modifiée. @@V36@@
+- **Sans effet sur le moteur :** aucun tirage ajouté, aucune chance modifiée. Les 2 100 parties du volet `exploit` donnent le même score et la même issue qu'en version 35 (omniscient 788 et 92 %, référence 741 et 82 %). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant.
 - **Tests :** `uiv36.js` (FR 1440 et EN 390) : pistes numérotées en vol, liste au dossier, état incertain, compte des issues égal aux coups reçus, numéro au journal, tir ami, légende, pas de défilement horizontal, aucun texte manquant.
 
 **Non vérifié :** aucun vrai joueur. Lisibilité d'un dôme de 26 px sur projecteur ; deux tirs d'une même salve partent presque du même point et se recouvrent au début. Les teintes de la planche diffèrent un peu de celles de la charte (5.23) et le mode daltonisme ne les change pas.
@@ -961,6 +961,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 12 novembre 2026, version 36 (pistes de missile) :** identiques à la version 35, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv36`, `uiv35`, `uiv34` et les 20 autres tests d'interface sans erreur. Publiée sur le prototype et fusionnée dans `main` le 12 novembre 2026, à la demande de Naully.
 
 **Résultats du 12 novembre 2026, version 35 et version 34 après les corrections des parties jouées, niveau Complet, 2 parties par scénario :** omniscient 788 et 92 %, référence 741 et 82 %, sans aucun tir 740 et 81 %, tir sans vérifier 464 et 24 % avec 45 % de seuil 1, saturation 296 et 3 %, aucun ordre 275 et 3 %, aucune force 188 et 0 %. Les deux versions donnent les mêmes chiffres : les scripts n'emploient ni brouillage ni cyberattaque. Omniscient à 0 % sur `e3` et `n1` en 2 parties, puis 6 réussites sur 6 sur un autre tirage (`scr.js e3,n1,d3 6`) : effet d'échantillon. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`) : 4,9 crises par partie, première crise à 71 s, 76 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`) : 747 et 82 % au niveau Simple, 708 et 78 % au niveau Complet ; référence 767 et 80 %, puis 745 et 74 %. Détail de la version 35 : section 5.28.
 

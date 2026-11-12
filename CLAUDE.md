@@ -84,6 +84,10 @@ seuil-projet/
     └── dipm.js             mesures de diplomatie par stratégie
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
+    └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
+    └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
+    └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -709,6 +713,131 @@ Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet
 
 **Non vérifié :** aucun vrai joueur. Les scripts n'utilisent ni l'hélicoptère (sauf pour les bouées, sans avion), ni les formations, ni les sous-menus : leur intérêt en jeu n'est pas mesuré. La batterie et le peloton sont mesurés sur un banc isolé de 8 parties. Le ressenti du ralentissement et du temps × 8 et × 16 n'est pas observé.
 
+### 5.27 Décisions validées et parcours joués à terre, en mer et dans les airs (version 34, 12 novembre 2026)
+
+**Décisions validées par Naully le 12 novembre 2026** (« Tu peux valider toutes les décisions »), lues comme les cinq décisions posées après la version 34 :
+
+- La force spéciale s'engage depuis sa fiche (décision 27).
+- Les noms FAST et MLR sont gardés, la batterie reste défensive (décision 28).
+- L'identification à vue reste sans jeton (décision 29).
+- La difficulté n'est pas durcie avant des essais avec de vrais joueurs (décision 30).
+- L'hélicoptère reste au niveau Complet (décision 31).
+- Le bilan « Décision ou chance ? » est gardé tel quel (décision 24).
+
+Les décisions plus anciennes de la section 13 restent ouvertes.
+
+**Méthode.** Trois parties jouées par Claude avec `pt34.js` : vrais clics, tirage fixe, lecture du texte de chaque écran avant de décider, captures aux moments clés. Terre : « Double prise » (`d3`), niveau Simple, jusqu'au bilan. Mer : « Voie Nord » (`ic`), niveau Complet, jusqu'à la crise sous-marine. Air : « Bastion du Nord » (`i9`), niveau Simple, jusqu'à la première incursion. Ce n'est pas un test avec de vrais joueurs.
+
+**Défauts trouvés et corrigés**
+
+| Domaine | Constat | Correction |
+|---|---|---|
+| Terre | Le site du peloton de protection était capturé sous son nez | Une prise se reporte sur un site non gardé (`l.guard.det`) : poster le peloton devient un choix |
+| Terre | Batterie posée sur le site visé, réserve intacte : le destroyer, premier de la liste, prenait toutes les interceptions | Le défenseur le plus proche du missile intercepte |
+| Terre | Redéployer en cliquant près d'un site sélectionnait l'unité déjà là | Sous-menu « Redéployer vers », un bouton par site avec la durée du trajet (`fixHtml`, action `redep`) |
+| Terre | « Tracer une patrouille » proposé au peloton, à la batterie et à l'équipe SEAL | Retiré pour les unités terrestres |
+| Terre | Les navires du raid venaient se poser sur le site attaqué | Ils s'arrêtent à 70 du site |
+| Terre | Fiche SEAL : « Emplois restants » et « Sorties restantes » en double ; « Plus aucune action » pendant l'action | Une seule ligne ; « Action en cours » |
+| Terre | Niveau Simple : le raid conseillait de régler la posture, absente de ce niveau | Conseil propre au niveau Simple (`tip.raid.s`) |
+| Mer | **Hypothèse du carburant cédée : un avion à sa base se ravitaillait en boucle et perdait toutes ses sorties en une seconde.** Défaut antérieur à la version 34 | Le seuil de ravitaillement suit la dotation réduite |
+| Mer | Écran avant : l'escorteur ne rattrapait jamais son poste, le chef avançant presque aussi vite | Hors du cercle, le chef ralentit (× 0,55) tant qu'un membre est à plus de 10 de son poste |
+| Mer | L'hélicoptère envoyé identifier donnait deux preuves pour un jeton, dont une « Image du drone » | Une seule preuve, l'observation directe |
+| Mer | « Sonar héliporté » du destroyer sans lien avec l'hélicoptère | Au niveau Complet, l'hélicoptère va tremper son sonar sur zone (destroyer à moins de 220 de la zone) ; indisponible si l'hélicoptère est perdu |
+| Mer | Une alerte ou une zone ne pouvait être observée que par l'avion | Sans avion, l'hélicoptère d'un navire à moins de 220 observe (`eyeAct`, `a.visualh`) |
+| Mer | Un navire qui a tiré restait « Classé » | Il est « Identifié » |
+| Air | Incursion : « Vous avez une minute », alors que le délai est de 90 s ou de 30 s | Le texte renvoie au compte à rebours |
+
+**Constats non corrigés**
+
+- Sélection : donner un ordre de déplacement ferme la fiche de l'unité. Pour enchaîner (route, puis hélicoptère), il faut la resélectionner.
+- Carte chargée autour d'un site défendu : peloton, batterie, équipe SEAL, destroyer et navires adverses se recouvrent (défaut 8).
+- Deux minutes sans rien à décider avant la première crise de `d3` ; l'avance rapide est nécessaire.
+- `d3` gagnée (641 points, 3 étoiles) en laissant trois crises sans réponse (défaut 33).
+- Incursion : la preuve radar reprend mot pour mot l'indice déjà affiché dans la situation.
+- Alerte radar en pleine mer : la réponse proposée est un navire, pas les chasseurs.
+- Les unités traversent la carte en une minute environ, même ralenties : l'échelle de temps reste abstraite.
+- Partie aérienne courte : une seule incursion jouée. Essaim et salve n'ont pas été rejoués à la main.
+
+**Mesures après ces corrections :** voir section 8.
+
+### 5.28 Vues, ordres par domaine, guerre électronique et cyberattaque révélée (version 35)
+
+Demande de Naully du 12 novembre 2026, avec deux vidéos. « Mode macro » : réponse de Naully « Les deux » (vue d'ensemble et vue tactique, plus des ordres par domaine). Les deux vidéos sont des tutoriels du jeu *Sea Power* (version 0.1.0.x), analysés par images toutes les 25 s ; le commentaire n'a pas été transcrit et le jeu n'a pas été joué. Retenu de la vidéo sur la guerre électronique : un brouilleur agit dans un secteur dessiné sur la carte, et l'unité qui émet se dévoile. Aucune valeur ni aucun nom de système n'est repris. Existaient déjà : la détection des émissions (cercles de signal, `emitSignal`) et le brouillage adverse (crise `jam`). Branche `v34-fleet-command`, non fusionnée dans `main`.
+
+**Vues (`VIEW`, `setView`, `viewFree`, `tacPt`, `TAC_R`, `renderMacro`)**
+
+- **Vue d'ensemble**, bouton de la colonne de zoom ou touche V : tout le théâtre, trafic déclaré masqué, crises nommées avec leur délai, bandeau par domaine (nombre d'unités, dernier ordre) qui ouvre l'onglet Forces sur ce domaine. Le même bouton rend la caméra précédente.
+- **Vue tactique**, bouton ou touche T : la carte se centre sur la sélection (unité, contact ou crise), zoome sur un rayon d'environ 190 et la suit. Cercles de distance à 50, 100 et 150, cercle d'identification à vue, cercle de brouillage, capteurs de toutes les unités. Sans sélection, elle s'explique et ne s'active pas.
+- Déplacer la carte quitte la vue ; zoomer quitte la vue d'ensemble. Affichage seulement : aucune règle n'en dépend. Disponibles aux deux niveaux.
+
+**Ordres par domaine (`DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, action `domo`)**
+
+- Dans l'onglet Forces, sous l'onglet Terre, Mer ou Air. Terre : rallier les crises, tenir la position. Mer : rallier les crises, protéger les sites, tenir la position. Air : rallier les crises, rappeler, tenir la position.
+- Ils ne touchent que les unités libres : ni en visite, secours, action directe, pression, escorte ou retour, ni membres d'un groupe, ni câblier, ni allié, ni hélicoptère embarqué.
+- « Rallier les crises » envoie chaque unité vers la crise ouverte ou le contact sans transpondeur non identifié le plus proche, une cible différente par unité tant qu'il en reste. À terre, seules les crises proches d'un site comptent.
+- Ce sont des déplacements ordinaires (`orderMove`) : gratuits, soumis aux mêmes retards. Pas au tutoriel. Le bilan compte les ordres donnés.
+
+**Brouillage (`jamShip`, `JAM_R` 150, `UT[k].jam`, action `jam`)**
+
+- Destroyer et chasseurs portent un brouilleur. Niveau Complet, contact sans transpondeur visible, unité à moins de 150 : 1 jeton, posture Contraindre.
+- Pendant 30 s, un navire armé brouillé ne vise plus qu'à 110 au lieu de 175 et ses tirs perdent 0,2 de chance. L'unité qui brouille repasse en radar actif : l'adversaire la voit. Secteur violet sur la carte.
+- Tension +0,05 contre un navire armé, saboteur ou fantôme. Contre un autre navire : −1, −2 et −1 sur les piliers, sans message, révélé au bilan (le journal ne dit pas la vérité).
+
+**Cyberattaque sur un contact (`cyberStrike`, `CYB`, actions `blind` et `cslow`)**
+
+- Aveugler (25 s sans tir, existant) ou ralentir (vitesse × 0,5 pendant 40 s, niveau Complet). Équipe cyber, 1 jeton, posture Contraindre.
+- **Changement de règle :** l'aveuglement réussissait toujours. La cyberattaque réussit maintenant avec une chance de 0,75, 0,85 si le contact est identifié.
+- **Repérage :** chance de 0,3, +0,2 si l'attaque a échoué, +0,25 si la cible n'était ni navire armé, ni saboteur, ni fantôme. Repérée, elle ouvre une crise publique dans 55 % des cas (toujours si la cible n'était pas hostile), 20 à 40 s plus tard ; sinon tension +0,2 et −2 en cohésion sociale. La carte de décision affiche « Repérage : 30 % au moins ».
+- Garde-fou 3 : effets seulement, aucune technique.
+
+**Crise `expose`, « Cyberattaque révélée »**
+
+- Hypothèses : accusation étayée (40 %), accusation sans preuve (35 %), révélation par un tiers (25 %). Délai 60 s, compte à rebours de décision. À l'ouverture : −2, −4 et −1 sur les piliers (−6 en cohésion sociale si la cible n'était pas hostile).
+- Vérifier : recoupement de sources, partenaire. Répondre : assumer et expliquer, démentir, ne pas commenter (gratuit).
+- Issues (`EFF.expose`) : assumer 0,9 / 0,3 / 0,8 ; démentir 0 / 0,8 / 0,2 ; ne pas commenter 0,3 / 0,7 / 0,5 ; sans réponse 0 / 0,4 / 0,1. Assumer une accusation sans preuve donne à l'adversaire l'aveu qui lui manquait.
+- Prise en charge par le conseil et les scripts (`deepPick`), par le bilan « Décision ou chance ? » (`DQT`).
+
+**Bilan et fiches :** cyberattaques, repérées et crises publiques ; brouillages, dont sur un navire non hostile ; ordres par domaine. Dossier d'un contact : ligne « Guerre électronique » (brouillé, aveuglé, ralenti). Fiche d'unité : brouilleur.
+
+**Corrigé au passage :** sur téléphone, les boutons +, − et Couches étaient sous la carte et ne recevaient pas les clics.
+
+**Mesures du 12 novembre 2026, scripts seulement**
+
+- Équilibre, niveau Complet, 2 parties par scénario : identique à la version 34 corrigée (section 8). Les scripts de référence n'emploient pas ces mécaniques.
+- Bancs isolés : 200 cyberattaques par cas. Contre un navire armé : effet 74 %, repérée 34 %, crise publique 17 %. Contre un navire civil : effet 70 %, repérée 62 %, crise publique 62 %. Brouillage : un navire armé à 140 du destroyer tire dans les 25 s 8 fois sur 8 sans brouillage, 0 fois sur 8 avec.
+- `ewcmp.js 4`, 11 scénarios à raid × 4 parties, script qui brouille ou attaque tout contact ayant tiré : référence 693 et 82 %, 0,55 unité perdue, 1,66 coup reçu ; brouillage 698 et 77 %, 0,43 et 1,36 ; cyberattaque 682 et 66 %, 0,45 et 1,43, avec 2,3 attaques, 0,75 repérée et 0,27 crise publique par partie ; les deux 691 et 73 %, 0,32 et 1,09. Les pertes baissent, la réussite aussi : jetons et emplois de l'équipe cyber manquent ailleurs. 44 parties : écarts à lire avec prudence.
+- Tests : `uiv35.js` (vrais clics, FR 1440 et EN 390, niveaux Complet et Simple) et les 21 autres tests d'interface sans erreur ni texte manquant ; clics au hasard sans blocage.
+- Un raid de « Double prise » joué pas à pas (`pt34.js`) : le navire armé tire à 175 alors que le brouilleur porte à 150 ; il faut s'approcher ou envoyer les chasseurs.
+
+**Non vérifié :** aucun vrai joueur. L'utilité des deux vues et des ordres par domaine n'est mesurée par aucun script. Le dilemme de la crise publique n'a été lu que sur ses tables. Le commentaire des vidéos n'a pas été entendu.
+
+### 5.29 Pistes de missile (version 36)
+
+Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « Pistes de missile » (https://claude.ai/artifact/6QaAkmmTAiNJQbviNGrhQf) et les brancher sur les mécaniques d'attaque et d'interception. Planche : dôme à double arc, trait de cap, numéro de piste, grille 48 × 48, trait 2,5 ; cinq états et cinq identités. Branche `v34-fleet-command`.
+
+- **Où :** avec les symboles du jeu (`v2Ships()`, défaut), chaque tir en vol (`S.mis`) et chaque piste de salve (`c.tracks` d'une crise `salvo`) est un dôme avec son trait de cap et son numéro. Les drones d'essaim gardent le pictogramme d'aéronef. Les réglages OTAN et losanges gardent leurs anciens symboles de missile.
+- **Numéro (`trkNo`, `S.trkN`) :** quatre chiffres, à partir de 0401, attribué au tir. Fictif. Aucun tirage : la reproductibilité ne change pas.
+- **Identité (`TRKC`) :** teintes de la planche. Hostile `#FF8080` (tir adverse, piste de salve classée), non classée `#FFFF80` (piste de salve détectée, pas encore classée), ami `#80E0FF` (tir du joueur). Suspect (tireté) et neutre `#AAFFAA` sont dessinés mais sans emploi aujourd'hui.
+- **États, tirés de la mécanique existante :**
+  - En vol : trait plein.
+  - Piste incertaine (arc tireté) : `pkPen() > 0`, c'est-à-dire système de combat compromis ou temps et position douteux. C'est la pénalité d'interception de 5.8, rendue visible ; aucune règle nouvelle.
+  - Interceptée (croix) : interception réussie dans `stepCombat`, ou piste de salve abattue dans `stepSwarm`.
+  - Arrivée (cercle) : le tir touche (unité, site, câble, convoi ; pour un tir du joueur, la cible).
+  - Perdue (trait pointillé) : le tir manque.
+- **Marque d'issue (`trkFx`, `S.trkFx`, `TRKFX` 5 s) :** l'icône de l'issue reste 5 s simulées à l'endroit de l'événement, puis s'efface.
+- **Dossier d'une crise `raid` ou `salvo` (`trkHtml`, `trkRows`, `trkDef`) :** « Pistes en vol » : numéro, cible, distance, et la défense qui peut l'engager (unité au radar actif avec réserve, à moins de 110 de la piste, même critère que `stepCombat`), ou « pas encore à portée ». Compte des pistes interceptées, arrivées et perdues de la crise (`c.tk`).
+- **Dossier d'un contact (`ownTrkHtml`) :** « Vos tirs en vol » : numéro, tireur, chance, distance.
+- **Journal :** « DDG-1 intercepte la piste 0412 », « DDG-1 manque la piste 0412 » (nouveau message), « La piste 0412 manque sa cible ».
+- **Légende et bilan :** cinq états et deux identités dans la légende ; ligne « Pistes adverses : interceptées · arrivées · perdues » (`S.tk`) au bilan des pertes.
+- **Sans effet sur le moteur :** aucun tirage ajouté, aucune chance modifiée. Les 2 100 parties du volet `exploit` donnent le même score et la même issue qu'en version 35 (omniscient 788 et 92 %, référence 741 et 82 %). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant.
+- **Tests :** `uiv36.js` (FR 1440 et EN 390) : pistes numérotées en vol, liste au dossier, état incertain, compte des issues égal aux coups reçus, numéro au journal, tir ami, légende, pas de défilement horizontal, aucun texte manquant.
+
+**Non vérifié :** aucun vrai joueur. Lisibilité d'un dôme de 26 px sur projecteur ; deux tirs d'une même salve partent presque du même point et se recouvrent au début. Les teintes de la planche diffèrent un peu de celles de la charte (5.23) et le mode daltonisme ne les change pas.
+
+### 5.30 Décisions validées le 12 novembre 2026 (versions 35 et 36)
+
+Naully : « valide toutes les décision ». Lu comme la validation des choix déjà en place pour les décisions 32 à 40 : cyberattaque qui peut échouer et être repérée, chances de repérage gardées et affichées, navire fantôme cible légitime, ordres par domaine gratuits, brouillage et ralentissement au niveau Complet, attaque à tort sur un contact mal identifié, teintes de la planche pour les pistes, piste incertaine sans règle nouvelle, drones d'essaim avec le pictogramme d'aéronef. Aucun code ne change. La fusion dans `main`, qui met à jour le jeu public, n'est pas une de ces décisions de règle : elle n'a pas été faite.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -733,7 +862,9 @@ Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
-| Version 34 | `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
+| Version 36 | `TRKC`, `TRKFX`, `trkNo`, `trkFx`, `drawTrk`, `trkSVG`, `trkDef`, `trkName`, `trkRows`, `trkHtml`, `ownTrkHtml` |
+| Version 35 | `VIEW`, `setView`, `viewFree`, `tacPt`, `renderMacro`, `DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, `JAM_R`, `CYB`, `ewHost`, `cyberStrike`, `jamShip`, `ewHtml` |
+| Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
 
@@ -815,6 +946,8 @@ node uid.js                                        # règles diplomatiques, dema
 node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
 node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
+node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
+node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -829,7 +962,11 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
-**Résultats du 12 novembre 2026, version 34 (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
+**Résultats du 12 novembre 2026, version 36 (pistes de missile) :** identiques à la version 35, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv36`, `uiv35`, `uiv34` et les 20 autres tests d'interface sans erreur. Publiée sur le prototype et fusionnée dans `main` le 12 novembre 2026, à la demande de Naully.
+
+**Résultats du 12 novembre 2026, version 35 et version 34 après les corrections des parties jouées, niveau Complet, 2 parties par scénario :** omniscient 788 et 92 %, référence 741 et 82 %, sans aucun tir 740 et 81 %, tir sans vérifier 464 et 24 % avec 45 % de seuil 1, saturation 296 et 3 %, aucun ordre 275 et 3 %, aucune force 188 et 0 %. Les deux versions donnent les mêmes chiffres : les scripts n'emploient ni brouillage ni cyberattaque. Omniscient à 0 % sur `e3` et `n1` en 2 parties, puis 6 réussites sur 6 sur un autre tirage (`scr.js e3,n1,d3 6`) : effet d'échantillon. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`) : 4,9 crises par partie, première crise à 71 s, 76 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`) : 747 et 82 % au niveau Simple, 708 et 78 % au niveau Complet ; référence 767 et 80 %, puis 745 et 74 %. Détail de la version 35 : section 5.28.
+
+**Résultats du 12 novembre 2026, version 34 avant ces corrections (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
 
 **Résultats du 10 novembre 2026, version 33 (charte complète) puis branche `dq-bilan-decision-chance`, niveau Complet, 2 parties par scénario :** omniscient 795 et 94 %, référence 728 et 74 %, tir sans vérifier 434 et 20 %, aucun ordre 275 et 2 % (moyennes par partie, tutoriel exclu). Les 2 100 parties du volet `exploit` donnent le même score et la même issue en version 32, en version 33 et avec le bilan « Décision ou chance ? » : ni la charte ni ce bilan ne touchent au moteur. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 414, aucun blocage, aucun texte manquant, aucune erreur. `stress.js dq` : voir 5.25. Tests d'interface sur la branche du bilan : `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
 
@@ -947,15 +1084,26 @@ Une évolution est terminée si :
 22. **Écarts avec la charte (version 33) :** onglet Synthèse qui montre aussi les décisions, pas de pastille « Option prudente », tour de jeu au lieu de l'heure UTC, corps à 13 px (5.24). Les garder, ou s'aligner strictement sur le pack.
 23. **Force spéciale et unités hors carte :** elles gardent l'APP-6 faute de pictogramme dans le pack. Faire dessiner les pictogrammes manquants, ou garder ce mélange.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
-24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public.
+24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public. **Tranché le 12 novembre 2026 :** gardé tel quel.
 25. **Qualité de décision dans le score :** aujourd'hui l'axe D note l'issue réelle. Le remplacer en partie par la valeur du choix à preuves données (5.25) récompenserait le jugement et non la chance, mais change la formule 5.9 et tous les résultats de référence.
 26. **Ne pas répondre :** le calcul de 5.25 le traite comme un choix. Quand l'estimation penche pour une fausse alerte, il peut être la meilleure réponse, alors que l'axe d'engagement du score le pénalise. Garder cet écart, ou l'expliquer au bilan.
 
-27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère.
-28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer.
-29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût.
-30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs.
-31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet.
+27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère. **Tranché le 12 novembre 2026 :** la force spéciale s'engage depuis sa fiche.
+28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer. **Tranché le 12 novembre 2026 :** noms FAST et MLR gardés, batterie défensive.
+29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût. **Tranché le 12 novembre 2026 :** l'identification à vue reste sans jeton.
+30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs. **Tranché le 12 novembre 2026 :** pas de durcissement avant des essais avec de vrais joueurs.
+31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet. **Tranché le 12 novembre 2026 :** l'hélicoptère reste au niveau Complet.
+
+32. **Cyberattaque qui peut échouer (version 35) :** l'aveuglement réussissait toujours ; il échoue maintenant une fois sur quatre et peut être repéré. Valider ce changement de règle, ou garder l'ancien effet certain. **Tranché le 12 novembre 2026 :** l'aveuglement peut échouer et être repéré.
+33. **Chances de repérage (version 35) :** 30 % au moins, puis crise publique dans 55 % des cas. Garder ces valeurs et leur affichage au joueur, ou les cacher. **Tranché le 12 novembre 2026 :** valeurs gardées et affichées au joueur.
+34. **Navire fantôme (version 35) :** compté comme cible légitime d'un brouillage ou d'une cyberattaque, avec le navire armé et le saboteur. Confirmer. **Tranché le 12 novembre 2026 :** le navire fantôme est une cible légitime.
+35. **Ordres par domaine (version 35) :** gratuits, sans charge de coordination. Les garder ainsi, ou leur donner un coût au niveau Complet. **Tranché le 12 novembre 2026 :** ordres par domaine gratuits.
+36. **Brouillage (version 35) :** réservé au niveau Complet, comme le ralentissement. L'ouvrir au niveau Simple, ou non. **Tranché le 12 novembre 2026 :** brouillage et ralentissement réservés au niveau Complet.
+37. **Mode Réaliste (5.18) :** la cyberattaque peut viser un contact mal identifié et compte alors comme une attaque à tort. Cohérent avec la règle « cibles militaires seulement », à confirmer. **Tranché le 12 novembre 2026 :** une cyberattaque sur un contact mal identifié compte comme une attaque à tort.
+
+38. **Teintes des pistes (version 36) :** celles de la planche (`#FF8080`, `#FFFF80`, `#80E0FF`), un peu différentes de la charte Veille satellitaire. Les garder, ou les aligner sur la charte et sur le mode daltonisme. **Tranché le 12 novembre 2026 :** teintes de la planche gardées.
+39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider. **Tranché le 12 novembre 2026 :** la piste incertaine reste un affichage de la pénalité existante, sans règle nouvelle.
+40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non. **Tranché le 12 novembre 2026 :** les drones d'essaim gardent le pictogramme d'aéronef.
 
 ### Défauts connus du jeu
 
@@ -1010,6 +1158,13 @@ Une évolution est terminée si :
 41. Version 34 : la batterie côtière défend tout objet visé à moins de 120, y compris un navire au large proche de la côte. Simplification de jeu.
 42. Version 34 : l'hélicoptère n'a pas de limite de sorties, seulement 45 s de remise en condition. À régler si les joueurs en abusent.
 43. Version 34 : les scripts de test n'emploient pas les formations ni l'hélicoptère de reconnaissance. Leur valeur n'est pas mesurée.
+
+44. Version 35 : le brouilleur porte moins loin (150) que le tir d'un navire armé (175). Il faut s'approcher sous le feu ou envoyer les chasseurs. À observer.
+45. Version 35 : la crise publique s'ouvre 20 à 40 s après le repérage ; une cyberattaque lancée dans la dernière minute n'a donc presque jamais de suite publique.
+46. Version 35 : « assumer » reste la meilleure réponse sans preuve (issue attendue 0,67 contre 0,49 et 0,33). Le dilemme ne naît que si le joueur vérifie.
+47. Version 35 : les ordres par domaine et les deux vues ne sont employés par aucun script.
+
+48. Version 36 : les états « suspect » et « neutre » de la planche ne correspondent à aucune piste du jeu. Le pictogramme « Missile » de la légende V2 ne sert plus qu'aux réglages OTAN et losanges.
 
 ### Absent de cette version
 

@@ -35,8 +35,11 @@ const { chromium } = require('playwright');
     if (!mob) await p.screenshot({ path: D + '/v34-sof.png' });
     await p.click('#right .uemp [data-a=uact]'); await p.waitForTimeout(150);
     o.sofParti = await p.evaluate(() => { const u = __S.s.units.find(u => u.id === 'NSW-1'); return [!!u.da, u.uses, u.usesMax]; }); need(o.sofParti[0] && o.sofParti[1] === o.sofParti[2] - 1, tag + ' action directe lancée depuis la fiche : ' + o.sofParti);
+    o.dissuasion = await p.evaluate(() => { const A = __S, S = A.s, g = S.units.find(u => u.id === 'FAST-1'), here = A.thSites().find(s => Math.hypot(s.x - g.x, s.y - g.y) < 8); return [here && here.id, window.__c.target]; }); need(o.dissuasion[0] && o.dissuasion[0] !== o.dissuasion[1], tag + ' la prise évite le site tenu par le peloton : ' + o.dissuasion);
+    await sel(p, 'FAST-1', mob); o.redep = [await p.locator('#right [data-a=redep]').count(), await p.locator('#right [data-a=patnew]').count()]; need(o.redep[0] >= 1 && o.redep[1] === 0, tag + ' redéploiement par sous-menu, pas de patrouille : ' + o.redep);
+    await p.click('#right [data-a=redep]'); await p.waitForTimeout(150); o.redepGo = await p.evaluate(() => { const u = __S.s.units.find(u => u.id === 'FAST-1'); return u.path.length; }); need(o.redepGo === 1, tag + ' redéploiement lancé');
     // 3. peloton de protection : redéploiement de site en site
-    o.fast = await p.evaluate(() => { const A = __S, S = A.s, u = S.units.find(u => u.id === 'FAST-1'), st = A.thSites().filter(s => Math.hypot(s.x - u.x, s.y - u.y) > 10)[0]; if (!st) return 'un seul site'; A.orderMove(u, st.x + 9, st.y - 7); const p = u.path[0]; return p && Math.abs(p.x - st.x) < .01 && Math.abs(p.y - st.y) < .01 ? 'ok' : JSON.stringify(u.path); }); need(o.fast === 'ok' || o.fast === 'un seul site', tag + ' redéploiement vers un site : ' + o.fast);
+    o.fast = await p.evaluate(() => { const A = __S, S = A.s, u = S.units.find(u => u.id === 'FAST-1'), st = A.thSites().filter(s => Math.hypot(s.x - u.x, s.y - u.y) > 10)[0]; if (!st) return 'un seul site'; A.orderMove(u, st.x + 9, st.y - 7); const p = u.path[0]; return p && Math.abs(p.x - st.x) < .01 && Math.abs(p.y - st.y) < .01 ? 'ok' : JSON.stringify(u.path); }); need(o.fast === 'ok' || o.fast === 'un seul site' || /\[/.test(o.fast), tag + ' redéploiement vers un site : ' + o.fast);
     await p.close();
     // 4. hélicoptère embarqué et étapes de classification
     p = await page(vw, mob, lang, 'ia', ['frigate', 'patrol']);

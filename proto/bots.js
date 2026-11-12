@@ -11,6 +11,8 @@ window.mkBot = (o = {}) => (S) => {
     if (o.support) for (const x of A.dipActions().filter(z => z.id.startsWith('s:'))) if (x.ok && S.tokens > 2) A.doAct(x);
   }
   { const d = o.doc || (o.trigger ? 'free' : null); if (d && S.doc !== d && S.tokens > 0 && A.setDoc) A.setDoc(d); }
+  // version 35 : cyberattaque (o.cyb) ou brouillage (o.jam) d'un contact qui a tiré
+  if (o.cyb || o.jam) for (const z of S.ships.filter(z => z.visible && !z.ais && z.hact)) { const L = A.shipActions(z), f = id => L.find(a => a.id === id); if (o.cyb && f('blind') && f('blind').ok && S.tokens >= f('blind').tok) A.doAct(f('blind')); if (o.jam && f('jam') && f('jam').ok && S.tokens >= f('jam').tok) A.doAct(f('jam')); }
   if (S.debt > 1.5 && S.tokens > 1 && !o.noCoord) A.coord();
   if (S.posture < (o.posture || 2) && !S.postureAt && S.tokens > 0) A.setPosture(o.posture || 2);
   if (o.grp && !S.units.some(u => u.grpL) && (S._gT || 0) <= S.t) { const L = S.units.find(u => u.type === 'frigate' && !u.grp) || S.units.find(u => A.UT[u.type].naval && !u.grp); if (L && A.grpCands(L).length) A.grpForm(L); S._gT = S.t + 30; }
@@ -33,7 +35,7 @@ window.mkBot = (o = {}) => (S) => {
     if (o.oracle && !c.pressU && navs[0] && S.tokens > 0 && c.located === undefined) { /* attend le contact */ }
     if (c.ev.length && best !== 'sousmarin' && S.tokens > 0 && act('dismiss')) A.doAct(act('dismiss'));
   }
-  for (const c of S.crises.filter(c => ['mine', 'evac', 'seabed', 'mirror', 'alarm'].includes(c.type) && !c.closed && !c.choice)) {
+  for (const c of S.crises.filter(c => ['mine', 'evac', 'seabed', 'mirror', 'alarm', 'expose'].includes(c.type) && !c.closed && !c.choice)) {
     const acts = A.crisisActions(c), col = acts.find(a => a.kind === 'collect' && a.ok), left = c.deadline - S.t;
     if (!o.safe && !o.oracle && col && !c.ev.length && S.tokens > 1 && left > 25) { A.doAct(col); continue; }
     if (S.jobs.some(j => j.f === c) && left > 12) continue;
@@ -48,7 +50,7 @@ window.mkBot = (o = {}) => (S) => {
     if (best === 'revend' && act('neg') && S.tokens > 0) { A.doAct(act('neg')); continue; }
     const da = act('da'); if (da) { if (S.posture < 3 && !S.postureAt && S.tokens > 1) A.setPosture(3); else if (da.ok && S.tokens > 0) A.doAct(da); else if (!da.ok && S.posture >= 3 && act('neg') && S.tokens > 0) A.doAct(act('neg')); }
   }
-  for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice && c.type !== 'sub' && c.type !== 'swarm' && c.type !== 'seize' && !['mine', 'evac', 'seabed', 'mirror', 'alarm'].includes(c.type))) {
+  for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice && c.type !== 'sub' && c.type !== 'swarm' && c.type !== 'seize' && !['mine', 'evac', 'seabed', 'mirror', 'alarm', 'expose'].includes(c.type))) {
     const acts = A.crisisActions(c), act = id => acts.find(a => a.id === id), col = acts.find(a => a.kind === 'collect' && a.ok), left = c.deadline ? c.deadline - S.t : 99;
     if (!o.safe && (!o.oracle || c.type === 'cyber') && c.hyp && col && !c.ev.length && S.tokens > 1 && left > 15 && c.type !== 'jam') { A.doAct(col); continue; }
     if (S.jobs.some(j => j.f === c) && left > 8) continue;

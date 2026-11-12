@@ -118,7 +118,8 @@
     "patrol",
     "drone",
     "repair",
-    "team"
+    "team",
+    "guard"
    ],
    "hyp": [
     "info.sources",
@@ -396,7 +397,8 @@
     "patrol",
     "drone",
     "repair",
-    "team"
+    "team",
+    "guard"
    ],
    "hyp": [
     "info.sources",
@@ -1148,7 +1150,8 @@
    "rec": [
     "frigate",
     "drone",
-    "repair"
+    "repair",
+    "battery"
    ],
    "hyp": [
     "info.sources",
@@ -1546,7 +1549,8 @@
     "patrol",
     "fighter",
     "repair",
-    "team"
+    "team",
+    "guard"
    ],
    "hyp": [
     "comm.sat",
@@ -1992,7 +1996,9 @@
     "fighter",
     "recon",
     "drone",
-    "comm"
+    "comm",
+    "battery",
+    "guard"
    ],
    "hyp": [
     "ally.slow",
@@ -2117,7 +2123,8 @@
     "patrol",
     "patrol",
     "recon",
-    "repair"
+    "repair",
+    "battery"
    ],
    "hyp": [
     "comm.pnt",
@@ -2665,7 +2672,9 @@
     "patrol",
     "recon",
     "drone",
-    "repair"
+    "repair",
+    "battery",
+    "guard"
    ],
    "hyp": [
     "adv.early",
@@ -3337,7 +3346,8 @@
    "rec": [
     "frigate",
     "recon",
-    "team"
+    "team",
+    "battery"
    ],
    "hyp": [
     "sup.weap",
@@ -3461,7 +3471,8 @@
    "rec": [
     "frigate",
     "recon",
-    "patrol"
+    "patrol",
+    "battery"
    ],
    "hyp": [
     "sup.weap",
@@ -3577,7 +3588,8 @@
     "patrol",
     "recon",
     "fighter",
-    "armed"
+    "armed",
+    "battery"
    ],
    "hyp": [
     "sup.weap",
@@ -3704,7 +3716,8 @@
     "patrol",
     "recon",
     "fighter",
-    "comm"
+    "comm",
+    "battery"
    ],
    "hyp": [
     "ally.none",
@@ -3836,7 +3849,8 @@
     "patrol",
     "fighter",
     "team",
-    "repair"
+    "repair",
+    "battery"
    ],
    "hyp": [
     "adv.weap",
@@ -3964,7 +3978,8 @@
     "recon",
     "armed",
     "team",
-    "patrol"
+    "patrol",
+    "battery"
    ],
    "hyp": [
     "adv.cycle",
@@ -4093,7 +4108,8 @@
     "sof",
     "patrol",
     "drone",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "info.late",
@@ -4205,7 +4221,8 @@
    "rec": [
     "sof",
     "patrol",
-    "recon"
+    "recon",
+    "guard"
    ],
    "hyp": [
     "sup.sof",
@@ -4320,7 +4337,9 @@
     "recon",
     "team",
     "analysis",
-    "repair"
+    "repair",
+    "battery",
+    "guard"
    ],
    "hyp": [
     "adv.double",
@@ -4439,7 +4458,8 @@
     "sof",
     "patrol",
     "drone",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "info.late",
@@ -4663,7 +4683,8 @@
    "rec": [
     "sof",
     "patrol",
-    "recon"
+    "recon",
+    "guard"
    ],
    "hyp": [
     "sup.sof",
@@ -4895,7 +4916,9 @@
     "frigate",
     "recon",
     "team",
-    "analysis"
+    "analysis",
+    "battery",
+    "guard"
    ],
    "hyp": [
     "adv.double",
@@ -5129,7 +5152,8 @@
    "rec": [
     "sof",
     "patrol",
-    "recon"
+    "recon",
+    "guard"
    ],
    "hyp": [
     "sup.sof",
@@ -5355,7 +5379,8 @@
     "recon",
     "armed",
     "team",
-    "comm"
+    "comm",
+    "battery"
    ],
    "hyp": [
     "sup.weap",
@@ -5471,7 +5496,8 @@
     "patrol",
     "recon",
     "team",
-    "analysis"
+    "analysis",
+    "battery"
    ],
    "hyp": [
     "adv.double",
@@ -5697,7 +5723,8 @@
     "sof",
     "patrol",
     "drone",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "sup.sof",
@@ -6037,7 +6064,8 @@
     "fighter",
     "recon",
     "team",
-    "comm"
+    "comm",
+    "battery"
    ],
    "hyp": [
     "adv.double",
@@ -6261,7 +6289,8 @@
    "rec": [
     "sof",
     "patrol",
-    "recon"
+    "recon",
+    "guard"
    ],
    "hyp": [
     "sup.sof",
@@ -6607,7 +6636,9 @@
     "frigate",
     "recon",
     "team",
-    "analysis"
+    "analysis",
+    "battery",
+    "guard"
    ],
    "hyp": [
     "adv.double",
@@ -7660,7 +7691,8 @@
     "recon",
     "team",
     "patrol",
-    "comm"
+    "comm",
+    "battery"
    ],
    "hyp": [
     "adv.cycle",
@@ -7783,7 +7815,8 @@
     "patrol",
     "recon",
     "repair",
-    "analysis"
+    "analysis",
+    "battery"
    ],
    "hyp": [
     "sup.weap",
@@ -8120,7 +8153,8 @@
     "recon",
     "team",
     "patrol",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "ally.slow",
@@ -8447,7 +8481,8 @@
    "rec": [
     "patrol",
     "team",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "info.share",
@@ -8553,7 +8588,8 @@
    "rec": [
     "frigate",
     "drone",
-    "comm"
+    "comm",
+    "guard"
    ],
    "hyp": [
     "info.late",

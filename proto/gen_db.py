@@ -290,6 +290,16 @@ for x in S:
     if x['id'] in ('d3', 'e3'):
         x['rec'] = x['rec'] + ['repair']
         x['budget'] = {'d3': 70, 'e3': 46}[x['id']]
+# Version 34 (12 novembre 2026) : unités terrestres ajoutées à l'ordre de bataille.
+# Batterie de défense côtière si le script prévoit une salve, un raid ou un essaim ; peloton de protection s'il prévoit une menace sur un site ou une prise.
+for x in S:
+    if x['id'] == 'tuto':
+        continue
+    ks = {e[1] for e in x['script']}
+    if ks & {'salvo', 'raid', 'swarm'}:
+        x['rec'] = x['rec'] + ['battery']
+    if ks & {'site', 'seize'}:
+        x['rec'] = x['rec'] + ['guard']
 out = {'version': 1, 'scenarios': S, 'assumptions': ASM}
 json.dump(out, open('scenarios.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 ids = [a['id'] for a in ASM]
@@ -297,5 +307,5 @@ for x in S:
     for h in x['hyp']:
         assert h in ids, h
     c = 0
-    print(x['id'], x['mode'], x['diff'], x['turns'], sum({'sof': 14, 'armed': 10, 'recon': 12, 'drone': 7, 'patrol': 10, 'frigate': 18, 'fighter': 12, 'repair': 10, 'team': 10, 'analysis': 5, 'comm': 6}[k] for k in x['rec']), '/', x['budget'], x['assets'])
+    print(x['id'], x['mode'], x['diff'], x['turns'], sum({'sof': 14, 'armed': 10, 'recon': 12, 'drone': 7, 'patrol': 10, 'frigate': 18, 'fighter': 12, 'repair': 10, 'team': 10, 'analysis': 5, 'comm': 6, 'guard': 8, 'battery': 12}[k] for k in x['rec']), '/', x['budget'], x['assets'])
 print(len(S), 'scénarios', len(ASM), 'hypothèses')

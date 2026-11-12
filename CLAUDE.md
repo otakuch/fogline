@@ -82,6 +82,8 @@ seuil-projet/
     ├── pace2.js            rythme : crises par partie, première crise, part du temps sans crise ouverte
     └── th/hicoast.json     côtes détaillées OpenStreetMap par théâtre (varints base64), générées par tools/hires.js
     └── dipm.js             mesures de diplomatie par stratégie
+    └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
+    └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -610,6 +612,103 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 
 **Non vérifié :** aucun vrai joueur ; lisibilité des pictogrammes de 11 px à distance ; le mode daltonisme n'a été contrôlé ni par simulation ni par une personne concernée ; `zoom` du mode présentation testé sous Chromium seulement.
 
+### 5.25 Bilan « Décision ou chance ? » (prototype du 10 novembre 2026, à valider par Naully)
+
+**Origine :** question de Caroline Brooks sur LinkedIn : comment distinguer une bonne décision sous incertitude d'un résultat favorable obtenu par chance. Le bloc est sur la branche `dq-bilan-decision-chance`, poussée sur GitHub le 10 novembre 2026 ; il n'est ni fusionné dans `main` ni publié sur l'artifact officiel.
+
+- **Principe :** pour chaque crise à dossier, le bilan compare ce que valait le choix avec les preuves détenues au moment de décider, puis l'issue réelle. Quatre cas : bon choix réussi, bon choix et malchance, choix fragile et chance, choix fragile perdu. Un cinquième : décidé trop tard (unité envoyée, délai écoulé avant son arrivée).
+- **Relevé (`dqSnap`) :** quand une décision part (`dec` dans `crisisActions`), le jeu note l'estimation `posterior`, les preuves, le temps restant et les réponses alors possibles (`kind: 'decide'`, `ok`), plus « ne pas répondre ». Quand le délai s'écoule sans réponse, `dqNone` fait le même relevé.
+- **Valeur d'une réponse (`dqOut`) :** part des cas où elle réussit (issue de 0,5 ou plus) et issue moyenne, pour chaque hypothèse, pondérées par l'estimation. Les tirages de `resolveChoice` (chasse et contre-attaque cyber, sauvetage délégué) y sont recopiés. C'est un calcul exact : aucun tirage n'est consommé.
+- **Bon choix :** issue moyenne à 0,15 au plus de la meilleure réponse disponible (`DQ_GAP`). L'affichage donne la part de réussite sur 20 (« réussit 14 fois sur 20 »).
+- **Décidé sans vérifier :** aucune preuve en main, une preuve collectable, et au moins la durée d'une analyse plus 10 s avant la fin du délai. Ce signal complète le classement, qui juge le choix à preuves données et ne dit rien de l'effort de vérification.
+- **Types couverts (`DQT`) :** `incursion`, `cyber`, `desinfo`, `sar`, `alarm`, `mine`, `evac`, `seabed`, `mirror`, `site`. Non couverts : `seize` (plusieurs décisions successives), `jam`, et les crises à navires ou de combat (`sabotage`, `ghost`, `sub`, `swarm`, `salvo`, `raid`), dont l'issue dépend du déroulement dans le temps.
+- **Sans effet sur le moteur ni sur le score :** aucun tirage, aucun état de partie modifié. 600 parties rejouées avant et après (75 scénarios, 2 tirages, 4 stratégies) donnent des résultats identiques.
+- **À maintenir :** tout tirage modifié dans `resolveChoice` doit être recopié dans `dqOut`. `stress.js dq` le contrôle sur la ligne « tirages recopiés ».
+- **Affichage :** troisième colonne du bilan, après « Estimations et réalité » : pastilles de synthèse, six crises au plus, une phrase d'explication par cas. Visible du seul joueur (garde-fou 7). La note rappelle qu'il s'agit d'un modèle de jeu (garde-fou 9).
+
+**Résultats du 10 novembre 2026, 2 parties par scénario sur 75, scripts :** référence 94 % de bons choix, 1 % sans vérifier ; réponses sans preuve 100 % de bons choix, mais 98 % sans vérifier ; hasard 74 % de bons choix ; aucun ordre 0 %. Omniscient : 83 % de bons choix pour 98 % de réussites, donc 17 % rangés en « chance », puisqu'il réussit sans preuve. Calibrage, stratégies qui ignorent la vérité : réussite annoncée 39 %, 67 % et 90 % ; observée 42 %, 69 % et 90 % (326, 660 et 860 décisions). Tirages recopiés : 74 % attendus, 74 % observés (1 852 décisions).
+
+**Limites :** l'estimation est celle du jeu, pas celle que le joueur avait en tête. Les effets sur les piliers, la tension et les infrastructures ne sont pas comptés. Une issue partielle de 0,5 à 0,69 compte comme réussie, alors que le tableau des crises l'affiche « Partielle ». `mine` est moins bien calibré (81 % annoncés, 91 % observés, 54 décisions). Aucun vrai joueur.
+
+### 5.26 Dynamique navale, domaines et unités terrestres (version 34)
+
+Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet Command* pour les scénarios navals, corriger des incohérences (force spéciale activable depuis des sous-menus), ralentir les déplacements, ajouter des onglets Terre, Mer, Air, Cyber. Réponses de Naully : classer l'existant **et** ajouter des unités terrestres ; hélicoptère embarqué, classification par étapes, formation du groupe, temps élargi ; environ −30 % ; partir de la branche du bilan « Décision ou chance ? ». Source : page Wikipédia de *Fleet Command* et manuel de *Command* déjà cités en 5.17. Aucun des deux jeux n'a été joué. Branche `v34-fleet-command`.
+
+**Vitesses (table 5.6 remplacée par ces valeurs)**
+
+- Unités : P-8A 29 (autonomie 155 s), MQ-4C 14, MQ-9A 17, LCS 13, destroyer 18, F/A-18 66 (autonomie 100 s), câblier 10, équipe SEAL 38, allié 13. L'autonomie des avions est allongée d'autant : leur rayon d'action ne change pas.
+- Navires civils et adverses : vitesse × 0,7 à la création (`SEAV`, dans `addShip`). Sans cela, un navire fantôme sortait de zone avant d'être rattrapé (banc isolé : 180 s pour le rattraper contre 92 s sur zone).
+- Non ralentis : missiles, pistes d'essaim et de salve, avions civils, incursion aérienne, convoi.
+- **Temps :** vitesses × 8 et × 16 en plus de × 1, × 2, × 4 (touche 8). Sur téléphone, la barre garde × 1, × 2, × 4 et l'avance rapide. Une crise à échéance ramène toujours à × 1 (5.23).
+
+**Domaines (`UT[k].dom`, `OBCAT`, `FD`, `FTAB`, `OBT`)**
+
+- Quatre domaines : Terre (`sof`, `guard`, `battery`), Mer (`patrol`, `frigate`, `repair`, `ally`), Air (`recon`, `drone`, `armed`, `fighter`, `helo`), Cyber et information (`team`, `analysis`, `comm`).
+- Onglets Tous, Terre, Mer, Air, Cyber, avec le nombre d'unités, dans l'onglet Forces du panneau gauche (`ftab`) et dans l'ordre de bataille (`obt`). Un onglet vide est grisé. L'onglet Cyber liste l'équipe cyber (emplois restants, occupée ou non) et les cellules.
+
+**Unités terrestres (nouvelles)**
+
+| Clé | Unité | Indicatif | Vitesse | Capteur | Rôle |
+|---|---|---|---:|---:|---|
+| `guard` | Peloton de protection (FAST) | FAST | 20 | 20 | Sécurise sans délai le site où il est posté ; +0,15 de chance à la reprise d'un site (`seizeResolve`) s'il est à moins de 30 de la zone |
+| `battery` | Batterie de défense côtière (MLR) | MLR | 12 | 90 | Défense 6. Intercepte les missiles à moins de 110, comme un navire, et défend contre salves et essaims l'objet visé à moins de 120. Aucun tir offensif |
+
+- Unités `fixed` : placées sur un site au départ (batterie sur le premier site du scénario, peloton sur le deuxième) ; un ordre de déplacement les envoie vers le site le plus proche du point cliqué (`orderMove`). Pas de patrouille, pas d'allure.
+- Noms : FAST (Fleet Antiterrorism Security Team) et MLR (Marine Littoral Regiment) sont des unités réelles du Corps des Marines. Valeurs de jeu fictives, aucun nom ni paramètre d'arme (garde-fou 2).
+- Scénarios (`gen_db.py`) : batterie ajoutée aux 18 scénarios dont le script prévoit une salve, un raid ou un essaim ; peloton aux 18 scénarios dont le script prévoit une menace sur un site ou une prise.
+- Symboles : APP-6 (infanterie, défense aérienne), faute de pictogramme dans le pack (décision 23).
+
+**Cohérence de la force spéciale**
+
+- L'équipe SEAL passe dans le domaine Terre. Elle n'a plus d'escorte de convoi, de silence radar ni d'allure, qui n'avaient pas de sens pour elle.
+- **Sous-menu « Emplois possibles » (`empHtml`, action `uact`) :** la fiche de l'équipe liste les actions que les crises ouvertes lui offrent (action directe, évacuation par la force) et les lance. Ce sont les actions de `crisisActions`, pas une seconde liste.
+- Lecture retenue de « les forces spéciales peuvent être activées dans des sous-menus » : pouvoir les engager depuis leur fiche. Autre lecture possible, à confirmer : les embarquer sur un navire.
+- Sur téléphone, toucher une unité déjà sélectionnée rouvre son dossier.
+
+**Hélicoptère embarqué (`helo`, MH-60R Seahawk, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `embHtml`)**
+
+- Destroyer et LCS en portent un (`UT.helo`). Sous-menu « Moyens embarqués » de leur fiche : lancer (gratuit), puis clic sur la carte pour l'envoyer. Niveau Complet seulement, pas au tutoriel.
+- Vitesse 45, capteur 40, autonomie 60 s, 3 bouées. Il suit son bâtiment porteur comme base. Rappel par bouton, ou retour seul à carburant épuisé ; inactif 6 s près du bâtiment, il se pose. 45 s de remise en condition. Détruit, il n'est pas remplacé. Bâtiment porteur perdu : il rejoint le site le plus proche.
+- Dossier d'un contact : « Envoyer l'hélicoptère identifier » (1 jeton, comme le drone). Crise `sub` : sans avion à bouées, l'hélicoptère pose 3 bouées.
+- Bilan : décollages et contacts identifiés à vue (`exp.helo`, `exp.idd`).
+
+**Classification par étapes (`stgOf`, `idR`, `stgHtml`, `s.trk`, `s.idd`)**
+
+- Contact sans AIS : **Détecté** (position seule), **Classé** (8 s sous capteur, ou localisé, ou une preuve), **Identifié** (une unité à distance d'identification pendant 3 s, ou pavillon vérifié, ou visite).
+- Distance d'identification : navire 0,4 × capteur (26 au moins), hélicoptère 30, drone 0,5 × capteur.
+- L'identification à vue donne une preuve `visual` (source CONTACT, fiabilité nominale 0,85), sans jeton : le prix est le déplacement. Elle peut être fausse comme toute preuve et ne révèle jamais la vérité.
+- Affichage : ligne « Classification » du dossier avec ce qu'il faut faire pour passer à l'étape suivante, et étape dans le tableau des contacts.
+
+**Formation du groupe (`FORMS`, `grpPost`, `postOf`, action `grpf`)**
+
+- Quatre formations, choisies sur la fiche du chef : Cercle (défaut, inchangé), Écran avant (arc à 24 devant le chef), Ligne de file (derrière, tous les 16), Piquet radar (une unité à 45 devant, les autres en garde arrière).
+- Les postes tournent avec le cap du chef. Aucune règle de détection ni de combat nouvelle : l'effet vient de la géométrie (capteurs et défense placés devant).
+
+**Corrigé au passage :** les onglets du dossier (5 au niveau Complet) élargissaient la page sur téléphone en anglais (`.dtabs`, défaut de la version 33).
+
+**Mesures du 12 novembre 2026, scripts seulement, niveau Complet, 2 parties par scénario (148 parties par stratégie, tutoriel exclu)**
+
+| Stratégie | Version 33 | Version 34 |
+|---|---|---|
+| Omniscient | 795 et 94 % | 797 et 95 % |
+| Référence | 728 et 74 % | 734 et 82 % |
+| Sans aucun tir | 713 et 68 % | 728 et 79 % |
+| Tir sans vérifier | 434 et 20 %, seuil 1 dans 52 % | 458 et 24 %, seuil 1 dans 47 % |
+| Saturation de messages | 293 et 2 % | 295 et 3 % |
+| Aucun ordre | 275 et 2 % | 274 et 3 % |
+| Aucune force | 190 et 0 % | 188 et 0 % |
+
+- **La référence passe à 82 %, nettement au-dessus de la cible de 50 à 70 %.** Causes probables, non isolées une à une : la preuve à vue gratuite, les unités terrestres ajoutées à 36 ordres de bataille, des navires adverses plus lents. Aucun réglage n'a été fait pour revenir dans la cible (décision 30).
+- Omniscient à 0 % sur `n1` en 2 parties, puis 6 réussites sur 6 sur un second tirage (`scr.js n1 6`) : effet d'échantillon. Aucun ordre réussit parfois `l11`, `c4`, `f2` et `n1` (défaut 31).
+- Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur.
+- Bancs isolés (8 parties chacun) : hélicoptère, contact identifié 8 fois sur 8 et appareil toujours récupéré ; batterie seule près de l'objet visé par une salve, 1,25 coup reçu contre 6 sans défense ; peloton déjà sur le site, sécurisé sans délai contre 9 s pour un patrouilleur à distance ; navire fantôme rattrapé en 90 s pour 131 s sur zone (68 s pour 92 s en version 33).
+- Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple) : 5,0 crises par partie, première crise à 71 s, 74 % du temps sans crise ouverte (5,2, 68 s et 71 % en version 33).
+- Conseil seul (`advbot.js 1`, 74 × 1) : 744 et 81 % au niveau Simple, 704 et 78 % au niveau Complet ; référence 775 et 82 %, puis 741 et 74 %. Le conseil seul reste presque aussi efficace que la référence (défaut 12).
+- Bilan « Décision ou chance ? » : référence 95 % de bons choix, hasard 77 %, aucun ordre 0 % ; calibrage 40 %, 67 % et 90 % annoncés pour 42 %, 67 % et 89 % observés.
+- Tests d'interface : `uiv34`, `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
+
+**Non vérifié :** aucun vrai joueur. Les scripts n'utilisent ni l'hélicoptère (sauf pour les bouées, sans avion), ni les formations, ni les sous-menus : leur intérêt en jeu n'est pas mesuré. La batterie et le peloton sont mesurés sur un banc isolé de 8 parties. Le ressenti du ralentissement et du temps × 8 et × 16 n'est pas observé.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -630,9 +729,11 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 | Objectifs et fiches | `opordHtml`, `objCond`, `objCount`, `objNA`, `isGuard`, `WIN_SHARE`, `screenDeck`, `obSheet`, `unitSheet`, `setThr`, `trackHtml`, `hiGeo`, `drawScale` |
 | Groupes et commandes | `grpForm`, `grpBreak`, `grpLeave`, `grpStep`, `uSpd`, `grpHtml`, `contHtml`, `ponHit`, `ctxShow`, `ctxDo`, `hotkey`, `briefDoc`, `briefTips`, `expEnd` |
 | Fin | `score`, `chain`, `recordRun`, `compareHtml`, `showEnd` |
+| Décision ou chance | `DQT`, `DQ_GAP`, `dqOut`, `dqSnap`, `dqMark`, `dqNone`, `dqEval`, `dqAll`, `dqHtml` |
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 34 | `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
 
@@ -712,6 +813,8 @@ node uig.js                                        # escalade, pause automatique
 node advbot.js 2                                   # rien, conseil seul et référence, guidé ou complet
 node uid.js                                        # règles diplomatiques, demandes, mobile
 node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
+node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
+node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -724,6 +827,11 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `labo` | Chaque mécanique isolée | Chaque système sert à quelque chose et reste jouable |
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
+| `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 12 novembre 2026, version 34 (dynamique navale, domaines, unités terrestres), niveau Complet, 2 parties par scénario :** omniscient 797 et 95 %, référence 734 et 82 %, sans aucun tir 728 et 79 %, tir sans vérifier 458 et 24 % avec 47 % de seuil 1, saturation 295 et 3 %, aucun ordre 274 et 3 %, aucune force 188 et 0 %. **La référence dépasse nettement la cible de 50 à 70 %** (74 % en version 33). Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 134, aucun blocage, aucun texte manquant, aucune erreur. Détail, bancs isolés et tests d'interface : section 5.26.
+
+**Résultats du 10 novembre 2026, version 33 (charte complète) puis branche `dq-bilan-decision-chance`, niveau Complet, 2 parties par scénario :** omniscient 795 et 94 %, référence 728 et 74 %, tir sans vérifier 434 et 20 %, aucun ordre 275 et 2 % (moyennes par partie, tutoriel exclu). Les 2 100 parties du volet `exploit` donnent le même score et la même issue en version 32, en version 33 et avec le bilan « Décision ou chance ? » : ni la charte ni ce bilan ne touchent au moteur. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 414, aucun blocage, aucun texte manquant, aucune erreur. `stress.js dq` : voir 5.25. Tests d'interface sur la branche du bilan : `uidq`, `ui5`, `uim`, `uim 844`, `uim2`, `uimenu`, `uig`, `uid`, `uih`, `uigrp`, `uiob`, `uip`, `uiqx`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uia` et `uic` sans erreur ni texte manquant.
 
 **Résultats du 10 novembre 2026, version 32 (retours de bêta, charte), niveau Complet, 2 parties par scénario :** omniscient 796 et 94 % (aucun scénario à 0 %), référence 728 et 73 %, tir sans vérifier 438 et 21 % avec 51 % de seuil 1, sans aucun tir 713 et 67 %, saturation 293 et 2 %, aucun ordre 275 et 2 %, aucune force 190 et 0 %. Identique à la version 31 : les changements sont d'interface, de charte et de règles de temps que les scripts ne ressentent pas. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 500, aucun blocage, aucun texte manquant, aucune erreur. Rythme (`pace2.js`, 12 scénarios × 2, niveau Simple) : 5,2 crises par partie, première crise à 68 s, 71 % du temps sans crise ouverte. Conseil seul (`advbot.js 1`, 74 × 1) : 702 et 66 % au niveau Simple, 683 et 78 % au niveau Complet ; référence 730 et 70 %, puis 720 et 73 %. Tests d'interface : `ui5`, `uimenu`, `uig`, `uiob`, `uigrp`, `uip`, `uiqx`, `uih`, `uit fr 390`, `uit en 1440`, `uis`, `uiq`, `uiw`, `uid`, `uim`, `uim 844`, `uim2`, `uia` et `uic` sans erreur ni texte manquant ; `ui5`, `uimenu`, `uim`, `uim 844` et `uim2` relancés sur l'assemblage final après le correctif du bandeau mobile.
 
@@ -839,6 +947,15 @@ Une évolution est terminée si :
 22. **Écarts avec la charte (version 33) :** onglet Synthèse qui montre aussi les décisions, pas de pastille « Option prudente », tour de jeu au lieu de l'heure UTC, corps à 13 px (5.24). Les garder, ou s'aligner strictement sur le pack.
 23. **Force spéciale et unités hors carte :** elles gardent l'APP-6 faute de pictogramme dans le pack. Faire dessiner les pictogrammes manquants, ou garder ce mélange.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
+24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public.
+25. **Qualité de décision dans le score :** aujourd'hui l'axe D note l'issue réelle. Le remplacer en partie par la valeur du choix à preuves données (5.25) récompenserait le jugement et non la chance, mais change la formule 5.9 et tous les résultats de référence.
+26. **Ne pas répondre :** le calcul de 5.25 le traite comme un choix. Quand l'estimation penche pour une fausse alerte, il peut être la meilleure réponse, alors que l'axe d'engagement du score le pénalise. Garder cet écart, ou l'expliquer au bilan.
+
+27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère.
+28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer.
+29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût.
+30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs.
+31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet.
 
 ### Défauts connus du jeu
 
@@ -887,6 +1004,12 @@ Une évolution est terminée si :
 36. Le retour automatique à ×1 (FL-001) rallonge les parties jouées surtout en ×4 : effet sur le confort à observer avec de vrais joueurs.
 37. Version 33 : sur téléphone, une seule vue sous la carte à la fois. Le journal et les contacts restent accessibles par les onglets du panneau, pas par la barre basse. À observer : un joueur trouve-t-il le dossier, et revient-il aux crises.
 38. Version 33 : les pictogrammes mesurent environ 11 px dans un cadre de 22 px. Leur lecture à distance, sur projecteur, n'est pas vérifiée.
+39. Bilan « Décision ou chance ? » : une stratégie qui répond toujours sans preuve obtient 100 % de bons choix, car le classement juge le choix à preuves données. Seul le signal « Décidé sans vérifier » la distingue (98 % contre 1 % pour la référence). La valeur d'une preuve supplémentaire n'est pas mesurée.
+40. Bilan « Décision ou chance ? » : les crises à navires et de combat ne sont pas évaluées (5.25), alors qu'elles portent le tir, où la confusion entre chance et jugement est la plus forte.
+
+41. Version 34 : la batterie côtière défend tout objet visé à moins de 120, y compris un navire au large proche de la côte. Simplification de jeu.
+42. Version 34 : l'hélicoptère n'a pas de limite de sorties, seulement 45 s de remise en condition. À régler si les joueurs en abusent.
+43. Version 34 : les scripts de test n'emploient pas les formations ni l'hélicoptère de reconnaissance. Leur valeur n'est pas mesurée.
 
 ### Absent de cette version
 

@@ -16,6 +16,8 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **74 missions and a tutorial**, in English and French: viral videos, cyber intrusions, threatened subsea cables, ships without AIS, jamming, false alarms, and direct action missions with naval raids, salvos, drone swarms and the recapture of seized sites or ships
 - **Quick exercise:** compose a mission by choosing force size, adversary behaviour and level, theatre, situation, weather and time of day
 - **Fixed order of battle:** each mission starts with US platforms under their real names (P-8A Poseidon, MQ-4C Triton, Arleigh Burke-class destroyer, Freedom-class LCS and others). All values are fictional game values
+- **Four domains:** land, sea, air and cyber tabs for your forces. Land units include a SEAL team, a security platoon and a defensive coastal battery
+- **Naval play inspired by Jane's Fleet Command:** embarked helicopter, contacts that go from detected to classified to identified, task group formations (ring, forward screen, column, radar picket) and time compression up to ×16
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
@@ -84,6 +86,7 @@ TAG=check node stress.js 2 inv exploit labo    # stability and balance, long
 node ui5.js                                    # full run with real clicks
 node uimenu.js                                 # in-game menu
 node uiqx.js                                   # quick exercise and fire allocation
+node uiv34.js                                  # domains, land units, helicopter, formations
 ```
 
 `CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
@@ -118,6 +121,8 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **74 missions et un tutoriel**, en français et en anglais : vidéo virale, intrusion cyber, câbles sous-marins menacés, navires sans AIS, brouillage, fausses alertes, et missions d'action directe avec raids navals, salves, essaims de drones et reprise de sites ou de navires capturés
 - **Exercice rapide :** composez une mission en choisissant le volume des forces, le comportement et le niveau de l'adversaire, le théâtre, la situation, la météo et le moment
 - **Ordre de bataille fixe :** chaque mission démarre avec des plateformes américaines sous leur vrai nom (P-8A Poseidon, MQ-4C Triton, destroyer classe Arleigh Burke, LCS classe Freedom, etc.). Toutes les valeurs sont des valeurs de jeu fictives
+- **Quatre domaines :** onglets Terre, Mer, Air et Cyber pour vos forces. À terre : équipe SEAL, peloton de protection et batterie côtière défensive
+- **Jeu naval inspiré de Jane's Fleet Command :** hélicoptère embarqué, contacts détectés, classés puis identifiés, formations du groupe (cercle, écran avant, ligne de file, piquet radar) et temps accéléré jusqu'à ×16
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score

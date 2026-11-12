@@ -59,7 +59,7 @@ const { chromium } = require('playwright');
     if (!mob) await p.screenshot({ path: D + '/v34-formation.png' });
     // 6. temps élargi, puis retour à x1 quand une crise à échéance s'ouvre
     if (mob) await p.click('#mnav [data-v=map]');
-    await p.click('#sp8'); o.x8 = await p.evaluate(() => __S.s.speed); need(o.x8 === 8, tag + ' x8');
+    await p.click(mob ? '#sp4' : '#sp8'); o.x8 = await p.evaluate(() => __S.s.speed); need(o.x8 === (mob ? 4 : 8), tag + ' x8 (x4 sur téléphone)');
     if (!mob) { await p.click('#sp16'); o.x16 = await p.evaluate(() => __S.s.speed); need(o.x16 === 16, tag + ' x16'); }
     o.x1 = await p.evaluate(() => { const A = __S; A.startCrisis('desinfo'); return A.s.speed; }); need(o.x1 === 1, tag + ' retour à x1 sur crise');
     // 7. ordre de bataille par domaine

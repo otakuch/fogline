@@ -83,6 +83,7 @@ seuil-projet/
     └── th/hicoast.json     côtes détaillées OpenStreetMap par théâtre (varints base64), générées par tools/hires.js
     └── dipm.js             mesures de diplomatie par stratégie
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
+    └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -629,6 +630,66 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 
 **Limites :** l'estimation est celle du jeu, pas celle que le joueur avait en tête. Les effets sur les piliers, la tension et les infrastructures ne sont pas comptés. Une issue partielle de 0,5 à 0,69 compte comme réussie, alors que le tableau des crises l'affiche « Partielle ». `mine` est moins bien calibré (81 % annoncés, 91 % observés, 54 décisions). Aucun vrai joueur.
 
+### 5.26 Dynamique navale, domaines et unités terrestres (version 34)
+
+Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet Command* pour les scénarios navals, corriger des incohérences (force spéciale activable depuis des sous-menus), ralentir les déplacements, ajouter des onglets Terre, Mer, Air, Cyber. Réponses de Naully : classer l'existant **et** ajouter des unités terrestres ; hélicoptère embarqué, classification par étapes, formation du groupe, temps élargi ; environ −30 % ; partir de la branche du bilan « Décision ou chance ? ». Source : page Wikipédia de *Fleet Command* et manuel de *Command* déjà cités en 5.17. Aucun des deux jeux n'a été joué. Branche `v34-fleet-command`.
+
+**Vitesses (table 5.6 remplacée par ces valeurs)**
+
+- Unités : P-8A 29 (autonomie 155 s), MQ-4C 14, MQ-9A 17, LCS 13, destroyer 18, F/A-18 66 (autonomie 100 s), câblier 10, équipe SEAL 38, allié 13. L'autonomie des avions est allongée d'autant : leur rayon d'action ne change pas.
+- Navires civils et adverses : vitesse × 0,7 à la création (`SEAV`, dans `addShip`). Sans cela, un navire fantôme sortait de zone avant d'être rattrapé (banc isolé : 180 s pour le rattraper contre 92 s sur zone).
+- Non ralentis : missiles, pistes d'essaim et de salve, avions civils, incursion aérienne, convoi.
+- **Temps :** vitesses × 8 et × 16 en plus de × 1, × 2, × 4 (touche 8). Sur téléphone, la barre garde × 1, × 2, × 4 et l'avance rapide. Une crise à échéance ramène toujours à × 1 (5.23).
+
+**Domaines (`UT[k].dom`, `OBCAT`, `FD`, `FTAB`, `OBT`)**
+
+- Quatre domaines : Terre (`sof`, `guard`, `battery`), Mer (`patrol`, `frigate`, `repair`, `ally`), Air (`recon`, `drone`, `armed`, `fighter`, `helo`), Cyber et information (`team`, `analysis`, `comm`).
+- Onglets Tous, Terre, Mer, Air, Cyber, avec le nombre d'unités, dans l'onglet Forces du panneau gauche (`ftab`) et dans l'ordre de bataille (`obt`). Un onglet vide est grisé. L'onglet Cyber liste l'équipe cyber (emplois restants, occupée ou non) et les cellules.
+
+**Unités terrestres (nouvelles)**
+
+| Clé | Unité | Indicatif | Vitesse | Capteur | Rôle |
+|---|---|---|---:|---:|---|
+| `guard` | Peloton de protection (FAST) | FAST | 20 | 20 | Sécurise sans délai le site où il est posté ; +0,15 de chance à la reprise d'un site (`seizeResolve`) s'il est à moins de 30 de la zone |
+| `battery` | Batterie de défense côtière (MLR) | MLR | 12 | 90 | Défense 6. Intercepte les missiles à moins de 110, comme un navire, et défend contre salves et essaims l'objet visé à moins de 120. Aucun tir offensif |
+
+- Unités `fixed` : placées sur un site au départ (batterie sur le premier site du scénario, peloton sur le deuxième) ; un ordre de déplacement les envoie vers le site le plus proche du point cliqué (`orderMove`). Pas de patrouille, pas d'allure.
+- Noms : FAST (Fleet Antiterrorism Security Team) et MLR (Marine Littoral Regiment) sont des unités réelles du Corps des Marines. Valeurs de jeu fictives, aucun nom ni paramètre d'arme (garde-fou 2).
+- Scénarios (`gen_db.py`) : batterie ajoutée aux 18 scénarios dont le script prévoit une salve, un raid ou un essaim ; peloton aux 18 scénarios dont le script prévoit une menace sur un site ou une prise.
+- Symboles : APP-6 (infanterie, défense aérienne), faute de pictogramme dans le pack (décision 23).
+
+**Cohérence de la force spéciale**
+
+- L'équipe SEAL passe dans le domaine Terre. Elle n'a plus d'escorte de convoi, de silence radar ni d'allure, qui n'avaient pas de sens pour elle.
+- **Sous-menu « Emplois possibles » (`empHtml`, action `uact`) :** la fiche de l'équipe liste les actions que les crises ouvertes lui offrent (action directe, évacuation par la force) et les lance. Ce sont les actions de `crisisActions`, pas une seconde liste.
+- Lecture retenue de « les forces spéciales peuvent être activées dans des sous-menus » : pouvoir les engager depuis leur fiche. Autre lecture possible, à confirmer : les embarquer sur un navire.
+- Sur téléphone, toucher une unité déjà sélectionnée rouvre son dossier.
+
+**Hélicoptère embarqué (`helo`, MH-60R Seahawk, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `embHtml`)**
+
+- Destroyer et LCS en portent un (`UT.helo`). Sous-menu « Moyens embarqués » de leur fiche : lancer (gratuit), puis clic sur la carte pour l'envoyer. Niveau Complet seulement, pas au tutoriel.
+- Vitesse 45, capteur 40, autonomie 60 s, 3 bouées. Il suit son bâtiment porteur comme base. Rappel par bouton, ou retour seul à carburant épuisé ; inactif 6 s près du bâtiment, il se pose. 45 s de remise en condition. Détruit, il n'est pas remplacé. Bâtiment porteur perdu : il rejoint le site le plus proche.
+- Dossier d'un contact : « Envoyer l'hélicoptère identifier » (1 jeton, comme le drone). Crise `sub` : sans avion à bouées, l'hélicoptère pose 3 bouées.
+- Bilan : décollages et contacts identifiés à vue (`exp.helo`, `exp.idd`).
+
+**Classification par étapes (`stgOf`, `idR`, `stgHtml`, `s.trk`, `s.idd`)**
+
+- Contact sans AIS : **Détecté** (position seule), **Classé** (8 s sous capteur, ou localisé, ou une preuve), **Identifié** (une unité à distance d'identification pendant 3 s, ou pavillon vérifié, ou visite).
+- Distance d'identification : navire 0,4 × capteur (26 au moins), hélicoptère 30, drone 0,5 × capteur.
+- L'identification à vue donne une preuve `visual` (source CONTACT, fiabilité nominale 0,85), sans jeton : le prix est le déplacement. Elle peut être fausse comme toute preuve et ne révèle jamais la vérité.
+- Affichage : ligne « Classification » du dossier avec ce qu'il faut faire pour passer à l'étape suivante, et étape dans le tableau des contacts.
+
+**Formation du groupe (`FORMS`, `grpPost`, `postOf`, action `grpf`)**
+
+- Quatre formations, choisies sur la fiche du chef : Cercle (défaut, inchangé), Écran avant (arc à 24 devant le chef), Ligne de file (derrière, tous les 16), Piquet radar (une unité à 45 devant, les autres en garde arrière).
+- Les postes tournent avec le cap du chef. Aucune règle de détection ni de combat nouvelle : l'effet vient de la géométrie (capteurs et défense placés devant).
+
+**Corrigé au passage :** les onglets du dossier (5 au niveau Complet) élargissaient la page sur téléphone en anglais (`.dtabs`, défaut de la version 33).
+
+@@RES@@
+
+**Non vérifié :** aucun vrai joueur. Les scripts n'utilisent ni l'hélicoptère (sauf pour les bouées, sans avion), ni les formations, ni les sous-menus : leur intérêt en jeu n'est pas mesuré. La batterie et le peloton sont mesurés sur un banc isolé de 8 parties. Le ressenti du ralentissement et du temps × 8 et × 16 n'est pas observé.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -653,6 +714,7 @@ Le cadre donne le statut connu, le pictogramme le type observé : navire, sous-m
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 34 | `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
 
@@ -733,6 +795,7 @@ node advbot.js 2                                   # rien, conseil seul et réf�
 node uid.js                                        # règles diplomatiques, demandes, mobile
 node dipm.js 1                                     # cohésion, retraits, demandes et canal par stratégie
 node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chance ? » : calibrage, stratégies, affichage
+node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -867,6 +930,12 @@ Une évolution est terminée si :
 25. **Qualité de décision dans le score :** aujourd'hui l'axe D note l'issue réelle. Le remplacer en partie par la valeur du choix à preuves données (5.25) récompenserait le jugement et non la chance, mais change la formule 5.9 et tous les résultats de référence.
 26. **Ne pas répondre :** le calcul de 5.25 le traite comme un choix. Quand l'estimation penche pour une fausse alerte, il peut être la meilleure réponse, alors que l'axe d'engagement du score le pénalise. Garder cet écart, ou l'expliquer au bilan.
 
+27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère.
+28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer.
+29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût.
+30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs.
+31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -916,6 +985,10 @@ Une évolution est terminée si :
 38. Version 33 : les pictogrammes mesurent environ 11 px dans un cadre de 22 px. Leur lecture à distance, sur projecteur, n'est pas vérifiée.
 39. Bilan « Décision ou chance ? » : une stratégie qui répond toujours sans preuve obtient 100 % de bons choix, car le classement juge le choix à preuves données. Seul le signal « Décidé sans vérifier » la distingue (98 % contre 1 % pour la référence). La valeur d'une preuve supplémentaire n'est pas mesurée.
 40. Bilan « Décision ou chance ? » : les crises à navires et de combat ne sont pas évaluées (5.25), alors qu'elles portent le tir, où la confusion entre chance et jugement est la plus forte.
+
+41. Version 34 : la batterie côtière défend tout objet visé à moins de 120, y compris un navire au large proche de la côte. Simplification de jeu.
+42. Version 34 : l'hélicoptère n'a pas de limite de sorties, seulement 45 s de remise en condition. À régler si les joueurs en abusent.
+43. Version 34 : les scripts de test n'emploient pas les formations ni l'hélicoptère de reconnaissance. Leur valeur n'est pas mesurée.
 
 ### Absent de cette version
 

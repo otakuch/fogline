@@ -804,7 +804,7 @@ Demande de Naully du 12 novembre 2026, avec deux vidéos. « Mode macro » : ré
 
 - Équilibre, niveau Complet, 2 parties par scénario : identique à la version 34 corrigée (section 8). Les scripts de référence n'emploient pas ces mécaniques.
 - Bancs isolés : 200 cyberattaques par cas. Contre un navire armé : effet 74 %, repérée 34 %, crise publique 17 %. Contre un navire civil : effet 70 %, repérée 62 %, crise publique 62 %. Brouillage : un navire armé à 140 du destroyer tire dans les 25 s 8 fois sur 8 sans brouillage, 0 fois sur 8 avec.
-- @@EW@@
+- `ewcmp.js 4`, 11 scénarios à raid × 4 parties, script qui brouille ou attaque tout contact ayant tiré : référence 693 et 82 %, 0,55 unité perdue, 1,66 coup reçu ; brouillage 698 et 77 %, 0,43 et 1,36 ; cyberattaque 682 et 66 %, 0,45 et 1,43, avec 2,3 attaques, 0,75 repérée et 0,27 crise publique par partie ; les deux 691 et 73 %, 0,32 et 1,09. Les pertes baissent, la réussite aussi : jetons et emplois de l'équipe cyber manquent ailleurs. 44 parties : écarts à lire avec prudence.
 - Tests : `uiv35.js` (vrais clics, FR 1440 et EN 390, niveaux Complet et Simple) et les 21 autres tests d'interface sans erreur ni texte manquant ; clics au hasard sans blocage.
 - Un raid de « Double prise » joué pas à pas (`pt34.js`) : le navire armé tire à 175 alors que le brouilleur porte à 150 ; il faut s'approcher ou envoyer les chasseurs.
 

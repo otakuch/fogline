@@ -84,6 +84,7 @@ seuil-projet/
     └── dipm.js             mesures de diplomatie par stratégie
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
+    └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -709,6 +710,53 @@ Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet
 
 **Non vérifié :** aucun vrai joueur. Les scripts n'utilisent ni l'hélicoptère (sauf pour les bouées, sans avion), ni les formations, ni les sous-menus : leur intérêt en jeu n'est pas mesuré. La batterie et le peloton sont mesurés sur un banc isolé de 8 parties. Le ressenti du ralentissement et du temps × 8 et × 16 n'est pas observé.
 
+### 5.27 Décisions validées et parcours joués à terre, en mer et dans les airs (version 34, 12 novembre 2026)
+
+**Décisions validées par Naully le 12 novembre 2026** (« Tu peux valider toutes les décisions »), lues comme les cinq décisions posées après la version 34 :
+
+- La force spéciale s'engage depuis sa fiche (décision 27).
+- Les noms FAST et MLR sont gardés, la batterie reste défensive (décision 28).
+- L'identification à vue reste sans jeton (décision 29).
+- La difficulté n'est pas durcie avant des essais avec de vrais joueurs (décision 30).
+- L'hélicoptère reste au niveau Complet (décision 31).
+- Le bilan « Décision ou chance ? » est gardé tel quel (décision 24).
+
+Les décisions plus anciennes de la section 13 restent ouvertes.
+
+**Méthode.** Trois parties jouées par Claude avec `pt34.js` : vrais clics, tirage fixe, lecture du texte de chaque écran avant de décider, captures aux moments clés. Terre : « Double prise » (`d3`), niveau Simple, jusqu'au bilan. Mer : « Voie Nord » (`ic`), niveau Complet, jusqu'à la crise sous-marine. Air : « Bastion du Nord » (`i9`), niveau Simple, jusqu'à la première incursion. Ce n'est pas un test avec de vrais joueurs.
+
+**Défauts trouvés et corrigés**
+
+| Domaine | Constat | Correction |
+|---|---|---|
+| Terre | Le site du peloton de protection était capturé sous son nez | Une prise se reporte sur un site non gardé (`l.guard.det`) : poster le peloton devient un choix |
+| Terre | Batterie posée sur le site visé, réserve intacte : le destroyer, premier de la liste, prenait toutes les interceptions | Le défenseur le plus proche du missile intercepte |
+| Terre | Redéployer en cliquant près d'un site sélectionnait l'unité déjà là | Sous-menu « Redéployer vers », un bouton par site avec la durée du trajet (`fixHtml`, action `redep`) |
+| Terre | « Tracer une patrouille » proposé au peloton, à la batterie et à l'équipe SEAL | Retiré pour les unités terrestres |
+| Terre | Les navires du raid venaient se poser sur le site attaqué | Ils s'arrêtent à 70 du site |
+| Terre | Fiche SEAL : « Emplois restants » et « Sorties restantes » en double ; « Plus aucune action » pendant l'action | Une seule ligne ; « Action en cours » |
+| Terre | Niveau Simple : le raid conseillait de régler la posture, absente de ce niveau | Conseil propre au niveau Simple (`tip.raid.s`) |
+| Mer | **Hypothèse du carburant cédée : un avion à sa base se ravitaillait en boucle et perdait toutes ses sorties en une seconde.** Défaut antérieur à la version 34 | Le seuil de ravitaillement suit la dotation réduite |
+| Mer | Écran avant : l'escorteur ne rattrapait jamais son poste, le chef avançant presque aussi vite | Hors du cercle, le chef ralentit (× 0,55) tant qu'un membre est à plus de 10 de son poste |
+| Mer | L'hélicoptère envoyé identifier donnait deux preuves pour un jeton, dont une « Image du drone » | Une seule preuve, l'observation directe |
+| Mer | « Sonar héliporté » du destroyer sans lien avec l'hélicoptère | Au niveau Complet, l'hélicoptère va tremper son sonar sur zone (destroyer à moins de 220 de la zone) ; indisponible si l'hélicoptère est perdu |
+| Mer | Une alerte ou une zone ne pouvait être observée que par l'avion | Sans avion, l'hélicoptère d'un navire à moins de 220 observe (`eyeAct`, `a.visualh`) |
+| Mer | Un navire qui a tiré restait « Classé » | Il est « Identifié » |
+| Air | Incursion : « Vous avez une minute », alors que le délai est de 90 s ou de 30 s | Le texte renvoie au compte à rebours |
+
+**Constats non corrigés**
+
+- Sélection : donner un ordre de déplacement ferme la fiche de l'unité. Pour enchaîner (route, puis hélicoptère), il faut la resélectionner.
+- Carte chargée autour d'un site défendu : peloton, batterie, équipe SEAL, destroyer et navires adverses se recouvrent (défaut 8).
+- Deux minutes sans rien à décider avant la première crise de `d3` ; l'avance rapide est nécessaire.
+- `d3` gagnée (641 points, 3 étoiles) en laissant trois crises sans réponse (défaut 33).
+- Incursion : la preuve radar reprend mot pour mot l'indice déjà affiché dans la situation.
+- Alerte radar en pleine mer : la réponse proposée est un navire, pas les chasseurs.
+- Les unités traversent la carte en une minute environ, même ralenties : l'échelle de temps reste abstraite.
+- Partie aérienne courte : une seule incursion jouée. Essaim et salve n'ont pas été rejoués à la main.
+
+**Mesures après ces corrections :** voir section 8.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -733,7 +781,7 @@ Demande de Naully du 12 novembre 2026 : adopter des mécaniques de *Jane's Fleet
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
-| Version 34 | `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
+| Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
 | Écrans v33 | `hms`, `dosHead`, `DTAB`, `evBlocks`, `relN`, `histHtml`, `renderNav`, `MV`, `renderMleg`, `applyA11y`, `PRES`, `CVD` |
 | Tests | `window.__S`, à garder à la fin du script |
 
@@ -947,15 +995,15 @@ Une évolution est terminée si :
 22. **Écarts avec la charte (version 33) :** onglet Synthèse qui montre aussi les décisions, pas de pastille « Option prudente », tour de jeu au lieu de l'heure UTC, corps à 13 px (5.24). Les garder, ou s'aligner strictement sur le pack.
 23. **Force spéciale et unités hors carte :** elles gardent l'APP-6 faute de pictogramme dans le pack. Faire dessiner les pictogrammes manquants, ou garder ce mélange.
 19. **Corrections de combat (version 31) :** la chance de 0,72 s'applique maintenant au tir adverse, l'interception a sa propre chance et le seuil du raid suit le nombre de missiles (5.8). Ces corrections touchent aux règles : les valider, ou revenir à l'ancien calcul.
-24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public.
+24. **Bilan « Décision ou chance ? » (5.25) :** le garder, le replier dans « Détails pour l'analyse » au niveau Simple, ou l'écarter. Le fusionner dans `main` met à jour le jeu public. **Tranché le 12 novembre 2026 :** gardé tel quel.
 25. **Qualité de décision dans le score :** aujourd'hui l'axe D note l'issue réelle. Le remplacer en partie par la valeur du choix à preuves données (5.25) récompenserait le jugement et non la chance, mais change la formule 5.9 et tous les résultats de référence.
 26. **Ne pas répondre :** le calcul de 5.25 le traite comme un choix. Quand l'estimation penche pour une fausse alerte, il peut être la meilleure réponse, alors que l'axe d'engagement du score le pénalise. Garder cet écart, ou l'expliquer au bilan.
 
-27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère.
-28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer.
-29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût.
-30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs.
-31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet.
+27. **Lecture de « sous-menus » (version 34) :** la force spéciale s'engage depuis sa fiche. Confirmer, ou demander qu'elle soit embarquée sur un navire comme l'hélicoptère. **Tranché le 12 novembre 2026 :** la force spéciale s'engage depuis sa fiche.
+28. **Unités terrestres (version 34) :** FAST et MLR sont des noms d'unités réelles, avec des valeurs fictives. Les garder, ou revenir à des libellés génériques. La batterie est seulement défensive : confirmer. **Tranché le 12 novembre 2026 :** noms FAST et MLR gardés, batterie défensive.
+29. **Identification à vue gratuite (version 34) :** elle donne une preuve sans jeton. Garder ce prix en déplacement, ou lui donner un coût. **Tranché le 12 novembre 2026 :** l'identification à vue reste sans jeton.
+30. **Référence au-dessus de la cible (version 34) :** voir section 8. Durcir (preuve à vue payante, moins d'unités terrestres), ou accepter jusqu'aux essais avec de vrais joueurs. **Tranché le 12 novembre 2026 :** pas de durcissement avant des essais avec de vrais joueurs.
+31. **Hélicoptère au niveau Simple :** absent aujourd'hui. L'y ajouter, ou le garder au niveau Complet. **Tranché le 12 novembre 2026 :** l'hélicoptère reste au niveau Complet.
 
 ### Défauts connus du jeu
 

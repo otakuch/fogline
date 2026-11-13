@@ -86,6 +86,7 @@ seuil-projet/
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
     └── uiv37.js            version 37 : tour par tour, semi-réel, relief three.js, vue 3D
+    └── tourcmp.js          parties complètes au tour par tour et en semi-réel, par la boucle réelle de la page
     └── th/relief_*.png     altitudes par théâtre (ETOPO 10 minutes), générées par tools/relief/relief.py
     └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
     └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
@@ -869,9 +870,14 @@ Choix au briefing, gardé d'une partie à l'autre. Le tutoriel reste en temps r�
 
 **Limites assumées :** le relief est un décor. Aucune règle ne lit l'altitude ni la profondeur (détection, navigation, sous-marins). La maille vaut environ 18 km : fjords, petites îles et sommets isolés ne sont pas résolus. La page passe de 8,2 à 9,2 Mo.
 
-**Tests :** `uiv37.js` (vrais clics, FR 1440 et EN 390) : trois déroulements au briefing et choix gardé ; au tour par tour, temps arrêté, un tour exactement par « Fin du tour », Espace, échéance en fin de tour, réserve de pause intacte ; en semi-réel, arrêt au tour et à la crise, reprise ; temps réel inchangé ; relief calculé et posé sous les côtes, retour à la carte vectorielle ; vue 3D ouverte, animée, refermée ; pas de défilement horizontal ; aucun texte manquant. @@V37@@
+**Tests :** `uiv37.js` (vrais clics, FR 1440 et EN 390) : trois déroulements au briefing et choix gardé ; au tour par tour, temps arrêté, un tour exactement par « Fin du tour », Espace, échéance en fin de tour, réserve de pause intacte ; en semi-réel, arrêt au tour et à la crise, reprise ; temps réel inchangé ; relief calculé et posé sous les côtes, retour à la carte vectorielle ; vue 3D ouverte, animée, refermée ; pas de défilement horizontal ; aucun texte manquant. `tourcmp.js` : parties complètes jouées par la boucle réelle de la page, le script de référence décidant à chaque arrêt puis cliquant le bouton.
 
-**Non vérifié :** aucun vrai joueur. Aucune partie complète n'a été jouée au tour par tour ni en semi-réel : seuls les arrêts et les reprises sont testés. Le relief et la vue 3D sont testés sous Chromium avec un rendu logiciel ; ni carte graphique réelle, ni téléphone réel, ni Safari. La version exacte d'ETOPO du fichier source n'a pas été vérifiée.
+**Mesures du 13 novembre 2026, scripts seulement**
+
+- Équilibre : les 2 100 parties du volet `exploit` donnent le même score et la même issue qu'en version 36, partie par partie. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant. Les 24 tests d'interface passent.
+- Parties complètes (`tourcmp.js`, 1 partie chacune, même tirage que la référence en temps réel) : tour par tour sur `la`, 16 arrêts, mission réussie, 858 contre 870 ; tour par tour sur `d3`, 22 arrêts, mission réussie, 578 contre 739 ; semi-réel sur `la`, 15 arrêts, mission réussie, 831 contre 870. Une partie au tour par tour dure 33 à 45 s réelles pour le script. Le script décide une fois par tour au lieu de toutes les 5 s : l'écart sur `d3` vient au moins en partie de là. Trois parties : ordre de grandeur seulement.
+
+**Non vérifié :** aucun vrai joueur. Les parties complètes au tour par tour et en semi-réel sont jouées par un script, pas par une personne : le confort, la durée réelle et l'intérêt de ces rythmes ne sont pas observés. Le relief et la vue 3D sont testés sous Chromium avec un rendu logiciel ; ni carte graphique réelle, ni téléphone réel, ni Safari. La version exacte d'ETOPO du fichier source n'a pas été vérifiée.
 
 ## 6. Structure du code
 
@@ -984,7 +990,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
-node uiv37.js                                      # version 37 : tour par tour, semi-réel, relief three.js, vue 3D
+node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -998,6 +1004,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 13 novembre 2026, version 37 (tour par tour, semi-réel, relief, vue 3D) :** identiques à la version 36, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv37` et les 23 autres tests d'interface sans erreur. Parties complètes au tour par tour et en semi-réel : section 5.31.
 
 **Résultats du 12 novembre 2026, version 36 (pistes de missile) :** identiques à la version 35, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv36`, `uiv35`, `uiv34` et les 20 autres tests d'interface sans erreur. Publiée sur le prototype et fusionnée dans `main` le 12 novembre 2026, à la demande de Naully.
 

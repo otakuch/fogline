@@ -1,0 +1,266 @@
+{
+  "product": "FOGLINE",
+  "version": "4.0.0",
+  "languagePolicy": "Game title FOGLINE in French and English; interface strings localized FR/EN",
+  "direction": "satellite-watch / tactical command / documentary evidence",
+  "color": {
+    "semantic": {
+      "bg": "#07121C",
+      "map": "#081923",
+      "panel": "#0D1D2A",
+      "surface": "#132636",
+      "hover": "#193145",
+      "selected": "#1D3950",
+      "border": "#2A4559",
+      "borderStrong": "#4A6A80",
+      "mapGrid": "#26495F",
+      "mapGridMinor": "#173446",
+      "fg": "#E7EEF5",
+      "secondary": "#B7C8D6",
+      "muted": "#98ADBE",
+      "onLight": "#07121C",
+      "cyan": "#69C7E8",
+      "cyanHover": "#9ADDF0",
+      "cyanPressed": "#4EACCB",
+      "amber": "#F2B544",
+      "red": "#E35A5A",
+      "green": "#75C46B",
+      "neutral": "#7FD1F4",
+      "unknown": "#C8D3DC",
+      "suspect": "#F2B544",
+      "hostile": "#E35A5A",
+      "low": "#86C46E",
+      "medium": "#F2B544",
+      "high": "#E35A5A",
+      "success": "#75C46B",
+      "failure": "#D85C5C",
+      "btnSecondary": "#132636",
+      "btnSecondaryHover": "#1C3547",
+      "btnDanger": "#47252C",
+      "btnDisabled": "#243645",
+      "focus": "#FFF2C2",
+      "overlay": "#041018",
+      "barTrack": "#294354",
+      "evidence": "#10202D",
+      "banner": "#F2B544"
+    },
+    "contactKnowledge": {
+      "neutral": {
+        "color": "#7FD1F4",
+        "shape": "square",
+        "textFR": "Identifié neutre",
+        "textEN": "Identified neutral"
+      },
+      "unknown": {
+        "color": "#C8D3DC",
+        "shape": "circle",
+        "textFR": "Inconnu",
+        "textEN": "Unknown"
+      },
+      "suspect": {
+        "color": "#F2B544",
+        "shape": "dashed-diamond",
+        "textFR": "Suspect",
+        "textEN": "Suspect"
+      },
+      "hostile": {
+        "color": "#E35A5A",
+        "shape": "double-diamond",
+        "textFR": "Hostile confirmé",
+        "textEN": "Confirmed hostile"
+      }
+    },
+    "alerts": {
+      "low": "#86C46E",
+      "medium": "#F2B544",
+      "high": "#E35A5A"
+    },
+    "gauges": {
+      "escalation": "#F0933B",
+      "attention": "#E2C35B",
+      "infrastructure": "#7BCB78",
+      "publicTrust": "#77BEE8",
+      "morale": "#A5D86E"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Saira Semi Condensed",
+      "data": "IBM Plex Mono"
+    },
+    "desktop": {
+      "missionTitle": [
+        26,
+        32,
+        600
+      ],
+      "panelTitle": [
+        20,
+        26,
+        600
+      ],
+      "sectionTitle": [
+        17,
+        22,
+        600
+      ],
+      "body": [
+        15,
+        22,
+        400
+      ],
+      "dense": [
+        14,
+        20,
+        400
+      ],
+      "label": [
+        13,
+        18,
+        600
+      ],
+      "mapLabel": [
+        12,
+        16,
+        500
+      ],
+      "gaugeValue": [
+        15,
+        20,
+        600
+      ],
+      "timer": [
+        26,
+        30,
+        600
+      ]
+    },
+    "mobile": {
+      "missionTitle": [
+        20,
+        26,
+        600
+      ],
+      "panelTitle": [
+        18,
+        24,
+        600
+      ],
+      "body": [
+        15,
+        22,
+        400
+      ],
+      "label": [
+        13,
+        18,
+        600
+      ],
+      "mapLabel": [
+        12,
+        16,
+        500
+      ],
+      "timer": [
+        22,
+        28,
+        600
+      ]
+    },
+    "avoidBelowPx": 12
+  },
+  "layout": {
+    "basePx": 4,
+    "spacePx": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      32,
+      40,
+      48
+    ],
+    "desktopPx": 1440,
+    "mobilePx": 390,
+    "bannerHeightPx": 32,
+    "desktopPanelsPx": {
+      "left": 260,
+      "right": 340,
+      "gap": 12
+    },
+    "controlMinHeightPx": 44,
+    "touchTargetPx": 44,
+    "tabsMinHeightPx": 44,
+    "radiusPx": {
+      "panel": 8,
+      "card": 8,
+      "control": 6,
+      "badge": 999
+    },
+    "borderPx": {
+      "normal": 1,
+      "active": 2,
+      "keyboardFocus": 2
+    }
+  },
+  "states": [
+    "default",
+    "hover",
+    "pressed",
+    "selected",
+    "disabled-with-reason",
+    "urgent",
+    "keyboard-focus",
+    "loading"
+  ],
+  "components": [
+    "exercise-banner",
+    "button-primary",
+    "button-secondary",
+    "button-tertiary",
+    "button-danger",
+    "button-disabled",
+    "icon-button",
+    "button-loading",
+    "tabs",
+    "segment",
+    "gauge",
+    "countdown",
+    "decision-card",
+    "evidence-card",
+    "toast",
+    "modal-confirm",
+    "contact-marker",
+    "naval-symbol",
+    "chip",
+    "checkbox",
+    "select",
+    "text-input",
+    "tooltip",
+    "map-toolbar",
+    "mobile-bottom-nav",
+    "empty-state",
+    "skeleton",
+    "alert-strip"
+  ],
+  "rules": {
+    "exerciseBannerAlwaysVisible": true,
+    "truthRevealOnlyDebrief": true,
+    "neverEncodeStatusByColorAlone": true,
+    "mapFirstHierarchy": true,
+    "noHorizontalOverflowAt390": true,
+    "maxGoogleFonts": 2,
+    "avoidViolenceSpectacle": true,
+    "buttonsExplainUnavailability": true,
+    "contrastTarget": "WCAG 2.2 AA (validate with real browser and assistive tech)",
+    "darkThemeDefault": true,
+    "currentApp": "single-file proto/src.html, rebuild using proto/build.py; do not edit generated index.html"
+  },
+  "assets": {
+    "logo": "03_LOGO/fogline_wordmark_dark_bg.svg",
+    "navalIcons": "04_NAVAL_SYMBOLS/*.svg",
+    "map": "06_PREVIEWS/satellite_map_reference.png"
+  }
+}

@@ -10,3 +10,7 @@
 | IBM Plex and Saira Semi Condensed, through Google Fonts | Fonts, loaded at runtime | SIL OFL 1.1 | |
 
 No third-party name or logo implies any endorsement. APP-6 symbols have not been validated against the official text of the standard.
+
+## Relief
+
+Altitudes et profondeurs : ETOPO à 10 minutes d'arc, NOAA National Centers for Environmental Information, domaine public. Fichier `ETOPO_10min_Ice.vtp` du dépôt `pyvista/vtk-data`. Grilles par théâtre dans `proto/th/relief_*.png`, générées par `tools/relief/relief.py`.

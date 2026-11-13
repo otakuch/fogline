@@ -15,7 +15,8 @@ R = [('__MILSYMBOL__', rd('milsymbol.js')),
      ('__THREE__', rd('vendor/three.min.js').replace('</script', '<\\/script')),
      ('__IMG__', b64('../maps/theatre.jpg')), ('__MASK__', rd('mask.rle')), ('__GEO__', rd('geo.json')),
      ('__TH__', th), ('__WORLD__', b64('th/world.jpg')), ('__DB__', rd('scenarios.json')),
-     ('__VEC__', rd('th/vec.json')), ('__HICOAST__', rd('th/hicoast.json') if os.path.exists('th/hicoast.json') else 'null'), ('__SND__', rd('son-pack.json'))]
+     ('__VEC__', rd('th/vec.json')), ('__HICOAST__', rd('th/hicoast.json') if os.path.exists('th/hicoast.json') else 'null'), ('__SND__', rd('son-pack.json')),
+     ('__RELIEF__', json.dumps({k: 'data:image/png;base64,' + base64.b64encode(rd(f'th/relief_{k}.png', 'rb')).decode() for k in json.loads(rd('th/views.json')) if os.path.exists(os.path.join(d, f'th/relief_{k}.png'))}))]
 for k, v in R:
     assert s.count(k) == 1, k
 for k, v in R:

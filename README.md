@@ -21,6 +21,8 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **Overview and tactical view:** one key for the whole theatre, one to centre and zoom on the selected unit, contact or crisis, with range rings. Orders can be given to a whole domain (land, sea, air) in one click
 - **Electronic warfare and cyber:** jam a contact from an equipped unit, which then gives its own position away; blind or slow a contact by cyberattack. A cyberattack can fail, can be spotted, and may then turn into a public crisis that calls for an answer and weighs on public trust. Described by effects only
 - **Missile tracks:** every shot in flight is a numbered track with its heading; the icon shows whether it is in flight, uncertain, intercepted, arrived or lost, and the crisis file lists which defence can engage it
+- **Three ways to play time:** real time, semi-real time (time stops at every turn and every crisis) or turn-based (you give orders, then "End turn" plays 30 seconds)
+- **Relief and 3D view:** an optional relief map of mountains and sea floor, lit by three.js from ETOPO elevations, and a 3D view of the theatre with your units, known contacts and crisis zones
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
@@ -92,6 +94,7 @@ node uiqx.js                                   # quick exercise and fire allocat
 node uiv34.js                                  # domains, land units, helicopter, formations
 node uiv35.js                                  # overview, tactical view, domain orders, jamming, cyber
 node uiv36.js                                  # missile tracks: icons, states, crisis file, legend
+node uiv37.js                                  # turn-based, semi-real time, three.js relief, 3D view
 ```
 
 `CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
@@ -131,6 +134,8 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **Vue d'ensemble et vue tactique :** une touche pour tout le théâtre, une autre pour centrer et zoomer sur l'unité, le contact ou la crise sélectionnés, avec des cercles de distance. Un ordre peut être donné à tout un domaine (terre, mer, air) en un clic
 - **Guerre électronique et cyber :** brouiller un contact depuis une unité équipée, qui se dévoile alors ; aveugler ou ralentir un contact par cyberattaque. Une cyberattaque peut échouer, être repérée, puis devenir une crise publique qui demande une réponse et pèse sur la confiance publique. Décrit par les effets seulement
 - **Pistes de missile :** chaque tir en vol est une piste numérotée avec son cap ; l'icône dit si elle est en vol, incertaine, interceptée, arrivée ou perdue, et le dossier de crise indique quelle défense peut l'engager
+- **Trois déroulements du temps :** temps réel, semi-réel (le temps s'arrête à chaque tour et à chaque crise) ou tour par tour (vous donnez vos ordres, puis « Fin du tour » joue 30 secondes)
+- **Relief et vue 3D :** une carte en relief des montagnes et des fonds marins, en option, éclairée par three.js à partir des altitudes ETOPO, et une vue 3D du théâtre avec vos unités, les contacts connus et les zones de crise
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score

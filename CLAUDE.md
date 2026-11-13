@@ -85,6 +85,8 @@ seuil-projet/
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv37.js            version 37 : tour par tour, semi-réel, relief three.js, vue 3D
+    └── th/relief_*.png     altitudes par théâtre (ETOPO 10 minutes), générées par tools/relief/relief.py
     └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
     └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
     └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
@@ -102,7 +104,7 @@ python3 gen_db.py   # seulement si gen_db.py a changé
 python3 build.py
 ```
 
-`build.py` remplace dans `src.html` les marqueurs `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__` et `__WORLD__`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
+`build.py` remplace dans `src.html` les marqueurs `__RELIEF__`, `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__` et `__WORLD__`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
 
 **Prérequis :** Python 3, Node.js et Playwright avec Chromium.
 
@@ -838,6 +840,39 @@ Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « P
 
 Naully : « valide toutes les décision ». Lu comme la validation des choix déjà en place pour les décisions 32 à 40 : cyberattaque qui peut échouer et être repérée, chances de repérage gardées et affichées, navire fantôme cible légitime, ordres par domaine gratuits, brouillage et ralentissement au niveau Complet, attaque à tort sur un contact mal identifié, teintes de la planche pour les pistes, piste incertaine sans règle nouvelle, drones d'essaim avec le pictogramme d'aéronef. Aucun code ne change. La fusion dans `main`, qui met à jour le jeu public, n'est pas une de ces décisions de règle : elle n'a pas été faite.
 
+### 5.31 Tour par tour, semi-réel, relief et vue 3D (version 37)
+
+Demandes de Naully du 13 novembre 2026 : ajouter un jeu au tour par tour et un mode semi-réel ; ajouter un mode graphique avec le relief des montagnes et des océans ; inclure le moteur three.js pour les effets 3D. Branche `v34-fleet-command`.
+
+**Déroulement du temps (`S.tmode`, `exp.tm`, `seuil.tmode`, `turnGo`, `turnStop`, bouton `#spgo`)**
+
+Choix au briefing, gardé d'une partie à l'autre. Le tutoriel reste en temps réel. Le moteur (`step`) ne change pas : c'est la boucle d'affichage qui arrête le temps, donc les scripts et le banc d'essai jouent comme avant.
+
+- **Temps réel (`rt`, défaut) :** inchangé.
+- **Semi-réel (`semi`) :** le temps coule aux vitesses habituelles, puis s'arrête à chaque début de tour et à chaque crise ou nouvelle phase (`autoPause`). Le bouton « Reprendre » ou Espace relance. La réserve de pause n'est pas consommée. À l'arrêt, une vitesse supérieure à × 4 revient à × 1.
+- **Tour par tour (`turn`) :** le temps est arrêté. Le joueur donne ses ordres, puis « Fin du tour » (ou Espace) joue les 30 s du tour en 2 s environ, sans arrêt intermédiaire, et s'arrête au tour suivant. Les boutons de vitesse, la pause et l'avance rapide disparaissent. Donner un ordre ne relance pas le temps. La pause automatique du niveau Complet (`ponHit`) est sans objet.
+- **Échéances au tour par tour :** toute échéance de crise est repoussée à la fin de tour suivante (`Math.ceil(deadline / 30) × 30`). Une décision à 30 s laisse donc toujours au moins un arrêt pour répondre ; à 90 s, trois.
+- **Inchangé :** jetons par tour, délais d'autorisation, déplacements, combats, score et étoiles. Le bilan des pertes rappelle le déroulement choisi (`exp.tm`).
+
+**Relief (`RELIEF`, `RLF`, `seuil.relief`, `RL`, `reliefData`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`)**
+
+- **Données :** `proto/th/relief_<théâtre>.png`, une grille de 400 × 250 altitudes par théâtre dans le repère du jeu (altitude + 11 000 m sur 16 bits, rouge et vert). Source : ETOPO à 10 minutes d'arc (NOAA NCEI, domaine public), fichier `ETOPO_10min_Ice.vtp` du dépôt `pyvista/vtk-data`. Générateur : `tools/relief/relief.py`, avec `vtp2npy.py` et un `README.md`. Marqueur `__RELIEF__` de `build.py`. 737 Ko pour six théâtres.
+- **Rendu :** three.js construit un maillage de 400 × 250 sommets, déplacés selon l'altitude (`RZ` 0,011 unité par mètre, relief exagéré) et éclairés du nord-ouest par un shader : teintes de profondeur en mer, teintes d'altitude à terre. Terre et mer sont séparées par les côtes vectorielles du jeu, pas par la grille. L'image vue de dessus (2880 × 1800) est calculée une fois par théâtre, puis donnée à MapLibre comme source `canvas`, sous le quadrillage, les frontières et le trait de côte. Le contexte WebGL de calcul est libéré aussitôt.
+- **Réglage :** bouton « Relief » du panneau Couches et ligne « Carte » du menu (Vectorielle par défaut, Relief). Sans WebGL, le relief n'est pas proposé. Sans MapLibre, le canevas de repli dessine la même image.
+- **Crédit :** « relief ETOPO (NOAA) » à côté de la mention OpenStreetMap, et dans `NOTICE.md`.
+
+**Vue 3D du théâtre (`R3D`, `r3Open`, `r3Close`, `altAt`)**
+
+- Bouton « Vue 3D » du panneau Couches. Une fenêtre montre le même maillage en perspective : rotation lente, glisser pour tourner, molette pour approcher, Échap ou « Fermer ». Le temps est arrêté pendant la vue, sans consommer la réserve.
+- Repères posés sur le relief : vos unités sur carte (cyan), contacts sans transpondeur visibles à la couleur de leur statut connu (`shipSidc`, jamais la vérité), zones des crises ouvertes (anneau).
+- Lecture seule : aucun ordre ne s'y donne. `prefers-reduced-motion` arrête la rotation.
+
+**Limites assumées :** le relief est un décor. Aucune règle ne lit l'altitude ni la profondeur (détection, navigation, sous-marins). La maille vaut environ 18 km : fjords, petites îles et sommets isolés ne sont pas résolus. La page passe de 8,2 à 9,2 Mo.
+
+**Tests :** `uiv37.js` (vrais clics, FR 1440 et EN 390) : trois déroulements au briefing et choix gardé ; au tour par tour, temps arrêté, un tour exactement par « Fin du tour », Espace, échéance en fin de tour, réserve de pause intacte ; en semi-réel, arrêt au tour et à la crise, reprise ; temps réel inchangé ; relief calculé et posé sous les côtes, retour à la carte vectorielle ; vue 3D ouverte, animée, refermée ; pas de défilement horizontal ; aucun texte manquant. @@V37@@
+
+**Non vérifié :** aucun vrai joueur. Aucune partie complète n'a été jouée au tour par tour ni en semi-réel : seuls les arrêts et les reprises sont testés. Le relief et la vue 3D sont testés sous Chromium avec un rendu logiciel ; ni carte graphique réelle, ni téléphone réel, ni Safari. La version exacte d'ETOPO du fichier source n'a pas été vérifiée.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -862,6 +897,7 @@ Naully : « valide toutes les décision ». Lu comme la validation des choix dé
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 37 | `turnGo`, `turnStop`, `S.tmode`, `exp.tm`, `RELIEF`, `RLF`, `RL`, `RZ`, `hasGL`, `reliefData`, `altAt`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`, `R3D`, `r3Open`, `r3Close` |
 | Version 36 | `TRKC`, `TRKFX`, `trkNo`, `trkFx`, `drawTrk`, `trkSVG`, `trkDef`, `trkName`, `trkRows`, `trkHtml`, `ownTrkHtml` |
 | Version 35 | `VIEW`, `setView`, `viewFree`, `tacPt`, `renderMacro`, `DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, `JAM_R`, `CYB`, `ewHost`, `cyberStrike`, `jamShip`, `ewHtml` |
 | Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
@@ -948,6 +984,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv37.js                                      # version 37 : tour par tour, semi-réel, relief three.js, vue 3D
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -1030,7 +1067,7 @@ Vérifie ces points avant de chercher ailleurs :
 
 - Publie toujours `proto/seuil-prototype.html` sur le même artifact : https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7. Depuis une autre conversation, lis-le d'abord avec l'action de lecture, puis publie avec son URL.
 - Ne publie pas si un test obligatoire échoue ou si un texte manque.
-- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 6,3 Mo.
+- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 9,2 Mo.
 - Après publication, résume le changement en une phrase. Le lien apparaît déjà dans la carte.
 - L'artifact est privé tant que Naully ne le partage pas.
 
@@ -1105,6 +1142,13 @@ Une évolution est terminée si :
 39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider. **Tranché le 12 novembre 2026 :** la piste incertaine reste un affichage de la pénalité existante, sans règle nouvelle.
 40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non. **Tranché le 12 novembre 2026 :** les drones d'essaim gardent le pictogramme d'aéronef.
 
+41. **Déroulement par défaut (version 37) :** temps réel aujourd'hui. Le garder, ou proposer le semi-réel par défaut aux débutants.
+42. **Étoiles et meilleur score (version 37) :** le tour par tour et le semi-réel donnent les mêmes étoiles que le temps réel, alors qu'ils retirent la pression du temps. Les garder ainsi, plafonner à 3 étoiles, ou tenir des records séparés.
+43. **Échéances au tour par tour (version 37) :** repoussées à la fin de tour suivante, donc un peu plus longues qu'en temps réel. Valider, ou compter les délais en tours entiers (1 et 3).
+44. **Relief par défaut (version 37) :** carte vectorielle par défaut, relief en option. Inverser, ou non.
+45. **Relief dans les règles (version 37) :** aujourd'hui un décor. En faire une mécanique (profondeur et détection des sous-marins, masque du relief pour les capteurs côtiers) changerait l'équilibre : à décider.
+46. **Vue 3D (version 37) :** maquette en lecture seule. Y donner des ordres demanderait de refaire le pointage de la carte : à décider après essais.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1165,6 +1209,10 @@ Une évolution est terminée si :
 47. Version 35 : les ordres par domaine et les deux vues ne sont employés par aucun script.
 
 48. Version 36 : les états « suspect » et « neutre » de la planche ne correspondent à aucune piste du jeu. Le pictogramme « Missile » de la légende V2 ne sert plus qu'aux réglages OTAN et losanges.
+
+49. Version 37 : au tour par tour, une crise de combat (raid, salve, essaim) se joue pendant la résolution du tour, sans arrêt. Le joueur ne peut réagir qu'au tour suivant.
+50. Version 37 : la grille de relief (18 km) est plus grossière que les côtes : près du rivage, une pente ou un fond peut être faux de quelques centaines de mètres.
+51. Version 37 : le relief assombrit ou éclaircit le fond selon l'endroit ; la lisibilité des étiquettes sur les montagnes claires n'est pas vérifiée.
 
 ### Absent de cette version
 

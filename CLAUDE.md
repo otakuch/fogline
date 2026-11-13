@@ -6,7 +6,7 @@ Ce fichier décrit le projet, ses règles et sa méthode de travail. Lis-le enti
 
 **Nom :** FOGLINE dans toutes les langues depuis le 13 novembre 2026 (décision de Naully, kit d'interface V4, voir 5.33). SEUIL est l'ancien titre français : il ne doit plus apparaître à l'écran ni dans les nouveaux documents. Les clés de stockage `seuil.*` et le fichier `seuil-prototype.html` gardent leur nom, pour ne pas effacer les réglages des joueurs ni casser la publication. La disponibilité juridique du nom n'a pas été vérifiée.
 
-SEUIL est un serious game de stratégie en temps réel, inspiré de DEFCON et de Jane's Fleet Command. Le joueur commande des forces dans un scénario fictif sur une carte réelle de la mer de Norvège, de la mer du Nord et de l'Atlantique Nord.
+FOGLINE est un serious game de stratégie en temps réel, inspiré de DEFCON et de Jane's Fleet Command. Le joueur commande des forces dans un scénario fictif sur une carte réelle de la mer de Norvège, de la mer du Nord et de l'Atlantique Nord.
 
 Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir, à conserver sa liberté d'action et à maîtriser l'escalade. Il s'appuie sur le centre de gravité cognitif (CGC) de l'article de Naully Nicolas, « guerre cognitive », paru dans la Revue diplomatique n° 28 de l'IEGA.
 
@@ -951,7 +951,7 @@ International, niveau 3, Atlantique Nord. Un convoi va de Reykjavik à Aberdeen 
 
 - La référence se rapproche de la cible de 50 à 70 %. **Le tir sans vérifier monte de 23 à 35 % :** à surveiller (défaut 52). Les deux effets viennent des vitesses et de l'inertie, sans qu'ils aient été isolés.
 - Omniscient à 0 % sur `i6` en 2 parties, puis 6 réussites sur 6 (`scr.js i6 6`) : effet d'échantillon.
-- Invariants : 608 parties finies et reproductibles. Un défaut signalé 2 fois sur `i14` (unité encore liée à une crise close pendant un pas) : corrigé, non remesuré sur 608 parties avant la suite de l'interface V4.
+- Invariants : 608 parties finies et reproductibles. Un signalement, 2 relevés sur `i14` : une unité reste liée pendant un pas à une crise qui vient de se clore, puis le lien est retiré au pas suivant. Sans effet sur le jeu ; le nettoyage ajouté en début de pas ne supprime pas ce relevé, qui tient à l'ordre des opérations dans `step`.
 - Règles réalistes (`realcmp.js`, 75 scénarios × 1 partie) : référence 750 et 76 % en standard, 754 et 77 % en réaliste ; omniscient 793 et 96 %, puis 797 et 96 %. Par partie en réaliste : 0,2 repli, 2,2 retours pour carburant, aucun radar rallumé (les scripts ne jouent pas en silence). **Les scripts ne ressentent presque pas ces règles.** Omniscient à 0 % en réaliste sur `i8`, `i17` et `d3`, sur une seule partie chacun.
 - `asw`, 6 parties : référence 733 et 67 % en standard, 766 et 83 % en réaliste ; omniscient 846 et 100 % dans les deux cas ; aucun ordre 0 %, puis 17 %.
 - 53 200 clics au hasard sans blocage ni texte manquant. `uiv38.js` et les 24 autres tests d'interface sans erreur. Rythme : 5,0 crises par partie, première crise à 64 s, 73 % du temps sans crise ouverte. Conseil seul : 742 et 80 % au niveau Simple, 708 et 76 % au niveau Complet.
@@ -1109,7 +1109,7 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
-**Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. __V4RES__
+**Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. **Interface V4, même jour :** les 2 128 parties du volet `exploit` donnent le même score et la même issue qu'en version 38, partie par partie ; 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ni texte manquant ; `uiv4.js` et les 25 autres tests d'interface sans erreur. Fusionnée dans `main` et publiée sur le prototype le 13 novembre 2026, à la demande de Naully.
 
 **Résultats du 13 novembre 2026, version 37 (tour par tour, semi-réel, relief, vue 3D) :** identiques à la version 36, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv37` et les 23 autres tests d'interface sans erreur. Parties complètes au tour par tour et en semi-réel : section 5.31.
 

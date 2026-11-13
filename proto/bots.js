@@ -106,7 +106,7 @@ window.mkBot = (o = {}) => (S) => {
   if (e && !e.path.length) { const c = [...A.assets].sort((a, b) => a.hp - b.hp)[0]; if (c.hp < 85) { const q = c.pts ? { x: c.pts[1][0], y: c.pts[1][1] } : c; if (dist(e, q) > 30) A.orderMove(e, q.x, q.y); } }
 };
 window.playGame = (seed, sc, cfg, pol, chk) => {
-  window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
+  window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null, real: !!(cfg.real || window.__REAL) }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
   const S = A.s; S.running = false; let i = 0;
   for (; i < 9000 && !S.over; i++) { A.step(.1); if (i % (window.BOTCAD || 50) === 0 && pol) pol(S); if (i % 10 === 0 && chk) chk(S, sc); }
   const r = A.score();

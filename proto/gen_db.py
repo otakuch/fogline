@@ -285,6 +285,11 @@ H('sup.ana', 'sup', 'Les analyses sont traitées rapidement.', 'Analyses are pro
  H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, un jeton de plus au tour 1.', 'Good news: the crisis cell is reinforced, one extra token on turn 1.'),
  H('pos.calm', 'bonus', '', '', 'Bonne nouvelle : le théâtre est plus calme que prévu, moins d’aléas.', 'Good news: the theatre is calmer than expected, fewer incidents.'),
 ]
+# Version 38 (13 novembre 2026) : chasse sous-marine autour d'un convoi, conçue pour les règles réalistes (real=1 : simple indication au briefing).
+S.append(sc('asw', 'all', 'intl', 3, ['sous-marin', 'mer'], ('Chasse en eaux profondes', 'Deep-water hunt'), ('Un convoi traverse le passage entre l’Islande et l’Écosse. Un sous-marin l’attend peut-être ; plusieurs échos n’en sont pas.', 'A convoy crosses the gap between Iceland and Scotland. A submarine may be waiting for it; several echoes are nothing of the kind.'), ('Le convoi appareille de Reykjavik au tour 5. Le plan suppose que vos deux avions de patrouille tiennent l’air, que les bouées couvrent la route et que le destroyer garde son hélicoptère.', 'The convoy sails from Reykjavik on turn 5. The plan assumes your two patrol aircraft stay airborne, the buoys cover the route and the destroyer keeps its helicopter.'),
+ ['frigate', 'patrol', 'patrol', 'recon', 'recon', 'repair'], ['sup.fuel', 'sup.air', 'info.sources', 'adv.double', 'comm.pnt'],
+ P3([patrol('ob.lane', {'x': 480, 'y': 470, 'r': 85}, 40, ['sub']), close('ob.sub', 'sub')], [ESC, close('ob.sub2', 'sub', n=2, fail=2)], [close('ob.desinfo', 'desinfo'), HOLD], ks=('asw1', 'asw2', 'asw3'), t=(4, 10, 14), convoy=['Reykjavik', 'Aberdeen']),
+ [[2, 'sub'], [5, 'sub'], [7, 'sub'], [9, 'sar'], [10, 'sub'], [11, 'desinfo']], {'sub': 2, 'sar': 1, 'desinfo': 1}, area='wide', sec=('noLoss', 'fewLost', 'cs55'), real=1))
 # Réglage du 7 novembre 2026 : câblier ajouté à Double prise (d3) et à Contact au centre du bassin (e3)
 for x in S:
     if x['id'] in ('d3', 'e3'):

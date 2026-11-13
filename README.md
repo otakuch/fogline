@@ -1,4 +1,4 @@
-# FOGLINE (SEUIL in French)
+# FOGLINE
 
 A real-time strategy serious game for learning to decide under uncertainty, in hybrid and cognitive warfare. You command a small force through fictional crises on real maps: verify first, then decide before the countdown ends. The truth is only revealed at the debrief.
 
@@ -13,7 +13,7 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 ## The game
 
 - **Six theatres:** North Atlantic, continental Europe, Gulf of Guinea, Gulf of Aden and Red Sea, Eastern Mediterranean, Strait of Malacca
-- **74 missions and a tutorial**, in English and French: viral videos, cyber intrusions, threatened subsea cables, ships without AIS, jamming, false alarms, and direct action missions with naval raids, salvos, drone swarms and the recapture of seized sites or ships
+- **75 missions and a tutorial**, in English and French: viral videos, cyber intrusions, threatened subsea cables, ships without AIS, jamming, false alarms, and direct action missions with naval raids, salvos, drone swarms and the recapture of seized sites or ships
 - **Quick exercise:** compose a mission by choosing force size, adversary behaviour and level, theatre, situation, weather and time of day
 - **Fixed order of battle:** each mission starts with US platforms under their real names (P-8A Poseidon, MQ-4C Triton, Arleigh Burke-class destroyer, Freedom-class LCS and others). All values are fictional game values
 - **Four domains:** land, sea, air and cyber tabs for your forces. Land units include a SEAL team, a security platoon and a defensive coastal battery
@@ -21,6 +21,12 @@ A real-time strategy serious game for learning to decide under uncertainty, in h
 - **Overview and tactical view:** one key for the whole theatre, one to centre and zoom on the selected unit, contact or crisis, with range rings. Orders can be given to a whole domain (land, sea, air) in one click
 - **Electronic warfare and cyber:** jam a contact from an equipped unit, which then gives its own position away; blind or slow a contact by cyberattack. A cyberattack can fail, can be spotted, and may then turn into a public crisis that calls for an answer and weighs on public trust. Described by effects only
 - **Missile tracks:** every shot in flight is a numbered track with its heading; the icon shows whether it is in flight, uncertain, intercepted, arrived or lost, and the crisis file lists which defence can engage it
+- **Three ways to play time:** real time, semi-real time (time stops at every turn and every crisis) or turn-based (you give orders, then "End turn" plays 30 seconds)
+- **Relief and 3D view:** an optional relief map of mountains and sea floor, lit by three.js from ETOPO elevations, and a 3D view of the theatre with your units, known contacts and crisis zones
+- **Collisions and inertia:** units of the same medium no longer overlap, ships keep off coast corners, and each unit accelerates, brakes and turns according to its type (an LCS is nimbler and faster than a destroyer)
+- **Realistic rules (Full level, optional):** military targets only, damage that slows a unit, automatic withdrawal, bingo fuel, radar back on when targeted, own-noise and thermal-layer effects on sonar, reaction delay. Adapted by effect only, with fictional values
+- **Submarine hunt:** a convoy escort mission across the Iceland–Scotland gap where some echoes are a submarine and others are not
+- **Decision cards:** every option shows its cost, its estimated escalation and why it is unavailable; a high-risk option asks for confirmation
 - **Attention as a resource:** every check costs a token. You cannot verify everything
 - **Escalation control:** rules of engagement, postures, an escalation threshold and a cognitive centre of gravity (CGC) built on three pillars: epistemic security, social cohesion and institutional resilience
 - **Force morale** and coalition cohesion, both counted in the score
@@ -92,6 +98,7 @@ node uiqx.js                                   # quick exercise and fire allocat
 node uiv34.js                                  # domains, land units, helicopter, formations
 node uiv35.js                                  # overview, tactical view, domain orders, jamming, cyber
 node uiv36.js                                  # missile tracks: icons, states, crisis file, legend
+node uiv37.js                                  # turn-based, semi-real time, three.js relief, 3D view
 ```
 
 `CLAUDE.md` holds the full rules, code map, test results and known defects, in French.
@@ -112,18 +119,18 @@ The project's own code is released under the MIT licence (see `LICENSE`). Third-
 
 ## En français
 
-SEUIL est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude, dans la guerre hybride et la guerre cognitive. Vous commandez une petite force face à des crises fictives, sur des cartes réelles : vérifier d'abord, puis décider avant la fin du compte à rebours. La vérité n'arrive qu'au bilan.
+FOGLINE est un serious game de stratégie en temps réel pour apprendre à décider sous incertitude, dans la guerre hybride et la guerre cognitive. Vous commandez une petite force face à des crises fictives, sur des cartes réelles : vérifier d'abord, puis décider avant la fin du compte à rebours. La vérité n'arrive qu'au bilan.
 
 **Exercice fictif. Prototype en développement.** Les événements, les acteurs et les valeurs de jeu sont inventés. Pas d'arme nucléaire, pas de frappe contre des villes, aucun paramètre d'arme réel.
 
 **Jouer dans le navigateur :** https://otakuch.github.io/fogline/ (choisissez Français en haut de l'écran d'accueil)
 
-![Écran d'accueil de SEUIL](docs/screenshots/fr/01-home.png)
+![Écran d'accueil de FOGLINE](docs/screenshots/fr/01-home.png)
 
 ### Le jeu
 
 - **Six théâtres :** Atlantique Nord, Europe continentale, golfe de Guinée, golfe d'Aden et mer Rouge, Méditerranée orientale, détroit de Malacca
-- **74 missions et un tutoriel**, en français et en anglais : vidéo virale, intrusion cyber, câbles sous-marins menacés, navires sans AIS, brouillage, fausses alertes, et missions d'action directe avec raids navals, salves, essaims de drones et reprise de sites ou de navires capturés
+- **75 missions et un tutoriel**, en français et en anglais : vidéo virale, intrusion cyber, câbles sous-marins menacés, navires sans AIS, brouillage, fausses alertes, et missions d'action directe avec raids navals, salves, essaims de drones et reprise de sites ou de navires capturés
 - **Exercice rapide :** composez une mission en choisissant le volume des forces, le comportement et le niveau de l'adversaire, le théâtre, la situation, la météo et le moment
 - **Ordre de bataille fixe :** chaque mission démarre avec des plateformes américaines sous leur vrai nom (P-8A Poseidon, MQ-4C Triton, destroyer classe Arleigh Burke, LCS classe Freedom, etc.). Toutes les valeurs sont des valeurs de jeu fictives
 - **Quatre domaines :** onglets Terre, Mer, Air et Cyber pour vos forces. À terre : équipe SEAL, peloton de protection et batterie côtière défensive
@@ -131,6 +138,12 @@ SEUIL est un serious game de stratégie en temps réel pour apprendre à décide
 - **Vue d'ensemble et vue tactique :** une touche pour tout le théâtre, une autre pour centrer et zoomer sur l'unité, le contact ou la crise sélectionnés, avec des cercles de distance. Un ordre peut être donné à tout un domaine (terre, mer, air) en un clic
 - **Guerre électronique et cyber :** brouiller un contact depuis une unité équipée, qui se dévoile alors ; aveugler ou ralentir un contact par cyberattaque. Une cyberattaque peut échouer, être repérée, puis devenir une crise publique qui demande une réponse et pèse sur la confiance publique. Décrit par les effets seulement
 - **Pistes de missile :** chaque tir en vol est une piste numérotée avec son cap ; l'icône dit si elle est en vol, incertaine, interceptée, arrivée ou perdue, et le dossier de crise indique quelle défense peut l'engager
+- **Trois déroulements du temps :** temps réel, semi-réel (le temps s'arrête à chaque tour et à chaque crise) ou tour par tour (vous donnez vos ordres, puis « Fin du tour » joue 30 secondes)
+- **Relief et vue 3D :** une carte en relief des montagnes et des fonds marins, en option, éclairée par three.js à partir des altitudes ETOPO, et une vue 3D du théâtre avec vos unités, les contacts connus et les zones de crise
+- **Collisions et inertie :** deux unités du même milieu ne se superposent plus, les navires évitent les coins de côte, et chaque unité accélère, freine et vire selon son type (un LCS est plus vif et plus rapide qu'un destroyer)
+- **Règles réalistes (niveau Complet, en option) :** cibles militaires seulement, avarie qui ralentit, repli automatique, carburant de retour, radar rallumé sous attaque, bruit propre et couche thermique pour le sonar, délai de réaction. Adapté par les effets seulement, avec des valeurs fictives
+- **Chasse sous-marine :** une mission d'escorte de convoi entre l'Islande et l'Écosse, où certains échos sont un sous-marin et d'autres non
+- **Cartes de décision :** chaque option affiche son coût, son escalade estimée et le motif d'une indisponibilité ; une option à risque élevé demande une confirmation
 - **L'attention comme ressource :** chaque vérification coûte un jeton. On ne peut pas tout vérifier
 - **Maîtrise de l'escalade :** règles d'engagement, postures, seuil d'escalade et centre de gravité cognitif (CGC) en trois piliers : sécurité épistémique, cohésion sociale, résilience institutionnelle
 - **Moral des forces** et cohésion de la coalition, comptés dans le score

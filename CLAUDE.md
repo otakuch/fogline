@@ -1,12 +1,12 @@
-# SEUIL : instructions du projet
+# FOGLINE : instructions du projet
 
 Ce fichier décrit le projet, ses règles et sa méthode de travail. Lis-le entièrement avant toute modification. Il prévaut sur les maquettes et sur les vidéos déjà produites, car elles montrent d'anciennes versions.
 
 ## 1. Le projet en bref
 
-**Nom :** SEUIL en français, FOGLINE en anglais (clé `brand`). La disponibilité juridique du nom n'a pas été vérifié.
+**Nom :** FOGLINE dans toutes les langues depuis le 13 novembre 2026 (décision de Naully, kit d'interface V4, voir 5.33). SEUIL est l'ancien titre français : il ne doit plus apparaître à l'écran ni dans les nouveaux documents. Les clés de stockage `seuil.*` et le fichier `seuil-prototype.html` gardent leur nom, pour ne pas effacer les réglages des joueurs ni casser la publication. La disponibilité juridique du nom n'a pas été vérifiée.
 
-SEUIL est un serious game de stratégie en temps réel, inspiré de DEFCON et de Jane's Fleet Command. Le joueur commande des forces dans un scénario fictif sur une carte réelle de la mer de Norvège, de la mer du Nord et de l'Atlantique Nord.
+FOGLINE est un serious game de stratégie en temps réel, inspiré de DEFCON et de Jane's Fleet Command. Le joueur commande des forces dans un scénario fictif sur une carte réelle de la mer de Norvège, de la mer du Nord et de l'Atlantique Nord.
 
 Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir, à conserver sa liberté d'action et à maîtriser l'escalade. Il s'appuie sur le centre de gravité cognitif (CGC) de l'article de Naully Nicolas, « guerre cognitive », paru dans la Revue diplomatique n° 28 de l'IEGA.
 
@@ -85,6 +85,14 @@ seuil-projet/
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv4.js             interface V4 : nom, bandeau, polices, cibles de 44 px, focus, tabulation, contraste, cartes de décision, confirmation
+    └── shot4.js            captures des écrans principaux, pour comparer avant et après
+    └── uiv38.js            version 38 : collisions, inertie, règles réalistes, chasse sous-marine
+    └── colm.js             mesure des collisions : navires sur la terre, unités superposées, contacts traversés
+    └── realcmp.js          règles standard contre règles réalistes, référence et omniscient
+    └── uiv37.js            version 37 : tour par tour, semi-réel, relief three.js, vue 3D
+    └── tourcmp.js          parties complètes au tour par tour et en semi-réel, par la boucle réelle de la page
+    └── th/relief_*.png     altitudes par théâtre (ETOPO 10 minutes), générées par tools/relief/relief.py
     └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
     └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
     └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
@@ -102,7 +110,7 @@ python3 gen_db.py   # seulement si gen_db.py a changé
 python3 build.py
 ```
 
-`build.py` remplace dans `src.html` les marqueurs `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__` et `__WORLD__`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
+`build.py` remplace dans `src.html` les marqueurs `__RELIEF__`, `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__` et `__WORLD__`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
 
 **Prérequis :** Python 3, Node.js et Playwright avec Chromium.
 
@@ -433,7 +441,7 @@ Demande de Naully du 7 novembre 2026, 16 h 25.
 - **Mesure, 75 scénarios × 2 parties, niveau Complet :** omniscient 761 et 90 %, référence 706 et 73 %, tir sans vérifier 446 et 21 % avec 47 % de seuil 1, aucun ordre 251 et 3 %. Pratiquement inchangé : la référence perd rarement une unité. Sur 74 parties de référence, le moral passe sous 60 dans 4 parties et jamais sous 35 ; avec le tir sans vérifier, 7 parties sous 60.
 - **Tests** : `uiob.js` (ordre de bataille sans achat, moral 80 → 54 après la perte du destroyer), `uigrp.js`, `uip.js`, `ui5.js`, `uit.js fr 390` (indicatif `LCS-1`), `uih.js` ; clics au hasard 52 414 sans blocage.
 
-### 5.18 Mode Réaliste (proposition, non codée)
+### 5.18 Mode Réaliste (proposition ; une première partie est codée en version 38, voir 5.32)
 
 Fusionné le 7 novembre 2026 depuis `SEUIL-mode-realiste.md` (supprimé). Résumé complet : https://claude.ai/artifact/9FgxwXC1ZfSHn8WbnWt6L5. Le manuel le présente en annexe E, comme un projet absent du jeu.
 
@@ -838,6 +846,139 @@ Demande de Naully du 12 novembre 2026 : intégrer les icônes de la planche « P
 
 Naully : « valide toutes les décision ». Lu comme la validation des choix déjà en place pour les décisions 32 à 40 : cyberattaque qui peut échouer et être repérée, chances de repérage gardées et affichées, navire fantôme cible légitime, ordres par domaine gratuits, brouillage et ralentissement au niveau Complet, attaque à tort sur un contact mal identifié, teintes de la planche pour les pistes, piste incertaine sans règle nouvelle, drones d'essaim avec le pictogramme d'aéronef. Aucun code ne change. La fusion dans `main`, qui met à jour le jeu public, n'est pas une de ces décisions de règle : elle n'a pas été faite.
 
+### 5.31 Tour par tour, semi-réel, relief et vue 3D (version 37)
+
+Demandes de Naully du 13 novembre 2026 : ajouter un jeu au tour par tour et un mode semi-réel ; ajouter un mode graphique avec le relief des montagnes et des océans ; inclure le moteur three.js pour les effets 3D. Branche `v34-fleet-command`.
+
+**Déroulement du temps (`S.tmode`, `exp.tm`, `seuil.tmode`, `turnGo`, `turnStop`, bouton `#spgo`)**
+
+Choix au briefing, gardé d'une partie à l'autre. Le tutoriel reste en temps réel. Le moteur (`step`) ne change pas : c'est la boucle d'affichage qui arrête le temps, donc les scripts et le banc d'essai jouent comme avant.
+
+- **Temps réel (`rt`, défaut) :** inchangé.
+- **Semi-réel (`semi`) :** le temps coule aux vitesses habituelles, puis s'arrête à chaque début de tour et à chaque crise ou nouvelle phase (`autoPause`). Le bouton « Reprendre » ou Espace relance. La réserve de pause n'est pas consommée. À l'arrêt, une vitesse supérieure à × 4 revient à × 1.
+- **Tour par tour (`turn`) :** le temps est arrêté. Le joueur donne ses ordres, puis « Fin du tour » (ou Espace) joue les 30 s du tour en 2 s environ, sans arrêt intermédiaire, et s'arrête au tour suivant. Les boutons de vitesse, la pause et l'avance rapide disparaissent. Donner un ordre ne relance pas le temps. La pause automatique du niveau Complet (`ponHit`) est sans objet.
+- **Échéances au tour par tour :** toute échéance de crise est repoussée à la fin de tour suivante (`Math.ceil(deadline / 30) × 30`). Une décision à 30 s laisse donc toujours au moins un arrêt pour répondre ; à 90 s, trois.
+- **Inchangé :** jetons par tour, délais d'autorisation, déplacements, combats, score et étoiles. Le bilan des pertes rappelle le déroulement choisi (`exp.tm`).
+
+**Relief (`RELIEF`, `RLF`, `seuil.relief`, `RL`, `reliefData`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`)**
+
+- **Données :** `proto/th/relief_<théâtre>.png`, une grille de 400 × 250 altitudes par théâtre dans le repère du jeu (altitude + 11 000 m sur 16 bits, rouge et vert). Source : ETOPO à 10 minutes d'arc (NOAA NCEI, domaine public), fichier `ETOPO_10min_Ice.vtp` du dépôt `pyvista/vtk-data`. Générateur : `tools/relief/relief.py`, avec `vtp2npy.py` et un `README.md`. Marqueur `__RELIEF__` de `build.py`. 737 Ko pour six théâtres.
+- **Rendu :** three.js construit un maillage de 400 × 250 sommets, déplacés selon l'altitude (`RZ` 0,011 unité par mètre, relief exagéré) et éclairés du nord-ouest par un shader : teintes de profondeur en mer, teintes d'altitude à terre. Terre et mer sont séparées par les côtes vectorielles du jeu, pas par la grille. L'image vue de dessus (2880 × 1800) est calculée une fois par théâtre, puis donnée à MapLibre comme source `canvas`, sous le quadrillage, les frontières et le trait de côte. Le contexte WebGL de calcul est libéré aussitôt.
+- **Réglage :** bouton « Relief » du panneau Couches et ligne « Carte » du menu (Vectorielle par défaut, Relief). Sans WebGL, le relief n'est pas proposé. Sans MapLibre, le canevas de repli dessine la même image.
+- **Crédit :** « relief ETOPO (NOAA) » à côté de la mention OpenStreetMap, et dans `NOTICE.md`.
+
+**Vue 3D du théâtre (`R3D`, `r3Open`, `r3Close`, `altAt`)**
+
+- Bouton « Vue 3D » du panneau Couches. Une fenêtre montre le même maillage en perspective : rotation lente, glisser pour tourner, molette pour approcher, Échap ou « Fermer ». Le temps est arrêté pendant la vue, sans consommer la réserve.
+- Repères posés sur le relief : vos unités sur carte (cyan), contacts sans transpondeur visibles à la couleur de leur statut connu (`shipSidc`, jamais la vérité), zones des crises ouvertes (anneau).
+- Lecture seule : aucun ordre ne s'y donne. `prefers-reduced-motion` arrête la rotation.
+
+**Limites assumées :** le relief est un décor. Aucune règle ne lit l'altitude ni la profondeur (détection, navigation, sous-marins). La maille vaut environ 18 km : fjords, petites îles et sommets isolés ne sont pas résolus. La page passe de 8,2 à 9,2 Mo.
+
+**Tests :** `uiv37.js` (vrais clics, FR 1440 et EN 390) : trois déroulements au briefing et choix gardé ; au tour par tour, temps arrêté, un tour exactement par « Fin du tour », Espace, échéance en fin de tour, réserve de pause intacte ; en semi-réel, arrêt au tour et à la crise, reprise ; temps réel inchangé ; relief calculé et posé sous les côtes, retour à la carte vectorielle ; vue 3D ouverte, animée, refermée ; pas de défilement horizontal ; aucun texte manquant. `tourcmp.js` : parties complètes jouées par la boucle réelle de la page, le script de référence décidant à chaque arrêt puis cliquant le bouton.
+
+**Mesures du 13 novembre 2026, scripts seulement**
+
+- Équilibre : les 2 100 parties du volet `exploit` donnent le même score et la même issue qu'en version 36, partie par partie. Invariants : 600 parties finies et reproductibles. Clics au hasard : 52 315, aucun blocage, aucun texte manquant. Les 24 tests d'interface passent.
+- Parties complètes (`tourcmp.js`, 1 partie chacune, même tirage que la référence en temps réel) : tour par tour sur `la`, 16 arrêts, mission réussie, 858 contre 870 ; tour par tour sur `d3`, 22 arrêts, mission réussie, 578 contre 739 ; semi-réel sur `la`, 15 arrêts, mission réussie, 831 contre 870. Une partie au tour par tour dure 33 à 45 s réelles pour le script. Le script décide une fois par tour au lieu de toutes les 5 s : l'écart sur `d3` vient au moins en partie de là. Trois parties : ordre de grandeur seulement.
+
+**Non vérifié :** aucun vrai joueur. Les parties complètes au tour par tour et en semi-réel sont jouées par un script, pas par une personne : le confort, la durée réelle et l'intérêt de ces rythmes ne sont pas observés. Le relief et la vue 3D sont testés sous Chromium avec un rendu logiciel ; ni carte graphique réelle, ni téléphone réel, ni Safari. La version exacte d'ETOPO du fichier source n'a pas été vérifiée.
+
+### 5.32 Collisions, inertie, règles réalistes et chasse sous-marine (version 38)
+
+Demande de Naully du 13 novembre 2026, avec le manuel de *Command: Modern Operations* (353 pages) : corriger les collisions des unités navales et aériennes, ajouter un scénario de chasse sous-marine, revoir l'inertie (« un LCS est plus rapide qu'un porte-avions »), inclure des logiques opérationnelles, concevoir un mode « réaliste » à partir du manuel. Sections lues : combat naval et sous-marin, capteurs, lutte anti-sous-marine, doctrine et règles d'engagement, repli et redéploiement, avaries, état du carburant et des armes, tactiques navales, rupture des liaisons. Le manuel ne dit rien des collisions ni de l'inertie des navires. Aucun texte ni aucune valeur du manuel n'est repris ; le jeu n'a pas été joué. Branche `v34-fleet-command`.
+
+**Collisions (tous les modes)**
+
+- **Séparation (`sepStep`, `SEP`) :** deux unités du même milieu gardent 7 unités de carte en mer et 6 en l'air. Un navire s'écarte à 4 d'un contact visible ou du convoi. Aucun navire n'est poussé du large vers une case côtière. Aucun tirage.
+- **Routes (`route`, `route0`, `los`, `coast`, `offCoast`) :** plus de diagonale entre deux cases de terre, léger surcoût (0,4) sur les cases de mer qui touchent la terre, lissage qui évite ces cases, arrivée décalée de 2 cases au plus quand elle est collée à la côte. Le centre de la case de départ n'est plus un point de passage. Si aucun chemin n'existe avec la règle des diagonales, un second calcul l'ignore.
+- **Garde terre :** un navire qui monterait sur une case de terre du masque reste en place et recalcule sa route.
+- **Mesure `colm.js`, 25 scénarios × 2 parties, référence :** unités superposées (moins de 3 unités de carte) 258 relevés avant, 1 après ; navires à moins de 3 d'un contact 785, puis 295 ; navire sur une case de terre du masque 1 relevé sur 49 020, puis 0.
+- **Non résolu :** la côte fine affichée reste plus précise que le masque de navigation (défaut 14). En route et au large des ports, 1,0 % des relevés tombaient sur la côte fine avant, 1,5 % après (17 et 37 relevés : écart non significatif). Le correctif complet demande une grille de navigation plus fine.
+
+**Inertie et vitesses (tous les modes ; `INR`, `steer`)**
+
+Chaque unité mobile, hors unités terrestres, a une accélération, un freinage et une vitesse de giration. Elle réduit sa vitesse dans un virage serré et freine avant son dernier point. Les navires adverses, le convoi et les missiles gardent l'ancien déplacement.
+
+| Unité | Vitesse | Avant | Accélération | Giration (rad/s) | Manœuvre affichée |
+|---|---:|---:|---:|---:|---|
+| LCS (`patrol`) | 20 | 13 | 6 | 1,6 | vive |
+| Destroyer (`frigate`) | 16 | 18 | 3 | 1,0 | moyenne |
+| Câblier (`repair`) | 9 | 10 | 1,4 | 0,6 | lourde |
+| Allié (`ally`) | 13 | 13 | 4 | 1,2 | vive |
+| P-8A (`recon`) | 36, autonomie 125 s | 29, 155 s | 10 | 0,8 | moyenne |
+| MQ-4C (`drone`) | 22 | 14 | 5 | 0,6 | lourde |
+| MQ-9A (`armed`) | 17 | 17 | 5 | 0,7 | moyenne |
+| F/A-18 (`fighter`) | 66 | 66 | 28 | 1,6 | vive |
+| MH-60R (`helo`) | 30, autonomie 90 s | 45, 60 s | 14 | 2,0 | vive |
+
+- L'ordre des vitesses suit des ordres de grandeur publics (un LCS est plus rapide qu'un destroyer, un avion de patrouille qu'un hélicoptère). Ce sont des valeurs de jeu. Le rayon d'action du P-8A et de l'hélicoptère ne change pas.
+- Les girations sont stylisées : à l'échelle de la carte (1 unité pour 1,7 mille), une giration réelle serait invisible.
+- **Pas de porte-avions dans le jeu :** l'exemple de Naully n'a donc pas d'unité correspondante (décision 47).
+- Ces tables remplacent celles de 5.6 et de 5.26.
+
+**Règles réalistes (`S.real`, `CFG.real`, `exp.real`, `seuil.real`)**
+
+Choix « Règles : Standard ou Réaliste » au briefing, niveau Complet seulement, jamais au tutoriel. C'est la première partie codée du mode décrit en 5.18. Rappel dans la barre haute, au briefing (huit règles expliquées) et au bilan.
+
+1. **Cibles militaires seulement (`civT`) :** ni tir ni cyberattaque contre un navire qui déclare son identité, n'a pas tiré, n'est pas marqué par la zone d'exclusion et n'est pas classé hostile. Motif affiché : « Cible non militaire ». Une attaque sur un contact mal identifié reste possible et compte à tort (5.18).
+2. **Avarie (`dmgF`) :** à 50 % d'état ou moins, vitesse × 0,6 et capteurs × 0,75.
+3. **Repli (`withdraw`, consigne `S.wd`, oui par défaut) :** une unité avariée rompt le contact et rejoint le site le plus proche, ou sa base pour un avion.
+4. **Carburant :** un avion rentre dès qu'il lui reste le temps du trajet de retour × 1,15 plus 3 s ; remise en condition de 25 s au lieu de 15.
+5. **Silence radar rompu (consigne `S.emb`, oui par défaut) :** une unité en silence visée par un tir à moins de 110 rallume son radar.
+6. **Bruit propre (`ownNz`) :** portée du sonar de coque × 0,5 à l'allure maximale en route, × 1,25 à l'arrêt ou à allure lente.
+7. **Couche thermique (`subDeep`) :** un vrai sous-marin alterne 40 s au-dessus et 40 s sous la couche ; sous la couche, la portée des bouées est divisée par deux, celle du sonar trempé ne change pas. Quand il attaque sans avoir été localisé, la zone de recherche se recentre sur lui (rayon 60).
+8. **Délai de réaction :** tout ordre de déplacement part 2 s plus tard.
+
+- Adapté du manuel par l'effet, jamais par les valeurs : repli sur avarie, état du carburant, émissions sous attaque, bruit et vitesse, couche thermique, position relevée à l'attaque, boucle de réaction.
+- **Non repris de 5.18 :** frappe contre des cibles militaires à terre, portées par catégories, bilan par frappe. **Non repris du manuel :** bandes de profondeur, zones de convergence, capteurs détaillés, cadence des opérations aériennes, isolement des unités sans liaison.
+- Garde-fous 2 et 3 : aucun paramètre ni nom d'arme, aucune technique.
+
+**Scénario « Chasse en eaux profondes » (`asw`, `gen_db.py`)**
+
+International, niveau 3, Atlantique Nord. Un convoi va de Reykjavik à Aberdeen ; quatre contacts sous-marins se succèdent, vrais ou non (sous-marin, banc de poissons, épave). Forces : destroyer, deux LCS, deux P-8A, câblier. Le champ `real: 1` affiche seulement « mission conçue pour les règles réalistes » : il n'impose rien. 76 scénarios au total.
+
+**Mesures du 13 novembre 2026, scripts seulement, niveau Complet**
+
+| Stratégie, 2 parties par scénario | Version 37 | Version 38 |
+|---|---|---|
+| Omniscient | 787 et 91 % | 785 et 90 % |
+| Référence | 740 et 82 % | 751 et 76 % |
+| Sans aucun tir | 739 et 81 % | 744 et 74 % |
+| Tir sans vérifier | 464 et 23 %, seuil 1 dans 44 % | 489 et 35 %, seuil 1 dans 44 % |
+| Saturation de messages | 295 et 3 % | 298 et 4 % |
+| Aucune force | 187 et 0 % | 196 et 0 % |
+
+- La référence se rapproche de la cible de 50 à 70 %. **Le tir sans vérifier monte de 23 à 35 % :** à surveiller (défaut 52). Les deux effets viennent des vitesses et de l'inertie, sans qu'ils aient été isolés.
+- Omniscient à 0 % sur `i6` en 2 parties, puis 6 réussites sur 6 (`scr.js i6 6`) : effet d'échantillon.
+- Invariants : 608 parties finies et reproductibles. Un signalement, 2 relevés sur `i14` : une unité reste liée pendant un pas à une crise qui vient de se clore, puis le lien est retiré au pas suivant. Sans effet sur le jeu ; le nettoyage ajouté en début de pas ne supprime pas ce relevé, qui tient à l'ordre des opérations dans `step`.
+- Règles réalistes (`realcmp.js`, 75 scénarios × 1 partie) : référence 750 et 76 % en standard, 754 et 77 % en réaliste ; omniscient 793 et 96 %, puis 797 et 96 %. Par partie en réaliste : 0,2 repli, 2,2 retours pour carburant, aucun radar rallumé (les scripts ne jouent pas en silence). **Les scripts ne ressentent presque pas ces règles.** Omniscient à 0 % en réaliste sur `i8`, `i17` et `d3`, sur une seule partie chacun.
+- `asw`, 6 parties : référence 733 et 67 % en standard, 766 et 83 % en réaliste ; omniscient 846 et 100 % dans les deux cas ; aucun ordre 0 %, puis 17 %.
+- 53 200 clics au hasard sans blocage ni texte manquant. `uiv38.js` et les 24 autres tests d'interface sans erreur. Rythme : 5,0 crises par partie, première crise à 64 s, 73 % du temps sans crise ouverte. Conseil seul : 742 et 80 % au niveau Simple, 708 et 76 % au niveau Complet.
+
+**Non vérifié :** aucun vrai joueur. Le ressenti de l'inertie, l'intérêt des règles réalistes et la difficulté de la chasse sous-marine ne sont pas observés. Les scripts ne changent ni les consignes ni l'allure : le bruit propre et le silence rompu ne sont contrôlés que par un test isolé.
+
+### 5.33 Interface FOGLINE V4 (13 novembre 2026)
+
+Demande de Naully du 13 novembre 2026 : intégrer le kit « FOGLINE_UI_KIT_CLAUDE_V4 », référentiel graphique officiel, sans changer les mécaniques. Les cinq points de conflit avec l'existant ont été validés par Naully (« valide tout »). Jetons, logos et annexe du kit : `docs/ui-kit-v4/`. Branche `ui/fogline-v4`.
+
+- **Nom :** FOGLINE partout. La jauge « SEUIL » de la barre haute devient « ESCALADE » ; « seuil » reste un mot courant dans les phrases (« Seuil ≥ 2 », « Seuil 1 franchi »).
+- **Jetons :** les couleurs de la version 32 sont remplacées par celles du kit (fond `#07121C`, carte `#081923`, panneau `#0D1D2A`, surface `#132636`, bordure `#2A4559`, texte `#E7EEF5`, secondaire `#B7C8D6`, cyan `#69C7E8`, ambre `#F2B544`, rouge `#E35A5A`, succès `#75C46B`, focus `#FFF2C2`). Le texte rouge garde `#FFABA7`, les pistes de missile et le mode daltonisme leurs teintes.
+- **Polices :** Saira Semi Condensed pour l'interface et le texte, IBM Plex Mono pour les données. Corps à 14 px.
+- **Bandeau :** « EXERCICE FICTIF / FICTIONAL EXERCISE » dans les deux langues, fixe, 32 px, au-dessus de tout (`z-index` 1000), visible aussi à l'accueil ; les fenêtres commencent sous lui.
+- **Logo (`FLOGO`) :** logotype du kit à l'accueil. L'effet de décodage du titre est retiré.
+- **Symboles :** APP-6 (milsymbol) par défaut, comme le demande le kit ; les pictogrammes du jeu restent une option du menu et de la légende. Cela renverse le défaut du 10 novembre (5.23). Un choix enregistré est respecté. Les pistes de missile (5.29) ne dépendent plus de ce réglage.
+- **Composants :** boutons (principal cyan, secondaire, danger, désactivé lisible), onglets, pastilles, blocs de preuve à liseré ambre, jauges avec `role="progressbar"`. Couche de styles ajoutée en fin de feuille, sous le commentaire « FOGLINE UI V4 » : la retirer rend l'ancien habillage.
+- **Cartes de décision (`actsHtml`) :** titre, coût, escalade estimée, pastilles « Conseillé » et « Risque élevé », autres indications, motif d'indisponibilité relié au bouton (`aria-describedby`), bouton de 44 px. La pastille « Conseillé » porte la mention « Conseil tiré de ce que vous voyez : il peut se tromper ». Données : `crisisActions`, `shipActions` et `coaMeta`, comme avant.
+- **Confirmation (`CONF`, `actRisk`, `actHigh`, `RISK_HI`, `cfHtml`, actions `actc` et `actno`) :** une option à risque élevé (escalade estimée de 0,45 ou plus, soit le seuil déjà utilisé pour l'afficher en rouge, ou passage en posture Engager) demande un second clic. Le temps continue. Échap ou « Annuler » referme. Pas de confirmation au tutoriel. L'exécution passe toujours par `doAct` ; les scripts ne sont pas concernés.
+- **Sans effet sur le moteur**, sauf `actRisk`, qui isole un calcul existant de `coaMeta` sans le changer.
+
+**Écarts avec le kit :** boutons de la barre haute et de la colonne de zoom à 34 px sur ordinateur (44 px au tactile) ; icônes de commande du kit non intégrées ; confirmation affichée dans le dossier et non dans une fenêtre, pour ne pas masquer la carte sous compte à rebours ; navigation basse du téléphone gardée telle qu'en version 33.
+
+**Tests :** `uiv4.js` (français 1440 px, anglais 390 px, 720 px pour un zoom à 200 %) sur accueil, briefing, jeu, confirmation, menu et bilan : bandeau au premier plan, pas de défilement horizontal, ancien nom absent, deux polices, contraste AA du texte hors carte et hors boutons désactivés, boutons de 44 px, tabulation jusqu'à une décision avec focus visible, cartes conformes aux listes du moteur et identiques quelle que soit la vérité, confirmation puis exécution.
+
+**Non vérifié :** les polices Google ne se chargent pas dans l'environnement de test : Saira n'a pas été vue à l'écran, seulement sa police de repli. Aucun lecteur d'écran, aucun téléphone réel, aucun vrai joueur. Le contraste est calculé sur le texte du document, pas sur le canevas de la carte.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -862,6 +1003,9 @@ Naully : « valide toutes les décision ». Lu comme la validation des choix dé
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
+| Version 38 | `INR`, `SEP`, `steer`, `sepStep`, `coast`, `offCoast`, `route0`, `dmgF`, `civT`, `ownNz`, `subDeep`, `withdraw`, `S.real`, `S.wd`, `S.emb`, `exp.real` |
+| Version 37 | `turnGo`, `turnStop`, `S.tmode`, `exp.tm`, `RELIEF`, `RLF`, `RL`, `RZ`, `hasGL`, `reliefData`, `altAt`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`, `R3D`, `r3Open`, `r3Close` |
 | Version 36 | `TRKC`, `TRKFX`, `trkNo`, `trkFx`, `drawTrk`, `trkSVG`, `trkDef`, `trkName`, `trkRows`, `trkHtml`, `ownTrkHtml` |
 | Version 35 | `VIEW`, `setView`, `viewFree`, `tacPt`, `renderMacro`, `DOMO`, `domUnits`, `domTargets`, `domOrder`, `domHtml`, `JAM_R`, `CYB`, `ewHost`, `cyberStrike`, `jamShip`, `ewHtml` |
 | Version 34 | `fixHtml`, `siteOf`, `eyeAct`, `SEAV`, `FD`, `FTAB`, `OBT`, `empHtml`, `embHtml`, `heloLaunch`, `heloStep`, `heloOf`, `heloFree`, `heloShip`, `heloFly`, `idR`, `stgOf`, `stgHtml`, `FORMS`, `grpPost`, `postOf` |
@@ -948,6 +1092,9 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
+node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine
+node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -961,6 +1108,10 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. **Interface V4, même jour :** les 2 128 parties du volet `exploit` donnent le même score et la même issue qu'en version 38, partie par partie ; 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ni texte manquant ; `uiv4.js` et les 25 autres tests d'interface sans erreur. Fusionnée dans `main` et publiée sur le prototype le 13 novembre 2026, à la demande de Naully.
+
+**Résultats du 13 novembre 2026, version 37 (tour par tour, semi-réel, relief, vue 3D) :** identiques à la version 36, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv37` et les 23 autres tests d'interface sans erreur. Parties complètes au tour par tour et en semi-réel : section 5.31.
 
 **Résultats du 12 novembre 2026, version 36 (pistes de missile) :** identiques à la version 35, partie par partie, sur les 2 100 parties du volet `exploit` ; 600 parties finies et reproductibles ; 52 315 clics au hasard sans blocage ni texte manquant ; `uiv36`, `uiv35`, `uiv34` et les 20 autres tests d'interface sans erreur. Publiée sur le prototype et fusionnée dans `main` le 12 novembre 2026, à la demande de Naully.
 
@@ -1030,7 +1181,7 @@ Vérifie ces points avant de chercher ailleurs :
 
 - Publie toujours `proto/seuil-prototype.html` sur le même artifact : https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7. Depuis une autre conversation, lis-le d'abord avec l'action de lecture, puis publie avec son URL.
 - Ne publie pas si un test obligatoire échoue ou si un texte manque.
-- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 6,3 Mo.
+- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 9,2 Mo.
 - Après publication, résume le changement en une phrase. Le lien apparaît déjà dans la carte.
 - L'artifact est privé tant que Naully ne le partage pas.
 
@@ -1105,6 +1256,21 @@ Une évolution est terminée si :
 39. **Piste incertaine (version 36) :** aujourd'hui elle montre seulement une pénalité déjà existante (systèmes dégradés). En faire une règle propre (piste hors de portée de vos radars, interception moins sûre) changerait l'équilibre : à décider. **Tranché le 12 novembre 2026 :** la piste incertaine reste un affichage de la pénalité existante, sans règle nouvelle.
 40. **Drones d'essaim (version 36) :** ils gardent le pictogramme d'aéronef. Leur donner aussi le dôme, ou non. **Tranché le 12 novembre 2026 :** les drones d'essaim gardent le pictogramme d'aéronef.
 
+41. **Déroulement par défaut (version 37) :** temps réel aujourd'hui. Le garder, ou proposer le semi-réel par défaut aux débutants.
+42. **Étoiles et meilleur score (version 37) :** le tour par tour et le semi-réel donnent les mêmes étoiles que le temps réel, alors qu'ils retirent la pression du temps. Les garder ainsi, plafonner à 3 étoiles, ou tenir des records séparés.
+43. **Échéances au tour par tour (version 37) :** repoussées à la fin de tour suivante, donc un peu plus longues qu'en temps réel. Valider, ou compter les délais en tours entiers (1 et 3).
+44. **Relief par défaut (version 37) :** carte vectorielle par défaut, relief en option. Inverser, ou non.
+45. **Relief dans les règles (version 37) :** aujourd'hui un décor. En faire une mécanique (profondeur et détection des sous-marins, masque du relief pour les capteurs côtiers) changerait l'équilibre : à décider.
+46. **Vue 3D (version 37) :** maquette en lecture seule. Y donner des ordres demanderait de refaire le pointage de la carte : à décider après essais.
+
+47. **Porte-avions (version 38) :** absent du jeu. L'ajouter comme unité à protéger (groupe aéronaval) demande une nouvelle unité, ses symboles et un scénario : à décider.
+48. **Vitesses revues (version 38) :** LCS 20, destroyer 16, P-8A 36, MQ-4C 22, hélicoptère 30 (5.32). Valider cet ordre, ou le corriger.
+49. **Inertie dans tous les modes (version 38) :** aujourd'hui partout, tutoriel compris. La garder ainsi, ou la réserver aux règles réalistes.
+50. **Règles réalistes (version 38) :** mêmes étoiles et même score qu'en standard. Les garder ainsi, ou tenir des records séparés. Suite possible de 5.18 : cibles militaires à terre.
+51. **Repli automatique (version 38) :** oui par défaut en règles réalistes ; une unité touchée une fois se replie toujours. Garder ce seuil de 50 %, ou le régler.
+52. **Symboles par défaut (interface V4) :** APP-6, contre les pictogrammes du jeu depuis le 10 novembre. Validé le 13 novembre 2026 avec le kit ; la validation des choix APP-6 par une personne qui dispose du texte reste due (défaut 15).
+53. **Seuil de confirmation (interface V4) :** escalade estimée de 0,45 ou plus, ou passage en Engager. Garder ce seuil, ou confirmer aussi les visites.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1166,9 +1332,20 @@ Une évolution est terminée si :
 
 48. Version 36 : les états « suspect » et « neutre » de la planche ne correspondent à aucune piste du jeu. Le pictogramme « Missile » de la légende V2 ne sert plus qu'aux réglages OTAN et losanges.
 
+49. Version 37 : au tour par tour, une crise de combat (raid, salve, essaim) se joue pendant la résolution du tour, sans arrêt. Le joueur ne peut réagir qu'au tour suivant.
+50. Version 37 : la grille de relief (18 km) est plus grossière que les côtes : près du rivage, une pente ou un fond peut être faux de quelques centaines de mètres.
+51. Version 37 : le relief assombrit ou éclaircit le fond selon l'endroit ; la lisibilité des étiquettes sur les montagnes claires n'est pas vérifiée.
+
+52. Version 38 : le tir sans vérifier réussit 35 % des missions contre 23 % en version 37, toujours loin sous la référence (76 %) et avec 44 % de seuil 1. Cause non isolée (vitesses, inertie).
+53. Version 38 : les avions s'arrêtent sur place à leur point d'arrivée, comme avant. L'inertie ne les fait pas orbiter.
+54. Version 38 : la séparation déplace de quelques unités de carte un navire à l'arrêt ; au port, il peut se trouver sur la côte fine affichée (2,8 % des relevés contre 0,35 %), où l'affichage le recale déjà.
+55. Version 38 : les règles réalistes changent peu les résultats des scripts ; leur poids réel dépend de joueurs qui emploient le silence radar, l'allure et les bouées.
+56. Interface V4 : les boutons de vitesse et de zoom mesurent 34 px sur ordinateur ; le kit demande 44 px pour les actions.
+57. Interface V4 : la confirmation ajoute un clic sous compte à rebours ; son effet sur la pression du temps n'est pas observé.
+
 ### Absent de cette version
 
-Niveaux de difficulté réglables, missions secondaires au choix, multijoueur, mode animateur, éditeur de formation, groupes aériens.
+Niveaux de difficulté réglables, missions secondaires au choix, multijoueur, mode animateur, éditeur de formation, groupes aériens, porte-avions.
 
 ## 14. Priorités recommandées
 

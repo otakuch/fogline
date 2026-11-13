@@ -9116,6 +9116,160 @@
     1.6
    ],
    "th": "ml"
+  },
+  {
+   "id": "asw",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 3,
+   "tags": [
+    "sous-marin",
+    "mer"
+   ],
+   "title": {
+    "fr": "Chasse en eaux profondes",
+    "en": "Deep-water hunt"
+   },
+   "desc": {
+    "fr": "Un convoi traverse le passage entre l’Islande et l’Écosse. Un sous-marin l’attend peut-être ; plusieurs échos n’en sont pas.",
+    "en": "A convoy crosses the gap between Iceland and Scotland. A submarine may be waiting for it; several echoes are nothing of the kind."
+   },
+   "brief": {
+    "fr": "Le convoi appareille de Reykjavik au tour 5. Le plan suppose que vos deux avions de patrouille tiennent l’air, que les bouées couvrent la route et que le destroyer garde son hélicoptère.",
+    "en": "The convoy sails from Reykjavik on turn 5. The plan assumes your two patrol aircraft stay airborne, the buoys cover the route and the destroyer keeps its helicopter."
+   },
+   "turns": 14,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "patrol",
+    "recon",
+    "recon",
+    "repair"
+   ],
+   "hyp": [
+    "sup.fuel",
+    "sup.air",
+    "info.sources",
+    "adv.double",
+    "comm.pnt"
+   ],
+   "assets": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "PORT",
+    "PLAT",
+    "GRID",
+    "LNG",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noLoss",
+    "fewLost",
+    "cs55"
+   ],
+   "pool": {
+    "sub": 2,
+    "sar": 1,
+    "desinfo": 1
+   },
+   "phases": [
+    {
+     "until": 4,
+     "obj": [
+      {
+       "k": "patrol",
+       "key": "ob.lane",
+       "zone": {
+        "x": 480,
+        "y": 470,
+        "r": 85
+       },
+       "need": 40,
+       "onFail": [
+        [
+         "sub"
+        ]
+       ]
+      },
+      {
+       "k": "close",
+       "key": "ob.sub",
+       "c": "sub"
+      }
+     ],
+     "k": "asw1"
+    },
+    {
+     "until": 10,
+     "obj": [
+      {
+       "k": "escort",
+       "key": "ob.escort"
+      },
+      {
+       "k": "close",
+       "key": "ob.sub2",
+       "c": "sub",
+       "n": 2,
+       "fail": 2
+      }
+     ],
+     "k": "asw2",
+     "convoy": [
+      "Reykjavik",
+      "Aberdeen"
+     ]
+    },
+    {
+     "until": 14,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.desinfo",
+       "c": "desinfo"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ],
+     "k": "asw3"
+    }
+   ],
+   "script": [
+    [
+     2,
+     "sub"
+    ],
+    [
+     5,
+     "sub"
+    ],
+    [
+     7,
+     "sub"
+    ],
+    [
+     9,
+     "sar"
+    ],
+    [
+     10,
+     "sub"
+    ],
+    [
+     11,
+     "desinfo"
+    ]
+   ],
+   "real": 1
   }
  ],
  "assumptions": [

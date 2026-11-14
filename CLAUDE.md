@@ -85,6 +85,8 @@ seuil-projet/
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv39.js            version 39 : commandement sous tension (réserve d'état-major, dette, coupure du réseau, bilan visible et latent)
+    └── cmdcmp.js           référence, script qui ne coordonne jamais et omniscient : réserve, dette, stabilité fantôme
     └── uiv4.js             interface V4 : nom, bandeau, polices, cibles de 44 px, focus, tabulation, contraste, cartes de décision, confirmation
     └── shot4.js            captures des écrans principaux, pour comparer avant et après
     └── uiv38.js            version 38 : collisions, inertie, règles réalistes, chasse sous-marine
@@ -979,6 +981,28 @@ Demande de Naully du 13 novembre 2026 : intégrer le kit « FOGLINE_UI_KIT_CLAUD
 
 **Non vérifié :** les polices Google ne se chargent pas dans l'environnement de test : Saira n'a pas été vue à l'écran, seulement sa police de repli. Aucun lecteur d'écran, aucun téléphone réel, aucun vrai joueur. Le contraste est calculé sur le texte du document, pas sur le canevas de la carte.
 
+### 5.34 Commandement sous tension (version 39)
+
+Demande de Naully du 14 novembre 2026 : intégrer les concepts de CSIM, « Command System Simulator » de Caroline Suzanne Brooks (https://csb1105.github.io/command-simulation/, dépôt `csb1105/command-simulation`, version du 21 septembre 2026). CSIM est un instrument de recherche, pas un jeu : il traite le commandement comme un système qui se dégrade sous une perte de liaisons. Le dépôt n'a pas de licence et ne contient pas le notebook du modèle : la page affiche des trajectoires précalculées. Seuls les concepts sont repris, avec des valeurs de jeu propres ; aucun code ni texte n'est copié. Choix de Naully : le socle, au niveau Complet seulement. Branche `v39-commandement`.
+
+**Concepts repris :** stabilité fantôme (la performance visible tient pendant que la résilience s'use), dette de coordination, réserve humaine finie, rétablissement technique qui n'est pas un rétablissement du commandement, dépendance au chemin (une coupure identique frappe plus fort un état-major déjà marqué), cause affichée de chaque dégradation. **Non repris :** image partagée divergente entre nœuds, priorités d'état-major et profil de manœuvre future, marge de commandement, architecture observer → résoudre → valider, opérateurs TM-DA (cadre d'un tiers, sémantique provisoire selon l'auteur).
+
+**Règles (niveau Complet, hors tutoriel ; `cmdOn`). Aucun tirage.**
+
+- **Réserve d'état-major (`S.hr`, 0 à 100, départ 100) :** −0,06 par seconde et par crise ouverte sans décision au-delà de la première ; −0,05 par seconde réseau de commandement coupé, doublé à partir de la deuxième coupure si la réserve est sous 60 ; −3 par jeton dépensé au-delà du troisième dans un tour (`cmdSpend`). Remonte de 0,08 par seconde quand aucune crise n'est ouverte et que le réseau fonctionne, et de 3 au début d'un tour qui suit un tour à 2 jetons ou moins. Paliers : disponible (60 et plus), entamée, épuisée (sous 25).
+- **Effets :** autorisation de posture × (1 + 0,15 × dette, dette plafonnée à 6), puis × 1,3 si la réserve est sous 50 (`cmdAuth`) ; ordre de déplacement retardé de 0,5 s par point de dette à partir de 1, plus 1 s si la réserve est sous 50 (`cmdOrd`) ; réserve sous 25 : un jeton de moins par tour.
+- **Dette de coordination (`S.debt`, existante) :** elle s'accumulait déjà (+0,25 et +0,25 par crise ouverte par tour) et n'agissait que sur le score (axe T) et la résilience au-delà de 2. Elle allonge maintenant les délais. Réseau coupé : +0,2 par jeton et +0,1 par ordre de déplacement. « Coordonner » la réduit toujours de 1,5.
+- **Coupure du réseau de commandement (`S.c2cuts`, `S.c2was`, `S.c2back`) :** chaque coupure ajoute 0,5 + 0,5 × la dette en cours (3 au plus). Le retour des liaisons n'efface rien : la dette reste à résorber.
+- **Visible et latent (`cmdSnap`, `S.cmdSeries`) :** relevé à chaque tour. Visible : moyenne des infrastructures, de la confiance et du moral. Résilience latente (`cmdLat`) : 0,5 × min + 0,5 × moyenne de la réserve et de 1 − dette / 4. Tour de stabilité fantôme (`phOf`) : visible à 0,6 ou plus et résilience sous 0,5. Cause du tour : crises en parallèle, réseau coupé, effort supplémentaire ou ordres sans réseau.
+
+**Interface :** bloc « État-major » dans l'onglet Crises (réserve, dette, cause en une phrase, explication repliée) ; badge EM dans la barre haute quand la réserve est sous 50 ; messages au journal (coupure, seconde coupure, retour des liaisons, paliers de la réserve). Au bilan, dans « Détails pour l'analyse » : courbes visible et latente par tour, tours de stabilité fantôme surlignés, réserve la plus basse, dette la plus haute, coupures, cause principale, et la mention « modèle de jeu inspiré de CSIM ; ce n'est pas une mesure ». La résilience latente n'est jamais résumée en jeu : elle n'est révélée qu'au bilan, comme la vérité des crises.
+
+**Garde-fous :** la réserve est celle d'un état-major fictif, pas une note du joueur (garde-fou 7) ; le bilan reste visible du seul joueur ; jauge heuristique (garde-fou 9). Score inchangé : seul l'axe T lisait déjà la dette.
+
+**Tests :** `uiv39.js` (français 1440 px, anglais 390 px) : bloc au niveau Complet et absent au niveau Simple, baisse de la réserve conforme au calcul puis remontée, délais d'autorisation (8, 12,8 et 16,6 s) et d'ordre, coupure, retour, seconde coupure, jetons au-delà de 3, réserve épuisée, badge, bilan avec courbes, même tirage et même trajectoire, pas de défilement horizontal, aucun texte manquant. `cmdcmp.js` : référence, script qui ne coordonne jamais, omniscient. Résultats : section 8.
+
+**Non vérifié :** aucun vrai joueur. Les scripts décident en 5 s et coordonnent dès que la dette dépasse 1,5 : ils ne laissent presque jamais la réserve baisser. Les valeurs de baisse et de remontée n'ont pas été réglées sur des parties humaines. Le modèle de CSIM lui-même n'a pas été consulté.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1003,6 +1027,7 @@ Demande de Naully du 13 novembre 2026 : intégrer le kit « FOGLINE_UI_KIT_CLAUD
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
 | Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
 | Version 38 | `INR`, `SEP`, `steer`, `sepStep`, `coast`, `offCoast`, `route0`, `dmgF`, `civT`, `ownNz`, `subDeep`, `withdraw`, `S.real`, `S.wd`, `S.emb`, `exp.real` |
 | Version 37 | `turnGo`, `turnStop`, `S.tmode`, `exp.tm`, `RELIEF`, `RLF`, `RL`, `RZ`, `hasGL`, `reliefData`, `altAt`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`, `R3D`, `r3Open`, `r3Close` |
@@ -1092,6 +1117,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
 node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine
 node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
@@ -1271,6 +1297,11 @@ Une évolution est terminée si :
 52. **Symboles par défaut (interface V4) :** APP-6, contre les pictogrammes du jeu depuis le 10 novembre. Validé le 13 novembre 2026 avec le kit ; la validation des choix APP-6 par une personne qui dispose du texte reste due (défaut 15).
 53. **Seuil de confirmation (interface V4) :** escalade estimée de 0,45 ou plus, ou passage en Engager. Garder ce seuil, ou confirmer aussi les visites.
 
+54. **Commandement sous tension (version 39) :** réserve d'état-major et dette appliquées au niveau Complet seulement. Les étendre au niveau Simple, ou non.
+55. **Score (version 39) :** la réserve et la stabilité fantôme n'entrent pas dans le score. Les y faire entrer récompenserait un commandement qui préserve sa résilience, mais change la formule 5.9.
+56. **Image partagée et priorités d'état-major (CSIM) :** non reprises en version 39. Les ajouter dans une seconde passe, après essais.
+57. **Source CSIM :** dépôt sans licence. Les concepts sont repris avec crédit, sans code ni texte. Demander l'accord de l'autrice avant une diffusion publique qui la cite, ou non.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1342,6 +1373,9 @@ Une évolution est terminée si :
 55. Version 38 : les règles réalistes changent peu les résultats des scripts ; leur poids réel dépend de joueurs qui emploient le silence radar, l'allure et les bouées.
 56. Interface V4 : les boutons de vitesse et de zoom mesurent 34 px sur ordinateur ; le kit demande 44 px pour les actions.
 57. Interface V4 : la confirmation ajoute un clic sous compte à rebours ; son effet sur la pression du temps n'est pas observé.
+
+58. Version 39 : les scripts ne laissent presque jamais la réserve baisser (ils décident en 5 s) ; la stabilité fantôme n'apparaît chez eux que s'ils ne coordonnent pas. Son poids réel dépend de joueurs humains, plus lents.
+59. Version 39 : la dette agit maintenant sur les délais à tous les tours, réseau coupé ou non. Un joueur du niveau Complet qui n'utilise jamais « Coordonner » verra ses autorisations ralentir de 50 % ou plus vers le milieu de partie.
 
 ### Absent de cette version
 

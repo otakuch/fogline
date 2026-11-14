@@ -999,7 +999,14 @@ Demande de Naully du 14 novembre 2026 : intégrer les concepts de CSIM, « Comma
 
 **Garde-fous :** la réserve est celle d'un état-major fictif, pas une note du joueur (garde-fou 7) ; le bilan reste visible du seul joueur ; jauge heuristique (garde-fou 9). Score inchangé : seul l'axe T lisait déjà la dette.
 
-**Tests :** `uiv39.js` (français 1440 px, anglais 390 px) : bloc au niveau Complet et absent au niveau Simple, baisse de la réserve conforme au calcul puis remontée, délais d'autorisation (8, 12,8 et 16,6 s) et d'ordre, coupure, retour, seconde coupure, jetons au-delà de 3, réserve épuisée, badge, bilan avec courbes, même tirage et même trajectoire, pas de défilement horizontal, aucun texte manquant. `cmdcmp.js` : référence, script qui ne coordonne jamais, omniscient. Résultats : section 8.
+**Tests :** `uiv39.js` (français 1440 px, anglais 390 px) : bloc au niveau Complet et absent au niveau Simple, baisse de la réserve conforme au calcul puis remontée, délais d'autorisation (8, 12,8 et 16,6 s) et d'ordre, coupure, retour, seconde coupure, jetons au-delà de 3, réserve épuisée, badge, bilan avec courbes, même tirage et même trajectoire, pas de défilement horizontal, aucun texte manquant. `cmdcmp.js` : référence, script qui ne coordonne jamais, omniscient.
+
+**Mesures du 14 novembre 2026, scripts seulement, niveau Complet**
+
+- `cmdcmp.js`, 75 scénarios × 1 partie : référence 751 et 76 %, réserve la plus basse 96 % en moyenne, dette la plus haute 1,5, aucun tour de stabilité fantôme ; **script qui ne coordonne jamais 729 et 79 %, dette la plus haute 4,6, 38 % des tours en stabilité fantôme, 96 % des parties en ont au moins un** ; omniscient 792 et 95 %, aucun tour fantôme. 0,17 coupure du réseau par partie.
+- Ne pas coordonner fait baisser le score (−22) mais pas la réussite (+3 points, échantillon d'une partie) : les jetons épargnés compensent les délais. La stabilité fantôme apparaît bien, mais ne coûte pas encore de mission aux scripts (défaut 60).
+- Équilibre, 2 parties par scénario : omniscient 784 et 91 %, référence 751 et 78 %, sans aucun tir 747 et 77 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 819 parties sur 2 128 changent de trajectoire (délais), mais les moyennes bougent peu. Omniscient à 0 % sur `g5` en 2 parties, puis 5 sur 6 (`scr.js g5 6`) : effet d'échantillon.
+- Invariants : 608 parties finies et reproductibles (même signalement sur `i14` qu'en version 38). 53 200 clics au hasard sans blocage ni texte manquant. `uiv39.js` et les 26 autres tests d'interface sans erreur. Rythme : 5,0 crises par partie, première crise à 64 s, 73 % du temps sans crise. Conseil seul : 742 et 80 % au niveau Simple, 707 et 80 % au niveau Complet.
 
 **Non vérifié :** aucun vrai joueur. Les scripts décident en 5 s et coordonnent dès que la dette dépasse 1,5 : ils ne laissent presque jamais la réserve baisser. Les valeurs de baisse et de remontée n'ont pas été réglées sur des parties humaines. Le modèle de CSIM lui-même n'a pas été consulté.
 
@@ -1134,6 +1141,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 14 novembre 2026, version 39 (commandement sous tension), niveau Complet, 2 parties par scénario :** omniscient 784 et 91 %, référence 751 et 78 %, tir sans vérifier 489 et 35 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 27 tests d'interface sans erreur. Détail : section 5.34. Publiée sur le prototype le 14 novembre 2026 ; non fusionnée dans `main`.
 
 **Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. **Interface V4, même jour :** les 2 128 parties du volet `exploit` donnent le même score et la même issue qu'en version 38, partie par partie ; 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ni texte manquant ; `uiv4.js` et les 25 autres tests d'interface sans erreur. Fusionnée dans `main` et publiée sur le prototype le 13 novembre 2026, à la demande de Naully.
 
@@ -1376,6 +1385,7 @@ Une évolution est terminée si :
 
 58. Version 39 : les scripts ne laissent presque jamais la réserve baisser (ils décident en 5 s) ; la stabilité fantôme n'apparaît chez eux que s'ils ne coordonnent pas. Son poids réel dépend de joueurs humains, plus lents.
 59. Version 39 : la dette agit maintenant sur les délais à tous les tours, réseau coupé ou non. Un joueur du niveau Complet qui n'utilise jamais « Coordonner » verra ses autorisations ralentir de 50 % ou plus vers le milieu de partie.
+60. Version 39 : un script qui ne coordonne jamais réussit autant que la référence (79 % contre 76 %, une partie par scénario) malgré 38 % de tours en stabilité fantôme. Les effets de la dette et de la réserve sont peut-être trop faibles ; à régler après observation de vrais joueurs, pas sur ce seul tirage.
 
 ### Absent de cette version
 

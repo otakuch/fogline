@@ -96,6 +96,10 @@ seuil-projet/
     └── uiv36.js            version 36 : pistes de missile (icônes, états, dossier, légende)
     └── ewcmp.js            référence contre référence avec brouillage ou cyberattaque
     └── pt34.js             parcours joué pas à pas avec de vrais clics, à tirage fixe, pour lire chaque écran avant de décider
+    └── uizoom.js           vitesse du jeu identique en vue large et au zoom, processeur ralenti 4 fois
+    └── uihack.js           piratage d'une unité : indication, bouton « Contrer le piratage », délai, retour en service, 1440 et 390 px
+    └── uideploy.js         déploiement par points : budget, pays, + et −, plafonds, unités en jeu, 1440 et 390 px
+    └── uiplace.js          placement des unités : zone, mer, terre, bases aériennes, validation, 1440 et 390 px
 ```
 
 **Dépôt GitHub :** `index.html`, à la racine, est généré par `build.py` pour GitHub Pages. `README.md` présente le projet, `docs/` contient les captures, les vidéos et les licences tierces, `tools/` les générateurs de cartes et `tools/shots.js` les captures. Dépôt : https://github.com/otakuch/fogline ; GitHub Pages sert la branche `main` à https://otakuch.github.io/fogline/ (toute fusion dans `main` met donc à jour le jeu public). `index.html` n'est jamais modifié à la main.
@@ -129,10 +133,11 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 1. Écran d'accueil : carte vivante en fond, langue et son en haut à droite. Sans partie enregistrée, le bouton principal lance le tutoriel. Ensuite : nouvelle opération, reprise, tirage au hasard, tutoriel, aide et légende.
 2. Choix du théâtre sur une carte du monde, puis du secteur. Catalogue filtrable par situation, domaine et niveau, ou tirage au hasard.
 3. Briefing : situation, premiers objectifs, hypothèses, niveau de commandement et forces recommandées. Les options d'exercice sont repliées.
-4. Lecture de l'ordre de bataille attribué (forces fixes, voir 5.17 quater).
-5. Changement de situation : certaines hypothèses cèdent et les achats sont figés.
-6. Partie, en 3 phases. Un ordre d'opération révèle les nouveaux objectifs.
-7. Bilan : score, étoiles, hypothèses, chaîne de décision, crises, alertes, contacts et rejeu sur la carte.
+4. Choix des forces avec un budget de points (5.36), en croyant le briefing ; la liste recommandée est proposée au départ.
+5. Placement des unités sur la carte, jeu figé (5.37).
+6. Changement de situation : certaines hypothèses cèdent et les achats sont figés.
+7. Partie, en 3 phases. Un ordre d'opération révèle les nouveaux objectifs.
+8. Bilan : score, étoiles, hypothèses, chaîne de décision, crises, alertes, contacts et rejeu sur la carte.
 
 ### 5.2 Temps et ressources
 
@@ -187,7 +192,7 @@ La table `EFF` donne les effets `[SE, CS, RI, tension, infrastructure, issue]`. 
 
 ### 5.6 Unités et achats
 
-Plus d'achat depuis le 7 novembre 2026 : chaque mission fixe son ordre de bataille (`rec`, voir 5.17 quater). Les coûts de `UT` ne servent plus qu'aux tests. Toujours disponibles : liaisons de repli, message préparé, seconde source.
+Plus d'achat du 7 au 17 novembre 2026 ; depuis le 17 novembre, achat par points au déploiement (5.36), la liste `rec` servant de point de départ. Les coûts de `UT` ne servent plus qu'aux tests. Toujours disponibles : liaisons de repli, message préparé, seconde source.
 
 | Clé | Unité | Coût | Max | Vitesse | Capteur | Armes et limites |
 |---|---|---|---:|---:|---:|---|
@@ -979,6 +984,82 @@ Demande de Naully du 13 novembre 2026 : intégrer le kit « FOGLINE_UI_KIT_CLAUD
 
 **Non vérifié :** les polices Google ne se chargent pas dans l'environnement de test : Saira n'a pas été vue à l'écran, seulement sa police de repli. Aucun lecteur d'écran, aucun téléphone réel, aucun vrai joueur. Le contraste est calculé sur le texte du document, pas sur le canevas de la carte.
 
+### 5.34 Vitesse du jeu indépendante du zoom (17 novembre 2026)
+
+Signalement de Naully du 17 novembre 2026 : les unités semblaient accélérer quand on zoomait sur elles.
+
+- **Cause :** la boucle (`loop`) plafonnait le temps réel à 0,1 s par image. En vue large, le dessin de toute la carte prend parfois plus de 100 ms par image ; le temps au-delà était perdu et le jeu tournait au ralenti. En zoomant, le dessin redevient léger et le jeu reprend sa vitesse normale : d'où l'impression d'accélération. Le moteur, lui, ne dépendait pas du zoom (vitesse mesurée identique à tous les zooms dans `step`).
+- **Mesure avant correction (`uizoom.js`, processeur ralenti 4 fois) :** carte entière 2,3 images par seconde et 0,23 seconde de jeu par seconde réelle ; zoom × 8 : 0,93. Le jeu allait donc 4 fois plus vite une fois zoomé. Sans ralentissement : 0,83 contre 1,04.
+- **Correction :** plafond porté à 1 s par image (il ne sert plus qu'à éviter un saut après un onglet resté en arrière-plan) ; le pas de simulation reste de 0,1 s au plus (`step` appelé plusieurs fois). Le lissage des symboles écartés (`spreadSyms`) suit maintenant le temps réel au lieu du nombre d'images (`loop.dt`).
+- **Après correction :** 1,04 en vue large et 1,09 au zoom × 8 avec processeur ralenti 4 fois ; 1,03 et 1,03 sans ralentissement.
+- **Effet secondaire assumé :** sur un ordinateur lent, une image peut faire avancer le jeu d'une seconde ; les unités sautent un peu au lieu de ralentir.
+- **Non résolu :** la carte entière reste lourde à dessiner (2,8 images par seconde avec processeur ralenti 4 fois, environ 30 sans ralentissement). La cause n'a pas été cherchée. Sur un ordinateur lent, l'affichage reste saccadé en vue large.
+- **Tests :** `uizoom.js` (échoue sur l'ancienne version, passe sur la nouvelle), `uiob.js`, `tourcmp.js` (parties complètes par la vraie boucle, au tour par tour et en semi-réel), `stress.js 2 monkey labo`.
+
+### 5.35 Piratage d'une unité et contre-piratage (17 novembre 2026)
+
+Demande de Naully du 17 novembre 2026 : une indication quand une unité se fait pirater, et un bouton pour contrer le piratage, avec un délai. Décrit par ses effets seulement (garde-fou 3). Toutes les valeurs sont des valeurs de jeu.
+
+- **Déclenchement (`director`, `hackPick`) :** niveau Complet seulement, jamais au tutoriel ni au niveau Simple. À partir du tour 2 et jusqu'à l'avant-dernier tour, une chance par tour de 0,07, plus 0,08 si une cyberattaque du joueur a déjà été repérée (riposte), proportionnelle à l'intensité du scénario (`sc.dyn / 0,275` ; rien si `dyn` vaut 0). Une seule unité piratée à la fois ; au plus 2 piratages par partie en local, 3 à l'international.
+- **Cibles (`HACK.w`) :** unités en réseau seulement, pondérées : MQ-4C et MQ-9A 3 ; P-8A, destroyer, LCS, F/A-18, batterie côtière 2 ; câblier 1. Jamais l'équipe SEAL, le peloton FAST, l'hélicoptère, l'allié ni les cellules. Jamais une unité en visite, en action directe, en secours ou qui presse un sous-marin.
+- **Effet (`hackUnit`, `hacked`) :** l'unité est hors service 75 s. Elle n'est plus utilisable (`usable`) : ni capteur, ni identification, ni interception, ni défense contre les essaims, ni option. Elle ne bouge plus (même la séparation ne la pousse pas), perd sa route, sa tâche et sa patrouille, et refuse les ordres (« elle ne reçoit plus d'ordre »). −1 en résilience institutionnelle.
+- **Indication :** message du journal avec alarme (« Piratage : DDG-1 ne répond plus »), retour à × 1 en avance rapide comme toute alerte ; état « Piratée · 75 s » dans la liste des forces ; encadré « Unité piratée » en tête de la fiche ; radar « coupé (piratage) » ; anneau rouge tireté pulsé et compte à rebours « PIRATÉE 75 s » sur la carte (ambre « REPRISE » pendant le contre-piratage). Le conseil propose de contrer le piratage (`adv.hack`).
+- **Contrer le piratage (`unitActions`, action `unhack`, `unhack`, bouton `data-a="unhack"`) :** 1 jeton. Délai : 15 s avec l'équipe cyber disponible (elle est occupée pendant ce temps, sans perdre d'emploi), 35 s par redémarrage de l'équipage sinon. L'unité reste hors service pendant le délai. Sans réponse, retour seul après 75 s. `unitActions` est la seule source de cette action pour l'interface, le conseil et les scripts.
+- **Bilan :** ligne « Unités piratées · contrées · secondes hors service ».
+- **Scripts :** la référence contre le piratage dès qu'elle a un jeton (`o.noUnhack` pour ne pas le faire).
+
+**Mesures du 17 novembre 2026, scripts seulement, niveau Complet, 76 missions × 4 parties, même tirage, hypothèses contestées :**
+
+| Référence | Score | Réussite | Piratages par partie | Secondes hors service par partie |
+|---|---:|---:|---:|---:|
+| Sans piratage (version précédente) | 756 | 79 % | 0 | 0 |
+| Avec piratage, contré | 737 | 74 % | 0,96 | 25 |
+| Avec piratage, jamais contré | 724 | 69 % | 0,93 | 70 |
+
+- Contrer rapporte 13 points et 5 points de réussite. Les écarts par mission vont de −226 à +241 : l'appel supplémentaire au tirage décale toutes les parties ; avec 4 parties, seule la moyenne compte.
+- `stress.js 2 exploit` : référence 728 et 68 %, omniscient 792 et 93 %, tir sans vérifier 470 et 31 % (seuil 1 dans 46 %), saturation 293 et 1 %, aucun ordre 272 et 1 %, aucune force 192 et 0 %. Omniscient à 0 % sur `g5` en 2 parties.
+- Banc isolé (`stress.js labo`, ligne `piratage`) : hors service 75 s sans réponse, 35 s avec l'équipage, 15 s avec l'équipe cyber ; immobile dans 100 % des cas ; ordre refusé ; option Mer perdue quand la seule unité navale est piratée.
+- `uihack.js` : vrais clics à 1440 px en français et 390 px en anglais, avec et sans équipe cyber : message, état, encadré, bouton visible et cliquable, délai, jeton dépensé, retour en service, pas de défilement horizontal, aucun texte manquant. 53 200 clics au hasard sans blocage.
+
+**Non vérifié :** aucun vrai joueur. La fréquence (environ un piratage par partie) et les délais n'ont pas été jugés en jeu réel. Un joueur qui ne regarde ni le journal ni la carte peut manquer l'alerte : pas de bandeau dédié. Le piratage d'un avion en vol le laisse sur place ; son carburant continue de baisser.
+
+### 5.36 Déploiement par points avant la mission (17 novembre 2026)
+
+Demande de Naully du 17 novembre 2026 : « sélectionner un nombre d'unités avec un système de points, manuellement, comme dans Steel Panthers ou Broken Arrow ». **Revient sur l'ordre de bataille fixe du 7 novembre (5.17 quater)**, sauf au tutoriel. Inspiration de principe seulement : un budget de points avant la bataille et un coût par unité. Aucun de ces jeux n'a été joué. Pour Broken Arrow, une page de référence sur le genre des jeux à decks a été lue ; pour Steel Panthers, seuls des forums ont été trouvés, pas de source primaire.
+
+- **Écran (`screenDeck`, ouvert par « Choisir les forces » au briefing) :** titre « Choisir ses forces ». Onglets de pays (`NATIONS`, `NAT`) : États-Unis actif ; France, Royaume-Uni et Norvège grisés « En cours d'ajout ». Compteur de points engagés et restants avec barre. Onglets Tous, Terre, Mer, Air, Cyber. Pour chaque unité : symbole, nom, coût, plafond, mention « recommandée », nombre, boutons − et +. Le bouton + désactivé donne sa raison (« Maximum atteint », « Il manque N points »). Boutons « Liste recommandée » et « Tout retirer ». Alerte si aucune force ou aucune unité navale. Fiche de l'unité à droite, avec son coût. Sur téléphone, la liste passe avant la fiche.
+- **Départ :** la liste recommandée de la mission (`sc.rec`), toujours dans le budget.
+- **Budget (`budgetOf`, `BUD`) :** selon le mode et la difficulté, local 36, 40 ou 46 points, international 56, 62 ou 70 ; **jamais moins que le coût de la liste recommandée** (28 missions sur 76 la dépassent, jusqu'à 89 pour `d3`), ni que celui des forces de l'exercice rapide. Choix de Naully du 17 novembre : plus de points quand la mission est plus dure.
+- **Points non dépensés :** perdus. Le bonus de cohésion d'avant le 7 novembre n'est pas rétabli, pour ne pas changer le score de la liste recommandée (décision à confirmer par Naully, section 13).
+- **Coûts et plafonds (`UT`) :** coûts inchangés. Plafonds relevés : MQ-4C 3, LCS 3, destroyer 2, F/A-18 2 ; les autres restent à 1 ou 2.
+- **Placement (`newGame`) :** une unité achetée au-delà des postes prévus est décalée de son poste, et ramenée en mer si c'est un navire ; une seconde unité fixe va sur le site suivant.
+- **Tutoriel :** écran d'avant, en lecture seule (`screenDeckRO`).
+- **Scripts :** inchangés, ils jouent la liste recommandée. `stress.js deck` tire maintenant des forces au hasard dans `budgetOf`, unités terrestres comprises.
+- **Tests :** `uideploy.js` (vrais clics, français 1440 px, anglais 390 px : budget, pays grisés, plafond du destroyer, refus du dépassement, bouton −, retour au briefing, unités en jeu conformes au choix, navires en mer, aucun défilement horizontal, aucun texte manquant). `uiob.js`, `uih.js`, `uiqx.js`, `ui5.js`, `uit.js fr 390` sans erreur ; `uiob.js` compte maintenant 27 boutons d'achat au lieu de 0.
+
+- **Mesure `stress.js 2 deck` (17 novembre 2026, scripts, 76 missions × 14 forces tirées au hasard dans le budget, soit 1 064 parties) :** écart de score moyen avec et sans l'unité : LCS +59, câblier +37, destroyer +36, équipe cyber +19, MQ-4C +18, P-8A +16, F/A-18 +10 ; peloton FAST −10, batterie côtière −12, PAO −15, N2 −18, MQ-9A −30, équipe SEAL −37. Lecture prudente : une unité chère prend la place d'autres achats, et les scripts n'emploient presque pas l'équipe SEAL, la batterie ni le drone armé. Aucun coût n'a été modifié.
+- 53 200 clics au hasard (`stress.js monkey`), boutons d'achat compris : aucun blocage, aucun texte manquant, aucune erreur.
+
+**Non vérifié :** aucun vrai joueur. La valeur des unités face à leur coût n'a été mesurée que par `stress.js deck` (forces au hasard, scripts). Le budget le plus bas laisse peu de choix au niveau 1 en local.
+
+### 5.37 Placement des unités avant la mission (17 novembre 2026)
+
+Demande de Naully du 17 novembre 2026 : une phase pour déployer les unités sur la carte, avec des restrictions, notamment « les terrestres ne peuvent pas être déployées sur des plans d'eau, et inversement ».
+
+- **Moment :** après « Commencer » au briefing, avant l'ordre de changement de situation (`begin` → `startPlace` → `endPlace` → `showFrago`). Le joueur place ses forces en croyant encore le briefing. Pas de placement au tutoriel. Les scripts (`playGame`) ne passent pas par cette phase : ils gardent les postes prévus.
+- **Jeu figé :** `S.placing` ; la boucle force `S.running` à faux, la réserve de pause ne baisse pas, le tour par tour n'avance pas. Clic droit et raccourcis clavier inactifs. Les panneaux latéraux, les commandes de vitesse, le conseil et la navigation mobile sont masqués ; le bouton Menu reste disponible.
+- **Panneau (`renderPlace`, `#placeP` dans `#dock`) :** une ligne par unité placée sur la carte (pas l'hélicoptère embarqué, ni l'allié, ni les cellules hors carte), avec son état (« poste prévu » ou « placée ») et sa règle ; message de résultat ; boutons « Positions prévues » et « Valider le déploiement ».
+- **Règles (`placeRule`), chacune avec sa raison affichée :**
+  - toujours dans la **zone de déploiement**, dessinée en tirets ambre : la boîte du secteur, étendue aux postes prévus, plus une marge de 30 (« Hors de la zone de déploiement ») ;
+  - **navire** (milieu Mer, câblier compris) : en mer seulement (« Un navire ne peut pas être déployé sur la terre ») ;
+  - **unité terrestre** (milieu Terre : FAST, MLR, SEAL) : à terre seulement (« Une unité terrestre ne peut pas être déployée en mer ») ;
+  - **avion avec base** (P-8A, F/A-18) : sur une base aérienne amie de la zone, celles des postes prévus du théâtre (`friendBases`), affichées en cercles bleus ; le clic est rattaché à la base la plus proche à moins de 20 unités de carte ou 28 pixels (« Un avion se déploie sur une base aérienne amie ») ;
+  - **drone** (MQ-4C, MQ-9A) : n'importe où dans la zone.
+- **Validation :** message au journal (« Déploiement validé : N unité(s) placée(s) hors de leur poste prévu »), puis ordre de changement de situation.
+- **Tests :** `uiplace.js` (vrais clics sur la carte, français 1440 px et anglais 390 px : jeu figé, navire refusé à terre et accepté en mer, refus hors zone, unité terrestre refusée en mer et acceptée à terre, avion refusé loin d'une base et basé à Trondheim, drone accepté au-dessus de la terre, positions prévues, validation, position conservée, aucun défilement horizontal, aucun texte manquant). Les tests qui cliquent « Commencer » valident maintenant le déploiement (`ui5`, `uidq`, `uim`, `uim2`, `uih`, `uiob`, `uimenu`, `uiqx`, `uiv37`) ; ils passent tous.
+
+**Non vérifié :** aucun vrai joueur. L'effet du placement sur l'équilibre n'est pas mesuré : les scripts ne placent pas leurs unités. Les unités fixes posées loin d'un site protègent peut-être moins bien ce site ; la règle n'a pas été revue. Sur ordinateur, le panneau de placement couvre le bas de la zone : il faut parfois déplacer la carte.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1095,6 +1176,10 @@ node uiv36.js                                      # version 36 : pistes de miss
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
 node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine
 node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
+node uizoom.js                                     # vitesse du jeu indépendante du zoom et de la fluidité de l'affichage
+node uihack.js                                     # piratage d'une unité et contre-piratage, vrais clics, 1440 et 390 px
+node uideploy.js                                   # déploiement par points, vrais clics, 1440 et 390 px
+node uiplace.js                                    # placement des unités sur la carte, vrais clics, 1440 et 390 px
 ```
 
 Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le permet.
@@ -1176,6 +1261,7 @@ Vérifie ces points avant de chercher ailleurs :
 - Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
 - Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
 - Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
+- Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image en dessous de 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images. Un plafond de 0,1 s ralentissait le jeu en vue large et donnait l'impression d'une accélération au zoom (5.34).
 
 ## 10. Publication
 
@@ -1270,6 +1356,8 @@ Une évolution est terminée si :
 51. **Repli automatique (version 38) :** oui par défaut en règles réalistes ; une unité touchée une fois se replie toujours. Garder ce seuil de 50 %, ou le régler.
 52. **Symboles par défaut (interface V4) :** APP-6, contre les pictogrammes du jeu depuis le 10 novembre. Validé le 13 novembre 2026 avec le kit ; la validation des choix APP-6 par une personne qui dispose du texte reste due (défaut 15).
 53. **Seuil de confirmation (interface V4) :** escalade estimée de 0,45 ou plus, ou passage en Engager. Garder ce seuil, ou confirmer aussi les visites.
+54. **Points non dépensés au déploiement (5.36) :** perdus aujourd'hui ; rétablir le bonus de cohésion (+1 par tranche de 2 points, plafond +10) ou non.
+55. **Budget du déploiement (5.36) :** garder la règle « table par difficulté, jamais moins que la liste recommandée », ou fixer un budget propre à chaque mission.
 
 ### Défauts connus du jeu
 

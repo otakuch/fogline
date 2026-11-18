@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   await p.click('.ob-row [data-a=obsel] >> nth=0'); o.sheet = await p.locator('.ob-sheet h2').textContent(); o.capteurs = await p.locator('.ob-sheet .row').count();
   o.achat = await p.locator('[data-a=add],[data-a=del],[data-a=rec]').count(); o.orb = await p.evaluate(() => __S.s ? null : document.querySelectorAll('.ob-row').length);
   o.hsDeck = await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
-  await p.click('[data-a=tobrief]'); await p.click('[data-a=begin]'); await p.waitForTimeout(300); await p.evaluate(() => { const o = document.getElementById('over'); o.hidden = true; __S.s.running = false });
+  await p.click('[data-a=tobrief]'); await p.click('[data-a=begin]');await p.waitForTimeout(150);if(await p.locator('[data-a=plok]').count())await p.click('[data-a=plok]');/* 17 novembre 2026 : valider le déploiement */ await p.waitForTimeout(300); await p.evaluate(() => { const o = document.getElementById('over'); o.hidden = true; __S.s.running = false });
   o.opord = await p.evaluate(() => ({ taches: document.querySelectorAll('.opord .obj').length, regle: !!document.querySelector('.op-rule'), cond: document.querySelectorAll('.opord .row').length }));
   // fiche d'unité et allure
   await p.click('[data-a=ltab][data-v=forces]'); const id = await p.evaluate(() => __S.s.units.find(u => u.type === 'patrol').id); await p.click(`[data-a=selU][data-v="${id}"]`); await p.waitForTimeout(100);

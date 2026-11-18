@@ -3,6 +3,8 @@ window.mkBot = (o = {}) => (S) => {
   const A = window.__S, dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const bestOf = f => o.oracle ? f.truth : Object.entries(A.posterior(f)).sort((x, y) => y[1] - x[1])[0][0];
   if (o.commSpam) { while (S.tokens > 0) { const t0 = S.tokens; A.comm(); if (S.tokens === t0) break; } return; }
+  // 17 novembre 2026 : contrer le piratage d'une unité dès qu'un jeton est disponible (sauf o.noUnhack)
+  if (!o.noUnhack && A.unitActions) for (const u of S.units.filter(u => A.hacked(u))) { const x = A.unitActions(u).find(q => q.id === 'unhack'); if (x && x.ok && S.tokens >= x.tok) A.doAct(x); }
   if (S.dip && !o.noDip) {
     if (o.flatter) { for (const x of A.dipActions().filter(z => z.id.startsWith('c:'))) if (x.ok && S.tokens > 0) A.doAct(x); }
     if (o.chanSpam) { const x = A.dipActions().find(z => z.id === 'chan'); if (x && x.ok && S.tokens > 0) A.doAct(x); }

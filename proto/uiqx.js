@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
   o.n = await p.evaluate(() => __S.qxList().length); o.hsQx = await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
   if (w < 500) await p.screenshot({ path: __dirname + '/../../../work/qx390.png' });
   await p.click('[data-a=qxgo]'); await p.waitForTimeout(100); o.briefQx = await p.locator('#over .warn').first().textContent();
-  await p.click('[data-a=expg][data-v="0"]'); await p.click('[data-a=begin]'); await p.waitForTimeout(300); await p.evaluate(() => { document.getElementById('over').hidden = true; __S.s.running = false });
+  await p.click('[data-a=expg][data-v="0"]'); await p.click('[data-a=begin]');await p.waitForTimeout(150);if(await p.locator('[data-a=plok]').count())await p.click('[data-a=plok]');/* 17 novembre 2026 : valider le déploiement */ await p.waitForTimeout(300); await p.evaluate(() => { document.getElementById('over').hidden = true; __S.s.running = false });
   o.qx = await p.evaluate(() => { const S = __S.s, u = S.units.find(x => x.type === 'fighter' || x.type === 'recon') || S.units[0]; return { qx: !!S.qx, wx: +__S.wxF(u).toFixed(2), deck: S.units.length, rec: __S.SC[S.sc.id].rec.length } });
   // doctrine
   await p.click('[data-a=ltab][data-v=forces]').catch(() => { }); await p.waitForTimeout(100);

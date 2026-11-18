@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
     await st(p, l => { __S.setLang(l); __S.brief('d3', false); }, lang); await p.waitForTimeout(300);
     o.brief = await p.locator('[data-a=exptm]').count(); need(o.brief === 3, tag + ' trois déroulements au briefing : ' + o.brief);
     await p.click('[data-a=exptm][data-v=turn]'); await p.waitForTimeout(150); await p.screenshot({ path: D + '/v37-briefing-' + tag + '.png' });
-    await p.click('[data-a=begin]'); await p.waitForTimeout(400); if (await p.locator('[data-a=ack]').count()) await p.click('[data-a=ack]'); await p.waitForTimeout(700);
+    await p.click('[data-a=begin]');await p.waitForTimeout(150);if(await p.locator('[data-a=plok]').count())await p.click('[data-a=plok]');/* 17 novembre 2026 : valider le déploiement */ await p.waitForTimeout(400); if (await p.locator('[data-a=ack]').count()) await p.click('[data-a=ack]'); await p.waitForTimeout(700);
     o.depart = await st(p, () => { const S = __S.s; return [S.tmode, S.running, Math.round(S.t), localStorage.getItem('seuil.tmode')]; }); need(o.depart[0] === 'turn' && !o.depart[1] && o.depart[2] === 0 && o.depart[3] === 'turn', tag + ' départ arrêté au tour par tour : ' + o.depart);
     // 2. tour par tour : le temps n'avance qu'avec « Fin du tour », d'un tour exactement ; la réserve de pause ne baisse pas
     await game('turn'); await p.waitForTimeout(900);

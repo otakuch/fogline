@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => { const b = await chromium.launch(), errs = [], out = {};
  for (const [w, h, lang] of [[1440, 900, 'fr'], [390, 844, 'en']]) { const o = out[lang + w] = {}; const p = await (await b.newContext({ viewport: { width: w, height: h }, isMobile: w < 500, hasTouch: w < 500 })).newPage(); p.on('pageerror', e => errs.push(e.message)); await p.route(/fonts\.g/, r => r.abort());
-  await p.goto('file://' + __dirname + '/t.html'); await p.waitForTimeout(600); await p.evaluate(l => { __S.setLang(l); __S.brief('i6', false) }, lang); await p.click('[data-a=expg][data-v="0"]'); await p.click('[data-a=begin]'); await p.waitForTimeout(300);
+  await p.goto('file://' + __dirname + '/t.html'); await p.waitForTimeout(600); await p.evaluate(l => { __S.setLang(l); __S.brief('i6', false) }, lang); await p.click('[data-a=expg][data-v="0"]'); await p.click('[data-a=begin]');await p.waitForTimeout(150);if(await p.locator('[data-a=plok]').count())await p.click('[data-a=plok]');/* 17 novembre 2026 : valider le déploiement */ await p.waitForTimeout(300);
   o.surOrdre = await p.evaluate(() => { __S.openMenu(); return !!__S.MENU }); // l'ordre d'opération est ouvert : pas de menu
   await p.evaluate(() => { document.getElementById('over').hidden = true; document.getElementById('over').innerHTML = ''; __S.s.running = true; __S.s.speed = 2 });
   await p.click('#menuBtn'); await p.waitForTimeout(150); const t0 = await p.evaluate(() => __S.s.t); await p.waitForTimeout(600); o.pause = await p.evaluate(t0 => [__S.s.running, +(__S.s.t - t0).toFixed(2), !!document.querySelector('#over .mn')], t0);

@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => { const lang = process.argv[2] || 'fr', w = +process.argv[3] || 1440, b = await chromium.launch(), p = await (await b.newContext({ viewport: { width: w, height: w < 500 ? 844 : 860 }, locale: lang })).newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
  await p.goto('file://' + __dirname + '/t.html'); await p.waitForTimeout(400); const shot = n => p.screenshot({ path: __dirname + `/t_${lang}_${w}_${n}.png` });
- await p.click(`[data-a=lang][data-v=${lang}]`); await shot('home'); await p.click('.hs-go[data-a=tuto]'); await p.waitForTimeout(150); await shot('brief'); await p.click('[data-a=begin]'); await p.waitForTimeout(150); await shot('frago'); await p.click('[data-a=ack]');
+ await p.click(`[data-a=lang][data-v=${lang}]`); await shot('home'); await p.click('.hs-menu [data-a=tuto]'); await p.waitForTimeout(150); await shot('brief'); await p.click('[data-a=begin]'); await p.waitForTimeout(150); await shot('frago'); await p.click('[data-a=ack]');
  const st = () => p.evaluate(() => ({ i: __S.coach.i, k: (__S.COACH[__S.coach.i] || {}).k, over: __S.s.over }));
  const log = []; const clickVis = async sel => { const e = p.locator(sel).first(); await e.scrollIntoViewIfNeeded(); await e.click(); };
  for (let n = 0; n < 200; n++) { const c = await st(); if (c.over) break; if (log[log.length - 1] !== c.i) { log.push(c.i); await p.waitForTimeout(60); await shot('s' + c.i) }

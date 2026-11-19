@@ -34,7 +34,7 @@ Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir
 
 Ces règles valent même si une demande semble les contourner. Si un besoin les heurte, explique le conflit et propose une version compatible.
 
-1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. L'étiquette « EXERCICE FICTIF » reste visible à l'écran.
+1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. Le bandeau permanent a été retiré le 19 novembre 2026 à la demande de Naully (version 41) : la mention « EXERCICE FICTIF » reste dans la barre de titre de la partie, au briefing, au bilan et à l'accueil.
 2. **Armes abstraites, noms réels.** Le combat a été décidé par Naully le 4 novembre 2026, avec des valeurs de jeu fictives. Depuis le 7 novembre 2026, Naully autorise les noms réels des plateformes américaines (classes de navires, types d'aéronefs). Leurs valeurs restent fictives, et les navires gardent des numéros fictifs (DDG-1, LCS-1), sans nom de bâtiment réel. N'ajoute aucun paramètre réel d'armement : portée, charge, guidage, vulnérabilité, signature, procédure de tir ou nom d'arme réel (missile, torpille). Les tirs restent génériques.
 3. **Pas de mode d'emploi offensif.** La cyberattaque, le sabotage, le brouillage et la désinformation restent décrits par leurs effets sur la décision. N'écris jamais de technique, d'outil, d'exploit ou de recette réutilisable.
 4. **Pas de frappe stratégique jouable.** Pas d'arme nucléaire et pas de frappe contre des villes. La destruction n'est jamais un spectacle ni une source directe de points.
@@ -85,6 +85,8 @@ seuil-projet/
     └── uidq.js             bilan « Décision ou chance ? », 1440 px en français et 390 px en anglais
     └── uiv34.js            version 34 : domaines, unités terrestres, force spéciale, hélicoptère, étapes, formations, temps
     └── uiv35.js            version 35 : vues, ordres par domaine, brouillage, cyberattaque, crise publique
+    └── uiv39.js            version 39 : commandement sous tension (réserve d'état-major, dette, coupure du réseau, bilan visible et latent)
+    └── cmdcmp.js           référence, script qui ne coordonne jamais et omniscient : réserve, dette, stabilité fantôme
     └── uiv4.js             interface V4 : nom, bandeau, polices, cibles de 44 px, focus, tabulation, contraste, cartes de décision, confirmation
     └── shot4.js            captures des écrans principaux, pour comparer avant et après
     └── uiv38.js            version 38 : collisions, inertie, règles réalistes, chasse sous-marine
@@ -984,6 +986,7 @@ Demande de Naully du 13 novembre 2026 : intégrer le kit « FOGLINE_UI_KIT_CLAUD
 
 **Non vérifié :** les polices Google ne se chargent pas dans l'environnement de test : Saira n'a pas été vue à l'écran, seulement sa police de repli. Aucun lecteur d'écran, aucun téléphone réel, aucun vrai joueur. Le contraste est calculé sur le texte du document, pas sur le canevas de la carte.
 
+<<<<<<< HEAD
 ### 5.34 Vitesse du jeu indépendante du zoom (17 novembre 2026)
 
 Signalement de Naully du 17 novembre 2026 : les unités semblaient accélérer quand on zoomait sur elles.
@@ -1059,6 +1062,162 @@ Demande de Naully du 17 novembre 2026 : une phase pour déployer les unités sur
 - **Tests :** `uiplace.js` (vrais clics sur la carte, français 1440 px et anglais 390 px : jeu figé, navire refusé à terre et accepté en mer, refus hors zone, unité terrestre refusée en mer et acceptée à terre, avion refusé loin d'une base et basé à Trondheim, drone accepté au-dessus de la terre, positions prévues, validation, position conservée, aucun défilement horizontal, aucun texte manquant). Les tests qui cliquent « Commencer » valident maintenant le déploiement (`ui5`, `uidq`, `uim`, `uim2`, `uih`, `uiob`, `uimenu`, `uiqx`, `uiv37`) ; ils passent tous.
 
 **Non vérifié :** aucun vrai joueur. L'effet du placement sur l'équilibre n'est pas mesuré : les scripts ne placent pas leurs unités. Les unités fixes posées loin d'un site protègent peut-être moins bien ce site ; la règle n'a pas été revue. Sur ordinateur, le panneau de placement couvre le bas de la zone : il faut parfois déplacer la carte.
+=======
+### 5.34 Commandement sous tension (version 39)
+
+Demande de Naully du 14 novembre 2026 : intégrer les concepts de CSIM, « Command System Simulator » de Caroline Suzanne Brooks (https://csb1105.github.io/command-simulation/, dépôt `csb1105/command-simulation`, version du 21 septembre 2026). CSIM est un instrument de recherche, pas un jeu : il traite le commandement comme un système qui se dégrade sous une perte de liaisons. Le dépôt n'a pas de licence et ne contient pas le notebook du modèle : la page affiche des trajectoires précalculées. Seuls les concepts sont repris, avec des valeurs de jeu propres ; aucun code ni texte n'est copié. Choix de Naully : le socle, au niveau Complet seulement. Branche `v39-commandement`.
+
+**Concepts repris :** stabilité fantôme (la performance visible tient pendant que la résilience s'use), dette de coordination, réserve humaine finie, rétablissement technique qui n'est pas un rétablissement du commandement, dépendance au chemin (une coupure identique frappe plus fort un état-major déjà marqué), cause affichée de chaque dégradation. **Non repris :** image partagée divergente entre nœuds, priorités d'état-major et profil de manœuvre future, marge de commandement, architecture observer → résoudre → valider, opérateurs TM-DA (cadre d'un tiers, sémantique provisoire selon l'auteur).
+
+**Règles (niveau Complet, hors tutoriel ; `cmdOn`). Aucun tirage.**
+
+- **Réserve d'état-major (`S.hr`, 0 à 100, départ 100) :** −0,06 par seconde et par crise ouverte sans décision au-delà de la première ; −0,05 par seconde réseau de commandement coupé, doublé à partir de la deuxième coupure si la réserve est sous 60 ; −3 par jeton dépensé au-delà du troisième dans un tour (`cmdSpend`). Remonte de 0,08 par seconde quand aucune crise n'est ouverte et que le réseau fonctionne, et de 3 au début d'un tour qui suit un tour à 2 jetons ou moins. Paliers : disponible (60 et plus), entamée, épuisée (sous 25).
+- **Effets :** autorisation de posture × (1 + 0,15 × dette, dette plafonnée à 6), puis × 1,3 si la réserve est sous 50 (`cmdAuth`) ; ordre de déplacement retardé de 0,5 s par point de dette à partir de 1, plus 1 s si la réserve est sous 50 (`cmdOrd`) ; réserve sous 25 : un jeton de moins par tour.
+- **Dette de coordination (`S.debt`, existante) :** elle s'accumulait déjà (+0,25 et +0,25 par crise ouverte par tour) et n'agissait que sur le score (axe T) et la résilience au-delà de 2. Elle allonge maintenant les délais. Réseau coupé : +0,2 par jeton et +0,1 par ordre de déplacement. « Coordonner » la réduit toujours de 1,5.
+- **Coupure du réseau de commandement (`S.c2cuts`, `S.c2was`, `S.c2back`) :** chaque coupure ajoute 0,5 + 0,5 × la dette en cours (3 au plus). Le retour des liaisons n'efface rien : la dette reste à résorber.
+- **Visible et latent (`cmdSnap`, `S.cmdSeries`) :** relevé à chaque tour. Visible : moyenne des infrastructures, de la confiance et du moral. Résilience latente (`cmdLat`) : 0,5 × min + 0,5 × moyenne de la réserve et de 1 − dette / 4. Tour de stabilité fantôme (`phOf`) : visible à 0,6 ou plus et résilience sous 0,5. Cause du tour : crises en parallèle, réseau coupé, effort supplémentaire ou ordres sans réseau.
+
+**Interface :** bloc « État-major » dans l'onglet Crises (réserve, dette, cause en une phrase, explication repliée) ; badge EM dans la barre haute quand la réserve est sous 50 ; messages au journal (coupure, seconde coupure, retour des liaisons, paliers de la réserve). Au bilan, dans « Détails pour l'analyse » : courbes visible et latente par tour, tours de stabilité fantôme surlignés, réserve la plus basse, dette la plus haute, coupures, cause principale, et la mention « modèle de jeu inspiré de CSIM ; ce n'est pas une mesure ». La résilience latente n'est jamais résumée en jeu : elle n'est révélée qu'au bilan, comme la vérité des crises.
+
+**Garde-fous :** la réserve est celle d'un état-major fictif, pas une note du joueur (garde-fou 7) ; le bilan reste visible du seul joueur ; jauge heuristique (garde-fou 9). Score inchangé : seul l'axe T lisait déjà la dette.
+
+**Tests :** `uiv39.js` (français 1440 px, anglais 390 px) : bloc au niveau Complet et absent au niveau Simple, baisse de la réserve conforme au calcul puis remontée, délais d'autorisation (8, 12,8 et 16,6 s) et d'ordre, coupure, retour, seconde coupure, jetons au-delà de 3, réserve épuisée, badge, bilan avec courbes, même tirage et même trajectoire, pas de défilement horizontal, aucun texte manquant. `cmdcmp.js` : référence, script qui ne coordonne jamais, omniscient.
+
+**Mesures du 14 novembre 2026, scripts seulement, niveau Complet**
+
+- `cmdcmp.js`, 75 scénarios × 1 partie : référence 751 et 76 %, réserve la plus basse 96 % en moyenne, dette la plus haute 1,5, aucun tour de stabilité fantôme ; **script qui ne coordonne jamais 729 et 79 %, dette la plus haute 4,6, 38 % des tours en stabilité fantôme, 96 % des parties en ont au moins un** ; omniscient 792 et 95 %, aucun tour fantôme. 0,17 coupure du réseau par partie.
+- Ne pas coordonner fait baisser le score (−22) mais pas la réussite (+3 points, échantillon d'une partie) : les jetons épargnés compensent les délais. La stabilité fantôme apparaît bien, mais ne coûte pas encore de mission aux scripts (défaut 60).
+- Équilibre, 2 parties par scénario : omniscient 784 et 91 %, référence 751 et 78 %, sans aucun tir 747 et 77 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 819 parties sur 2 128 changent de trajectoire (délais), mais les moyennes bougent peu. Omniscient à 0 % sur `g5` en 2 parties, puis 5 sur 6 (`scr.js g5 6`) : effet d'échantillon.
+- Invariants : 608 parties finies et reproductibles (même signalement sur `i14` qu'en version 38). 53 200 clics au hasard sans blocage ni texte manquant. `uiv39.js` et les 26 autres tests d'interface sans erreur. Rythme : 5,0 crises par partie, première crise à 64 s, 73 % du temps sans crise. Conseil seul : 742 et 80 % au niveau Simple, 707 et 80 % au niveau Complet.
+
+**Non vérifié :** aucun vrai joueur. Les scripts décident en 5 s et coordonnent dès que la dette dépasse 1,5 : ils ne laissent presque jamais la réserve baisser. Les valeurs de baisse et de remontée n'ont pas été réglées sur des parties humaines. Le modèle de CSIM lui-même n'a pas été consulté.
+
+### 5.40 Lutte anti-sous-marine (version 40)
+
+Demande de Naully du 18 novembre 2026 : des hélicoptères de lutte anti-sous-marine sur les bâtiments, le largage de bouées acoustiques en quantité réelle, la destruction par torpille et une mécanique de lutte anti-sous-marine. Branche `v40-asm`, partie de `v39-commandement` : **elle ne contient pas les travaux locaux du 17 novembre** (vitesse indépendante du zoom, piratage, déploiement par points), qui n'étaient ni commités ni joignables.
+
+**Déjà présent avant :** le MH-60R embarqué sur le destroyer et le LCS (5.26), la crise `sub` (hypothèses sous-marin, biologique, épave), les bouées en triangle, le sonar trempé, la tenue du contact (`c.hold`, localisé à 7) et l'action « Presser ».
+
+**Dotations de bouées (réelles, publiques)**
+
+- P-8A : 129 bouées (Boeing, fiche P-8). MH-60R : 25 bouées (Naval History and Heritage Command, lanceur de 25 tubes). Recomplètement à la base pour l'avion, à bord pour l'hélicoptère (nouvel appareil à chaque décollage).
+- Un cercle de détection du jeu représente 4 bouées réelles (`ASW.bpc`). Triangle : 3 cercles, 12 bouées. Barrière : 5 cercles en ligne espacés de 58, 20 bouées, posée en travers de la route de l'appareil. Un cercle sur la terre n'est pas posé ; un point de largage sur la terre est refusé.
+- Hypothèse `sup.fuel` : la moitié de la dotation (65 bouées).
+
+**Bouées passives ou actives (niveau Complet ; triangle passif seulement au niveau Simple)**
+
+- Passives : rayon 52, 65 s, tenue du contact au rythme normal.
+- Actives : rayon 70, 35 s, tenue × 1,8. Un vrai sous-marin insonifié est **alerté** 30 s (`c.alertU`) : les capteurs passifs le tiennent × 0,6, le contact se perd 1,5 fois plus vite, la torpille perd 0,15 de chance, et en règles réalistes il passe sous la couche thermique (`subDeep`). Le message du journal (`l.ping`) est le même quelle que soit la vérité : il ne révèle rien.
+
+**Largage libre (`buoyHtml`, `buoyOrder`, `buoyDrop`, `buoyPts`, `buoyEdit`, `ASWP`)**
+
+Fiche du P-8A et de l'hélicoptère : section « Bouées acoustiques » avec la dotation, le motif, le mode et « Choisir le point de largage » (1 jeton), puis clic sur la carte, en mer, hors crise ou avant. Sur téléphone, le bouton bascule sur la carte. Échap annule. L'action de crise « Larguer des bouées » reste un triangle passif au-dessus de la zone.
+
+**Torpille (`torpL`, `torpEst`, `torpPk`, `torpLaunch`, `stepTorp`, action `kill`)**
+
+- Remplace « Neutraliser le sous-marin », qui réussissait toujours et sans lanceur. Contact localisé, posture Engager (escalade proposée par la carte), 1 jeton, une torpille à la fois par contact.
+- Lanceurs, dans cet ordre : destroyer à moins de 40 de la zone (tir immédiat) ; avion ou hélicoptère en vol, qui rejoint la zone puis lance à moins de 20 ; au niveau Complet, décollage de l'hélicoptère du bâtiment le plus proche. Dotations, valeurs de jeu : destroyer 4, P-8A 4, MH-60R 2. Le LCS n'en porte pas : son hélicoptère, si.
+- Course de 12 s, tracée en pointillés vers le centre de la zone (pas vers la position vraie). Chance : 0,30 + 0,50 × tenue / 12 − pénalités d'arme, bornée à 0,10 et 0,85 ; puis − 0,15 si le sous-marin est alerté et − 0,15 s'il est sous la couche. Le joueur voit l'estimation sans ces deux malus cachés.
+- Au but sur un vrai sous-marin : effets de l'ancienne neutralisation (tension + 1, piliers + 1, − 2, + 2, issue 0,9). Sur une baleine ou une épave : tir à tort (`falseEng`, − 6, − 6, − 4, tension + 0,8, issue 0). Manquée : tension + 0,3, sous-marin alerté 40 s, tenue ramenée à 2, contact perdu et zone de 150 : il faut le relocaliser.
+- Un seul tirage `R()`, à l'issue d'une torpille sur un vrai sous-marin.
+
+**Dossier et bilan :** barre « Tenue du contact » (x/12, localisé ou non), réussite estimée, torpille en route avec le temps restant, explication repliée « Comment chasser un sous-marin ». Bilan des pertes : bouées larguées (dont actives), torpilles lancées, au but, manquées, à tort. Fiche et ordre de bataille : ligne Torpilles. Aucun son d'arme.
+
+**Garde-fous :** dotations de bouées réelles et publiques (capteurs, pas armes). Torpilles génériques : aucun nom, aucune portée, vitesse, charge ou guidage réels ; nombres et chances fictifs. La destruction ne rapporte aucun point direct.
+
+**Tests :** `uiv40.js` (FR 1440 et EN 390) : dotations, barrière active et consommation, alerte, localisation, torpille du destroyer, une seule à la fois, issue au but, torpille à tort, avion envoyé lancer, torpille manquée et contact perdu, fiche avec vrais clics jusqu'au largage sur la carte, dossier, pas de défilement horizontal, aucun texte manquant. `stress.js labo` : `bouees_passives`, `bouees_actives`, `torpille_tenue7`, `torpille_tenue12`, `torpille_tenue12_alerte`. `bots.js` : `mkBot({ torp: true })` lance une torpille sur un contact localisé jugé sous-marin au lieu de le presser ; stratégie `torpille` dans `exploit`.
+
+### 5.41 Bibliothèque « FOGLINE symboles et zoom » (version 41)
+
+Demande de Naully du 19 novembre 2026 avec `FOGLINE_SYMBOLES_ZOOM_V1.zip` (29 catégories, 145 SVG, 4 silhouettes vues du dessus, `symbology.js`, `zoom-integration.js`, `symboles.css`, `manifest.json`, `APERÇU.html`). Choix de Naully le même jour : retirer **seulement** le bandeau permanent (dossiers de preuves et décisions inchangés) ; partir de la v39 GitHub et de la v40, publier un artifact d'essai séparé. Branche `v41-symboles`.
+
+**Réutilisation :** le registre (`FZT`), les cadres (`fzFrame`), les pictogrammes (`fzMark`) et `tacticalSymbol` sont repris de `symbology.js`, sans module ES (page unique). Contrôle : les 145 symboles générés sont identiques aux fichiers `svg/<appartenance>/<type>.svg` du pack, à l'attribut `xmlns` et au libellé près. Les quatre silhouettes sont embarquées telles quelles en données (`FZSIL`). Libellés des types et des appartenances en français et en anglais (`fz.t.*`, `fz.a.*`).
+
+**Calque de marqueurs (`#fzl`, `fzSync`, `FZM`) :** un bouton HTML par objet affiché, au-dessus du canevas, positionné en pixels écran à chaque image. Le calque n'est pas mis à l'échelle avec la carte : aucune compensation de zoom n'est appliquée. Les boutons ont `pointer-events:none` : le canevas garde le glisser, la molette, l'appui long et le clic ; `pickAt` consulte d'abord les cibles des marqueurs (`fzPick`, carré de 44, 48, 56 ou 74/64 px), puis l'ancienne recherche. Les boutons restent focalisables : Entrée appelle `mapClick(e, objet)` (`fzClick`), donc le même comportement qu'un clic (sélection, ordre de suivi, déplacement). Libellé accessible : « indicatif · type connu · appartenance ».
+
+**Objets concernés :** vos unités sur carte, les navires visibles (le trafic déclaré reste en points en vue d'ensemble), l'écho sous-marin tenu, le convoi. Bouées et torpilles : pictogrammes de la bibliothèque dessinés sur le canevas. Restent en anciens symboles : sites, avions civils, incursion, pistes de missile (5.29), contacts perdus.
+
+**Niveaux (`fzLevel`, `fzFactor`, `FZLV`) :** facteur = `cam.z / minZ()`, soit ×1 quand le théâtre entier tient à l'écran. Vue d'ensemble sous 1,6 (30 px, cible 44), vue tactique de 1,6 à 2,4 (38 px, cible 48), vue détaillée à partir de 2,4 (44 px, cible 56, ou silhouette 74 px, 64 px sous 850 px, badge 23 px). Le prototype du pack va de ×1 à ×3,2 ; ici le zoom monte jusqu'à `ZMAX` et reste en vue détaillée. Indicateur `#fzLvl` en tête de la colonne de zoom (niveau et facteur), 44 px, qui ouvre la légende.
+
+**Ce que le joueur sait (`fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`) :** aucune de ces fonctions ne lit `truth` avant le bilan (`S.over`).
+
+- Unités : alliées, identifiées. Correspondance : destroyer → frégate, LCS, câblier et allié → navire de surface, P-8A, MQ-4C et MQ-9A → avion, F/A-18 → groupe aérien, MH-60R → hélicoptère, SEAL et FAST → infanterie, batterie → missile sol-air.
+- Navire : étape 1 (`stgOf`, seulement détecté) → `classification: 'detected'`, symbole non classifié. Étapes 2 et 3 → navire de surface, ou frégate s'il est classé navire armé ou a tiré. Appartenance : même logique que `shipSidc` **sans** sa lecture de `truth` (raider localisé après un tir) ; classé civil → neutre, saboteur, leurre ou navire armé → hostile, fantôme ou estimation hostile au-dessus de 60 % ou marquage de zone → suspect, AIS → neutre, sinon inconnu.
+- Écho sous-marin : aucun marqueur tant que le contact n'est pas tenu ; tenu mais non classé → contact non classifié, inconnu, sans silhouette, libellé neutre « Écho K… » ; classé sous-marin par le joueur → sous-marin hostile ; classé biologique ou épave → non classifié neutre.
+- Statut `inconnu` ou `detected` : jamais de silhouette (`fzProfile`).
+
+**Silhouettes et caps :** en vue détaillée seulement, pour porte-avions, frégate, sous-marin et navire de surface. L'angle vient du vecteur de déplacement projeté à l'écran (au départ : `s.hd` ou le premier point du trajet), proue à l'est. `fzCapAngle(cap, orientation) = cap − orientation − 90` est fourni pour un cap géographique ; la carte n'est jamais tournée (orientation 0). Seule l'image tourne : badge et texte restent droits.
+
+**Étiquettes :** priorité au contact sélectionné (toujours affiché), puis aux hostiles, à l'écho sous-marin, aux unités, aux contacts, au trafic. Une étiquette qui chevauche une étiquette déjà placée ou un autre symbole est masquée (`data-label-hidden`) ; le focus clavier la rend visible.
+
+**Listes et fiches :** symbole dans la liste des contacts, dans le titre de la fiche d'unité avec la ligne « Symbole : type · Allié ». **Légende :** en tête, les cinq appartenances, les cadres par domaine, les 29 catégories, les 4 silhouettes avec badge et les trois niveaux (niveau actif signalé), puis les anciens symboles. Ouverte depuis l'indicateur, elle suspend le temps et rend l'état précédent à la fermeture.
+
+**Réglage :** menu « Symboles de la carte » : FOGLINE · zoom (défaut, `seuil.fz`) ou Anciens (canevas APP-6, V2 ou losanges, inchangés).
+
+**Bandeau :** `#fict` masqué, `--bh` à 0 ; mention « EXERCICE FICTIF » dans la barre de titre (`.fxtag`, sur une ligne à part sur téléphone), au briefing et au bilan ; l'accueil la garde déjà.
+
+**Tests :** `uiv41.js` (FR 1440, EN 390, 25 contrôles chacun) : bandeau absent et mention présente, tailles mesurées aux trois niveaux avec les vrais boutons + et −, retour, glisser de carte, sélection par clic à 14 px du centre, symbole de la fiche, contact détecté non classifié et indépendant de la vérité, identification après preuve à vue, classement navire armé et silhouette, sous-marin caché sans marqueur, écho tenu non classifié et sans silhouette même si la vérité change, sous-marin après classement, cinq couleurs et cadre suspect pointillé, caps 0/90/180/270/360, silhouette tournée seule selon le déplacement, légende au clavier (29 catégories, 5 appartenances, 4 silhouettes chargées, temps suspendu puis rendu), focus, Entrée, Tab, symboles des contacts, pas de défilement horizontal, aucun texte manquant, aucune erreur console. Captures `v41-detail-*.png`, `v41-legende-*.png`.
+
+### 5.42 Huit missions uniques et accueil à trois modes (version 42)
+
+Demande de Naully du 19 novembre 2026 : réduire le nombre de scénarios à des missions uniques, chacune avec un thème différent, dans différentes parties du monde ; accueil avec Campagne (grisée), Missions (active), Multijoueur (grisé). Branche `v42-missions`, à partir de `v41-symboles`.
+
+**Missions (`MISSIONS`, `PLAYABLE`) :** huit scénarios existants, un par thème, sur les six théâtres, aux trois niveaux. Aucun scénario n'est modifié.
+
+| Mission | Thème | Théâtre | Niveau |
+|---|---|---|---|
+| `c1` Réveil au port | Cyberattaque portuaire | Europe | Accessible |
+| `f2` Le fond des mers | Câbles et fonds marins | Atlantique Nord, Shetland | Exigeant |
+| `asw` Chasse en eaux profondes | Lutte anti-sous-marine | Atlantique Nord | Sévère |
+| `l12` Tir de semonce | Combat naval et escalade | Atlantique Nord, mer de Norvège | Sévère |
+| `g3` Pétrolier retenu | Prise de navire | Golfe de Guinée | Exigeant |
+| `a4` Corridor commercial | Essaim de drones | Golfe d'Aden et mer Rouge | Exigeant |
+| `e6` Évacuation sous regard | Évacuation de ressortissants | Méditerranée orientale | Exigeant |
+| `m6` Sous le détroit | Guerre des mines | Détroit de Malacca | Sévère |
+
+- `PLAYABLE()` ne renvoie plus que ces huit missions, dans cet ordre : accueil, catalogue d'un théâtre, tirage au hasard, exercice rapide et compteurs les suivent. Les 67 autres scénarios restent dans `scenarios.json` et `gen_db.py`, hors catalogue ; les bancs d'essai (`stress.js`) les jouent toujours. La reprise ne propose plus un scénario hors missions.
+- Le catalogue d'un théâtre ne s'ouvre plus filtré sur « Accessible » pour un nouveau joueur : l'Atlantique Nord n'a pas de mission accessible et la liste était vide.
+
+**Accueil :** trois modes en tête du menu : Campagne et Multijoueur grisés (`disabled`, « Bientôt »), Missions actif (`data-a="play"`, nombre de missions et de régions). Sur téléphone, Missions passe en premier. Ensuite : tutoriel (signalé « Recommandé pour commencer » à la première visite), reprise, comment jouer, légende. Le tirage au hasard et l'exercice rapide passent dans l'écran Missions. La carte du monde garde ses repères par théâtre.
+
+**Écran Missions (`screenMissions`) :** une carte par mission avec son thème, sa région et son secteur, son titre, sa description, son niveau, sa situation, sa durée et le meilleur résultat. Boutons : tirage au hasard, par région (ancien choix du théâtre, `data-a="world"`), exercice rapide, accueil. Textes : « scénarios » devient « missions » dans le parcours.
+
+**Mesures du 19 novembre 2026, scripts, niveau Complet, 4 parties par mission (`scr.js`) :**
+
+| Mission | Référence | Omniscient | Aucun ordre |
+|---|---|---|---|
+| `c1` | 678 et 50 % | 762 et 75 % | 331 et 0 % |
+| `f2` | 754 et 75 % | 819 et 100 % | 291 et 0 % |
+| `asw` | 629 et 50 % | 835 et 100 % | 314 et 0 % |
+| `l12` | 697 et 75 % | 793 et 100 % | 333 et 0 % |
+| `g3` | 773 et 75 % | 742 et 100 % | 230 et 0 % |
+| `a4` | 748 et 75 % | 776 et 100 % | 255 et 0 % |
+| `e6` | 694 et 50 % | 811 et 100 % | 282 et 0 % |
+| `m6` | 831 et 100 % | 786 et 100 % | 330 et 25 % |
+
+Référence de 50 à 100 %, environ 69 % en moyenne ; omniscient à 75 % au moins. 4 parties : seuls les grands écarts comptent. `m6` paraît trop facile (référence 4 sur 4, aucun ordre 1 sur 4) ; `c1`, mission « Accessible », ne donne que 2 réussites sur 4 à la référence. Clics au hasard : 52 990, aucun blocage, aucun texte manquant, aucune erreur. Tests d'interface : `uiv42` et les 31 autres sans erreur, après adaptation au nouveau parcours de `ui5`, `uih`, `uit`, `uiw`, `uis`, `uim`, `uim2` et `uidq` (scénarios masqués remplacés par des missions, passage par « Par région »).
+
+**Tests :** `uiv42.js` (FR 1440 et EN 390, 22 contrôles chacun) : trois modes dans l'ordre, deux grisés et sans effet, cibles de 44 px, reprise masquée hors missions, Missions au clavier, huit cartes, huit thèmes, six régions, trois niveaux, chaque carte ouvre son briefing, tirage parmi les missions, Atlantique Nord à trois missions, pas de défilement horizontal, aucun texte manquant, aucune erreur.
+
+### 5.43 Ralenti au zoom, vitesse ×½ et temps indépendant de l'affichage (version 43)
+
+Demande de Naully du 19 novembre 2026 : ralentir le déplacement des unités, surtout au zoom. Branche `v43-ralenti`, à partir de `v42-missions`.
+
+**Cause de l'accélération au zoom :** la boucle jetait le temps au-delà de 0,1 s par image. En vue large, la carte est lourde à dessiner, les images sont lentes et le jeu tournait au ralenti ; au zoom, l'affichage s'allège et le jeu reprenait sa vraie vitesse. Mesure, processeur ralenti 4 fois, version 42 : 0,39 seconde de jeu par seconde réelle en vue large, 1,04 au zoom ×4. Le même défaut avait été corrigé le 17 novembre dans la copie locale de Naully (5.34 locale, non commitée) ; il est refait ici : plafond à 1 s par image (`loop.dt`), lissage des symboles écartés (`spreadSyms`) réglé sur le temps réel.
+
+**Ralenti au zoom (`ZSLOW`, `zTime`, `zsPays`, `loop.zs`) :** au-delà du facteur 1,6 (vue tactique), le temps de jeu est multiplié par 1,6 / facteur, jamais moins de 0,25 : ×0,67 au facteur 2,4, ×0,4 à 4, ×0,25 à partir de 6,4. Tout ralentit ensemble (déplacements, délais, combats, rythme des crises) : l'équilibre ne change pas et les scripts, qui appellent `step` directement, ne sont pas concernés.
+
+- Sans effet au tour par tour, au tutoriel et pendant l'avance rapide.
+- Là où la pause est limitée (temps réel, niveau Complet ou mode difficile, hors horloge idéale), le ralenti consomme la réserve de pause : 1 − facteur par seconde réelle. Réserve épuisée : le ralenti s'arrête pour la partie (`S.zsOut`, message `l.zs.end`). Au niveau Simple facile, il ne coûte rien.
+- L'indicateur de niveau (`#fzLvl`) affiche « temps ×0,4 » en ambre quand le ralenti agit.
+- Menu : « Ralenti au zoom » Oui (défaut, `seuil.zslow`) ou Non.
+
+**Vitesse ×½ (`#sp05`) :** nouveau bouton avant ×1 ; une crise à échéance ne la remonte pas (le retour automatique ne baisse que les vitesses au-dessus de ×1).
+
+**Tests :** `uiv43.js` (FR 1440 avec processeur ralenti 4 fois, EN 390, 11 contrôles chacun) : vue large au temps réel, zoom ×4 à ×0,4 et indicateur, réserve consommée au niveau Complet, plancher ×0,25, réglage coupé, niveau Simple sans coût, réserve épuisée, bouton ×½, pas de défilement horizontal, aucun texte manquant, aucune erreur. Mesure après correction, processeur ralenti 4 fois : vue large 1,02 (2,5 s), zoom ×4 0,43. `uiv37`, `uimenu`, `ui5`, `uiv41`, `uiv42`, `uit fr 390`, `uig`, `uim`, `uiqx`, `uiv4` sans erreur. Clics au hasard : 52 923, aucun blocage, aucun texte manquant, aucune erreur.
+
+**Non vérifié :** aucun vrai joueur ; le confort du ralenti et le coût en réserve de pause restent à observer. Le ralenti offre du temps de réflexion supplémentaire au niveau Simple facile.
+>>>>>>> 31b1ddf8bfdde8f4dd440e6304f4bd614e18ebd2
 
 ## 6. Structure du code
 
@@ -1084,6 +1243,11 @@ Demande de Naully du 17 novembre 2026 : une phase pour déployer les unités sur
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
+| Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
+| Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
+| Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
+| Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
 | Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
 | Version 38 | `INR`, `SEP`, `steer`, `sepStep`, `coast`, `offCoast`, `route0`, `dmgF`, `civT`, `ownNz`, `subDeep`, `withdraw`, `S.real`, `S.wd`, `S.emb`, `exp.real` |
 | Version 37 | `turnGo`, `turnStop`, `S.tmode`, `exp.tm`, `RELIEF`, `RLF`, `RL`, `RZ`, `hasGL`, `reliefData`, `altAt`, `reliefMesh`, `reliefBuild`, `reliefSync`, `setRelief`, `R3D`, `r3Open`, `r3Close` |
@@ -1173,6 +1337,11 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
+node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
+node uiv41.js                                      # version 41 : symboles et zoom, connaissance du joueur, sous-marin caché, légende, clavier
+node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
+node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
 node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine
 node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
@@ -1193,6 +1362,10 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 19 novembre 2026, versions 40 (lutte anti-sous-marine) et 41 (symboles et zoom), niveau Complet, 2 parties par scénario :** omniscient 783 et 91 %, référence 749 et 78 %, sans aucun tir 743 et 75 %, torpille (`mkBot({ torp: true })`) 749 et 78 %, tir sans vérifier 490 et 36 % avec 45 % de seuil 1, saturation 298 et 5 %, aucun ordre 279 et 5 %, aucune force 196 et 0 %. Pratiquement identique à la version 39 : les scripts pressent les sous-marins et n'emploient ni bouées actives ni largage libre. `asw` : omniscient 708 et 50 % sur 2 parties, puis 842 et 100 % sur 6 (`scr.js asw 6`, référence 673 et 67 %) : effet d'échantillon. 608 parties finies et reproductibles (même signalement sur `i14`). Clics au hasard : 52 990, aucun blocage, aucun texte manquant, aucune erreur. Mécaniques isolées : voir 5.40. Tests d'interface : `uiv41`, `uiv40` et les 29 autres sans erreur (`uiv4.js` adapté au bandeau retiré). Le banc à 4 parties (`stress.js 4 inv exploit pair labo`) a été interrompu par un redémarrage de l'environnement et n'a pas été relancé : `pair` n'est pas mesuré. Non publiés sur le prototype officiel ; artifact d'essai privé https://claude.ai/artifact/SrXfmmHAiztXYnnhxsVqbN.
+
+**Résultats du 14 novembre 2026, version 39 (commandement sous tension), niveau Complet, 2 parties par scénario :** omniscient 784 et 91 %, référence 751 et 78 %, tir sans vérifier 489 et 35 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 27 tests d'interface sans erreur. Détail : section 5.34. Publiée sur le prototype le 14 novembre 2026 ; non fusionnée dans `main`.
 
 **Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. **Interface V4, même jour :** les 2 128 parties du volet `exploit` donnent le même score et la même issue qu'en version 38, partie par partie ; 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ni texte manquant ; `uiv4.js` et les 25 autres tests d'interface sans erreur. Fusionnée dans `main` et publiée sur le prototype le 13 novembre 2026, à la demande de Naully.
 
@@ -1261,7 +1434,11 @@ Vérifie ces points avant de chercher ailleurs :
 - Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
 - Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
 - Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
+<<<<<<< HEAD
 - Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image en dessous de 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images. Un plafond de 0,1 s ralentissait le jeu en vue large et donnait l'impression d'une accélération au zoom (5.34).
+=======
+- Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image sous 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images (5.43). Le seul ralenti voulu est `zTime`.
+>>>>>>> 31b1ddf8bfdde8f4dd440e6304f4bd614e18ebd2
 
 ## 10. Publication
 
@@ -1359,6 +1536,11 @@ Une évolution est terminée si :
 54. **Points non dépensés au déploiement (5.36) :** perdus aujourd'hui ; rétablir le bonus de cohésion (+1 par tranche de 2 points, plafond +10) ou non.
 55. **Budget du déploiement (5.36) :** garder la règle « table par difficulté, jamais moins que la liste recommandée », ou fixer un budget propre à chaque mission.
 
+54. **Commandement sous tension (version 39) :** réserve d'état-major et dette appliquées au niveau Complet seulement. Les étendre au niveau Simple, ou non.
+55. **Score (version 39) :** la réserve et la stabilité fantôme n'entrent pas dans le score. Les y faire entrer récompenserait un commandement qui préserve sa résilience, mais change la formule 5.9.
+56. **Image partagée et priorités d'état-major (CSIM) :** non reprises en version 39. Les ajouter dans une seconde passe, après essais.
+57. **Source CSIM :** dépôt sans licence. Les concepts sont repris avec crédit, sans code ni texte. Demander l'accord de l'autrice avant une diffusion publique qui la cite, ou non.
+
 ### Défauts connus du jeu
 
 1. Contester les hypothèses change peu le score : 626 contre 640. À revoir après de vrais tests de joueurs.
@@ -1430,6 +1612,31 @@ Une évolution est terminée si :
 55. Version 38 : les règles réalistes changent peu les résultats des scripts ; leur poids réel dépend de joueurs qui emploient le silence radar, l'allure et les bouées.
 56. Interface V4 : les boutons de vitesse et de zoom mesurent 34 px sur ordinateur ; le kit demande 44 px pour les actions.
 57. Interface V4 : la confirmation ajoute un clic sous compte à rebours ; son effet sur la pression du temps n'est pas observé.
+
+58. Version 39 : les scripts ne laissent presque jamais la réserve baisser (ils décident en 5 s) ; la stabilité fantôme n'apparaît chez eux que s'ils ne coordonnent pas. Son poids réel dépend de joueurs humains, plus lents.
+59. Version 39 : la dette agit maintenant sur les délais à tous les tours, réseau coupé ou non. Un joueur du niveau Complet qui n'utilise jamais « Coordonner » verra ses autorisations ralentir de 50 % ou plus vers le milieu de partie.
+60. Version 39 : un script qui ne coordonne jamais réussit autant que la référence (79 % contre 76 %, une partie par scénario) malgré 38 % de tours en stabilité fantôme. Les effets de la dette et de la réserve sont peut-être trop faibles ; à régler après observation de vrais joueurs, pas sur ce seul tirage.
+
+### Décisions ouvertes des versions 40 et 41
+
+58. **Base des versions 40 et 41 :** elles partent de la v39 GitHub, sans les travaux locaux du 17 novembre ni la publication du 18. Les reporter sur la copie locale (patchs `git am`), puis publier sur le prototype officiel.
+59. **Torpilles :** valeurs de jeu fictives (destroyer 4, P-8A 4, MH-60R 2, chance de 0,30 à 0,85). Naully a autorisé le 17 novembre les noms et portées réels en mode Réalité ; les nommer (par exemple Mk 54) reste à décider.
+60. **Bouées actives au niveau Simple :** absentes (triangle passif seulement). Les ouvrir, ou non.
+61. **Silhouettes :** le destroyer prend la silhouette « frégate », le LCS celle du « navire de surface » ; le pack n'a pas de destroyer. Faire dessiner une silhouette de destroyer, ou garder ce choix.
+62. **Appartenance d'un sous-marin classé par le joueur :** hostile (comme les navires classés). Un classement est une estimation : le passer en « suspect » tant qu'il n'a pas attaqué, ou non.
+
+61. Version 41 : la règle de `shipSidc` qui affiche hostile un navire armé localisé dès que le joueur a tiré lit la vérité ; les nouveaux symboles ne la reprennent pas (`fzShipAff`), les anciens symboles la gardent.
+62. Version 41 : sur téléphone, la colonne de zoom recouvre le bas de la carte et certains marqueurs ; en vue tactique, les marqueurs de 48 px se chevauchent dans les zones chargées. Le chevauchement est géré pour les étiquettes, pas pour les symboles.
+63. Version 41 : le bandeau retiré, la mention fictive défile avec la barre de titre sur téléphone et n'est plus visible quand on lit le dossier.
+64. Version 40 : la torpille vise le centre de la zone, mais l'issue dépend de la vérité et de la tenue ; le joueur ne voit pas les malus cachés (alerte, couche thermique).
+
+63. **Choix des huit missions :** liste proposée par Claude (un thème par mission, six théâtres, trois niveaux). La valider ou la modifier dans `MISSIONS`.
+64. **Scénarios masqués :** les 67 autres restent dans la base. Les supprimer de `gen_db.py`, ou les garder pour la campagne et les tests.
+65. **Exercice rapide :** il ne tire plus que parmi les huit missions ; beaucoup de combinaisons n'ont plus de mission. Le garder, le retirer, ou le faire tirer dans toute la base.
+66. **Campagne et multijoueur :** boutons grisés seulement ; aucun contenu.
+
+67. **Ralenti au zoom :** formule 1,6 / facteur (plancher 0,25), consommation de la réserve de pause au niveau Complet. Garder, régler, ou réserver le ralenti au niveau Simple.
+68. **Report du correctif local du 17 novembre :** la boucle de la copie locale a déjà le plafond à 1 s ; au moment de fusionner, garder une seule version.
 
 ### Absent de cette version
 

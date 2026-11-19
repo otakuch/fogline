@@ -33,7 +33,8 @@ window.mkBot = (o = {}) => (S) => {
     else if (act('dip') && act('dip').ok && S.tokens > 1 && !S.buoys.length) A.doAct(act('dip'));
     const best = bestOf(c);
     if (c.ev.length && !c.cls) A.classify(c, best);
-    if (act('press') && act('press').ok && S.tokens > 0) A.doAct(act('press'));
+    if (o.torp && c.located && best === 'sousmarin' && act('kill') && act('kill').ok && S.tokens > 1) A.doAct(act('kill'));
+    else if (act('press') && act('press').ok && S.tokens > 0) A.doAct(act('press'));
     if (o.oracle && !c.pressU && navs[0] && S.tokens > 0 && c.located === undefined) { /* attend le contact */ }
     if (c.ev.length && best !== 'sousmarin' && S.tokens > 0 && act('dismiss')) A.doAct(act('dismiss'));
   }

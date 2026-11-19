@@ -1212,6 +1212,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
+**Résultats du 19 novembre 2026, versions 40 (lutte anti-sous-marine) et 41 (symboles et zoom), niveau Complet, 2 parties par scénario :** omniscient 783 et 91 %, référence 749 et 78 %, sans aucun tir 743 et 75 %, torpille (`mkBot({ torp: true })`) 749 et 78 %, tir sans vérifier 490 et 36 % avec 45 % de seuil 1, saturation 298 et 5 %, aucun ordre 279 et 5 %, aucune force 196 et 0 %. Pratiquement identique à la version 39 : les scripts pressent les sous-marins et n'emploient ni bouées actives ni largage libre. `asw` : omniscient 708 et 50 % sur 2 parties, puis 842 et 100 % sur 6 (`scr.js asw 6`, référence 673 et 67 %) : effet d'échantillon. 608 parties finies et reproductibles (même signalement sur `i14`). Clics au hasard : 52 990, aucun blocage, aucun texte manquant, aucune erreur. Mécaniques isolées : voir 5.40. Tests d'interface : `uiv41`, `uiv40` et les 29 autres sans erreur (`uiv4.js` adapté au bandeau retiré). Le banc à 4 parties (`stress.js 4 inv exploit pair labo`) a été interrompu par un redémarrage de l'environnement et n'a pas été relancé : `pair` n'est pas mesuré. Non publiés sur le prototype officiel ; artifact d'essai privé https://claude.ai/artifact/SrXfmmHAiztXYnnhxsVqbN.
+
 **Résultats du 14 novembre 2026, version 39 (commandement sous tension), niveau Complet, 2 parties par scénario :** omniscient 784 et 91 %, référence 751 et 78 %, tir sans vérifier 489 et 35 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 27 tests d'interface sans erreur. Détail : section 5.34. Publiée sur le prototype le 14 novembre 2026 ; non fusionnée dans `main`.
 
 **Résultats du 13 novembre 2026, version 38 (collisions, inertie, règles réalistes, chasse sous-marine), niveau Complet, 2 parties par scénario :** omniscient 785 et 90 %, référence 751 et 76 %, sans aucun tir 744 et 74 %, tir sans vérifier 489 et 35 % avec 44 % de seuil 1, saturation 298 et 4 %, aucune force 196 et 0 %. 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ; 25 tests d'interface sans erreur. Détail : section 5.32. **Interface V4, même jour :** les 2 128 parties du volet `exploit` donnent le même score et la même issue qu'en version 38, partie par partie ; 608 parties finies et reproductibles ; 53 200 clics au hasard sans blocage ni texte manquant ; `uiv4.js` et les 25 autres tests d'interface sans erreur. Fusionnée dans `main` et publiée sur le prototype le 13 novembre 2026, à la demande de Naully.
@@ -1456,6 +1458,19 @@ Une évolution est terminée si :
 58. Version 39 : les scripts ne laissent presque jamais la réserve baisser (ils décident en 5 s) ; la stabilité fantôme n'apparaît chez eux que s'ils ne coordonnent pas. Son poids réel dépend de joueurs humains, plus lents.
 59. Version 39 : la dette agit maintenant sur les délais à tous les tours, réseau coupé ou non. Un joueur du niveau Complet qui n'utilise jamais « Coordonner » verra ses autorisations ralentir de 50 % ou plus vers le milieu de partie.
 60. Version 39 : un script qui ne coordonne jamais réussit autant que la référence (79 % contre 76 %, une partie par scénario) malgré 38 % de tours en stabilité fantôme. Les effets de la dette et de la réserve sont peut-être trop faibles ; à régler après observation de vrais joueurs, pas sur ce seul tirage.
+
+### Décisions ouvertes des versions 40 et 41
+
+58. **Base des versions 40 et 41 :** elles partent de la v39 GitHub, sans les travaux locaux du 17 novembre ni la publication du 18. Les reporter sur la copie locale (patchs `git am`), puis publier sur le prototype officiel.
+59. **Torpilles :** valeurs de jeu fictives (destroyer 4, P-8A 4, MH-60R 2, chance de 0,30 à 0,85). Naully a autorisé le 17 novembre les noms et portées réels en mode Réalité ; les nommer (par exemple Mk 54) reste à décider.
+60. **Bouées actives au niveau Simple :** absentes (triangle passif seulement). Les ouvrir, ou non.
+61. **Silhouettes :** le destroyer prend la silhouette « frégate », le LCS celle du « navire de surface » ; le pack n'a pas de destroyer. Faire dessiner une silhouette de destroyer, ou garder ce choix.
+62. **Appartenance d'un sous-marin classé par le joueur :** hostile (comme les navires classés). Un classement est une estimation : le passer en « suspect » tant qu'il n'a pas attaqué, ou non.
+
+61. Version 41 : la règle de `shipSidc` qui affiche hostile un navire armé localisé dès que le joueur a tiré lit la vérité ; les nouveaux symboles ne la reprennent pas (`fzShipAff`), les anciens symboles la gardent.
+62. Version 41 : sur téléphone, la colonne de zoom recouvre le bas de la carte et certains marqueurs ; en vue tactique, les marqueurs de 48 px se chevauchent dans les zones chargées. Le chevauchement est géré pour les étiquettes, pas pour les symboles.
+63. Version 41 : le bandeau retiré, la mention fictive défile avec la barre de titre sur téléphone et n'est plus visible quand on lit le dossier.
+64. Version 40 : la torpille vise le centre de la zone, mais l'issue dépend de la vérité et de la tenue ; le joueur ne voit pas les malus cachés (alerte, couche thermique).
 
 ### Absent de cette version
 

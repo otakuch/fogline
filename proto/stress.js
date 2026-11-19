@@ -35,9 +35,9 @@ const want = k => !parts.length || parts.includes(k);
   }
   if (want('exploit')) {
     const r = await p.evaluate((seeds) => {
-      const A = __S, S0 = { ref: [{}, {}], oracle: [{ oracle: true }, {}], safe: [{ safe: true }, {}], commSpam: [{ commSpam: true }, {}], boardAll: [{ boardAll: true }, {}], noClass: [{ noClass: true }, {}], gachette: [{ trigger: true, posture: 4 }, {}], sansTir: [{ noFire: true }, {}], torpille: [{ torp: true }, {}], sansDiplo: [{ noDip: true }, {}], flatteur: [{ flatter: true }, {}], canal: [{ chanSpam: true }, {}], soutien: [{ support: true }, {}], rien: [null, {}], videDeck: [null, { deck: [] }], };
+      const A = __S, S0 = { ref: [{}, {}], oracle: [{ oracle: true }, {}], safe: [{ safe: true }, {}], commSpam: [{ commSpam: true }, {}], boardAll: [{ boardAll: true }, {}], noClass: [{ noClass: true }, {}], gachette: [{ trigger: true, posture: 4 }, {}], sansTir: [{ noFire: true }, {}], torpille: [{ torp: true }, {}], depLibre: [{}, { depAuto: true }], sansDiplo: [{ noDip: true }, {}], flatteur: [{ flatter: true }, {}], canal: [{ chanSpam: true }, {}], soutien: [{ support: true }, {}], rien: [null, {}], videDeck: [null, { deck: [] }], };
       const out = {};
-      for (const [n, [o, cfg]] of Object.entries(S0)) { out[n] = {}; for (const sc of Object.keys(A.SC)) { const rows = []; for (let sd = 1; sd <= seeds; sd++) rows.push(playGame(sd * 13 + 2, sc, { contested: true, ...cfg }, o ? mkBot(o) : null)); out[n][sc] = rows; } }
+      for (const [n, [o, cfg]] of Object.entries(S0)) { out[n] = {}; for (const sc of Object.keys(A.SC)) { const rows = []; for (let sd = 1; sd <= seeds; sd++) rows.push(playGame(sd * 13 + 2, sc, cfg.depAuto ? { contested: true, deck: A.depAuto(A.SC[sc]), dep: { own: 1 } } : { contested: true, ...cfg }, o ? mkBot(o) : null)); out[n][sc] = rows; } }
       return out;
     }, seeds);
     OUT.exploit = r; const m = (a, k) => a.reduce((x, y) => x + y[k], 0) / a.length;

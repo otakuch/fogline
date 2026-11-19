@@ -131,7 +131,7 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 1. Écran d'accueil : carte vivante en fond, langue et son en haut à droite. Sans partie enregistrée, le bouton principal lance le tutoriel. Ensuite : nouvelle opération, reprise, tirage au hasard, tutoriel, aide et légende.
 2. Choix du théâtre sur une carte du monde, puis du secteur. Catalogue filtrable par situation, domaine et niveau, ou tirage au hasard.
 3. Briefing : situation, premiers objectifs, hypothèses, niveau de commandement et forces recommandées. Les options d'exercice sont repliées.
-4. Lecture de l'ordre de bataille attribué (forces fixes, voir 5.17 quater).
+4. Ordre de bataille de la mission (par défaut, voir 5.17 quater) ou unités choisies avec un budget (5.45).
 5. Changement de situation : certaines hypothèses cèdent et les achats sont figés.
 6. Partie, en 3 phases. Un ordre d'opération révèle les nouveaux objectifs.
 7. Bilan : score, étoiles, hypothèses, chaîne de décision, crises, alertes, contacts et rejeu sur la carte.
@@ -189,7 +189,7 @@ La table `EFF` donne les effets `[SE, CS, RI, tension, infrastructure, issue]`. 
 
 ### 5.6 Unités et achats
 
-Plus d'achat depuis le 7 novembre 2026 : chaque mission fixe son ordre de bataille (`rec`, voir 5.17 quater). Les coûts de `UT` ne servent plus qu'aux tests. Toujours disponibles : liaisons de repli, message préparé, seconde source.
+Depuis le 7 novembre 2026, chaque mission fixe son ordre de bataille par défaut (`rec`, voir 5.17 quater). Depuis la version 45, le joueur peut aussi choisir ses unités avec un budget (5.45) : les coûts de `UT` servent alors en jeu. Toujours disponibles : liaisons de repli, message préparé, seconde source.
 
 | Clé | Unité | Coût | Max | Vitesse | Capteur | Armes et limites |
 |---|---|---|---:|---:|---:|---|
@@ -437,7 +437,7 @@ Demande de Naully du 7 novembre 2026 (deuxième demande du jour). La vidéo YouT
 
 Demande de Naully du 7 novembre 2026, 16 h 25.
 
-- **Plus d'achat** : chaque mission démarre avec `sc.rec` comme ordre de bataille. Le budget et le bonus de cohésion des points non dépensés disparaissent (`bonus = 0`, cohésion de départ 65). `screenDeck` devient un ordre de bataille en lecture seule (familles, indicatifs, fiche) ; le briefing affiche un tableau `orbTable` (symbole, indicatif, unité, milieu). `newGame` accepte encore `CFG.deck` pour les tests (`videDeck`, `deck`), sans interface.
+- **Plus d'achat** (rouvert en option en version 45, voir 5.45) : chaque mission démarre avec `sc.rec` comme ordre de bataille. Le budget et le bonus de cohésion des points non dépensés disparaissent (`bonus = 0`, cohésion de départ 65). `screenDeck` devient un ordre de bataille en lecture seule (familles, indicatifs, fiche) ; le briefing affiche un tableau `orbTable` (symbole, indicatif, unité, milieu). `newGame` accepte encore `CFG.deck` pour les tests (`videDeck`, `deck`), sans interface.
 - **Forces américaines, noms réels (décision de Naully du 7 novembre 2026)** : `recon` P-8A Poseidon, `drone` MQ-4C Triton, `armed` MQ-9A Reaper, `patrol` LCS classe Freedom, `frigate` destroyer classe Arleigh Burke (DDG), `fighter` F/A-18E/F Super Hornet, `repair` câblier classe Zeus (T-ARC), `sof` équipe SEAL (NSW), `team` CPT, `analysis` N2, `comm` PAO. Indicatifs `UT.code` : P8, MQ4, MQ9, LCS, DDG, FA18, ARC, NSW. Valeurs de jeu fictives, rappelées sur chaque fiche (`ob.fict`). L'allié reste générique. Sources de vérification : USNI News (LCS, 27 janvier 2026), fiche U.S. Navy T-ARC, Naval News (MQ-4C, juillet 2026). Les clés internes ne changent pas. Symboles APP-6 : `120203` DD, `120206` LCS, `110110` avion de patrouille.
 - **Moral des forces (`S.mor`, `moral`, `morT`, `MORS`, `MORD`, `morHtml`)** : départ 80. Unité touchée −6 ; détruite −18 (destroyer −26, allié −10) ; crise maîtrisée +2 ; tour sans coup reçu +2 jusqu'à 85. Paliers : 60 et plus Ferme, 35 à 59 Ébranlé (ordres de déplacement retardés de 3 s, vitesse × 0,92), sous 35 Démoralisé (6 s, × 0,8, un jeton de moins par tour). Indicateur MORAL dans la barre haute, bloc dans l'onglet Situations, ligne dans le bilan. Entre dans le score depuis le 7 novembre 2026 : terme MO de 10 % (section 5.9), plafond 650 si le moral final est sous 35, moral à 60 ou plus pour 4 étoiles. Mesure après ce changement (75 scénarios × 2 parties) : omniscient 780 et 90 %, référence 722 et 73 %, tir sans vérifier 454 et 21 %, aucun ordre 276 et 3 %, aucune force 189 et 0 %. Les taux de réussite ne bougent pas ; les scores montent de 8 à 36 points, davantage pour les stratégies passives qui ne perdent pas d'unité.
 - **Mesure, 75 scénarios × 2 parties, niveau Complet :** omniscient 761 et 90 %, référence 706 et 73 %, tir sans vérifier 446 et 21 % avec 47 % de seuil 1, aucun ordre 251 et 3 %. Pratiquement inchangé : la référence perd rarement une unité. Sur 74 parties de référence, le moral passe sous 60 dans 4 parties et jamais sous 35 ; avec le tir sans vérifier, 7 parties sous 60.
@@ -1177,6 +1177,24 @@ Demande de Naully du 19 novembre 2026 : faire disparaître l'icône tactique qua
 
 **Non vérifié :** aucun vrai joueur, aucun vrai téléphone ; les pointeurs n'ont été contrôlés que par leur état (les captures ne montrent pas le pointeur). La lisibilité des silhouettes de 22 à 30 px en vue détaillée n'est pas observée. Les ports au fond d'un fjord ne sont plus atteignables : un navire s'arrête à l'entrée (18 unités pour Trondheim, 12 pour le site PORT de l'Atlantique Nord, 10 pour Tromsø). Lors d'un essai avec huit navigateurs en parallèle, MapLibre s'est déclaré prêt sans rien dessiner : le dessin de secours ne prend pas le relais dans ce cas (défaut 66).
 
+### 5.45 Déploiement avant la mission (version 45)
+
+Demande de Naully du 19 novembre 2026 : proposer avant la mission soit l'ordre de bataille par défaut, soit le choix de ses unités. Reprend la spécification du 17 novembre (`claude/FOGLINE-deploiement.md`), dont l'implémentation locale n'était pas joignable : refaite ici. Branche `v45-deploiement`, à partir de `v44-affichage`.
+
+- **Briefing (`depChoice`, `exp.dep`, `exp.depSc`) :** section « Ordre de bataille » à deux choix. « Ordre de bataille de la mission » (défaut, `sc.rec`, comme depuis le 7 novembre) ou « Choisir mes unités ». Le choix revient au défaut à chaque nouvelle mission. Résumé (unités, points dépensés sur le budget) et bouton « Modifier mes unités ». Absent du tutoriel et de l'exercice rapide.
+- **Écran de déploiement (`screenDeploy`, actions `dpt`, `dps`, `dpa`, `dpd`, `dpr`, `dpc`, `dpok`) :** barre de points, onglets Tous, Terre, Mer, Air, Cyber, une ligne par unité avec coût, plafond et nombre prévu par la mission, boutons − et + de 44 px, fiche de l'unité choisie (`obSheet`). Un bouton grisé donne sa raison (`depWhy`, `depDelWhy` : plafond atteint, points manquants, unité imposée par la mission). « Reprendre l'ordre de bataille de la mission », « Tout retirer » (garde les unités imposées `sc.req`), « Valider ». Liste vide : validation et lancement impossibles ; sans unité navale : avertissement. Défilement et focus gardés à chaque clic.
+- **Budget (`depBudget`, `DEPB`) :** local 36, 40, 46 et international 56, 62, 70 selon la difficulté, jamais sous le coût de la liste de la mission. Les points non dépensés sont perdus (pas de bonus de cohésion). Sur les huit missions : `c1` 38, `f2` 40, `asw` 72, `l12` 52, `g3` 44, `a4` 68, `e6` 62, `m6` 46 ; pour 32 des 76 scénarios, le budget vaut exactement la liste de la mission.
+- **Plafonds (`depMax`, `DEPMAX`) :** MQ-4C 3, LCS 3, destroyer 2, F/A-18 2 ; les autres gardent `UT.max`, unités hors carte 1. Les coûts de `UT` (5.6) servent de nouveau en jeu.
+- **Partie :** `CFG.dep = {own, pts, b}`, `S.dep`. Les unités fixes en double se répartissent sur les sites. Le bilan des pertes indique « Forces : ordre de bataille de la mission » ou « unités choisies, X points sur Y » (`exp.dep`). Avec des unités choisies, le meilleur résultat de la mission n'est pas enregistré (`recordRun`), et l'écran le dit.
+- **Scripts :** `stress.js exploit` a une stratégie `depLibre` : la référence joue avec `depAuto`, qui complète la liste de la mission dans l'ordre LCS, drone, destroyer, P-8A, chasseurs, drone armé, câblier, cellules, équipe cyber tant que le budget le permet.
+- **Garde-fous :** coûts et valeurs de jeu fictifs, rappelés à l'écran ; aucune donnée réelle ajoutée.
+
+**Tests :** `uiv45.js` (FR 1440 et EN 390, 21 contrôles chacun) : deux choix et défaut, budget, 13 unités, points, tout retirer et validation bloquée, plafond du LCS à 3 et motif, bouton grisé avec raison, retrait, onglet Air, fiche, retour au briefing avec les unités gardées, unités en jeu avec indicatifs LCS-1 et LCS-2, bilan et meilleur résultat non enregistré, retour au défaut sur une autre mission, partie par défaut sans marque, tutoriel sans choix, pas de défilement horizontal, aucun texte manquant, aucune erreur. Captures `v45-deploy-*.png`, `v45-brief-*.png`.
+
+**Mesures du 19 novembre 2026, scripts seulement, niveau Complet, 2 parties par scénario :** inchangées par rapport à la version 44 pour l'ordre de bataille par défaut (omniscient 788 et 93 %, référence 750 et 79 %, aucune force 190 et 0 %). Référence avec `depAuto` (`depLibre`) : 749 et 80 %. Sur les huit missions, 743 et 75 % contre 750 et 75 % ; par mission, de −166 (`f2`) à +102 (`asw`). Pour 6 missions sur 8, `depAuto` reprend exactement les unités de la mission, seulement dans un autre ordre (identifiants et tirages différents) : ces écarts sont donc surtout du bruit d'échantillon. 608 parties finies et reproductibles. Clics au hasard : 53 200, aucun blocage, aucun texte manquant, aucune erreur. Tests d'interface : `uiv45`, `ui5`, `uih`, `uiv42`, `uiv44`, `uiob`, `uit` (FR et EN), `uiqx`, `uiv37`, `uiv38`, `uimenu`, `uiv4`, `uidq` sans erreur.
+
+**Non vérifié :** aucun vrai joueur. L'intérêt du choix, la lisibilité des coûts et l'équilibre avec des forces composées par une personne ne sont pas observés ; les scripts ne composent qu'une seule force (`depAuto`).
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1201,6 +1219,7 @@ Demande de Naully du 19 novembre 2026 : faire disparaître l'icône tactique qua
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 45 | `DEPB`, `DEPMAX`, `depCost`, `depBudget`, `depMax`, `depReq`, `depN`, `depSort`, `depWhy`, `depDelWhy`, `depAuto`, `DEPT`, `depFocus`, `screenDeploy`, `depChoice`, `exp.dep`, `exp.depSc`, `S.dep` |
 | Version 44 | `NAVC`, `navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `navChk`, `navStep`, `navTo`, `FZUS`, `FZUL`, `FZSL`, `fzSilBase`, `fzSilPx`, `curOf`, `setCur` |
 | Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
 | Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
@@ -1296,6 +1315,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv45.js                                      # version 45 : déploiement, ordre de bataille de la mission ou unités choisies, budget, plafonds, bilan
 node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
 node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
 node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
@@ -1318,6 +1338,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 19 novembre 2026, version 45 (déploiement) :** voir 5.45 ; par défaut identiques à la version 44, référence avec unités choisies 749 et 80 %. Branche `v45-deploiement`, non fusionnée dans `main`.
 
 **Résultats du 19 novembre 2026, version 44 (navigation fine, silhouettes, pointeurs) :** voir 5.44 ; omniscient 788 et 93 %, référence 750 et 79 %, aucune force 190 et 0 % ; plus aucun navire sur la terre affichée (2 111 et 9 604 relevés en version 43). Branche `v44-affichage`, non fusionnée dans `main`.
 
@@ -1600,6 +1622,9 @@ Une évolution est terminée si :
 70. **Silhouettes manquantes :** SEAL et FAST gardent leur symbole au zoom détaillé ; les nouvelles silhouettes (avion, chasseur, hélicoptère, drone, lanceur) sont dessinées pour FOGLINE, non homologuées. Les valider, ou en faire dessiner.
 71. **Passes fermées :** accepter que le Bosphore, Suez et Corinthe soient fermés, ou rouvrir des passes choisies à la main.
 72. **Pointeurs :** visée, cible, déplacement, refus et placement (5.44). Les garder, ou revenir au pointeur en croix du navigateur.
+73. **Déploiement libre :** budget par mode et difficulté, jamais sous la liste de la mission ; points non dépensés perdus ; plafonds relevés (MQ-4C 3, LCS 3, destroyer 2, F/A-18 2). Valider ces valeurs, ou les régler après essais.
+74. **Meilleur résultat :** non enregistré avec des unités choisies. Le garder ainsi, ou tenir un record séparé.
+75. **Déploiement dans l'exercice rapide et le tutoriel :** absent. L'ouvrir à l'exercice rapide, ou non.
 
 ### Absent de cette version
 

@@ -34,7 +34,7 @@ Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir
 
 Ces règles valent même si une demande semble les contourner. Si un besoin les heurte, explique le conflit et propose une version compatible.
 
-1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. L'étiquette « EXERCICE FICTIF » reste visible à l'écran.
+1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. Le bandeau permanent a été retiré le 19 novembre 2026 à la demande de Naully (version 41) : la mention « EXERCICE FICTIF » reste dans la barre de titre de la partie, au briefing, au bilan et à l'accueil.
 2. **Armes abstraites, noms réels.** Le combat a été décidé par Naully le 4 novembre 2026, avec des valeurs de jeu fictives. Depuis le 7 novembre 2026, Naully autorise les noms réels des plateformes américaines (classes de navires, types d'aéronefs). Leurs valeurs restent fictives, et les navires gardent des numéros fictifs (DDG-1, LCS-1), sans nom de bâtiment réel. N'ajoute aucun paramètre réel d'armement : portée, charge, guidage, vulnérabilité, signature, procédure de tir ou nom d'arme réel (missile, torpille). Les tirs restent génériques.
 3. **Pas de mode d'emploi offensif.** La cyberattaque, le sabotage, le brouillage et la désinformation restent décrits par leurs effets sur la décision. N'écris jamais de technique, d'outil, d'exploit ou de recette réutilisable.
 4. **Pas de frappe stratégique jouable.** Pas d'arme nucléaire et pas de frappe contre des villes. La destruction n'est jamais un spectacle ni une source directe de points.
@@ -1045,6 +1045,37 @@ Fiche du P-8A et de l'hélicoptère : section « Bouées acoustiques » avec la 
 
 **Tests :** `uiv40.js` (FR 1440 et EN 390) : dotations, barrière active et consommation, alerte, localisation, torpille du destroyer, une seule à la fois, issue au but, torpille à tort, avion envoyé lancer, torpille manquée et contact perdu, fiche avec vrais clics jusqu'au largage sur la carte, dossier, pas de défilement horizontal, aucun texte manquant. `stress.js labo` : `bouees_passives`, `bouees_actives`, `torpille_tenue7`, `torpille_tenue12`, `torpille_tenue12_alerte`. `bots.js` : `mkBot({ torp: true })` lance une torpille sur un contact localisé jugé sous-marin au lieu de le presser ; stratégie `torpille` dans `exploit`.
 
+### 5.41 Bibliothèque « FOGLINE symboles et zoom » (version 41)
+
+Demande de Naully du 19 novembre 2026 avec `FOGLINE_SYMBOLES_ZOOM_V1.zip` (29 catégories, 145 SVG, 4 silhouettes vues du dessus, `symbology.js`, `zoom-integration.js`, `symboles.css`, `manifest.json`, `APERÇU.html`). Choix de Naully le même jour : retirer **seulement** le bandeau permanent (dossiers de preuves et décisions inchangés) ; partir de la v39 GitHub et de la v40, publier un artifact d'essai séparé. Branche `v41-symboles`.
+
+**Réutilisation :** le registre (`FZT`), les cadres (`fzFrame`), les pictogrammes (`fzMark`) et `tacticalSymbol` sont repris de `symbology.js`, sans module ES (page unique). Contrôle : les 145 symboles générés sont identiques aux fichiers `svg/<appartenance>/<type>.svg` du pack, à l'attribut `xmlns` et au libellé près. Les quatre silhouettes sont embarquées telles quelles en données (`FZSIL`). Libellés des types et des appartenances en français et en anglais (`fz.t.*`, `fz.a.*`).
+
+**Calque de marqueurs (`#fzl`, `fzSync`, `FZM`) :** un bouton HTML par objet affiché, au-dessus du canevas, positionné en pixels écran à chaque image. Le calque n'est pas mis à l'échelle avec la carte : aucune compensation de zoom n'est appliquée. Les boutons ont `pointer-events:none` : le canevas garde le glisser, la molette, l'appui long et le clic ; `pickAt` consulte d'abord les cibles des marqueurs (`fzPick`, carré de 44, 48, 56 ou 74/64 px), puis l'ancienne recherche. Les boutons restent focalisables : Entrée appelle `mapClick(e, objet)` (`fzClick`), donc le même comportement qu'un clic (sélection, ordre de suivi, déplacement). Libellé accessible : « indicatif · type connu · appartenance ».
+
+**Objets concernés :** vos unités sur carte, les navires visibles (le trafic déclaré reste en points en vue d'ensemble), l'écho sous-marin tenu, le convoi. Bouées et torpilles : pictogrammes de la bibliothèque dessinés sur le canevas. Restent en anciens symboles : sites, avions civils, incursion, pistes de missile (5.29), contacts perdus.
+
+**Niveaux (`fzLevel`, `fzFactor`, `FZLV`) :** facteur = `cam.z / minZ()`, soit ×1 quand le théâtre entier tient à l'écran. Vue d'ensemble sous 1,6 (30 px, cible 44), vue tactique de 1,6 à 2,4 (38 px, cible 48), vue détaillée à partir de 2,4 (44 px, cible 56, ou silhouette 74 px, 64 px sous 850 px, badge 23 px). Le prototype du pack va de ×1 à ×3,2 ; ici le zoom monte jusqu'à `ZMAX` et reste en vue détaillée. Indicateur `#fzLvl` en tête de la colonne de zoom (niveau et facteur), 44 px, qui ouvre la légende.
+
+**Ce que le joueur sait (`fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`) :** aucune de ces fonctions ne lit `truth` avant le bilan (`S.over`).
+
+- Unités : alliées, identifiées. Correspondance : destroyer → frégate, LCS, câblier et allié → navire de surface, P-8A, MQ-4C et MQ-9A → avion, F/A-18 → groupe aérien, MH-60R → hélicoptère, SEAL et FAST → infanterie, batterie → missile sol-air.
+- Navire : étape 1 (`stgOf`, seulement détecté) → `classification: 'detected'`, symbole non classifié. Étapes 2 et 3 → navire de surface, ou frégate s'il est classé navire armé ou a tiré. Appartenance : même logique que `shipSidc` **sans** sa lecture de `truth` (raider localisé après un tir) ; classé civil → neutre, saboteur, leurre ou navire armé → hostile, fantôme ou estimation hostile au-dessus de 60 % ou marquage de zone → suspect, AIS → neutre, sinon inconnu.
+- Écho sous-marin : aucun marqueur tant que le contact n'est pas tenu ; tenu mais non classé → contact non classifié, inconnu, sans silhouette, libellé neutre « Écho K… » ; classé sous-marin par le joueur → sous-marin hostile ; classé biologique ou épave → non classifié neutre.
+- Statut `inconnu` ou `detected` : jamais de silhouette (`fzProfile`).
+
+**Silhouettes et caps :** en vue détaillée seulement, pour porte-avions, frégate, sous-marin et navire de surface. L'angle vient du vecteur de déplacement projeté à l'écran (au départ : `s.hd` ou le premier point du trajet), proue à l'est. `fzCapAngle(cap, orientation) = cap − orientation − 90` est fourni pour un cap géographique ; la carte n'est jamais tournée (orientation 0). Seule l'image tourne : badge et texte restent droits.
+
+**Étiquettes :** priorité au contact sélectionné (toujours affiché), puis aux hostiles, à l'écho sous-marin, aux unités, aux contacts, au trafic. Une étiquette qui chevauche une étiquette déjà placée ou un autre symbole est masquée (`data-label-hidden`) ; le focus clavier la rend visible.
+
+**Listes et fiches :** symbole dans la liste des contacts, dans le titre de la fiche d'unité avec la ligne « Symbole : type · Allié ». **Légende :** en tête, les cinq appartenances, les cadres par domaine, les 29 catégories, les 4 silhouettes avec badge et les trois niveaux (niveau actif signalé), puis les anciens symboles. Ouverte depuis l'indicateur, elle suspend le temps et rend l'état précédent à la fermeture.
+
+**Réglage :** menu « Symboles de la carte » : FOGLINE · zoom (défaut, `seuil.fz`) ou Anciens (canevas APP-6, V2 ou losanges, inchangés).
+
+**Bandeau :** `#fict` masqué, `--bh` à 0 ; mention « EXERCICE FICTIF » dans la barre de titre (`.fxtag`, sur une ligne à part sur téléphone), au briefing et au bilan ; l'accueil la garde déjà.
+
+**Tests :** `uiv41.js` (FR 1440, EN 390, 25 contrôles chacun) : bandeau absent et mention présente, tailles mesurées aux trois niveaux avec les vrais boutons + et −, retour, glisser de carte, sélection par clic à 14 px du centre, symbole de la fiche, contact détecté non classifié et indépendant de la vérité, identification après preuve à vue, classement navire armé et silhouette, sous-marin caché sans marqueur, écho tenu non classifié et sans silhouette même si la vérité change, sous-marin après classement, cinq couleurs et cadre suspect pointillé, caps 0/90/180/270/360, silhouette tournée seule selon le déplacement, légende au clavier (29 catégories, 5 appartenances, 4 silhouettes chargées, temps suspendu puis rendu), focus, Entrée, Tab, symboles des contacts, pas de défilement horizontal, aucun texte manquant, aucune erreur console. Captures `v41-detail-*.png`, `v41-legende-*.png`.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1069,6 +1100,7 @@ Fiche du P-8A et de l'hélicoptère : section « Bouées acoustiques » avec la 
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
 | Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
 | Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
 | Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
@@ -1160,6 +1192,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv41.js                                      # version 41 : symboles et zoom, connaissance du joueur, sous-marin caché, légende, clavier
 node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
 node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation

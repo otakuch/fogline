@@ -75,7 +75,7 @@ const { chromium } = require('playwright');
     await p.evaluate(l => { const A = __S; A.setLang(l); A.home(false); document.getElementById('over').hidden = true; A.newGame(3, { sc: 'asw', deck: A.SC.asw.rec, contested: false, guided: false, timer: 'easy' }); const S = A.s; S.sched = {}; S.pendingK = []; S.sc = { ...S.sc, dyn: 0 }; S.running = false; A.applyCamX(); S.tokens = 4; S.sel = S.units.find(u => u.type === 'recon'); A.redraw(); }, lang);
     await p.waitForTimeout(500);
     if (w < 500) { const nb = p.locator('[data-a=mnav][data-v=dos]'); if (await nb.count()) { await nb.first().click(); await p.waitForTimeout(200); } }
-    const sum = p.locator('details.ubuoy summary'); ok(await sum.count() === 1, 'section bouées dans la fiche du P-8A');
+    await p.waitForSelector('details.ubuoy summary', { timeout: 8000 }).catch(() => { }); const sum = p.locator('details.ubuoy summary'); ok(await sum.count() === 1, 'section bouées dans la fiche du P-8A ' + errs.slice(0, 2).join(' · '));
     await sum.click(); await p.waitForTimeout(200);
     await p.click('[data-a=bpat][data-v=bar]'); await p.click('[data-a=bmode][data-v=a]'); await p.waitForTimeout(150);
     await p.click('[data-a=bgo]'); await p.waitForTimeout(150);

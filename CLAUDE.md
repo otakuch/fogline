@@ -1010,6 +1010,41 @@ Demande de Naully du 14 novembre 2026 : intégrer les concepts de CSIM, « Comma
 
 **Non vérifié :** aucun vrai joueur. Les scripts décident en 5 s et coordonnent dès que la dette dépasse 1,5 : ils ne laissent presque jamais la réserve baisser. Les valeurs de baisse et de remontée n'ont pas été réglées sur des parties humaines. Le modèle de CSIM lui-même n'a pas été consulté.
 
+### 5.40 Lutte anti-sous-marine (version 40)
+
+Demande de Naully du 18 novembre 2026 : des hélicoptères de lutte anti-sous-marine sur les bâtiments, le largage de bouées acoustiques en quantité réelle, la destruction par torpille et une mécanique de lutte anti-sous-marine. Branche `v40-asm`, partie de `v39-commandement` : **elle ne contient pas les travaux locaux du 17 novembre** (vitesse indépendante du zoom, piratage, déploiement par points), qui n'étaient ni commités ni joignables.
+
+**Déjà présent avant :** le MH-60R embarqué sur le destroyer et le LCS (5.26), la crise `sub` (hypothèses sous-marin, biologique, épave), les bouées en triangle, le sonar trempé, la tenue du contact (`c.hold`, localisé à 7) et l'action « Presser ».
+
+**Dotations de bouées (réelles, publiques)**
+
+- P-8A : 129 bouées (Boeing, fiche P-8). MH-60R : 25 bouées (Naval History and Heritage Command, lanceur de 25 tubes). Recomplètement à la base pour l'avion, à bord pour l'hélicoptère (nouvel appareil à chaque décollage).
+- Un cercle de détection du jeu représente 4 bouées réelles (`ASW.bpc`). Triangle : 3 cercles, 12 bouées. Barrière : 5 cercles en ligne espacés de 58, 20 bouées, posée en travers de la route de l'appareil. Un cercle sur la terre n'est pas posé ; un point de largage sur la terre est refusé.
+- Hypothèse `sup.fuel` : la moitié de la dotation (65 bouées).
+
+**Bouées passives ou actives (niveau Complet ; triangle passif seulement au niveau Simple)**
+
+- Passives : rayon 52, 65 s, tenue du contact au rythme normal.
+- Actives : rayon 70, 35 s, tenue × 1,8. Un vrai sous-marin insonifié est **alerté** 30 s (`c.alertU`) : les capteurs passifs le tiennent × 0,6, le contact se perd 1,5 fois plus vite, la torpille perd 0,15 de chance, et en règles réalistes il passe sous la couche thermique (`subDeep`). Le message du journal (`l.ping`) est le même quelle que soit la vérité : il ne révèle rien.
+
+**Largage libre (`buoyHtml`, `buoyOrder`, `buoyDrop`, `buoyPts`, `buoyEdit`, `ASWP`)**
+
+Fiche du P-8A et de l'hélicoptère : section « Bouées acoustiques » avec la dotation, le motif, le mode et « Choisir le point de largage » (1 jeton), puis clic sur la carte, en mer, hors crise ou avant. Sur téléphone, le bouton bascule sur la carte. Échap annule. L'action de crise « Larguer des bouées » reste un triangle passif au-dessus de la zone.
+
+**Torpille (`torpL`, `torpEst`, `torpPk`, `torpLaunch`, `stepTorp`, action `kill`)**
+
+- Remplace « Neutraliser le sous-marin », qui réussissait toujours et sans lanceur. Contact localisé, posture Engager (escalade proposée par la carte), 1 jeton, une torpille à la fois par contact.
+- Lanceurs, dans cet ordre : destroyer à moins de 40 de la zone (tir immédiat) ; avion ou hélicoptère en vol, qui rejoint la zone puis lance à moins de 20 ; au niveau Complet, décollage de l'hélicoptère du bâtiment le plus proche. Dotations, valeurs de jeu : destroyer 4, P-8A 4, MH-60R 2. Le LCS n'en porte pas : son hélicoptère, si.
+- Course de 12 s, tracée en pointillés vers le centre de la zone (pas vers la position vraie). Chance : 0,30 + 0,50 × tenue / 12 − pénalités d'arme, bornée à 0,10 et 0,85 ; puis − 0,15 si le sous-marin est alerté et − 0,15 s'il est sous la couche. Le joueur voit l'estimation sans ces deux malus cachés.
+- Au but sur un vrai sous-marin : effets de l'ancienne neutralisation (tension + 1, piliers + 1, − 2, + 2, issue 0,9). Sur une baleine ou une épave : tir à tort (`falseEng`, − 6, − 6, − 4, tension + 0,8, issue 0). Manquée : tension + 0,3, sous-marin alerté 40 s, tenue ramenée à 2, contact perdu et zone de 150 : il faut le relocaliser.
+- Un seul tirage `R()`, à l'issue d'une torpille sur un vrai sous-marin.
+
+**Dossier et bilan :** barre « Tenue du contact » (x/12, localisé ou non), réussite estimée, torpille en route avec le temps restant, explication repliée « Comment chasser un sous-marin ». Bilan des pertes : bouées larguées (dont actives), torpilles lancées, au but, manquées, à tort. Fiche et ordre de bataille : ligne Torpilles. Aucun son d'arme.
+
+**Garde-fous :** dotations de bouées réelles et publiques (capteurs, pas armes). Torpilles génériques : aucun nom, aucune portée, vitesse, charge ou guidage réels ; nombres et chances fictifs. La destruction ne rapporte aucun point direct.
+
+**Tests :** `uiv40.js` (FR 1440 et EN 390) : dotations, barrière active et consommation, alerte, localisation, torpille du destroyer, une seule à la fois, issue au but, torpille à tort, avion envoyé lancer, torpille manquée et contact perdu, fiche avec vrais clics jusqu'au largage sur la carte, dossier, pas de défilement horizontal, aucun texte manquant. `stress.js labo` : `bouees_passives`, `bouees_actives`, `torpille_tenue7`, `torpille_tenue12`, `torpille_tenue12_alerte`. `bots.js` : `mkBot({ torp: true })` lance une torpille sur un contact localisé jugé sous-marin au lieu de le presser ; stratégie `torpille` dans `exploit`.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1034,6 +1069,7 @@ Demande de Naully du 14 novembre 2026 : intégrer les concepts de CSIM, « Comma
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
 | Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
 | Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
 | Version 38 | `INR`, `SEP`, `steer`, `sepStep`, `coast`, `offCoast`, `route0`, `dmgF`, `civT`, `ownNz`, `subDeep`, `withdraw`, `S.real`, `S.wd`, `S.emb`, `exp.real` |
@@ -1124,6 +1160,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
 node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
 node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine

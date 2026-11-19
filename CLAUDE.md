@@ -1117,6 +1117,25 @@ Référence de 50 à 100 %, environ 69 % en moyenne ; omniscient à 75 % au moin
 
 **Tests :** `uiv42.js` (FR 1440 et EN 390, 22 contrôles chacun) : trois modes dans l'ordre, deux grisés et sans effet, cibles de 44 px, reprise masquée hors missions, Missions au clavier, huit cartes, huit thèmes, six régions, trois niveaux, chaque carte ouvre son briefing, tirage parmi les missions, Atlantique Nord à trois missions, pas de défilement horizontal, aucun texte manquant, aucune erreur.
 
+### 5.43 Ralenti au zoom, vitesse ×½ et temps indépendant de l'affichage (version 43)
+
+Demande de Naully du 19 novembre 2026 : ralentir le déplacement des unités, surtout au zoom. Branche `v43-ralenti`, à partir de `v42-missions`.
+
+**Cause de l'accélération au zoom :** la boucle jetait le temps au-delà de 0,1 s par image. En vue large, la carte est lourde à dessiner, les images sont lentes et le jeu tournait au ralenti ; au zoom, l'affichage s'allège et le jeu reprenait sa vraie vitesse. Mesure, processeur ralenti 4 fois, version 42 : 0,39 seconde de jeu par seconde réelle en vue large, 1,04 au zoom ×4. Le même défaut avait été corrigé le 17 novembre dans la copie locale de Naully (5.34 locale, non commitée) ; il est refait ici : plafond à 1 s par image (`loop.dt`), lissage des symboles écartés (`spreadSyms`) réglé sur le temps réel.
+
+**Ralenti au zoom (`ZSLOW`, `zTime`, `zsPays`, `loop.zs`) :** au-delà du facteur 1,6 (vue tactique), le temps de jeu est multiplié par 1,6 / facteur, jamais moins de 0,25 : ×0,67 au facteur 2,4, ×0,4 à 4, ×0,25 à partir de 6,4. Tout ralentit ensemble (déplacements, délais, combats, rythme des crises) : l'équilibre ne change pas et les scripts, qui appellent `step` directement, ne sont pas concernés.
+
+- Sans effet au tour par tour, au tutoriel et pendant l'avance rapide.
+- Là où la pause est limitée (temps réel, niveau Complet ou mode difficile, hors horloge idéale), le ralenti consomme la réserve de pause : 1 − facteur par seconde réelle. Réserve épuisée : le ralenti s'arrête pour la partie (`S.zsOut`, message `l.zs.end`). Au niveau Simple facile, il ne coûte rien.
+- L'indicateur de niveau (`#fzLvl`) affiche « temps ×0,4 » en ambre quand le ralenti agit.
+- Menu : « Ralenti au zoom » Oui (défaut, `seuil.zslow`) ou Non.
+
+**Vitesse ×½ (`#sp05`) :** nouveau bouton avant ×1 ; une crise à échéance ne la remonte pas (le retour automatique ne baisse que les vitesses au-dessus de ×1).
+
+**Tests :** `uiv43.js` (FR 1440 avec processeur ralenti 4 fois, EN 390, 11 contrôles chacun) : vue large au temps réel, zoom ×4 à ×0,4 et indicateur, réserve consommée au niveau Complet, plancher ×0,25, réglage coupé, niveau Simple sans coût, réserve épuisée, bouton ×½, pas de défilement horizontal, aucun texte manquant, aucune erreur. Mesure après correction, processeur ralenti 4 fois : vue large 1,02 (2,5 s), zoom ×4 0,43. `uiv37`, `uimenu`, `ui5`, `uiv41`, `uiv42`, `uit fr 390`, `uig`, `uim`, `uiqx`, `uiv4` sans erreur. Clics au hasard : 52 923, aucun blocage, aucun texte manquant, aucune erreur.
+
+**Non vérifié :** aucun vrai joueur ; le confort du ralenti et le coût en réserve de pause restent à observer. Le ralenti offre du temps de réflexion supplémentaire au niveau Simple facile.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1141,6 +1160,7 @@ Référence de 50 à 100 %, environ 69 % en moyenne ; omniscient à 75 % au moin
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
 | Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
 | Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
 | Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
@@ -1234,6 +1254,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
 node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
 node uiv41.js                                      # version 41 : symboles et zoom, connaissance du joueur, sous-marin caché, légende, clavier
 node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
@@ -1326,6 +1347,7 @@ Vérifie ces points avant de chercher ailleurs :
 - Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
 - Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
 - Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
+- Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image sous 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images (5.43). Le seul ralenti voulu est `zTime`.
 
 ## 10. Publication
 
@@ -1519,6 +1541,9 @@ Une évolution est terminée si :
 64. **Scénarios masqués :** les 67 autres restent dans la base. Les supprimer de `gen_db.py`, ou les garder pour la campagne et les tests.
 65. **Exercice rapide :** il ne tire plus que parmi les huit missions ; beaucoup de combinaisons n'ont plus de mission. Le garder, le retirer, ou le faire tirer dans toute la base.
 66. **Campagne et multijoueur :** boutons grisés seulement ; aucun contenu.
+
+67. **Ralenti au zoom :** formule 1,6 / facteur (plancher 0,25), consommation de la réserve de pause au niveau Complet. Garder, régler, ou réserver le ralenti au niveau Simple.
+68. **Report du correctif local du 17 novembre :** la boucle de la copie locale a déjà le plafond à 1 s ; au moment de fusionner, garder une seule version.
 
 ### Absent de cette version
 

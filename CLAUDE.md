@@ -1076,6 +1076,47 @@ Demande de Naully du 19 novembre 2026 avec `FOGLINE_SYMBOLES_ZOOM_V1.zip` (29 ca
 
 **Tests :** `uiv41.js` (FR 1440, EN 390, 25 contrôles chacun) : bandeau absent et mention présente, tailles mesurées aux trois niveaux avec les vrais boutons + et −, retour, glisser de carte, sélection par clic à 14 px du centre, symbole de la fiche, contact détecté non classifié et indépendant de la vérité, identification après preuve à vue, classement navire armé et silhouette, sous-marin caché sans marqueur, écho tenu non classifié et sans silhouette même si la vérité change, sous-marin après classement, cinq couleurs et cadre suspect pointillé, caps 0/90/180/270/360, silhouette tournée seule selon le déplacement, légende au clavier (29 catégories, 5 appartenances, 4 silhouettes chargées, temps suspendu puis rendu), focus, Entrée, Tab, symboles des contacts, pas de défilement horizontal, aucun texte manquant, aucune erreur console. Captures `v41-detail-*.png`, `v41-legende-*.png`.
 
+### 5.42 Huit missions uniques et accueil à trois modes (version 42)
+
+Demande de Naully du 19 novembre 2026 : réduire le nombre de scénarios à des missions uniques, chacune avec un thème différent, dans différentes parties du monde ; accueil avec Campagne (grisée), Missions (active), Multijoueur (grisé). Branche `v42-missions`, à partir de `v41-symboles`.
+
+**Missions (`MISSIONS`, `PLAYABLE`) :** huit scénarios existants, un par thème, sur les six théâtres, aux trois niveaux. Aucun scénario n'est modifié.
+
+| Mission | Thème | Théâtre | Niveau |
+|---|---|---|---|
+| `c1` Réveil au port | Cyberattaque portuaire | Europe | Accessible |
+| `f2` Le fond des mers | Câbles et fonds marins | Atlantique Nord, Shetland | Exigeant |
+| `asw` Chasse en eaux profondes | Lutte anti-sous-marine | Atlantique Nord | Sévère |
+| `l12` Tir de semonce | Combat naval et escalade | Atlantique Nord, mer de Norvège | Sévère |
+| `g3` Pétrolier retenu | Prise de navire | Golfe de Guinée | Exigeant |
+| `a4` Corridor commercial | Essaim de drones | Golfe d'Aden et mer Rouge | Exigeant |
+| `e6` Évacuation sous regard | Évacuation de ressortissants | Méditerranée orientale | Exigeant |
+| `m6` Sous le détroit | Guerre des mines | Détroit de Malacca | Sévère |
+
+- `PLAYABLE()` ne renvoie plus que ces huit missions, dans cet ordre : accueil, catalogue d'un théâtre, tirage au hasard, exercice rapide et compteurs les suivent. Les 67 autres scénarios restent dans `scenarios.json` et `gen_db.py`, hors catalogue ; les bancs d'essai (`stress.js`) les jouent toujours. La reprise ne propose plus un scénario hors missions.
+- Le catalogue d'un théâtre ne s'ouvre plus filtré sur « Accessible » pour un nouveau joueur : l'Atlantique Nord n'a pas de mission accessible et la liste était vide.
+
+**Accueil :** trois modes en tête du menu : Campagne et Multijoueur grisés (`disabled`, « Bientôt »), Missions actif (`data-a="play"`, nombre de missions et de régions). Sur téléphone, Missions passe en premier. Ensuite : tutoriel (signalé « Recommandé pour commencer » à la première visite), reprise, comment jouer, légende. Le tirage au hasard et l'exercice rapide passent dans l'écran Missions. La carte du monde garde ses repères par théâtre.
+
+**Écran Missions (`screenMissions`) :** une carte par mission avec son thème, sa région et son secteur, son titre, sa description, son niveau, sa situation, sa durée et le meilleur résultat. Boutons : tirage au hasard, par région (ancien choix du théâtre, `data-a="world"`), exercice rapide, accueil. Textes : « scénarios » devient « missions » dans le parcours.
+
+**Mesures du 19 novembre 2026, scripts, niveau Complet, 4 parties par mission (`scr.js`) :**
+
+| Mission | Référence | Omniscient | Aucun ordre |
+|---|---|---|---|
+| `c1` | 678 et 50 % | 762 et 75 % | 331 et 0 % |
+| `f2` | 754 et 75 % | 819 et 100 % | 291 et 0 % |
+| `asw` | 629 et 50 % | 835 et 100 % | 314 et 0 % |
+| `l12` | 697 et 75 % | 793 et 100 % | 333 et 0 % |
+| `g3` | 773 et 75 % | 742 et 100 % | 230 et 0 % |
+| `a4` | 748 et 75 % | 776 et 100 % | 255 et 0 % |
+| `e6` | 694 et 50 % | 811 et 100 % | 282 et 0 % |
+| `m6` | 831 et 100 % | 786 et 100 % | 330 et 25 % |
+
+Référence de 50 à 100 %, environ 69 % en moyenne ; omniscient à 75 % au moins. 4 parties : seuls les grands écarts comptent. `m6` paraît trop facile (référence 4 sur 4, aucun ordre 1 sur 4) ; `c1`, mission « Accessible », ne donne que 2 réussites sur 4 à la référence. Clics au hasard : 52 990, aucun blocage, aucun texte manquant, aucune erreur. Tests d'interface : `uiv42` et les 31 autres sans erreur, après adaptation au nouveau parcours de `ui5`, `uih`, `uit`, `uiw`, `uis`, `uim`, `uim2` et `uidq` (scénarios masqués remplacés par des missions, passage par « Par région »).
+
+**Tests :** `uiv42.js` (FR 1440 et EN 390, 22 contrôles chacun) : trois modes dans l'ordre, deux grisés et sans effet, cibles de 44 px, reprise masquée hors missions, Missions au clavier, huit cartes, huit thèmes, six régions, trois niveaux, chaque carte ouvre son briefing, tirage parmi les missions, Atlantique Nord à trois missions, pas de défilement horizontal, aucun texte manquant, aucune erreur.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1100,6 +1141,7 @@ Demande de Naully du 19 novembre 2026 avec `FOGLINE_SYMBOLES_ZOOM_V1.zip` (29 ca
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
 | Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
 | Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
 | Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
@@ -1192,6 +1234,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
 node uiv41.js                                      # version 41 : symboles et zoom, connaissance du joueur, sous-marin caché, légende, clavier
 node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
 node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
@@ -1471,6 +1514,11 @@ Une évolution est terminée si :
 62. Version 41 : sur téléphone, la colonne de zoom recouvre le bas de la carte et certains marqueurs ; en vue tactique, les marqueurs de 48 px se chevauchent dans les zones chargées. Le chevauchement est géré pour les étiquettes, pas pour les symboles.
 63. Version 41 : le bandeau retiré, la mention fictive défile avec la barre de titre sur téléphone et n'est plus visible quand on lit le dossier.
 64. Version 40 : la torpille vise le centre de la zone, mais l'issue dépend de la vérité et de la tenue ; le joueur ne voit pas les malus cachés (alerte, couche thermique).
+
+63. **Choix des huit missions :** liste proposée par Claude (un thème par mission, six théâtres, trois niveaux). La valider ou la modifier dans `MISSIONS`.
+64. **Scénarios masqués :** les 67 autres restent dans la base. Les supprimer de `gen_db.py`, ou les garder pour la campagne et les tests.
+65. **Exercice rapide :** il ne tire plus que parmi les huit missions ; beaucoup de combinaisons n'ont plus de mission. Le garder, le retirer, ou le faire tirer dans toute la base.
+66. **Campagne et multijoueur :** boutons grisés seulement ; aucun contenu.
 
 ### Absent de cette version
 

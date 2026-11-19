@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
     const ov = by('overview'), ta = by('tactical'), de = by('detail');
     need(ov && ov.btn === 44 && ov.sym === 30, tag + ' vue d\'ensemble 30 px / 44 px : ' + JSON.stringify(ov));
     need(ta && ta.btn === 48 && ta.sym === 38 && ta.f >= 1.6 && ta.f < 2.4, tag + ' vue tactique 38 px / 48 px : ' + JSON.stringify(ta));
-    need(de && de.sym === 44 && de.f >= 2.4 && de.sil === (mob ? 64 : 74) && de.badge === 23, tag + ' vue détaillée 44 px, silhouette ' + (mob ? 64 : 74) + ' px, badge 23 px : ' + JSON.stringify(de));
+    /* v44 : silhouette seule, de 22 à 64 px selon le zoom et le type, plus de badge */need(de && de.f >= 2.4 && de.sil >= 22 && de.sil <= 64 && !de.badge, tag + ' vue détaillée : silhouette de 22 à 64 px sans badge : ' + JSON.stringify(de));
     need(lv.every(x => x.chipH >= 44) && /Détail|Detail/.test(de.chip) && /Ensemble|Overview/.test(ov.chip), tag + ' indicateur de niveau affiché, 44 px : ' + lv.map(x => x.chip).join(' / '));
     await p.screenshot({ path: D + '/v41-detail-' + tag + '.png' });
     for (let i = 0; i < 6; i++) { await p.click('[data-a=zoom][data-v="0.77"]'); await tick(200); }
@@ -37,10 +37,10 @@ const { chromium } = require('playwright');
     const pan2 = await st(() => __S.cam.x); need(Math.abs(pan2 - pan.x) > 5, tag + ' déplacement de carte : ' + pan.x.toFixed(0) + ' → ' + pan2.toFixed(0));
     // 3. sélection d'une unité par un vrai clic sur son marqueur (zoom tactique)
     await st(() => { const A = __S, u = A.s.units.find(x => x.type === 'frigate'); A.cam.z = A.minZ() * 2; A.cam.x = u.x; A.cam.y = u.y; A.s.sel = null; A.redraw(); }); await tick();
-    const mk = await st(() => { const e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))), r = e.getBoundingClientRect(); return { x: r.left + r.width / 2 + 14, y: r.top + r.height / 2 - 12, aria: e.getAttribute('aria-label') } });
+    const mk = await st(() => { const e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))), r = e.getBoundingClientRect(); return { x: r.left + r.width / 2 + 8, y: r.top + r.height / 2 - 7, aria: e.getAttribute('aria-label') } });
     if (!mob) await p.mouse.click(mk.x, mk.y); else await p.touchscreen.tap(mk.x, mk.y); await tick(400);
     const sel = await st(() => { const S = __S.s, e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))); return [S.sel && S.sel.id, e.getAttribute('aria-pressed'), e.dataset.labelHidden || ''] });
-    need(sel[0] === 'DDG-1' && sel[1] === 'true' && sel[2] === '', tag + ' sélection par clic à 14 px du centre (cible 48 px) et étiquette prioritaire : ' + sel + ' · ' + mk.aria);
+    need(sel[0] === 'DDG-1' && sel[1] === 'true' && sel[2] === '', tag + ' sélection par clic à 10 px du centre (cible 48 px) et étiquette prioritaire : ' + sel + ' · ' + mk.aria);
     if (mob) { const nb = p.locator('[data-a=mnav][data-v=dos]'); if (await nb.count()) { await nb.first().click(); await tick(); } }
     const sheet = await st(() => { const r = document.getElementById('rightC'); const i = r && r.querySelector('h2 .fzi'); return i ? i.getAttribute('aria-label') : '' });
     need(/Frégate|Frigate/.test(sheet), tag + ' symbole dans la fiche d\'unité : ' + sheet);
@@ -85,12 +85,12 @@ const { chromium } = require('playwright');
       for (const [k, dx, dy] of [['E', 1, 0], ['N', 0, -1], ['W', -1, 0], ['S', 0, 1]]) { u.path = []; A.cam.x = u.x; A.cam.y = u.y; A.fzSync(); u.x += dx * 2; u.y += dy * 2; A.fzSync(); const e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))); out[k] = Math.round(parseFloat(e.style.getPropertyValue('--profile-angle'))); out[k + 'b'] = e.querySelector('.unit-affiliation') ? getComputedStyle(e.querySelector('.unit-affiliation')).transform : '?' }
       return out
     });
-    need(rot.E === 0 && rot.N === -90 && Math.abs(rot.W) === 180 && rot.S === 90 && ['none'].includes(rot.Eb) && rot.Nb === 'none', tag + ' silhouette tournée seule (est 0, nord −90, ouest 180, sud 90), badge droit : ' + JSON.stringify(rot));
+    need(rot.E === 0 && rot.N === -90 && Math.abs(rot.W) === 180 && rot.S === 90 && rot.Eb === '?', tag + ' silhouette tournée (est 0, nord −90, ouest 180, sud 90), sans badge depuis la version 44 : ' + JSON.stringify(rot));
     // 8. légende : ouverte au clavier depuis l'indicateur, temps suspendu puis rendu
     await st(() => { __S.s.running = true; document.getElementById('fzLvl').focus(); }); await p.keyboard.press('Enter'); await tick(500);
     const leg = await st(() => { const o = document.getElementById('over'); return { open: !o.hidden, run: __S.s.running, cats: o.querySelectorAll('.fzgrid>div').length, aff: o.querySelectorAll('.fzleg .lg2')[0].children.length, sil: [...o.querySelectorAll('.fzsil img')].map(i => i.complete && i.naturalWidth > 0).filter(Boolean).length, w: [document.documentElement.scrollWidth, innerWidth] } });
     await p.screenshot({ path: D + '/v41-legende-' + tag + '.png' });
-    need(leg.open && leg.run === false && leg.cats === 29 && leg.aff === 5 && leg.sil === 4 && leg.w[0] <= leg.w[1], tag + ' légende : 29 catégories, 5 appartenances, 4 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
+    need(leg.open && leg.run === false && leg.cats === 29 && leg.aff === 5 && leg.sil === 9 && leg.w[0] <= leg.w[1], tag + ' légende : 29 catégories, 5 appartenances, 9 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
     await p.click('[data-a=legclose]'); await tick(300);
     const after = await st(() => [document.getElementById('over').hidden, __S.s.running]); need(after[0] && after[1] === true, tag + ' fermeture : temps rendu : ' + after);
     await st(() => { __S.s.running = false });

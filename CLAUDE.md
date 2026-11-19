@@ -313,7 +313,7 @@ Trois moteurs se partagent l'écran. Le moteur de jeu reste indépendant et ne c
 - **Canevas (`draw`) :** unités, navires, zones, symboles et étiquettes. Si MapLibre échoue ou ne charge pas en 6 s, `drawVecFallback` trace les mêmes côtes sur le canevas.
 - **three.js (`globeStart`) :** globe de l'accueil, arrêté dès qu'on quitte l'écran. Sans WebGL, l'accueil revient à la carte plate.
 - **Chevauchements (`spreadSyms`, `flushLabels`) :** seul l'affichage change, jamais les positions du jeu. Les symboles qui se recouvrent s'écartent de 30 px au plus, avec un trait de rappel vers leur position réelle. Les sites et l'objet sélectionné ne bougent pas. Les étiquettes essaient plusieurs emplacements par priorité. Noms de lieux, câbles et traces anciennes disparaissent s'il n'y a plus de place ; les priorités 3 et plus restent toujours affichées.
-- **Côtes fines (`landGrid`, `offLand`) :** à partir d'un zoom de 1,3, un navire qui croise sur une côte fine est affiché sur l'eau la plus proche, à 24 unités au plus. La navigation reste calculée sur le masque de 360 × 225.
+- **Côtes fines (`landGrid`, `offLand`) :** depuis la version 44, la navigation et l'affichage lisent la même grille fine, tirée des côtes affichées (5.44) ; `offLand` ne sert plus qu'aux unités posées sur un site.
 - **Clics (`pickAt`) :** ils visent la position affichée.
 
 ### 5.13 quater Compte à rebours de décision
@@ -1136,6 +1136,47 @@ Demande de Naully du 19 novembre 2026 : ralentir le déplacement des unités, su
 
 **Non vérifié :** aucun vrai joueur ; le confort du ralenti et le coût en réserve de pause restent à observer. Le ralenti offre du temps de réflexion supplémentaire au niveau Simple facile.
 
+### 5.44 Affichage au zoom, pointeurs et navigation fine (version 44)
+
+Demande de Naully du 19 novembre 2026 : faire disparaître l'icône tactique quand on zoome sur un navire ou une autre unité, réduire la taille des bâtiments à l'échelle de la carte tactique, changer le pointeur de la souris, corriger les collisions (aucun navire ne doit flotter sur un continent), repérer les autres défauts d'affichage et de recherche de chemin. Branche `v44-affichage`, à partir de `v43-ralenti`.
+
+**Navigation fine (`navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `route`, `navChk`, `navStep`, `navTo`)**
+
+- **Cause :** les navires se déplaçaient sur le masque de 360 × 225 (une case = 4 unités de carte, environ 7 milles), plus grossier que les côtes OpenStreetMap affichées. Mesure `colm.js`, 25 scénarios × 2 parties, version 43 : 2 111 relevés de nos navires sur 49 679 et 9 604 relevés des autres navires sur 677 027 tombaient sur la terre affichée (îles et côtes norvégiennes, Shetland, Écosse, mer Égée).
+- **Grille :** une case par unité de carte (1 440 × 900), tirée des côtes affichées (OpenStreetMap, sinon Natural Earth, sinon l'ancien masque), construite à la première route d'un théâtre (moins de 0,2 s pour l'Atlantique Nord). Une case est terre dès qu'un point de terre y tombe (quatre lignes d'échantillonnage par unité, recouvrement horizontal). Une mer fermée de moins de 2 000 cases compte comme terre ; les autres mers restent séparées (Baltique reliée à l'Atlantique Nord ; mer Noire, golfe de Suez et golfe de Corinthe isolés, car le Bosphore, le canal de Suez et celui de Corinthe font moins d'une case).
+- **Routes :** recherche hiérarchique. Chemin sur une grille de 360 × 225 dont les passages viennent de la grille fine, puis A* fin (pondéré 1,3) dans un couloir de 2 cases autour (6 si besoin), enfin sur toute la grille. Pas de diagonale qui frôle une case de terre ; coût en plus à 1, 2 et 3 cases de la terre (0,6, 0,25, 0,08). Lissage : un raccourci n'est gardé que si toutes les cases traversées sont en mer (parcours de grille exact, plus deux bords à 0,3) et s'il ne s'approche pas de la terre plus que ses extrémités. Arrivée au point exact quand il est en mer ; destination sur la terre recalée sur la mer la plus proche, dans la même mer que le départ. 600 routes gardées en mémoire par théâtre.
+- **Garde :** avant chaque segment, un navire (le vôtre, un contact, le convoi, un sous-marin) vérifie qu'il ne coupe pas la terre ; sinon la route est recalculée (au plus une fois par seconde). Un pas qui monterait sur la terre est annulé. Un navire créé sur la terre (`addShip`) est recalé en mer. Une unité à moins de 1,7 d'un point de passage dont la suite n'est pas en vue finit son approche au point exact : elle tournait auparavant sur place contre la côte (câblier bloqué 300 s dans `l5`).
+- **Tout ce qui lisait le masque lit la grille fine :** `seaAt`, `nearSea` (même format qu'avant : `gx × 4 + 2` tombe au centre de la case fine), `offCoast` (2 cases de la terre au moins), écartement des unités (`sepStep`), bouées, patrouille, `landGrid` et `offLand` (affichage), aides de test `isLand`, `isDeep`, `coastAt`. L'ancien masque ne sert plus qu'au dessin de secours. Aucun tirage : la reproductibilité est intacte.
+- **Coût :** routes de 1 à 4 ms en moyenne, 40 ms au plus sur des trajets d'un bout à l'autre d'un théâtre ; une partie de banc dure autant qu'en version 43.
+
+**Zoom détaillé : silhouette seule, à l'échelle (`fzMapSymbol`, `fzSilPx`, `fzSilBase`, `FZUS`, `FZUL`, `FZSL`)**
+
+- Au facteur 2,4 et au-delà, la silhouette remplace le symbole tactique : plus de badge. L'appartenance passe par le liseré de la silhouette et la couleur de l'étiquette (mêmes cinq couleurs). Un contact seulement détecté ou inconnu garde son symbole (règle de la version 41 : aucune silhouette ne doit révéler un type que le joueur ignore).
+- Longueur : 20 + 2,6 px par unité de carte affichée, de 28 à 64 px, multipliée par la longueur relative du type (destroyer 1, câblier 0,9, navire de surface 0,88, LCS 0,78, P-8A 0,8, MQ-4C 0,72, MQ-9A 0,66, chasseur 0,55, hélicoptère 0,5, porte-avions 1,4, sous-marin 0,82), jamais sous 22 px. Avant : 74 px fixes (64 sur téléphone). Une vraie échelle est impossible : un destroyer mesure 0,05 unité de carte. La cible de clic reste de 44 px au moins.
+- Nouvelles silhouettes vues du dessus, dessinées pour FOGLINE dans le style du pack : avion de patrouille, chasseur, hélicoptère, drone, lanceur terrestre (batterie). L'équipe SEAL et le peloton FAST gardent leur symbole. Légende : neuf silhouettes, sans badge.
+
+**Pointeurs de la carte (`curOf`, `setCur`, `#c[data-cur]`)** : SVG dessinés pour FOGLINE, point chaud au centre. Visée (carte), cible (objet sous le pointeur), déplacement (unité choisie), refus rouge (navire choisi au-dessus de la terre : il s'arrêtera sur la mer la plus proche), placement ambre (patrouille, bouées, zone d'exclusion), main fermée pendant le glisser. Souris seulement.
+
+**Autres défauts trouvés et corrigés**
+
+| Constat | Correction |
+|---|---|
+| Les marqueurs du calque HTML ne suivaient pas l'écartement des symboles : deux unités au même point se recouvraient | Le calque applique l'écartement (`_dx`, `_dy`) avec trait de rappel ; rayon réglé sur la taille des marqueurs |
+| Les noms de lieux du canevas passaient sous les étiquettes des marqueurs (« ÎLES FÉROÉ » sur « LCS-2 ») | `flushLabels` évite les marqueurs et leurs étiquettes |
+| Indicateur de niveau : « Ensemble » débordait de son cadre | Deux règles CSS portaient la classe `fzlv` (indicateur et liste de la légende) ; séparées |
+| Pincement sur téléphone limité à un zoom de 8, contre 64 pour les boutons | Même plafond (`ZMAX`) |
+| Téléphone : le message de la carte passait sous la rangée de zoom, la règle en milles aussi | Message placé au-dessus de la rangée, règle en haut à gauche |
+| Navire bloqué contre une côte, la ligne vers le point suivant coupant un coin de terre entre deux échantillons | Parcours de grille exact dans `navLos` ; passage par le centre de la case de départ si besoin |
+
+**Mesures du 19 novembre 2026, scripts seulement**
+
+- `colm.js 3 2` (25 scénarios × 2 parties, référence) : nos navires sur la terre affichée 0 sur 48 895 (2 111 sur 49 679 en version 43), autres navires 0 sur 677 941 (9 604), sous-marins 0 sur 500 (3), convoi 0 sur 302 (2) ; aucun contact bloqué ; 5 de nos navires immobiles 3 s avec une route (6 en version 43 : deux unités qui visent le même point et que l'écartement repousse).
+- Équilibre (`stress.js 2 inv exploit labo`, niveau Complet, 2 parties par scénario) : omniscient 788 et 93 %, référence 750 et 79 %, sans aucun tir 751 et 78 %, torpille 750 et 79 %, tir sans vérifier 470 et 30 % avec 46 % de seuil 1, saturation 304 et 5 %, aucun ordre 284 et 5 %, aucune force 190 et 0 % (versions 40 et 41 : 783 et 91 %, 749 et 78 %). Omniscient à 0 % sur `i18` en 2 parties, 80 % sur 10 (90 % en version 43) ; référence à 0 % sur `asw` en 2 parties, 50 % sur 6 : effets d'échantillon. 608 parties finies et reproductibles. Clics au hasard : 53 200, aucun blocage, aucun texte manquant, aucune erreur.
+- `l5` et `i18`, 10 parties sur d'autres tirages (`OFF=1000 node scr.js l5,i18 10`) : `l5` référence 683 et 50 % (673 et 50 % en version 43), omniscient 784 et 90 % (805 et 100 %) ; `i18` référence 658 et 60 % (677 et 70 %), omniscient 717 et 80 % (749 et 90 %). Avant le correctif d'approche, l'omniscient tombait à 40 % sur `l5`.
+- Tests : `uiv44.js` (35 contrôles), `uiv41.js` adapté (silhouette sans badge, 9 silhouettes), `uiv38`, `uip`, `uiv40`, `ui5`, `uigrp` relancés sur l'assemblage final ; `uih`, `uiv4`, `uiv42`, `uiv39`, `uiv37`, `uiv36`, `uiv35`, `uiv34`, `uiob`, `uimenu`, `uiqx`, `uidq`, `uig`, `uid`, `uis`, `uiw`, `uiq`, `uim`, `uim2`, `uia`, `uic`, `uit fr 390`, `uit en 1440` et `uiv43` passés avant le dernier correctif (approche finale des unités), sans erreur ni texte manquant.
+
+**Non vérifié :** aucun vrai joueur, aucun vrai téléphone ; les pointeurs n'ont été contrôlés que par leur état (les captures ne montrent pas le pointeur). La lisibilité des silhouettes de 22 à 30 px en vue détaillée n'est pas observée. Les ports au fond d'un fjord ne sont plus atteignables : un navire s'arrête à l'entrée (18 unités pour Trondheim, 12 pour le site PORT de l'Atlantique Nord, 10 pour Tromsø). Lors d'un essai avec huit navigateurs en parallèle, MapLibre s'est déclaré prêt sans rien dessiner : le dessin de secours ne prend pas le relais dans ce cas (défaut 66).
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1143,7 +1184,7 @@ Demande de Naully du 19 novembre 2026 : ralentir le déplacement des unités, su
 | Zone | Éléments |
 |---|---|
 | Textes | `I18N.fr`, `I18N.en`, `t(clé, {a,b})`, `L10(objet)` |
-| Carte | `isLand`, `seaAt`, `nearSea`, `route`, `lane`, `qb` |
+| Carte | `seaAt`, `nearSea`, `route`, `navLos`, `lane`, `qb` (grille fine, 5.44 ; `isLand` ne lit plus que l'ancien masque) |
 | Données | `DBD`, `SC`, `ASM`, `SECT`, `SPOTS`, `UT`, `CR`, `EFF`, `SRC`, `DECK` |
 | Partie | `newGame`, `revealPhase`, `drawAssumptions`, `applyAsm`, `newTurn`, `step`, `stepOps` |
 | Preuves | `addEv`, `posterior`, `shared`, `classify`, `evText` |
@@ -1160,6 +1201,7 @@ Demande de Naully du 19 novembre 2026 : ralentir le déplacement des unités, su
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 44 | `NAVC`, `navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `navChk`, `navStep`, `navTo`, `FZUS`, `FZUL`, `FZSL`, `fzSilBase`, `fzSilPx`, `curOf`, `setCur` |
 | Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
 | Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
 | Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
@@ -1243,7 +1285,7 @@ node uit.js fr 390; node uit.js en 1440                # tutoriel
 node mkt.js 1                                          # clics au hasard par scénario, avec durées, environ 6 min
 node uim.js; node uim.js 844 390; node uim2.js          # écrans au format téléphone, compte à rebours et losanges
 TIMER=hard node stress.js 2 exploit                    # équilibre en mode difficile
-node scr.js f1,f2 4                                    # référence, omniscient, aucun ordre par scénario
+node scr.js f1,f2 4                                    # référence, omniscient, aucun ordre par scénario ; OFF=1000 pour d'autres tirages
 node uih.js                                        # écran d'accueil, entrée en jeu, retour, 390 et 1920 px
 node uit.js fr 1440 && node uit.js en 390          # tutoriel complet avec de vrais clics
 node uig.js                                        # escalade, pause automatique, conseil, mobile
@@ -1254,13 +1296,14 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
 node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
 node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
 node uiv41.js                                      # version 41 : symboles et zoom, connaissance du joueur, sous-marin caché, légende, clavier
 node uiv40.js                                      # version 40 : bouées réelles, passives ou actives, torpille, largage par clics
 node uiv39.js; node cmdcmp.js 1                  # version 39 : commandement sous tension ; référence, sans coordination, omniscient
 node uiv4.js                                       # interface V4 : bandeau, nom, polices, contraste, tabulation, cartes de décision, confirmation
-node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions, inertie, règles réalistes, chasse sous-marine
+node uiv38.js; node colm.js 3 2; node realcmp.js 1 # version 38 : collisions (terre affichée, version 44), inertie, règles réalistes, chasse sous-marine
 node uiv37.js; node tourcmp.js                     # version 37 : tour par tour, semi-réel, relief three.js, vue 3D ; parties complètes par la boucle réelle
 ```
 
@@ -1275,6 +1318,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 19 novembre 2026, version 44 (navigation fine, silhouettes, pointeurs) :** voir 5.44 ; omniscient 788 et 93 %, référence 750 et 79 %, aucune force 190 et 0 % ; plus aucun navire sur la terre affichée (2 111 et 9 604 relevés en version 43). Branche `v44-affichage`, non fusionnée dans `main`.
 
 **Résultats du 19 novembre 2026, versions 40 (lutte anti-sous-marine) et 41 (symboles et zoom), niveau Complet, 2 parties par scénario :** omniscient 783 et 91 %, référence 749 et 78 %, sans aucun tir 743 et 75 %, torpille (`mkBot({ torp: true })`) 749 et 78 %, tir sans vérifier 490 et 36 % avec 45 % de seuil 1, saturation 298 et 5 %, aucun ordre 279 et 5 %, aucune force 196 et 0 %. Pratiquement identique à la version 39 : les scripts pressent les sous-marins et n'emploient ni bouées actives ni largage libre. `asw` : omniscient 708 et 50 % sur 2 parties, puis 842 et 100 % sur 6 (`scr.js asw 6`, référence 673 et 67 %) : effet d'échantillon. 608 parties finies et reproductibles (même signalement sur `i14`). Clics au hasard : 52 990, aucun blocage, aucun texte manquant, aucune erreur. Mécaniques isolées : voir 5.40. Tests d'interface : `uiv41`, `uiv40` et les 29 autres sans erreur (`uiv4.js` adapté au bandeau retiré). Le banc à 4 parties (`stress.js 4 inv exploit pair labo`) a été interrompu par un redémarrage de l'environnement et n'a pas été relancé : `pair` n'est pas mesuré. Non publiés sur le prototype officiel ; artifact d'essai privé https://claude.ai/artifact/SrXfmmHAiztXYnnhxsVqbN.
 
@@ -1347,6 +1392,8 @@ Vérifie ces points avant de chercher ailleurs :
 - Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
 - Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
 - Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
+- Une ligne vérifiée par échantillons peut couper le coin d'une case de terre entre deux points : `navLos` parcourt toutes les cases traversées. Une unité qui atteint un point de passage « à peu près » (rayon de 1,6) peut ne plus voir le suivant : finir l'approche au point exact (5.44).
+- Deux règles CSS ne doivent pas partager une classe générique entre deux composants (`fzlv` servait à l'indicateur et à la légende).
 - Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image sous 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images (5.43). Le seul ralenti voulu est `zTime`.
 
 ## 10. Publication
@@ -1465,7 +1512,7 @@ Une évolution est terminée si :
 
 13. Déminage, évacuation, fonds marins et réponse à la posture sont équilibrés par scripts sur très peu de parties. Leur intérêt reste à vérifier avec des joueurs.
 
-14. La navigation repose encore sur un masque de 4 unités de côté, plus grossier que la côte affichée. Selon le scénario, 0,3 à 4 % des positions de navires tombent sur la côte fine : elles sont décalées à l'affichage, mais la route reste la même.
+14. Résolu le 19 novembre 2026 (version 44) : la navigation suit une grille d'une unité tirée des côtes affichées ; plus aucun relevé de navire sur la terre affichée sur 50 parties (5.44).
 
 15. Le losange bleu, désormais en option, contredit la forme du cadre ami de l'APP-6. Les symboles OTAN sont actifs par défaut ; les choix d'identité et d'échelon restent à faire valider par une personne qui dispose du texte de l'APP-6(E).
 16. Le stress du compte à rebours n'est pas mesurable par les scripts. Il reste à observer avec de vrais joueurs.
@@ -1484,7 +1531,7 @@ Une évolution est terminée si :
 25. La zone d'exclusion n'a qu'un prix de tension (+0,15). Elle marque surtout des civils (environ 7 sur 10 dans les essais), ce qui est voulu, mais ne coûte rien en relations.
 26. Le groupe tactique améliore le script (+38 points, +10 points de réussite sur 48 parties). Il pourrait devenir le réglage évident : à observer avec des joueurs avant de lui donner un coût.
 27. Résolu le 10 novembre 2026 (version 32) : appui long de 550 ms sur la carte = clic droit. Les mêmes ordres restent aussi dans la fiche d'unité.
-28. Au fort zoom, la navigation reste calculée sur une grille d'environ 12 km : un navire peut sembler couper un îlot ou une pointe des côtes détaillées.
+28. Résolu en version 44 : la grille de navigation passe à une unité de carte (environ 3 km en Atlantique Nord), tirée des côtes détaillées.
 29. Corrigé le 7 novembre (version 29) : l'omniscient échouait sur `ib` à cause d'une erreur du script, pas du jeu. La référence reste à 71 %, au-dessus de la cible.
 30. Résolu le 10 novembre 2026 (version 32) : Échap n'ouvre plus le menu (FL-014). M et le bouton ☰ restent.
 31. Un objectif de présence peut être rempli sans aucun ordre : dans « Port sous tension », l'unité part déjà dans la zone. La première phase ne demande alors aucune décision. Dans `l11`, ne donner aucun ordre réussit une partie sur deux (4 parties, versions 30 et 31) : présence, défense automatique et consignes suffisent.
@@ -1533,7 +1580,7 @@ Une évolution est terminée si :
 62. **Appartenance d'un sous-marin classé par le joueur :** hostile (comme les navires classés). Un classement est une estimation : le passer en « suspect » tant qu'il n'a pas attaqué, ou non.
 
 61. Version 41 : la règle de `shipSidc` qui affiche hostile un navire armé localisé dès que le joueur a tiré lit la vérité ; les nouveaux symboles ne la reprennent pas (`fzShipAff`), les anciens symboles la gardent.
-62. Version 41 : sur téléphone, la colonne de zoom recouvre le bas de la carte et certains marqueurs ; en vue tactique, les marqueurs de 48 px se chevauchent dans les zones chargées. Le chevauchement est géré pour les étiquettes, pas pour les symboles.
+62. Version 41 : sur téléphone, la colonne de zoom recouvre le bas de la carte et certains marqueurs ; en vue tactique, les marqueurs de 48 px se chevauchent dans les zones chargées. Le chevauchement est géré pour les étiquettes, pas pour les symboles. Version 44 : les marqueurs suivent maintenant l'écartement des symboles (30 px au plus) ; dans les zones très chargées, ils se touchent encore.
 63. Version 41 : le bandeau retiré, la mention fictive défile avec la barre de titre sur téléphone et n'est plus visible quand on lit le dossier.
 64. Version 40 : la torpille vise le centre de la zone, mais l'issue dépend de la vérité et de la tenue ; le joueur ne voit pas les malus cachés (alerte, couche thermique).
 
@@ -1544,6 +1591,15 @@ Une évolution est terminée si :
 
 67. **Ralenti au zoom :** formule 1,6 / facteur (plancher 0,25), consommation de la réserve de pause au niveau Complet. Garder, régler, ou réserver le ralenti au niveau Simple.
 68. **Report du correctif local du 17 novembre :** la boucle de la copie locale a déjà le plafond à 1 s ; au moment de fusionner, garder une seule version.
+
+65. Version 44 : une passe navigable plus étroite qu'une unité de carte est fermée (Bosphore, canaux de Suez et de Corinthe, fond de certains fjords). Trondheim (18 unités), le site PORT de l'Atlantique Nord (12) et Tromsø (10) ne sont atteints qu'à leur entrée.
+66. Version 44 : si MapLibre se déclare prêt sans rien dessiner (vu une fois avec huit navigateurs en parallèle), le dessin de secours du canevas ne prend pas le relais et la carte reste sans terre.
+67. Version 44 : deux unités qui visent le même point peuvent rester immobiles, repoussées par l'écartement (5 relevés sur 50 parties, 6 en version 43).
+
+69. **Taille des silhouettes :** 28 à 64 px selon le zoom, multipliés par la longueur relative du type (5.44). Une vraie échelle est impossible à cette carte. Garder cette règle, ou des tailles fixes plus petites.
+70. **Silhouettes manquantes :** SEAL et FAST gardent leur symbole au zoom détaillé ; les nouvelles silhouettes (avion, chasseur, hélicoptère, drone, lanceur) sont dessinées pour FOGLINE, non homologuées. Les valider, ou en faire dessiner.
+71. **Passes fermées :** accepter que le Bosphore, Suez et Corinthe soient fermés, ou rouvrir des passes choisies à la main.
+72. **Pointeurs :** visée, cible, déplacement, refus et placement (5.44). Les garder, ou revenir au pointeur en croix du navigateur.
 
 ### Absent de cette version
 

@@ -10,7 +10,7 @@ s = rd('src.html')
 th = rd('th/theatres.json')
 for k in json.loads(th):
     if os.path.exists(os.path.join(d, f'th/{k}.jpg')): th = th.replace(f'__THIMG_{k}__', b64(f'th/{k}.jpg'))
-R = [('__MILSYMBOL__', rd('milsymbol.js')),
+R = [('__NAVALJS__', rd('naval-alloc.js')), ('__NAVAL__', rd('naval-catalogue.json')), ('__MILSYMBOL__', rd('milsymbol.js')),
      ('__MAPLIBRE__', rd('vendor/maplibre-gl.js').replace('</script', '<\\/script')),
      ('__THREE__', rd('vendor/three.min.js').replace('</script', '<\\/script')),
      ('__IMG__', b64('../maps/theatre.jpg')), ('__MASK__', rd('mask.rle')), ('__GEO__', rd('geo.json')),

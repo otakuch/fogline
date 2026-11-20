@@ -56,6 +56,10 @@ seuil-projet/
     ├── vendor/             MapLibre GL JS 4.7.1 (BSD-3) et three.js r159 (MIT), intégrés à la page
     ├── son-pack.json       sons de la salle en mp3 base64, avec `docs/third-party/SOUND-CREDITS.md`
     ├── gen_db.py           définition éditable des scénarios et des hypothèses
+    ├── gen_naval.py        catalogue naval (26 fiches), 9 groupes, profils d'allocation ; écrit naval-catalogue.json et UNITS.md
+    ├── naval-catalogue.json  catalogue généré par gen_naval.py, ne pas modifier à la main
+    ├── naval-alloc.js      règles d'allocation partagées (page, Node, tests), avec naval-alloc.test.js
+    ├── UNITS.md            fiches lisibles du catalogue, générées par gen_naval.py
     ├── scenarios.json      base générée par gen_db.py
     ├── milsymbol.js        bibliothèque de symboles APP-6
     ├── geo.json            ports et leurs coordonnées sur la carte
@@ -112,7 +116,7 @@ python3 gen_db.py   # seulement si gen_db.py a changé
 python3 build.py
 ```
 
-`build.py` remplace dans `src.html` les marqueurs `__RELIEF__`, `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__` et `__WORLD__`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
+`build.py` remplace dans `src.html` les marqueurs `__RELIEF__`, `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__`, `__WORLD__`, `__NAVALJS__` (module `naval-alloc.js`) et `__NAVAL__` (`naval-catalogue.json`). Après un changement de `gen_naval.py` : `python3 gen_naval.py`, puis `python3 build.py`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
 
 **Prérequis :** Python 3, Node.js et Playwright avec Chromium.
 
@@ -1199,6 +1203,32 @@ Demande de Naully du 20 novembre 2026 : corriger l'emplacement des câbles à fi
 
 **Non vérifié :** aucun vrai joueur ; les tracés suivent la grille du jeu et des ports choisis par nom, pas les routes réelles des câbles.
 
+### 5.47 Catalogue naval, groupes et allocation par mission (version 47)
+
+Demande de Naully du 20 novembre 2026 : intégrer un catalogue de la marine américaine (26 fiches par famille), 9 modèles de groupes et un profil d'allocation explicite par mission, avec les spécifications naval V2, aérien V1, terrestre et amphibie V1 et groupes tactiques. Branche locale `work`, à partir de `v46-cables`. Choix de Naully : reconstruire les fiches et groupes absents de l'archive, partir de `v46-cables`, proposer une composition recommandée modifiable dans le profil, garder la mention fictive actuelle (barre de titre, briefing, menu, bilan) sans bandeau permanent.
+
+- **Données (`gen_naval.py` → `naval-catalogue.json`, `UNITS.md`) :** 20 capacités, 7 familles, 26 classes (type, configurations, instance séparés), 3 aéronefs embarqués (MH-60R avec bouées et 2 torpilles, MH-60S sans action acoustique, MQ-8 historique), 4 équipes de 4 personnes (VBSS, technique, médicale, amphibie), 9 groupes, 3 niveaux de portée et 8 profils. Chaque fiche sépare les faits publics (avec sources) et les valeurs de jeu fictives. « Disponible » signifie « allouable dans ce scénario », jamais une disponibilité réelle. 8 fiches reconstruites (Ticonderoga, Harpers Ferry, Los Angeles, Seawolf, Ohio SSGN, Zeus, Pathfinder, Constellation) sont marquées d'un astérisque dans `UNITS.md` ; Avenger est une référence datée, Constellation une fiche documentaire sans allocation.
+- **Portées :** local 6 points, 2 navires, 1 aéronef en l'air, 1 équipe déployée, 2 bouées par MH-60R ; régional 10, 3, 2, 2, 4 ; étendu 20, 5, 3, 3, 6. Le plafond appliqué est le minimum de la portée et du profil. Un champ absent hérite ; une liste vide n'autorise rien.
+- **Profils retenus :** `c1` local, LCS SUW ; `f2` régional, groupe infrastructures ; `asw` étendu, Burke, Virginia, 2 LCS SUW et Zeus (16 points), ravitaillement par Lewis and Clark (réserve de 12) ; `l12` régional, groupe de surface ; `g3` local, LCS SUW, forces spéciales permises, aucun groupe ; `a4` étendu, groupe de surface, groupe aéronaval permis (+0,3 de tension au lancement, annoncé avant l'engagement) ; `e6` régional, groupe de sauvetage, forces spéciales permises, groupe amphibie « surdimensionné » ; `m6` local, groupe chenal et mines, Avenger permis comme référence historique.
+- **Règles (`naval-alloc.js`, module partagé page et Node) :** `resolveMissionAllocation`, `evaluateUnitAvailability`, `evaluateTaskGroupCompatibility`, `validateFleetSelection`, `allocateMissionResources`. États affichés en texte : adapté, surdimensionné, incompatible, non alloué, hors budget, capacité manquante, référence documentaire. La composition recommandée est calculée (profil, sinon recherche) ; une alternative est proposée quand une sélection échoue. Un groupe n'a pas de coût propre : chaque navire compte. Plusieurs navires d'une même classe reçoivent chacun un identifiant (`LCS-1`, `LCS-2`), leurs aéronefs (`-H1`, `-D1`), équipes (`-T1`) et stocks.
+- **Contrôles en partie :** revalidation au lancement et à chaque ordre qui consomme une ressource (`checkEngage`). Capacités selon la configuration choisie : un LCS SUW ne drague pas de mines (`why.nomcm`), un MH-60S n'a aucune action acoustique, l'évacuation demande `lift`, l'inspection des fonds marins `sonar` ou `seabed_survey`. Cycles conservés : départ et récupération d'aéronef 6 s, équipe 8 s. Pas de double déploiement ni de stock négatif ; les bouées ne sont jamais rechargées implicitement (ravitaillement explicite par un pétrolier). Le retour d'un hélicoptère est bloqué tant que son équipe n'est pas récupérée. Le rappel général liste chaque rappel refusé et sa raison. Un sous-marin n'écoute qu'avec l'ordre « Écouter » (`u.listen`).
+- **Connaissance :** les observations d'équipe entrent au dossier (`addEv`, source `team`) ; aucun contact inconnu n'est révélé.
+- **Écrans :** catalogue (recherche, filtres famille et disponibilité, fiche, export JSON, raison de non-allocation) ; préparation de mission (profil, budget, plafonds, groupes, composition, états) ; groupes personnalisés enregistrés dans le navigateur seulement (`seuil.groups`, composition initiale uniquement, ce que l'écran dit). Marqueurs TG, clic droit, Maj+F10, bouton « Actions » sur téléphone et cibles de 44 px conservés.
+- **Sauvegarde (`seuil.save`, version 1) :** profil, composition, stocks, moyens engagés, transports, file d'ordres en données et état du générateur `R`. Automatique à chaque tour, manuelle depuis le menu. À la reprise : sélection revalidée contre le profil (sauvegarde refusée sinon), stocks bornés, partie ouverte en pause. Effacée au bilan.
+- **Garde-fous :** valeurs de combat fictives et inchangées ; aucune portée, charge ou procédure réelle n'est ajoutée. Les fiches citent cependant des noms de systèmes d'armes réels comme faits publics sourcés (point ouvert 80).
+
+**Tests :** `naval-alloc.test.js` (14 tests Node) ; `uiv47.js` (126 contrôles, FR 1440 et EN 390) : catalogue, préparation, budget, alternative, MCM et SUW, identifiants, plafonds, dernière bouée, équipes, rappel partiel, sauvegarde et reprise déterministe, sauvegarde falsifiée refusée, connaissance, parcours jusqu'au bilan, cibles de 44 px, pas de défilement horizontal, aucun texte manquant, aucune erreur.
+
+**Mesures du 20 novembre 2026, scripts seulement :**
+
+- Mêmes tirages, version 46 contre 47, 8 parties par mission (référence) : `c1` 75 → 88 %, `f2` 38 → 38 %, `asw` 88 → 63 %, `l12` 100 → 75 %, `g3` 63 → 50 %, `a4` 88 → 100 %, `e6` 25 → 38 %, `m6` 100 → 100 %.
+- 16 autres parties (`OFF=1000`) : `asw` référence 56 → 69 %, omniscient 94 → 75 % ; `l12` 81 → 75 % et 94 → 88 % ; `g3` 69 → 63 % et 88 → 81 % ; `e6` 44 → 31 % et 94 → 100 %. Sur 24 parties, `asw` omniscient passe de 22 à 19 réussites (bouées finies et plafond d'aéronefs, à confirmer), référence 16 dans les deux versions.
+- Lecture : écarts de quelques parties sur 8 à 24, donc peu concluants hors `asw` omniscient. Les échecs de sabotage de `f2` existaient avant. Dans `m6`, ne donner aucun ordre réussit encore souvent (défaut antérieur). Rien n'a été réglé pour compenser.
+- Banc `stress.js 2 inv exploit` (76 scénarios, dont 8 avec profil naval) : 608 parties finies et reproductibles, aucune erreur de page ; omniscient 785 et 91 %, référence 737 et 74 %, tir sans vérifier 483 et 34 % (seuil 1 franchi 44 %), aucun ordre 275 et 6 %, aucune force 195 et 0 % (version 46 : 785 et 90 %, 736 et 74 %, 472 et 32 %, 273 et 5 %, 188 et 0 %). Sur ces 2 tirages, l'omniscient réussit les huit missions à profil naval (2 sur 2 chacune) ; la référence échoue 2 fois sur 2 en `c1` et 1 fois sur 2 en `g3` et `e6`. Échantillon minuscule : seuls les grands écarts comptent.
+- Clics au hasard (`stress.js 2 monkey`) : 53 114, aucun blocage, aucun texte manquant. Banc `stress.js 2 labo` : mécaniques isolées inchangées (hélicoptère identifie et rentre 8 fois sur 8, bouées, torpille, essaim). Tests d'interface : `uiv46`, `uiv44`, `uiv42`, `uiv41`, `uiv43`, `uiv40`, `uiv39`, `uiv38`, `uiv37`, `uiv36`, `uiv35`, `uiv34`, `uiv4`, `uigrp`, `uip`, `uig`, `uimenu`, `uiqx`, `uidq`, `uiw`, `uis`, `uim`, `uim2`, `uia`, `uic`, `uiq`, `uid`, `uib`, `uit` (FR 390 et EN 1440), `ui5`, `uih`, `uiob` sans erreur. `uiv41` (sélection par clic en EN 390, un contact passait sous le doigt) et `uiv43` ont échoué une fois pendant une exécution en parallèle du banc, puis réussi seuls.
+
+**Non vérifié :** aucun vrai joueur ; les scripts n'utilisent ni les équipes, ni le rappel général, ni le ravitaillement, ni les groupes personnalisés ; les 8 fiches reconstruites et les sources n'ont pas été relues par un spécialiste ; les spécifications aérienne V1 et terrestre et amphibie V1 ne sont reprises que pour les aéronefs embarqués et les équipes.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1229,6 +1259,7 @@ Demande de Naully du 20 novembre 2026 : corriger l'emplacement des câbles à fi
 | Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
 | Version 41 | `FZA`, `FZT`, `FZSIL`, `FZSILU`, `FZLV`, `FZU`, `FZM`, `fzType`, `fzKnownType`, `fzAffOf`, `fzProfile`, `fzFrame`, `fzMark`, `tacticalSymbol`, `fzMapSymbol`, `fzLevel`, `fzFactor`, `fzCapAngle`, `fzOn`, `fzUnit`, `fzShip`, `fzShipAff`, `fzSub`, `fzConvoy`, `fzShipShown`, `fzItems`, `fzSync`, `fzPick`, `fzClick`, `fzIcon`, `fzLegend`, `fzImg`, `SYM.fz`, `legWas`, `#fzl`, `#fzLvl`, `.fxtag` |
 | Version 40 | `ASW`, `ASWP`, `buoyEdit`, `seaPt`, `buoyPts`, `buoyDrop`, `buoyOrder`, `buoyHtml`, `aswHtml`, `torpEst`, `torpPk`, `torpL`, `torpLaunch`, `stepTorp`, `S.torps`, `c.alertU`, `c.torpOn`, `c.torpU`, `S.buoyN`, `S.buoyA`, `S.torpN`, `S.torpHit`, `S.torpMiss`, `S.torpBad` |
+| Version 47 | `NAVAL_ALLOC` (`resolveMissionAllocation`, `evaluateUnitAvailability`, `evaluateTaskGroupCompatibility`, `validateFleetSelection`, `allocateMissionResources`, `recommendFleet`, `checkEngage`), `NVA`, `isK`, `capU`, `nearestCap`, `airRec`, `teamById`, `nvLaunch`, `heloLand`, `nvStep`, `teamDeploy`, `teamRecover`, `teamObserve`, `recallAll`, `nvResupply`, `screenPrep`, `screenCat`, `nvFiche`, `nvExport`, `nvGroups`, `saveGame`, `loadGame`, `nvSer`, `nvDes`, `S.alloc`, `S.fleetSel` |
 | Version 39 | `cmdOn`, `cmdLat`, `cmdVis`, `cmdAuth`, `cmdOrd`, `cmdStep`, `cmdSpend`, `cmdSnap`, `cmdHtml`, `cmdEnd`, `phOf`, `S.hr`, `S.hrMin`, `S.c2cuts`, `S.c2was`, `S.c2back`, `S.tTurn`, `S.cmdW`, `S.cmdSeries` |
 | Interface V4 | `FLOGO`, `actRisk`, `actHigh`, `RISK_HI`, `CONF`, `confOn`, `cfHtml`, `trkLeg`, couche de styles « FOGLINE UI V4 » |
 | Version 38 | `INR`, `SEP`, `steer`, `sepStep`, `coast`, `offCoast`, `route0`, `dmgF`, `civT`, `ownNz`, `subDeep`, `withdraw`, `S.real`, `S.wd`, `S.emb`, `exp.real` |
@@ -1319,6 +1350,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node naval-alloc.test.js; node uiv47.js            # version 47 : règles d'allocation (14 tests Node), catalogue, préparation, groupes, équipes, rappel, sauvegarde
 node uiv46.js                                      # version 46 : câbles en mer, aux ports, seulement dans les missions qui les mettent en jeu
 node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
 node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
@@ -1632,13 +1664,24 @@ Une évolution est terminée si :
 78. **Difficulté des missions avec câbles :** la référence y perd environ 5 à 10 points de réussite (5.46). Accepter, ou rapprocher les points de départ des navires des câbles.
 79. **Europe continentale :** ses cinq liaisons restent terrestres et ne sont montrées dans aucune mission. Les remplacer par des câbles sous-marins (mer du Nord, Baltique), ou les garder.
 
+
+### Décisions ouvertes de la version 47
+
+80. **Noms d'armes réels dans les fiches :** le garde-fou 2 interdit tout modèle d'arme réel, alors que la demande du 20 novembre demande des fiches sourcées ; plusieurs fiches citent comme faits publics des systèmes réels (NSM, Hellfire, RAM), sans aucune valeur chiffrée. Les garder comme références documentaires, les remplacer par des catégories (« missile antinavire »), ou modifier le garde-fou.
+81. **Fiches et groupes reconstruits :** 8 fiches (astérisque dans `UNITS.md`) et la composition des 9 groupes ont été rédigées par Claude faute d'archive. Les faire relire par une personne compétente avant toute diffusion.
+82. **Profils d'allocation :** les 8 profils (5.47) sont une proposition. Les valider mission par mission, en particulier le groupe aéronaval permis dans `a4` et son coût de tension de 0,3.
+83. **Chasse sous-marine plus dure pour l'omniscient :** 19 réussites sur 24 contre 22 en version 46 (bouées finies, plafond d'aéronefs). Accepter, ou relever la réserve de bouées du profil `asw`.
+84. **Scripts incomplets :** `bots.js` n'emploie ni les équipes, ni le rappel, ni le ravitaillement, ni les groupes personnalisés ; leur valeur n'est pas mesurée.
+85. **Spécifications aérienne et terrestre :** seules les parties utiles aux aéronefs embarqués et aux équipes sont reprises. Ouvrir une version dédiée, ou non.
+86. **Branche et publication :** la version 47 est sur la branche locale `work` (pas d'accès en écriture au dépôt). La pousser, la fusionner, et choisir si elle remplace le prototype publié.
+
 ### Demandes à garder en mémoire
 
 - **Mode tutorat multijoueur (demande de Naully du 20 novembre 2026, pour plus tard) :** un instructeur rejoint la partie dans un mode spécial ; il joue l'adversaire et peut, à la demande, ajouter des unités ennemies ou alliées et déclencher des événements « aléatoires ». À concevoir avec le multijoueur (bouton grisé de l'accueil, 5.42). Point à trancher : le garde-fou 7 réserve aujourd'hui au futur mode animateur des données agrégées, alors qu'un instructeur qui joue l'adversaire voit la partie d'un joueur en direct.
 
 ### Absent de cette version
 
-Niveaux de difficulté réglables, missions secondaires au choix, multijoueur, mode animateur, éditeur de formation, groupes aériens, porte-avions.
+Niveaux de difficulté réglables, missions secondaires au choix, multijoueur, mode animateur, éditeur de formation, groupes aériens. Porte-avions : présent dans le catalogue et dans le groupe aéronaval (5.47), sans groupe aérien embarqué jouable.
 
 ## 14. Priorités recommandées
 

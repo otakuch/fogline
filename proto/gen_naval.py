@@ -405,7 +405,7 @@ P['asw'] = {
   'allowedTeamKinds': ['vbss'],
   'loadout': {'shipSpareBuoys': 12, 'resupply': 'lewis_clark'},
   'scopeWhy': F('Périmètre étendu : quatre contacts successifs sur plusieurs secteurs. L’objectif supplémentaire est la couverture acoustique ; le groupe aéronaval n’est pas autorisé, faute d’allocation aéronavale dans le mandat.', 'Extended scope: four successive contacts across several sectors. The extra objective is acoustic coverage; the carrier group is not authorised, as the mandate makes no carrier-aviation allocation.'),
-  'recommended': {'ships': [M('arleigh_burke'), M('virginia'), M('lcs_freedom', 'suw'), M('lcs_freedom', 'suw'), M('zeus')], 'why': F('Destroyer et sous-marin pour l’observation sous-marine, deux LCS en surface pour des MH-60R supplémentaires, câblier pour les fonds : 16 points, cinq bâtiments.', 'Destroyer and submarine for underwater observation, two surface LCS for extra MH-60R, cable ship for the seabed: 16 points, five ships.')},
+  'recommended': {'ships': [M('arleigh_burke'), M('virginia'), M('lcs_freedom', 'suw'), M('zeus'), M('lewis_clark')], 'why': F('Destroyer et sous-marin pour l’observation sous-marine, un LCS en surface pour un MH-60R de plus, câblier pour les fonds, ravitailleur pour recompléter les bouées : 16 points, cinq bâtiments.', 'Destroyer and submarine for underwater observation, a surface LCS for one more MH-60R, cable ship for the seabed, supply ship to refill the buoys: 16 points, five ships.')},
 }
 P['l12'] = {
   'missionFamily': 'transit', 'scopeLevel': 'regional',

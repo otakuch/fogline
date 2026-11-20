@@ -15,6 +15,7 @@ const { chromium } = require('playwright');
     const small = async (sel, m) => { const L = await st(s => [...document.querySelectorAll(s)].filter(e => e.offsetParent && !e.closest('details:not([open])')).map(e => { const r = e.getBoundingClientRect(); return [r.width, r.height, e.textContent.trim().slice(0, 30)] }).filter(([w, h]) => w < 44 || h < 44), sel); need(!L.length, `${tag} ${m} : cibles de moins de 44 px ${JSON.stringify(L.slice(0, 3))}`) };
     const brief = async id => { await st(([l, id]) => { __S.setLang(l); __S.brief(id, false) }, [lang, id]); await tick(); };
     const start = async id => { await brief(id); await p.locator('[data-a="begin"]').first().click(); await tick(350); await st(() => { const o = document.querySelector('#over'); o.hidden = true; o.innerHTML = '' }); };
+    const startF = async (id, ships) => { await brief(id); await st(([id, ships]) => { const F = __S.nvFleet(id); F.ships = ships; F.src = 'manual' }, [id, ships]); await p.locator('[data-a="begin"]').first().click(); await tick(350); await st(() => { const o = document.querySelector('#over'); o.hidden = true; o.innerHTML = '' }); };
     const run = s => st(s => { for (let i = 0; i < s * 10; i++) step(.1) }, s);
     const sheet = id => st(id => { const S = __S.s; S.sel = S.units.find(u => u.id === id); renderRight(); return !!S.sel }, id);
     const click = (a, v) => st(([a, v]) => { const e = document.querySelector(`[data-a="${a}"]${v !== undefined ? `[data-v="${v}"]` : ''}`); if (!e) return 'absent'; if (e.disabled) return 'désactivé'; e.click(); return 'ok' }, [a, v]);
@@ -102,7 +103,7 @@ const { chromium } = require('playwright');
     need(f2, `${tag} f2 : déminage refusé sans capacité MCM, raison lisible`);
 
     // 5. plusieurs bâtiments d'une même classe, stocks distincts ; plafond d'appareils pendant départs et retours ; dernière bouée
-    await start('asw');
+    await startF('asw', [{ cls: 'arleigh_burke', cfg: 'std' }, { cls: 'virginia', cfg: 'std' }, { cls: 'lcs_freedom', cfg: 'suw' }, { cls: 'lcs_freedom', cfg: 'suw' }, { cls: 'zeus', cfg: 'std' }]);
     const asw = await st(() => { const S = __S.s, L1 = S.units.find(u => u.id === 'LCS-1'), L2 = S.units.find(u => u.id === 'LCS-2'); const h = __S.nvLaunch(L1, 'any'); return { h: h && h.id, a: L1.air[0].id, b: L2.air[0].id, sa: L1.air[0] !== L2.air[0] } });
     need(asw.h === 'LCS-1-H1' && asw.a !== asw.b && asw.sa, `${tag} asw : deux LCS, identifiants et appareils distincts`);
     await run(7);

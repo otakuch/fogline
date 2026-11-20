@@ -117,7 +117,7 @@ Un largage de jeu correspond à un cercle de détection, soit 4 bouées réelles
 |---|---|---|---|---|---|---|---|
 | c1 | information | local | Présence et surveillance de surface | continuity | non | non | LCS Freedom (suw) |
 | f2 | infrastructure | regional | Relevés des fonds, Présence et surveillance de surface | infra, subobs | non | non | groupe infra |
-| asw | acoustic | extended | Hélicoptère acoustique équipé (MH-60R), Observation acoustique de bord | subobs, sag, logistics | non | non | Arleigh Burke Flight IIA/III (std), Virginia (std), LCS Freedom (suw), LCS Freedom (suw), Zeus (std) |
+| asw | acoustic | extended | Hélicoptère acoustique équipé (MH-60R), Observation acoustique de bord | subobs, sag, logistics | non | non | Arleigh Burke Flight IIA/III (std), Virginia (std), LCS Freedom (suw), Zeus (std), Lewis and Clark (std) |
 | l12 | transit | regional | Protection aérienne, Présence et surveillance de surface | sag | non | non | groupe sag |
 | g3 | ship_assist | local | Présence et surveillance de surface | aucun | oui | non | LCS Freedom (suw) |
 | a4 | transit | extended | Protection aérienne, Escorte proportionnée | sag, csg, logistics | non | oui | groupe sag |

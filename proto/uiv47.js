@@ -40,6 +40,11 @@ const { chromium } = require('playwright');
     need(await st(() => [...document.querySelectorAll('.nvli b')].map(e => e.textContent).join()) === 'Zeus', `${tag} catalogue : recherche`);
     const ex = await st(() => { const o = JSON.parse(__S.nvExport()); const ok = o.classes.length === 26 && o.taskGroups.length === 9 && o.effectiveProfile.id === 'c1' && o.evaluation.classes.every(c => c.state === __S.NV.evaluateUnitAvailability(c.id, 'c1').state) && JSON.stringify(o.classes) === JSON.stringify(__S.NAVAL_CAT.classes); return ok });
     need(ex, `${tag} export JSON cohérent avec le registre du jeu`);
+    await p.click('[data-a=nvexport]'); await tick();
+    const box = await st(() => { const e = document.getElementById('nvexptxt'), b = document.querySelector('[data-a=nvexpcopy]'); let ok = false; try { ok = JSON.parse(e.value).classes.length === 26 } catch (_) {} return { ok, h: b ? b.getBoundingClientRect().height : 0, w: document.scrollingElement.scrollWidth - innerWidth } });
+    need(box.ok && box.h >= 44 && box.w <= 1, `${tag} export affiché dans un cadre à copier (téléchargement bloqué dans un artifact) : ` + JSON.stringify(box));
+    await p.click('[data-a=nvexpclose]'); await tick();
+    need(await st(() => !document.getElementById('nvexptxt')), `${tag} cadre d'export refermé`);
     await st(() => { const q = document.querySelector('[data-nvin="cq"]'); q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })) }); await tick();
     await noX('catalogue'); await small('.catw .btn, .catw .nvli, .catw select, .catw input', 'catalogue');
     if (!mob) { await p.keyboard.press('Tab'); await p.keyboard.press('Tab'); }

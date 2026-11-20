@@ -1177,6 +1177,28 @@ Demande de Naully du 19 novembre 2026 : faire disparaître l'icône tactique qua
 
 **Non vérifié :** aucun vrai joueur, aucun vrai téléphone ; les pointeurs n'ont été contrôlés que par leur état (les captures ne montrent pas le pointeur). La lisibilité des silhouettes de 22 à 30 px en vue détaillée n'est pas observée. Les ports au fond d'un fjord ne sont plus atteignables : un navire s'arrête à l'entrée (18 unités pour Trondheim, 12 pour le site PORT de l'Atlantique Nord, 10 pour Tromsø). Lors d'un essai avec huit navigateurs en parallèle, MapLibre s'est déclaré prêt sans rien dessiner : le dessin de secours ne prend pas le relais dans ce cas (défaut 66).
 
+### 5.46 Câbles sous-marins tracés en mer et liés à la mission (version 46)
+
+Demande de Naully du 20 novembre 2026 : corriger l'emplacement des câbles à fibre optique ; ils ne sont visibles que dans le cadre de la mission. Branche `v46-cables`, à partir de `v44-affichage` (sans le déploiement de la version 45).
+
+- **Constat :** chaque câble était une courbe de Bézier à trois points, sans lien avec les côtes : des portions passaient sur la terre (Islande · Féroé 19 relevés sur 81, Antalya · Chypre 17 sur 81, Singapour · Pontianak 7 sur 81) et les extrémités tombaient jusqu'à 42 unités de carte du port nommé. Les cinq câbles de l'Europe continentale sont terrestres de bout en bout (Paris, Francfort, Prague).
+- **Tracé (`tools/cables.js`, `proto/th/cables.json`) :** chaque câble relie deux ports du théâtre (`ENDS`, d'après son nom) par la mer : route de la grille fine (5.44), fil tendu (on garde le point le plus lointain visible par la mer, avec une marge de 1,5 unité de la côte quand c'est possible), puis lissage contrôlé. Il part et arrive exactement aux ports ; seuls les 9 premiers et derniers milles de carte peuvent traverser la côte (atterrissage). Les points sont recopiés dans `CABLE_DEF` (Atlantique Nord, `src.html`) et dans `th/theatres.json` (autres théâtres). L'Europe continentale garde ses liaisons terrestres, converties en lignes brisées de même forme ; aucune mission ne les montre (règle suivante).
+- **Géométrie (`qb`, `cabL`) :** un câble est une ligne brisée ; `qb(c, u)` donne le point à la fraction `u` de sa longueur. `nearestOn` échantillonne 80 points. Le dessin suit la ligne.
+- **Visibilité (`cabUse`) :** une mission n'a de câbles que si son script, son tirage de crises ou ses objectifs contiennent `sabotage` ou `seabed` ; elle garde alors seulement les câbles de `sc.assets`. Sinon `CABLES` est vide : rien n'est dessiné, aucun câble n'entre dans les infrastructures ni dans les cibles des raids et salves. 28 scénarios sur 76 gardent des câbles ; parmi les huit missions, `f2` (L1, L2), `l12` (L4) et `m6` (L1, L2). L'entrée « Câble » de la légende de carte n'apparaît qu'avec des câbles.
+- **Garde-fous :** géographie réelle, liaisons fictives : les noms relient des ports réels, mais aucun câble réel n'est reproduit.
+
+**Tests :** `uiv46.js` (FR 1440 et EN 390, 16 contrôles chacun) : 25 câbles en mer hors atterrissage et aboutissant aux ports, câbles des huit missions, légende de carte, zones de fonds marins en mer à moins de 12 du câble, cible du saboteur en mer sur le câble et atteignable par sa route, pas de défilement horizontal, aucun texte manquant, aucune erreur. `uiv38.js` : la partie de chasse demande désormais 2 crises sous-marines au moins (le tirage 60 en donne 2 depuis que `asw` n'a plus de câbles ; 2 à 5 sur 10 tirages).
+
+**Mesures du 20 novembre 2026, scripts seulement, niveau Complet :**
+
+- Banc (`stress.js 2 inv exploit labo`) : omniscient 785 et 90 %, référence 736 et 74 %, tir sans vérifier 472 et 32 %, aucun ordre 273 et 5 %, aucune force 188 et 0 % (version 44 : 788 et 93 %, 750 et 79 %). Par groupe, référence : missions sans câbles 751 et 80 % (inchangé), missions avec câbles 712 et 64 % (752 et 79 %) ; omniscient 799 et 95 % sur les missions avec câbles (810 et 98 %).
+- Autres tirages (`OFF=1000 scr.js`, 28 missions avec câbles × 6 parties) : référence 728 et 70 % contre 736 et 74 % en version 44, omniscient 804 et 97 % dans les deux cas. Les plus touchées : `l4` (Bodø · Tromsø, côtier) 50 % contre 83 %, `i6` 33 % contre 100 % (consigne « aucune réaction à tort », sans lien direct avec les câbles), `l8` 33 % contre 50 %.
+- Lecture : les câbles suivent maintenant les côtes et sont plus longs ; le saboteur vise le point le plus éloigné des navires, donc plus loin qu'avant. Les missions avec câbles deviennent plus dures pour le script de référence (environ 5 à 10 points de réussite, selon le tirage), sans gêner l'omniscient. Rien n'a été réglé pour compenser.
+- Correctif des scripts : `bots.js` et le conseil (`advise`) envoyaient le câblier vers `pts[1]`, l'ancien point de contrôle de la courbe ; ils visent maintenant le point du câble le plus proche (`nearestOn`).
+- 608 parties finies et reproductibles ; signalement nouveau : une crise sous-marine ouverte plus de 8 tours (`asw`, tirage 90), `asw` n'ayant plus de câbles. Clics au hasard : 53 200, aucun blocage, aucun texte manquant, aucune erreur. Tests d'interface : `uiv46`, `uiv44`, `ui5`, `uiob`, `uiv42`, `uih`, `uiv40`, `uit` (FR 390 et EN 1440), `uiv41`, `uiv38`, `uiv34`, `uigrp`, `uip`, `uig` sans erreur.
+
+**Non vérifié :** aucun vrai joueur ; les tracés suivent la grille du jeu et des ports choisis par nom, pas les routes réelles des câbles.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1201,6 +1223,7 @@ Demande de Naully du 19 novembre 2026 : faire disparaître l'icône tactique qua
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 46 | `cabUse`, `cabL`, `qb` (ligne brisée), `tools/cables.js`, `th/cables.json` |
 | Version 44 | `NAVC`, `navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `navChk`, `navStep`, `navTo`, `FZUS`, `FZUL`, `FZSL`, `fzSilBase`, `fzSilPx`, `curOf`, `setCur` |
 | Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
 | Version 42 | `MISSIONS`, `PLAYABLE`, `screenMissions`, `.hs-modes`, `.hs-off`, `.ms-card` |
@@ -1296,6 +1319,7 @@ node stress.js 2 dq; node uidq.js                  # bilan « Décision ou chanc
 node uiv34.js                                      # version 34 : domaines, terrestres, hélicoptère, étapes, formations, temps
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
+node uiv46.js                                      # version 46 : câbles en mer, aux ports, seulement dans les missions qui les mettent en jeu
 node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
 node uiv43.js                                      # version 43 : ralenti au zoom, vitesse ×½, temps indépendant de la fluidité
 node uiv42.js                                      # version 42 : accueil à trois modes, huit missions
@@ -1318,6 +1342,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 20 novembre 2026, version 46 (câbles) :** voir 5.46 ; référence 736 et 74 %, omniscient 785 et 90 % ; missions avec câbles plus dures pour la référence. Branche `v46-cables`, non fusionnée dans `main`.
 
 **Résultats du 19 novembre 2026, version 44 (navigation fine, silhouettes, pointeurs) :** voir 5.44 ; omniscient 788 et 93 %, référence 750 et 79 %, aucune force 190 et 0 % ; plus aucun navire sur la terre affichée (2 111 et 9 604 relevés en version 43). Branche `v44-affichage`, non fusionnée dans `main`.
 
@@ -1600,6 +1626,15 @@ Une évolution est terminée si :
 70. **Silhouettes manquantes :** SEAL et FAST gardent leur symbole au zoom détaillé ; les nouvelles silhouettes (avion, chasseur, hélicoptère, drone, lanceur) sont dessinées pour FOGLINE, non homologuées. Les valider, ou en faire dessiner.
 71. **Passes fermées :** accepter que le Bosphore, Suez et Corinthe soient fermés, ou rouvrir des passes choisies à la main.
 72. **Pointeurs :** visée, cible, déplacement, refus et placement (5.44). Les garder, ou revenir au pointeur en croix du navigateur.
+
+76. **Câbles hors mission :** retirés des missions sans sabotage ni fonds marins, donc aussi des infrastructures et des cibles de missiles. Garder cette règle, ou les afficher en décor sans qu'ils comptent.
+77. **Ports d'atterrissage :** choisis d'après le nom de chaque câble (Islande atterrit à Reykjavik, Malaisie à Port Klang). Les remplacer par des stations d'atterrissage réelles, ou non.
+78. **Difficulté des missions avec câbles :** la référence y perd environ 5 à 10 points de réussite (5.46). Accepter, ou rapprocher les points de départ des navires des câbles.
+79. **Europe continentale :** ses cinq liaisons restent terrestres et ne sont montrées dans aucune mission. Les remplacer par des câbles sous-marins (mer du Nord, Baltique), ou les garder.
+
+### Demandes à garder en mémoire
+
+- **Mode tutorat multijoueur (demande de Naully du 20 novembre 2026, pour plus tard) :** un instructeur rejoint la partie dans un mode spécial ; il joue l'adversaire et peut, à la demande, ajouter des unités ennemies ou alliées et déclencher des événements « aléatoires ». À concevoir avec le multijoueur (bouton grisé de l'accueil, 5.42). Point à trancher : le garde-fou 7 réserve aujourd'hui au futur mode animateur des données agrégées, alors qu'un instructeur qui joue l'adversaire voit la partie d'un joueur en direct.
 
 ### Absent de cette version
 

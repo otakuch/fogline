@@ -104,7 +104,7 @@ window.mkBot = (o = {}) => (S) => {
     for (const s of S.ships) { if (!s.visible || s.stopped) continue; const hostile = o.trigger ? !s.ais : (o.oracle ? s.truth === 'raider' : (s.cr && s.located) || (s.cls && s.cls.h === 'raider')); if (!hostile) continue; if (!s.cls && s.ev.length && !o.noClass) A.classify(s, o.oracle ? s.truth : 'raider'); const go = A.shipActions(s).find(a => a.id === 'fire' || a.id === 'closein'); if (go && (go.id === 'closein' || S.tokens > 0)) A.doAct(go); }
   }
   const e = S.units.find(u => u.type === 'repair');
-  if (e && !e.path.length) { const c = [...A.assets].sort((a, b) => a.hp - b.hp)[0]; if (c.hp < 85) { const q = c.pts ? { x: c.pts[1][0], y: c.pts[1][1] } : c; if (dist(e, q) > 30) A.orderMove(e, q.x, q.y); } }
+  if (e && !e.path.length) { const c = [...A.assets].sort((a, b) => a.hp - b.hp)[0]; if (c.hp < 85) { const q = c.pts ? nearestOn(c, e) : c; /* v46 : point du câble le plus proche du câblier */ if (dist(e, q) > 30) A.orderMove(e, q.x, q.y); } }
 };
 window.playGame = (seed, sc, cfg, pol, chk) => {
   window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null, real: !!(cfg.real || window.__REAL) }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;

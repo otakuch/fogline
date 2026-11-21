@@ -131,6 +131,42 @@ const N = +(process.argv[2] || 4);
     // 20. ravitaillement prévu au profil : la composition recommandée doit le permettre
     { const bad = ['c1', 'f2', 'asw', 'l12', 'g3', 'a4', 'e6', 'm6'].filter(m => { const pr = A.nvProf(m); if (!pr.loadout.resupply) return false; const sel = A.NV.recommendFleet(pr).ships; return !sel.some(q => q.cls === pr.loadout.resupply) });
       ok(!bad.length, 'ravitaillement : prévu au profil et présent dans la composition recommandée', bad); }
+    // 21. lutte sous-marine par unité : sous-marin, bâtiment, hélicoptère, avion
+    { const subC = (sc, truth = 'sousmarin') => { let c; for (let k = 0; k < 40; k++) { c = A.startCrisis('sub'); if (c.truth === truth) break; c.closed = true } return c };
+      const put = (u, o, dx) => { const q = A.nearSea(o.x + dx, o.y); u.x = q[0] * 4 + 2; u.y = q[1] * 4 + 2; u.path = [] };
+      const uacts = (u, c) => A.crisisActions(c).filter(a => a.unit === u.id), sheet = u => { const d = document.createElement('div'); d.innerHTML = aswUHtml(u); return [...d.querySelectorAll('button')] };
+      let S = G('asw'), c = subC(), sn = U('SSN-1'); S.tokens = 9;
+      const far = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); put(sn, c.sb, 400); const far2 = uacts(sn, c).find(a => a.id === 'ping:SSN-1');
+      ok(far2 && !far2.ok && /milles|nm/.test(far2.why), 'sous-marin : sonar actif refusé hors de portée, raison donnée', far2 && far2.why);
+      put(sn, c.sb, 30); const pg = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg && pg.ok && sheet(sn).some(b => b.dataset.v === c.id + '|ping:SSN-1' && !b.disabled), 'sous-marin : sonar actif proposé sur sa fiche', pg && pg.label);
+      sn.thr = 2; const h0 = c.hold; A.doAct(pg); run(5); ok(c.located && c.alertU > S.t && sn.exposedU > S.t, 'sous-marin : un sonar actif à portée localise le contact et alerte l’adversaire', [c.hold, h0, c.located]);
+      const pg2 = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg2 && !pg2.ok && /s/.test(pg2.why), 'sous-marin : sonar en recharge, raison donnée', pg2 && pg2.why); run(16); ok(uacts(sn, c).find(a => a.id === 'ping:SSN-1').ok, 'sous-marin : sonar de nouveau prêt après 20 s');
+      const tp = uacts(sn, c).find(a => a.id === 'torpu:SSN-1'); ok(tp && tp.ok && tp.escTo === 4, 'sous-marin : torpille proposée, passage en Engager annoncé', tp && tp.label);
+      const t0 = sn.torp; A.doAct(tp); ok(waitFor(() => !!c.torpOn || c.closed, 20) && sn.torp === t0 - 1, 'sous-marin : torpille lancée après autorisation, stock décompté', [sn.torp, t0, S.posture]);
+      ok(waitFor(() => c.closed || !c.torpOn, 20), 'sous-marin : torpille résolue (touché ou manqué)', [c.closed, c.out]); ok(S.torpN >= 1, 'sous-marin : lancement compté au bilan');
+      // écoute passive : vitesse lente, sans alerte
+      S = G('asw'); c = subC(); sn = U('SSN-1'); put(sn, c.sb, 45); sn.thr = 0; run(10); ok(c.hold > 3 && !(c.alertU > S.t), 'sous-marin : écoute passive à vitesse lente, sans alerter', [c.hold, c.alertU]);
+      S = G('asw'); c = subC(); sn = U('SSN-1'); put(sn, c.sb, 45); sn.thr = 2; sn.path = [{ x: sn.x + 1, y: sn.y }]; run(4); ok(c.hold < 1, 'sous-marin : à vitesse rapide, l’écoute passive porte moins loin', c.hold);
+      // bâtiment : sonar de coque
+      S = G('asw'); S.tokens = 9; c = subC(); const d = U('DDG-1'); put(d, c.sb, 18); const pd = uacts(d, c).find(a => a.id === 'ping:DDG-1'); ok(pd && pd.ok, 'destroyer : sonar actif de coque proposé'); A.doAct(pd); run(5); ok(c.located, 'destroyer : contact localisé par le sonar de coque');
+      const td = uacts(d, c).find(a => a.id === 'torpu:DDG-1'); ok(td && td.ok, 'destroyer : torpille proposée à portée', td && [td.label, td.why]);
+      // hélicoptère : sonar trempé en stationnaire, puis torpille
+      S = G('asw'); S.tokens = 9; c = subC(); const d2 = U('DDG-1'); put(d2, c.sb, 60); const h = A.nvLaunch(d2, 'any', 'DDG-1-H1'); run(1); ok(!uacts(h, c).find(a => a.id === 'ping:DDG-1-H1').ok, 'hélicoptère : sonar trempé refusé pendant le décollage');
+      run(6); A.orderMove(h, c.sb.x + 10, c.sb.y); waitFor(() => !h.path.length, 30); const hp = uacts(h, c).find(a => a.id === 'ping:DDG-1-H1'); ok(hp && hp.ok, 'hélicoptère : sonar trempé proposé sur sa fiche', hp && [hp.label, hp.why]);
+      A.doAct(hp); const hx = h.x, hy = h.y; A.orderMove(h, hx + 50, hy); run(0.1); h.path = []; h.task = { kind: 'dipu', until: S.t + 8 }; h.hold = S.t + 8; run(4); ok(Math.hypot(h.x - hx, h.y - hy) < 2, 'hélicoptère : stationnaire pendant le sonar trempé'); run(5); ok(c.located, 'hélicoptère : contact localisé par le sonar trempé', c.hold);
+      ok(!h.task, 'hélicoptère : libéré après le sonar trempé');
+      const ht = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); ok(ht && ht.ok, 'hélicoptère : torpille proposée', ht && [ht.label, ht.why]); S.posture = 4; const ht2 = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); const tt = h.torp; A.doAct(ht2); ok(waitFor(() => !!c.torpOn, 30) && h.torp === tt - 1, 'hélicoptère : torpille larguée', [h.torp, tt]);
+      // avion de patrouille : envoyé larguer
+      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC(); c.located = true; c.hold = 9; A.subZone && 0; const p8 = S.units.find(u => u.type === 'recon'); if (p8) { const pa = uacts(p8, c).find(a => a.id === 'torpu:' + p8.id); ok(pa && pa.ok && /Envoyer|Send/.test(pa.label), 'avion : envoyé larguer une torpille', pa && pa.label); A.doAct(pa); ok(waitFor(() => !!c.torpOn, 120), 'avion : torpille larguée sur zone') }
+      // fausse cible : torpille comptée à tort
+      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC('asw', 'bio'); sn = U('SSN-1'); put(sn, c.sb, 30); c.located = true; c.hold = 9; c.zone = { x: c.sb.x, y: c.sb.y, r: 45 }; const fb = S.torpBad || 0; A.doAct(uacts(sn, c).find(a => a.id === 'torpu:SSN-1')); waitFor(() => c.closed, 30); ok(c.closed && (S.torpBad || 0) === fb + 1, 'torpille sur un contact biologique : tir à tort compté');
+      // MH-60S : pas de lutte sous-marine
+      S = G('e6'); c = subC(); const lp = U('LPD-1'), hs = A.nvLaunch(lp, 'any'); run(7); ok(!aswUHtml(hs) && !uacts(hs, c).length, 'MH-60S : aucune action de lutte sous-marine');
+      // dossier de crise : actions d'unité renvoyées vers les fiches
+      S = G('asw'); c = subC(); S.sel = c; renderRight(); const tx = document.getElementById('right').innerText; ok(!/SSN-1 · /.test(tx) && /Lutte sous-marine|Anti-submarine/.test(tx), 'dossier : les actions d’unité restent sur les fiches, avec un renvoi', tx.slice(0, 200));
+      // mission sans registre naval : frégate et hélicoptère classiques
+      const leg = Object.keys(A.SC).find(k => !A.nvProf(k) && (A.SC[k].rec || []).includes('frigate') && JSON.stringify(A.SC[k].script || []).includes('sub'));
+      if (leg) { G(leg); c = subC(); const fr = A.s.units.find(u => u.type === 'frigate'); put(fr, c.sb, 30); ok(uacts(fr, c).some(a => a.id === 'ping:' + fr.id && a.ok), 'mission classique (' + leg + ') : sonar actif de la frégate') } }
     // 14. chaque bouton de bâtiment ou d'appareil a un libellé et, s'il est grisé, une raison
     { const bad = []; for (const sc of ['c1', 'f2', 'asw', 'l12', 'g3', 'a4', 'e6', 'm6']) { G(sc); run(1); A.s.units.filter(u => u.air || u.teams).forEach(u => { const d = document.createElement('div'); d.innerHTML = nvEmbHtml(u); d.querySelectorAll('button').forEach(bt => { const tx = bt.textContent.trim(); if (!tx || /undefined|NaN|\bnv\.[a-z]/.test(tx)) bad.push(sc + ' ' + u.id + ' ' + tx); if (bt.disabled && !bt.querySelector('small')) bad.push(sc + ' ' + u.id + ' sans raison : ' + tx) }) }) }
       ok(!bad.length, 'fiches : libellés complets et raisons des refus', bad.slice(0, 8)); }

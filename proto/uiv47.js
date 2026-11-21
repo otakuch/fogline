@@ -179,6 +179,31 @@ const { chromium } = require('playwright');
     need(await st(() => /DDG-1-H1/.test(document.querySelector('#right').textContent) && /Pas de recharge|No reload/.test(document.querySelector('#right').textContent)), `${tag} fiche du destroyer : appareils et stocks`);
     await small('#right .nvemb .btn', 'fiche en mission'); await noX('mission');
     await p.screenshot({ path: D + `/v47-mission-${tag}.png` });
+    // 11. lutte sous-marine par unité, avec de vrais clics : sonar actif du sous-marin, torpille, bouées de l'hélicoptère
+    await start('asw');
+    await st(() => { const A = __S, S = A.s; S.tokens = 9; let c; for (let k = 0; k < 40; k++) { c = A.startCrisis('sub'); if (c.truth === 'sousmarin') break; c.closed = true } window.__c = c; const sn = S.units.find(u => u.id === 'SSN-1'), q = A.nearSea(c.sb.x + 30, c.sb.y); sn.x = q[0] * 4 + 2; sn.y = q[1] * 4 + 2; sn.path = [] });
+    await sheet('SSN-1'); await st(() => { const d = document.querySelector('details.uasw'); if (d) d.open = true }); await tick();
+    if (mob) { const nb = p.locator('[data-a=mnav][data-v=dos]'); if (await nb.count()) { await nb.first().click(); await tick(200) } }
+    const pb = p.locator('#right .uasw button', { hasText: /Sonar actif|Active sonar/ }).first();
+    need(await pb.count() === 1 && await pb.isEnabled(), `${tag} sous-marin : bouton de sonar actif sur la fiche`);
+    await small('#right .uasw .btn', 'fiche lutte sous-marine'); await noX('lutte sous-marine');
+    await p.screenshot({ path: D + `/v47-asw-${tag}.png` });
+    await pb.click(); await run(5);
+    need(await st(() => window.__c.located && __S.s.log.some(l => /SSN-1/.test(l.m))), `${tag} sous-marin : contact localisé par le sonar actif, compte rendu au journal`);
+    await sheet('SSN-1'); await st(() => { const d = document.querySelector('details.uasw'); if (d) d.open = true }); await tick();
+    const tb = p.locator('#right .uasw button', { hasText: /torpille|torpedo/i }).first(); need(await tb.count() === 1 && await tb.isEnabled(), `${tag} sous-marin : bouton de torpille après localisation`);
+    await tb.click(); await run(10); need(await st(() => !!window.__c.torpOn || window.__c.closed), `${tag} sous-marin : torpille lancée après passage en Engager`);
+    // bouées de l'hélicoptère par la fiche et un clic sur la carte
+    await st(() => { const S = __S.s, d = S.units.find(u => u.id === 'DDG-1'); __S.nvLaunch(d, 'buoy', 'DDG-1-H1') }); await run(7); await sheet('DDG-1-H1');
+    await st(() => { const d = document.querySelector('details.ubuoy'); if (d) d.open = true }); await tick();
+    if (mob) { const nb = p.locator('[data-a=mnav][data-v=dos]'); if (await nb.count()) { await nb.first().click(); await tick(200) } }
+    const bg = p.locator('[data-a=bgo]'); need(await bg.count() >= 1 && await bg.first().isEnabled(), `${tag} hélicoptère : largage de bouées proposé`);
+    await bg.first().click(); await tick(150); if (mob) { const nb = p.locator('[data-a=mnav][data-v=map]'); if (await nb.count()) { await nb.first().click(); await tick(200) } }
+    const tgt = await st(() => { const A = __S, u = A.s.units.find(x => x.id === 'DDG-1-H1'); for (const [dx, dy] of [[60, 0], [-60, 0], [0, 60], [0, -60], [45, 45], [-45, -45]]) { const x = u.x + dx, y = u.y + dy; if (A.seaOK(x, y)) { A.cam.x = x; A.cam.y = y; A.applyCamX(); return { x, y } } } return null });
+    await tick(300); const pt = await st(({ x, y }) => { const r = document.getElementById('c').getBoundingClientRect(), s = __S.toScr(x, y); return [r.left + s[0], r.top + s[1]] }, tgt);
+    await p.mouse.click(pt[0], pt[1]); await tick(250);
+    need(await st(() => { const h = __S.s.units.find(x => x.id === 'DDG-1-H1'); return h && h.task && h.task.kind === 'buoy' }), `${tag} hélicoptère : point de largage choisi par un clic sur la carte`);
+    await run(25); need(await st(() => { const h = __S.s.units.find(x => x.id === 'DDG-1-H1'); return h && h.buoys < 24 && __S.s.buoys.length > 0 }), `${tag} hélicoptère : bouées posées et décomptées`);
     need(await st(() => __S.missing().length === 0), `${tag} aucun texte manquant : ${await st(() => __S.missing().join(','))}`);
     need(!errs.length, `${tag} erreurs console : ${errs.slice(0, 3).join(' | ')}`);
     await ctx.close();

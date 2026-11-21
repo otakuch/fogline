@@ -29,6 +29,7 @@ window.mkBot = (o = {}) => (S) => {
     if (o.oracle && c.truth !== 'sousmarin') { if (!c.cls) A.classify(c, c.truth); if (act('dismiss') && S.tokens > 0) A.doAct(act('dismiss')); continue; }
     if (!S.buoys.length && act('buoy') && act('buoy').ok && S.tokens > 0 && !S.units.some(u => u.task && u.task.kind === 'buoy')) A.doAct(act('buoy'));
     else if (act('dip') && act('dip').ok && S.tokens > 1 && !S.buoys.length) A.doAct(act('dip'));
+    else if (!S.buoys.length && !c.located && S.tokens > 1) { const pg = acts.find(a => a.id.startsWith('ping:') && a.ok); if (pg) A.doAct(pg); }
     const best = bestOf(c);
     if (c.ev.length && !c.cls) A.classify(c, best);
     if (o.torp && c.located && best === 'sousmarin' && act('kill') && act('kill').ok && S.tokens > 1) A.doAct(act('kill'));

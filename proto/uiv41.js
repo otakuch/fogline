@@ -36,7 +36,7 @@ const { chromium } = require('playwright');
     await p.mouse.move(pan.cx, pan.cy); await p.mouse.down(); await p.mouse.move(pan.cx - 120, pan.cy, { steps: 6 }); await p.mouse.up(); await tick();
     const pan2 = await st(() => __S.cam.x); need(Math.abs(pan2 - pan.x) > 5, tag + ' déplacement de carte : ' + pan.x.toFixed(0) + ' → ' + pan2.toFixed(0));
     // 3. sélection d'une unité par un vrai clic sur son marqueur (zoom tactique)
-    await st(() => { const A = __S, u = A.s.units.find(x => x.type === 'frigate'); A.cam.z = A.minZ() * 2; A.cam.x = u.x; A.cam.y = u.y; A.s.sel = null; A.redraw(); }); await tick();
+    await st(() => { const A = __S, u = A.s.units.find(x => x.type === 'frigate'); A.cam.z = A.minZ() * 2; A.cam.x = u.x; A.cam.y = u.y; A.s.sel = null; A.redraw(); }); await tick(1200); /* v47 : laisser l'écartement des symboles se stabiliser avant de viser */
     const mk = await st(() => { const e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))), r = e.getBoundingClientRect(); return { x: r.left + r.width / 2 + 8, y: r.top + r.height / 2 - 7, aria: e.getAttribute('aria-label') } });
     if (!mob) await p.mouse.click(mk.x, mk.y); else await p.touchscreen.tap(mk.x, mk.y); await tick(400);
     const sel = await st(() => { const S = __S.s, e = [...document.querySelectorAll('#fzl .fogline-marker')].find(x => /DDG-1/.test(x.getAttribute('aria-label'))); return [S.sel && S.sel.id, e.getAttribute('aria-pressed'), e.dataset.labelHidden || ''] });

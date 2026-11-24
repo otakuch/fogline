@@ -60,6 +60,9 @@ seuil-projet/
     ├── naval-catalogue.json  catalogue généré par gen_naval.py, ne pas modifier à la main
     ├── naval-alloc.js      règles d'allocation partagées (page, Node, tests), avec naval-alloc.test.js
     ├── navlab.js           banc des mécaniques navales : 83 contrôles ciblés, puis parties au hasard avec contrôles à chaque seconde
+    ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
+    ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
+    ├── v48p.js             justesse des présomptions par règle et par vérité
     ├── UNITS.md            fiches lisibles du catalogue, générées par gen_naval.py
     ├── scenarios.json      base générée par gen_db.py
     ├── milsymbol.js        bibliothèque de symboles APP-6
@@ -1253,6 +1256,78 @@ Après ces corrections : `uiv47` (130 contrôles, avec une flotte à deux LCS ex
 
 **Non vérifié :** aucun vrai joueur ; les scripts n'utilisent ni les équipes, ni le rappel général, ni le ravitaillement, ni les groupes personnalisés ; les 8 fiches reconstruites et les sources n'ont pas été relues par un spécialiste ; les spécifications aérienne V1 et terrestre et amphibie V1 ne sont reprises que pour les aéronefs embarqués et les équipes.
 
+### 5.48 Présomption automatique, relèvements et scénarios variables (version 48)
+
+Demande de Naully du 22 novembre 2026 : faire la rétro-ingénierie de la démo de *Jane's Fleet Command* (archive `Fleetcom.zip`), puis l'adapter à FOGLINE. Choix de Naully parmi les lots proposés : 1, 2 et 4. Analyse : document de projet `claude/FOGLINE-retro-fleet-command.md`. Analyse statique seulement (fichiers de doctrine et de mission en clair, structure des bases, chaînes de l'exécutable) ; la démo n'a été ni lancée ni jouée et l'exécutable n'a pas été désassemblé. Seules des idées de mécanique sont reprises, réécrites pour FOGLINE : aucun code, texte, image ni valeur de la base de la démo. Branche `v48-fleetcom`, à partir de `main` (version 47) ; poussée sur GitHub et fusionnée dans `main` le 24 novembre 2026, à la demande de Naully (« déploie la version 48 »).
+
+**Lot 1 : présomption automatique (`PRSM`, `presRule`, `presStep`, `presNear`, `presWhy`, `presAct`, `presHtml`, `srcHtml`)**
+
+D'après le classement automatique de la démo, qui pose « supposé hostile » ou « supposé ami » sur un simple comportement.
+
+- **Règles**, lues sur ce que le joueur voit, jamais sur la vérité ni sur les preuves. Contact sans transpondeur, pas encore identifié (étape 1 ou 2), ni classé par le joueur, suivi depuis 4 s au moins :
+  - **immobile près d'un site ou d'un câble** (20 s sans bouger, à moins de 95) : supposé hostile ;
+  - **émet sans transpondeur** (source d'un signal localisé) : supposé hostile ;
+  - **allure lente loin des sites** (vitesse sous 6,6, aucun site ni câble à moins de 150) : supposé neutre.
+- Évaluée toutes les 2 s ; une présomption posée tient 15 s au moins. Elle s'efface dès que le contact est identifié à vue, visité, classé par le joueur ou qu'il a tiré.
+- **Ce n'est pas une preuve.** Elle ne change ni `posterior`, ni l'identité affichée (`shipSidc`, `fzShipAff`), ni la doctrine de tir (`docWhy`). Seul effet de jeu : la réaction aux contacts de niveau « Suspect » (5.17) part aussi vers un contact supposé hostile.
+- **Affichage :** anneau tireté et étiquette « SUPP. HOSTILE » (ambre) ou « SUPP. NEUTRE » (gris) sur la carte ; ligne « Présomption automatique » du dossier, avec la règle appliquée et le rappel qu'elle n'ouvre pas le tir ; mention dans le tableau des contacts ; message au journal pour une présomption hostile (un par 12 s au plus). Le dossier donne aussi l'**origine du contact** (capteur de telle unité, émission localisée, transpondeur, dernière position connue) et l'**âge de la piste**.
+- **Bilan (`expEnd`) :** présomptions posées, justes et fausses (`S.presLog`) ; actions lancées sur simple présomption, sans aucune preuve (tir, visite, brouillage, cyberattaque), et celles qui visaient un navire non hostile (`S.presAct`, `S.presBad`).
+- **Règle écartée :** « fait route vers un site ». Mesurée sur 48 parties, elle était juste 2 fois sur 43 : le trafic civil passe partout près des sites, et les navires adverses sont identifiés à vue avant qu'elle ne joue. Elle n'est pas dans le jeu.
+- Pas de présomption au tutoriel.
+
+**Lot 2 : relèvements et recoupement (`BRG`, `brgH`, `brgUnits`, `brgLines`, `brgFix`, `brgStep`, `brgDeg`, `brgHtml`)**
+
+D'après les lignes de relèvement des émissions interceptées de la démo.
+
+- Chaque unité sur carte dotée d'un capteur, à moins de 260 d'un émetteur, donne un **relèvement** vers lui : une direction, pas une distance. Le silence radar ne l'empêche pas (écoute passive).
+- **Recoupement :** deux unités vues de l'émetteur sous un angle de 30° au moins. Les relèvements sont remesurés toutes les 4 s.
+  - Émetteur réel : petite erreur (0,05 rad au plus) ; le point de recoupement reste stable (moins de 75 d'écart entre deux mesures). La zone d'incertitude se recentre sur ce point et se réduit à `14 / sin(angle)`, bornée de 18 à 60. **Elle ne localise pas** : il faut encore envoyer un moyen (le verrou reste à 17, par l'avion ou le drone, comme avant).
+  - Écho sans objet : les relèvements divaguent (0,8 rad au plus). Après 4 mesures instables, l'écho est écarté sans jeton et compté comme faux positif écarté.
+- Gratuit : le prix est le placement des unités. Le bruit vient d'un hachage (identifiant du signal, unité, période) : aucun tirage de `R()`, reproductibilité conservée.
+- **Affichage :** lignes de relèvement sur la carte, croix au point recoupé ; dossier du signal avec les relèvements chiffrés et l'état (aucune unité à portée, un seul relèvement, unités trop alignées, premier recoupement, stable, instable). Bilan : signaux recoupés, échos écartés par relèvement.
+- Pas de relèvement au tutoriel.
+
+**Lot 4 : scénarios variables (`varScript`, `scVaries`, `sc.grp`, `S.varOut`, `CFG.novar`)**
+
+D'après le format de mission de la démo (probabilité d'inclusion, groupes dynamiques, boîtes de départ).
+
+- Une entrée de `script` peut porter : une **fenêtre de tours** `[a, b]` à la place du tour ; une **liste de cibles** possibles à la place de la cible ; en 4e position `{'p': probabilité d'inclusion}` ou `{'g': groupe}`. `grp` donne pour chaque groupe `[minimum, maximum]` d'entrées retenues.
+- Le tirage emploie un générateur séparé (`seed ^ 0x7A51C0DE`), comme `drawAssumptions` : même tirage, même variante. Les entrées d'une mission variable ne reçoivent pas le décalage aléatoire d'un tour. Les 68 scénarios sans option sont joués exactement comme avant.
+- `CFG.novar` joue le script complet (première valeur de chaque fenêtre et de chaque liste, toutes les entrées), avec le même emploi de `R()` qu'en version 47 ; `navlab.js` l'emploie.
+- **Huit missions variables (`VAR` dans `gen_db.py`) :** `c1` (un seul des deux événements de fin), `f2`, `l12`, `a4`, `m6` (un ou deux événements de fin), `asw` (deux ou trois contacts sous-marins sur trois, détresse à 60 %), `g3`, `e6` (événements supplémentaires à 30 à 50 %). Seuls des types de crise déjà présents dans la mission ou dans son tirage sont employés.
+- Une tâche « clore » dont la crise est écartée devient sans objet (`objNA`, règle existante).
+- **Affichage :** le briefing annonce que la mission varie ; le bilan donne la variante jouée et les événements écartés (révélés à la fin seulement).
+- **Non repris du lot 4 :** objectifs à parent et fenêtres de temps par objectif (les phases donnent déjà l'ordre et l'échéance) ; couloirs de trafic civil (le trafic aérien et maritime existe déjà).
+
+**Vitesse de jeu par défaut ×½ (`SPD0`, `spd0`), demande de Naully du 24 novembre 2026**
+
+- Une partie démarre à ×½ au lieu de ×1. Tous les retours automatiques visent aussi ×½ : crise à échéance (au-dessus de ×½), pause automatique du niveau Simple, fin d'avance rapide, arrêt du semi-réel au-dessus de ×4. Le message du journal dit « vitesse ramenée à ×½ ».
+- **Le tutoriel reste à ×1** (`spd0()` renvoie 1) : ses étapes sont réglées sur ce rythme.
+- Le joueur garde ×1, ×2, ×4, ×8 et ×16 ; son choix n'est pas enregistré d'une partie à l'autre.
+- Les durées affichées au catalogue et à la préparation sont calculées à ×½ : elles doublent (16 tours : environ 16 min ; 22 tours : environ 22 min).
+- Le moteur, les délais simulés et le score ne changent pas : les scripts jouent sans horloge réelle. Le ralenti au zoom (5.43) s'applique en plus.
+- Tests : `uiv34.js` et `uiv37.js` attendaient un retour à ×1 ; ils attendent maintenant ×½. `uiv48`, `uiv43`, `uimenu`, `uiqx`, `uigrp`, `ui5`, `uih`, `uig`, `uiv44`, `uiv47`, `uit` (FR 390, EN 1440), `tourcmp` et 53 200 clics au hasard sans erreur. `uiv47.js` a échoué une fois sur un contrôle au format téléphone (bouton de torpille), puis réussi seul : contrôle sensible au rythme d'exécution.
+- Non relancé après ce changement : `stress.js inv exploit labo` (le moteur n'est pas touché).
+
+**Avertissement de three.js retiré (`three_quiet` dans `build.py`), signalé par Naully le 24 novembre 2026 :** la console affichait « Scripts build/three.js and build/three.min.js are deprecated with r150+ ». C'est un avertissement de three.js r159, sans effet sur le jeu. `build.py` remplace cette seule instruction par `void 0,` à l'assemblage et s'arrête si elle est introuvable ; `vendor/three.min.js` reste le fichier d'origine. Le format classique n'existe plus à partir de r160 : monter de version demandera de passer aux modules ES, donc de charger le globe autrement (un module inséré dans la page s'exécute après les scripts classiques). Contrôle : console sans avertissement, `THREE.REVISION` 159, globe de l'accueil affiché ; `uiv37` (relief, vue 3D), `uih`, `ui5` et `uiv48` sans erreur.
+
+**Corrigé au passage :** `uiv44.js` visait un point de terre fixe ; un navire civil proche faisait passer le pointeur de cible avant le pointeur de refus. Le test écarte maintenant les contacts sous ses deux points de visée.
+
+**Tests :** `uiv48.js` (41 contrôles, vrais écrans, FR 1440 et EN 390) : présomption sur un contact immobile près d'un site, sans effet sur l'estimation, l'identité ni la doctrine ; dossier, journal, bilan ; effacement à l'identification ; présomption de neutralité ; recoupement par deux unités écartées (zone réduite, position proche de l'émetteur, pas de localisation gratuite) ; un seul relèvement ; unités alignées ; écho sans objet écarté ; même tirage, même résultat ; variantes des huit missions (plusieurs déroulements, tours dans les bornes, minimum des groupes), script complet sur demande, missions classiques inchangées ; annonce au briefing ; pas de défilement horizontal ; aucun texte manquant.
+
+**Mesures du 22 et du 23 novembre 2026, scripts seulement, niveau Complet**
+
+- Banc `stress.js 2 inv exploit labo monkey` (76 scénarios, 2 parties) : 608 parties finies et reproductibles (même signalement qu'en version 46 : une crise sous-marine ouverte plus de 8 tours sur `asw`) ; référence 731 et 72 %, omniscient 784 et 90 %, tir sans vérifier 476 et 32 % avec 45 % de seuil 1, aucun ordre 272 et 5 %, aucune force 194 et 0 % (version 47 : 735 et 73 %, 787 et 91 %, 489 et 36 %, 275 et 6 %). 53 114 clics au hasard sans blocage ni texte manquant, aucune erreur de page. Omniscient à 0 % sur `i18` et `f3` en 2 parties, puis 5 sur 6 chacun (`scr.js i18,f3 6`) : effet d'échantillon. Ce banc a tourné avant le dernier réglage des données de `c1` (cible du premier événement) ; les clics au hasard ont été relancés après.
+- Banc `stress.js 2 pair` (lancé avant le resserrement des fenêtres de tours des huit missions) : tenues 723, contestées 719, horloge idéale 698 ; aucune erreur.
+- Huit missions, 16 parties chacune (`v48m.js`, deux séries de 8 tirages), version 47 puis 48 : référence 65 % puis 72 % ; omniscient 95 % puis 93 % ; aucun ordre 7 % puis 6 %. Par mission, les écarts vont dans les deux sens (`c1` 88 % et 38 % en version 47, 38 % et 75 % en version 48 selon la série) : 8 parties ne séparent pas le bruit de l'effet.
+- Justesse des présomptions (`v48p.js all 2`, 150 parties, script de référence) : supposé hostile 221 justes sur 292 (76 %) ; immobile près d'un site 77 sur 146 (les erreurs sont toutes des bateaux de pêche à l'arrêt) ; émet sans transpondeur 144 sur 146 ; supposé neutre 81 sur 81. Le script n'agit jamais sur simple présomption (0 action).
+- Relèvements, huit missions × 8 parties : 315 signaux recoupés, 152 échos écartés par relèvement, soit environ 5 recoupements par partie. Le recoupement se produit donc souvent sans que le script le cherche.
+- Tests d'interface sans erreur : `uiv48`, `uiv47` (148 contrôles), `uiv46`, `uiv44`, `uiv41`, `uiv40`, `uiv36`, `ui5`, `uih`, `uig`, `uigrp`, `uiob`, `uip`, `uit` (FR 390 et EN 1440). `navlab.js` : 110 contrôles ciblés réussis, parties au hasard sans défaut.
+- **`uiv38.js` échoue, déjà en version 47 :** il cherche `LCS-2`, absent de la flotte recommandée de `asw` depuis le 20 novembre au soir. Non corrigé.
+- Non relancés : `stress.js 4` (4 parties par scénario), `advbot.js`, `pace2.js`, `dipm.js`, `stress.js dq`, et les tests d'interface non cités.
+
+**Non vérifié :** aucun vrai joueur. Rien ne montre que le joueur distingue mieux présomption et preuve, ni qu'il place ses unités pour recouper : les scripts n'emploient aucune des deux mécaniques de façon délibérée. La lisibilité des lignes de relèvement sur une carte chargée et sur projecteur n'est pas observée. Le sens de certains mots-clés de la démo est déduit du contexte.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1277,6 +1352,7 @@ Après ces corrections : `uiv47` (130 contrôles, avec une flotte à deux LCS ex
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 48 | `PRSM`, `presNear`, `presRule`, `presStep`, `presWhy`, `presAct`, `presHtml`, `srcHtml`, `BRG`, `brgH`, `brgUnits`, `brgLines`, `brgFix`, `brgStep`, `brgDeg`, `brgHtml`, `scVaries`, `varScript`, `S.presLog`, `S.presAct`, `S.presBad`, `S.brgFix`, `S.brgFake`, `S.varOut`, `s.pres`, `s.emitLoc`, `s.stillT`, `s.t0`, `CFG.novar`, `sc.grp` |
 | Version 46 | `cabUse`, `cabL`, `qb` (ligne brisée), `tools/cables.js`, `th/cables.json` |
 | Version 44 | `NAVC`, `navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `navChk`, `navStep`, `navTo`, `FZUS`, `FZUL`, `FZSL`, `fzSilBase`, `fzSilPx`, `curOf`, `setCur` |
 | Version 43 | `ZSLOW`, `zTime`, `zsPays`, `loop.dt`, `loop.zs`, `S.zsOut`, `fmtF`, `#sp05` |
@@ -1375,6 +1451,7 @@ node uiv34.js                                      # version 34 : domaines, terr
 node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres par domaine, brouillage, cyber ; référence avec brouillage ou cyber
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
+node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
 node naval-alloc.test.js; node uiv47.js            # version 47 : règles d'allocation (14 tests Node), catalogue, préparation, groupes, équipes, rappel, sauvegarde
 node uiv46.js                                      # version 46 : câbles en mer, aux ports, seulement dans les missions qui les mettent en jeu
 node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
@@ -1399,6 +1476,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 23 novembre 2026, version 48 (présomption, relèvements, scénarios variables), niveau Complet, 2 parties par scénario :** référence 731 et 72 %, omniscient 784 et 90 %, tir sans vérifier 476 et 32 %, aucun ordre 272 et 5 %, aucune force 194 et 0 %. 608 parties finies et reproductibles ; 53 114 clics au hasard sans blocage. Détail : section 5.48. Fusionnée dans `main` le 24 novembre 2026, à la demande de Naully ; le banc à 4 parties par scénario n'a pas été relancé avant, et `uiv38.js` échoue depuis la version 47.
 
 **Résultats du 20 novembre 2026, version 46 (câbles) :** voir 5.46 ; référence 736 et 74 %, omniscient 785 et 90 % ; missions avec câbles plus dures pour la référence. Branche `v46-cables`, non fusionnée dans `main`.
 
@@ -1475,6 +1554,11 @@ Vérifie ces points avant de chercher ailleurs :
 - Un bloc `details` écrit par `innerHTML` se referme à chaque redessin. Utilise `dOpen('clé')`, qui garde l'état dans `DOPEN`. Ne cherche jamais un repli par `document.querySelector('details.more')` : il y en a plusieurs.
 - Un test d'interface qui clique sur la carte peut tomber sur un panneau si la mise en page change. Vérifie la cible avec `elementFromPoint` avant de conclure à un défaut du jeu.
 - Ne reconstruis pas `t.html` pendant qu'un banc d'essai tourne : chaque nouvelle page chargerait la version suivante.
+- Un hachage de chaîne sans brassage final varie à peine quand seul le dernier caractère change : le bruit des relèvements restait presque constant d'une période à l'autre. Termine toujours par un brassage (`brgH`).
+- Un contrôle qui dépend d'une position fixe sur la carte ou d'un tirage précis casse dès qu'un changement déplace la suite des tirages (`uiv44.js`, `navlab.js`). Écarte ce qui peut gêner le contrôle, ou fige le déroulement (`CFG.novar`), avant de conclure à un défaut du jeu.
+- Avant de déclarer une constante, cherche son nom dans `src.html` : `PRES` existait déjà (mode présentation) et la page ne se chargeait plus.
+- `navlab.js` charge `seuil-prototype.html`, pas `t.html` : pour comparer deux versions, il faut réassembler.
+- Le script three.js commence par `console.warn(…),` suivi d'une expression de fonction : supprimer l'avertissement sans rien mettre à la place casse la syntaxe (« Function statements require a function name ») et le globe disparaît sans autre message. Remplace-le par `void 0,`.
 - Une ligne vérifiée par échantillons peut couper le coin d'une case de terre entre deux points : `navLos` parcourt toutes les cases traversées. Une unité qui atteint un point de passage « à peu près » (rayon de 1,6) peut ne plus voir le suivant : finir l'approche au point exact (5.44).
 - Deux règles CSS ne doivent pas partager une classe générique entre deux composants (`fzlv` servait à l'indicateur et à la légende).
 - Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image sous 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images (5.43). Le seul ralenti voulu est `zTime`.
@@ -1700,6 +1784,19 @@ Une évolution est terminée si :
 85. **Spécifications aérienne et terrestre :** seules les parties utiles aux aéronefs embarqués et aux équipes sont reprises. Ouvrir une version dédiée, ou non.
 86. **Branche :** le 21 novembre 2026, à la demande de Naully, `main` a été remplacé par la version 47 (commit de fusion `2d2a73e`, sans réécriture d'historique). L'ancien `main` (`7ececa2`, avec des marqueurs de conflit non résolus) reste dans l'historique ; le déploiement par points de la version 45 reste sur `v45-deploiement`, non fusionné. Le reprendre dans `main`, ou non.
 87. **Garde-fou 2 :** d'après `FOGLINE-deploiement.md`, Naully a levé le 17 novembre l'interdiction des noms d'armes réels (portées publiques en mode Réalité) ; la rédaction du garde-fou 2 n'a pas été mise à jour. Le point 80 se réduit donc à corriger ce texte.
+
+### Décisions ouvertes de la version 48
+
+88. **Règles de présomption :** trois règles, dont une faillible une fois sur deux (immobile près d'un site : leurre ou bateau de pêche). Les garder, en ajouter, ou laisser le joueur couper le classement automatique au niveau Complet.
+89. **Présomption et réaction :** la réaction « Suspect » part vers un contact supposé hostile. Garder ce lien, ou réserver la réaction aux contacts étayés par une preuve.
+90. **Recoupement gratuit et automatique :** dès que deux unités sont bien placées, la zone se réduit sans ordre ni jeton, environ 5 fois par partie chez le script. Le garder ainsi, exiger un ordre « Recouper », ou réduire la portée d'interception (260).
+91. **Échos écartés par relèvement :** un écho sans objet disparaît seul après 16 s d'instabilité. Le garder, ou n'afficher que l'instabilité et laisser le joueur classer.
+92. **Variantes des huit missions :** proposition de Claude (`VAR` dans `gen_db.py`). Les valider mission par mission ; `c1` reste la plus simple (trois crises, comme avant).
+93. **Objectifs à parent et fenêtres par objectif :** non faits (les phases en tiennent lieu). Les ajouter si une mission en a besoin.
+94. **Citation de la démo :** le dossier public peut citer la démo de *Fleet Command* comme source d'inspiration, ou non. Aucun contenu n'en est repris ; un avis juridique reste utile avant diffusion.
+95. **Défaut :** `uiv38.js` échoue depuis le changement de flotte de `asw` (20 novembre). À réparer.
+97. **Vitesse par défaut ×½ :** les parties durent deux fois plus longtemps en temps réel (16 à 22 min). La garder pour tous, la réserver au niveau Simple, ou enregistrer la dernière vitesse choisie. Le tutoriel reste à ×1 : l'aligner, ou non.
+96. **Défaut :** le contrôle du sonar trempé de `navlab.js` dépend du tirage (le contact n'est pas toujours tenu en 9 s). Il passe avec le script complet (`novar`), pas avec toutes les variantes.
 
 ### Demandes à garder en mémoire
 

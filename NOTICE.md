@@ -3,7 +3,7 @@
 | Component | Use | Licence | Text |
 |---|---|---|---|
 | [MapLibre GL JS](https://maplibre.org/) 4.7.1 | Vector map | BSD-3-Clause | `proto/vendor/maplibre.LICENSE` |
-| [three.js](https://threejs.org/) r159 | Home globe | MIT | `proto/vendor/three.LICENSE` |
+| [three.js](https://threejs.org/) r159 | Home globe, relief, 3D view. `proto/build.py` removes the library's startup deprecation warning when it assembles the page; `proto/vendor/three.min.js` is unmodified | MIT | `proto/vendor/three.LICENSE` |
 | [milsymbol](https://github.com/spatialillusions/milsymbol) 3.0.5 | APP-6 symbols | MIT | `proto/milsymbol.LICENSE` |
 | [Natural Earth](https://www.naturalearthdata.com/) via [world-atlas](https://github.com/topojson/world-atlas) | Coastlines and borders | Public domain, ISC for world-atlas | |
 | OpenStreetMap contributors, through [geo-maps](https://github.com/simonepri/geo-maps) earth-lands-100m 0.6.0 | Detailed coastlines (`proto/th/hicoast.json`) | ODbL 1.0, © OpenStreetMap contributors | |

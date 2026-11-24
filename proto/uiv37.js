@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     if (!mob) { await p.keyboard.press('Space'); o.espace = await until(p, () => __S.s.turn === 3 && !__S.s.running); need(o.espace, tag + ' Espace joue le tour suivant'); await p.keyboard.press('2'); await p.waitForTimeout(300); need(!(await st(p, () => __S.s.running)), tag + ' touche de vitesse sans effet au tour par tour'); }
     // 3. semi-réel : arrêt à chaque tour et à chaque crise, reprise par le bouton
     await game('semi'); await st(p, () => { __S.s.speed = 16; }); o.semi = await until(p, () => __S.s.turn === 2 && !__S.s.running, 12000);
-    o.semiV = await st(p, () => { const S = __S.s, e = document.getElementById('spgo'); return [S.turn, S.running, !e.hidden, e.textContent, S.speed]; }); need(o.semi && o.semiV[2] && o.semiV[4] === 1, tag + ' semi-réel, arrêt au tour : ' + o.semiV);
+    o.semiV = await st(p, () => { const S = __S.s, e = document.getElementById('spgo'); return [S.turn, S.running, !e.hidden, e.textContent, S.speed]; }); need(o.semi && o.semiV[2] && o.semiV[4] === 0.5 /* v48 : vitesse par défaut ×½ */, tag + ' semi-réel, arrêt au tour : ' + o.semiV);
     await p.click('#spgo'); await p.waitForTimeout(300); o.semiGo = await st(p, () => __S.s.running); need(o.semiGo, tag + ' semi-réel, reprise');
     o.semiK = await st(p, () => { const A = __S; A.startCrisis('alarm'); return A.s.running; }); need(o.semiK === false, tag + ' semi-réel, arrêt à la crise : ' + o.semiK);
     // 4. temps réel inchangé

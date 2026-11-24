@@ -305,6 +305,24 @@ for x in S:
         x['rec'] = x['rec'] + ['battery']
     if ks & {'site', 'seize'}:
         x['rec'] = x['rec'] + ['guard']
+# Version 48 (22 novembre 2026) : scénarios variables pour les huit missions jouables (idée tirée du format de mission de la démo de Fleet Command).
+# Une entrée de script peut porter : une fenêtre de tours [a, b] ; une liste de cibles possibles ; en 4e position {'p': probabilité d'inclusion} ou {'g': groupe}.
+# 'grp' fixe pour chaque groupe [minimum, maximum] d'entrées retenues. Tours donnés après allongement (LONG). Le moteur tire la variante avec un générateur séparé (varScript).
+VAR = {
+ 'c1': dict(script=[[[2, 3], 'cyber', 'PORT'], [[7, 8], 'desinfo'], [13, 'cyber', 'STAT', {'g': 'fin'}], [12, 'desinfo', None, {'g': 'fin'}]], grp={'fin': [1, 1]}),
+ 'f2': dict(script=[[[5, 6], 'seabed'], [11, 'sabotage', None, {'g': 'fin'}], [12, 'mine', None, {'g': 'fin'}], [8, 'seabed', None, {'p': .4}]], grp={'fin': [1, 2]}),
+ 'asw': dict(script=[[2, 'sub'], [5, 'sub', None, {'g': 'sub'}], [7, 'sub', None, {'g': 'sub'}], [9, 'sar', None, {'p': .6}], [10, 'sub', None, {'g': 'sub'}], [11, 'desinfo']], grp={'sub': [2, 3]}),
+ 'l12': dict(script=[[[2, 3], 'ghost'], [6, 'raid'], [11, 'salvo', None, {'g': 'fin'}], [13, 'sabotage', None, {'g': 'fin'}], [9, 'desinfo', None, {'p': .4}]], grp={'fin': [1, 2]}),
+ 'g3': dict(script=[[[2, 3], 'sar'], [6, 'seize', 'ship'], [11, 'cyber', 'LNG'], [13, 'sar', None, {'p': .4}], [9, 'cyber', 'LNG', {'p': .3}]]),
+ 'a4': dict(script=[[[4, 5], 'desinfo'], [10, 'swarm'], [16, 'cyber', 'PORT', {'g': 'fin'}], [17, 'evac', None, {'g': 'fin'}], [13, 'desinfo', None, {'p': .4}]], grp={'fin': [1, 2]}),
+ 'e6': dict(script=[[[2, 4], 'desinfo'], [8, 'evac', 'PORT'], [16, 'cyber', 'GRID'], [12, 'desinfo', None, {'p': .5}], [18, 'cyber', 'GRID', {'p': .35}]]),
+ 'm6': dict(script=[[[2, 3], 'seabed'], [8, 'mine'], [12, 'ghost', None, {'g': 'fin'}], [13, 'seabed', None, {'g': 'fin'}]], grp={'fin': [1, 2]}),
+}
+for x in S:
+    v = VAR.get(x['id'])
+    if v:
+        x['script'] = v['script']
+        if 'grp' in v: x['grp'] = v['grp']
 out = {'version': 1, 'scenarios': S, 'assumptions': ASM}
 json.dump(out, open('scenarios.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 ids = [a['id'] for a in ASM]

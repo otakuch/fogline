@@ -9,7 +9,7 @@ const N = +(process.argv[2] || 4);
   const A_ = process.env.SKIPA ? { R: [], missing: [] } : await p.evaluate(() => {
     const A = __S, R = [], ok = (c, m, d) => R.push([!!c, m, c ? '' : JSON.stringify(d === undefined ? '' : d).slice(0, 300)]);
     const run = s => { let n = Math.round(s * 10); while (n-- > 0 && !A.s.over) A.step(.1) };
-    const G = (sc, o = {}) => { A.newGame(o.seed || 7, { sc, deck: A.SC[sc].rec, contested: false, ...o }); const S = A.s; S.running = false; S.tokens = 6; return S };
+    const G = (sc, o = {}) => { A.newGame(o.seed || 7, { sc, deck: A.SC[sc].rec, contested: false, novar: 1 /* v48 : script complet, sans tirage de variante, pour des contrôles stables */, ...o }); const S = A.s; S.running = false; S.tokens = 6; return S };
     const U = id => A.s.units.find(u => u.id === id), rec = id => A.allAir().find(r => r.id === id), tm = id => A.allTeams().find(x => x.id === id);
     const sea = (o, d, ang = 0) => { for (let k = 0; k < 24; k++) { const a = ang + k * Math.PI / 12, x = o.x + Math.cos(a) * d, y = o.y + Math.sin(a) * d; if (A.seaOK(x, y) && A.route(o.x, o.y, x, y)) return { x, y } } return null };
     const waitFor = (f, s) => { let n = Math.round(s * 10); while (n-- > 0 && !A.s.over) { if (f()) return true; A.step(.1) } return !!f() };

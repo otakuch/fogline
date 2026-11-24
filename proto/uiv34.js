@@ -64,7 +64,7 @@ const { chromium } = require('playwright');
     if (mob) await p.click('#mnav [data-v=map]');
     await p.click(mob ? '#sp4' : '#sp8'); o.x8 = await p.evaluate(() => __S.s.speed); need(o.x8 === (mob ? 4 : 8), tag + ' x8 (x4 sur téléphone)');
     if (!mob) { await p.click('#sp16'); o.x16 = await p.evaluate(() => __S.s.speed); need(o.x16 === 16, tag + ' x16'); }
-    o.x1 = await p.evaluate(() => { const A = __S; A.startCrisis('desinfo'); return A.s.speed; }); need(o.x1 === 1, tag + ' retour à x1 sur crise');
+    o.x1 = await p.evaluate(() => { const A = __S; A.startCrisis('desinfo'); return A.s.speed; }); need(o.x1 === 0.5, tag + ' retour à la vitesse par défaut (×½ depuis la version 48) sur crise');
     // 7. ordre de bataille par domaine
     await p.evaluate(() => { __S.s.running = false; __S.brief('d3', false); }); await p.waitForTimeout(250); await p.click('[data-a=todeck]'); await p.waitForTimeout(250);
     o.ob = await p.locator('#over .ftabs [data-a=obt]').count(); await p.click('#over [data-a=obt][data-v=land]'); await p.waitForTimeout(150);

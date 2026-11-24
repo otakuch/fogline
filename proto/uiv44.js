@@ -75,7 +75,8 @@ const { chromium } = require('playwright');
       need(c0[0] === 'map' && /url/.test(c0[1]), tag + ' pointeur de visée sur la mer : ' + c0);
       const c1 = await cur(...pt.u);
       need(c1[0] === 'pick', tag + ' pointeur de cible sur une unité : ' + c1);
-      await st(() => { const A = __S; A.s.sel = A.s.units.find(x => x.type === 'frigate'); A.redraw() });
+      /* v48 : aucun contact ne doit se trouver sous le point de terre visé, sinon le pointeur de cible l'emporte */
+      await st(() => { const A = __S, S = A.s; S.ships = S.ships.filter(z => Math.hypot(z.x - 640, z.y - 760) > 40 && Math.hypot(z.x - 560, z.y - 520) > 40); S.sel = S.units.find(x => x.type === 'frigate'); A.redraw() });
       const c2 = await cur(...pt.sea), c3 = await cur(...pt.land);
       need(c2[0] === 'move' && c3[0] === 'nogo', tag + ' destroyer choisi : déplacement sur la mer, refus sur la terre : ' + c2[0] + ' / ' + c3[0]);
       await st(() => { const A = __S; A.patrolStart ? 0 : 0; window.__pe = 1 });

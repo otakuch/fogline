@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 2,
+  "status": "additive_merge_plan_not_catalogue_replacement",
+  "runtimeIntegrated": false,
+  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+  "preserveExistingIds": true,
+  "mergeInstructions": [
+    "Merge mechanicDefinitions by id into the matching base.",
+    "Register handlers and events centrally; no eval and no implicit handler implementation.",
+    "Persist mutable instance and knowledge state separately from definitions.",
+    "Implement and validate planned handlers before marking a dependent mission ready.",
+    "Capability checks remain mandatory even when requiresCapabilities is empty in this contract plan."
+  ],
+  "bases": {
+    "naval": {
+      "mechanicDefinitions": [
+        {
+          "id": "naval.mechanic.datum_prediction",
+          "label": {
+            "fr": "Prédiction des zones",
+            "en": "Datum prediction"
+          },
+          "status": "planned",
+          "handlerId": "handler.naval.datum_prediction",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.naval.datum_prediction.changed"
+          ],
+          "reads": [
+            "knowledge.trackBeliefs",
+            "simulation.clock",
+            "known.geography",
+            "mobility.slowSpeeds"
+          ],
+          "writes": [
+            "knowledge.trackBeliefs"
+          ],
+          "parameters": {}
+        },
+        {
+          "id": "naval.mechanic.acoustic_measurement",
+          "label": {
+            "fr": "Mesures acoustiques de jeu",
+            "en": "Game acoustic measurements"
+          },
+          "status": "planned",
+          "handlerId": "handler.naval.acoustic_measurement",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.naval.acoustic_measurement.changed"
+          ],
+          "reads": [
+            "world.instances",
+            "sensor.configuration",
+            "environment.estimated_and_actual"
+          ],
+          "writes": [
+            "private.sensorMeasurements"
+          ],
+          "parameters": {
+            "noTruthExportToUI": true
+          }
+        },
+        {
+          "id": "naval.mechanic.persistent_depth",
+          "label": {
+            "fr": "Profondeur persistante",
+            "en": "Persistent depth"
+          },
+          "status": "planned",
+          "handlerId": "handler.naval.persistent_depth",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.naval.persistent_depth.changed"
+          ],
+          "reads": [
+            "unit.depthOrder",
+            "environment.bathymetry"
+          ],
+          "writes": [
+            "unit.depthM",
+            "unit.relativeLayerState"
+          ],
+          "parameters": {}
+        },
+        {
+          "id": "naval.mechanic.active_ping_cycle",
+          "label": {
+            "fr": "Cycle de ping actif",
+            "en": "Active ping cycle"
+          },
+          "status": "planned",
+          "handlerId": "handler.naval.active_ping_cycle",
+          "requiresCapabilities": [
+            "cap.active_sonar"
+          ],
+          "emits": [
+            "event.naval.active_ping_cycle.changed"
+          ],
+          "reads": [
+            "unit.configuration",
+            "sensor.state",
+            "simulation.clock",
+            "order.queue"
+          ],
+          "writes": [
+            "private.sensorMeasurements",
+            "sensor.nextPingAt"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        }
+      ]
+    },
+    "air": {
+      "mechanicDefinitions": [
+        {
+          "id": "air.mechanic.asw_search_path",
+          "label": {
+            "fr": "Circuit de recherche aérienne",
+            "en": "Air search circuit"
+          },
+          "status": "planned",
+          "handlerId": "handler.air.asw_search_path",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.air.asw_search_path.changed"
+          ],
+          "reads": [
+            "unit.path",
+            "mobility.slowSpeeds",
+            "unit.fuel"
+          ],
+          "writes": [
+            "unit.position",
+            "unit.fuel"
+          ],
+          "parameters": {
+            "fixedWingHoverAllowed": false
+          }
+        },
+        {
+          "id": "air.mechanic.dipping_sonar_cycle",
+          "label": {
+            "fr": "Cycle du sonar trempé",
+            "en": "Dipping sonar cycle"
+          },
+          "status": "planned",
+          "handlerId": "handler.air.dipping_sonar_cycle",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.air.dipping_sonar_cycle.changed"
+          ],
+          "reads": [
+            "unit.configuration",
+            "unit.fuel",
+            "order.queue"
+          ],
+          "writes": [
+            "sensor.phase",
+            "private.sensorMeasurements"
+          ],
+          "parameters": {
+            "phases": [
+              "transit",
+              "hover",
+              "lower",
+              "listen_or_emit",
+              "raise",
+              "redeploy"
+            ]
+          }
+        },
+        {
+          "id": "air.mechanic.mad_configuration",
+          "label": {
+            "fr": "MAD selon configuration",
+            "en": "Configuration-specific MAD"
+          },
+          "status": "planned",
+          "handlerId": "handler.air.mad_configuration",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.air.mad_configuration.changed"
+          ],
+          "reads": [
+            "unit.configuration"
+          ],
+          "writes": [
+            "action.availability"
+          ],
+          "parameters": {
+            "universalMH60RCapability": false
+          }
+        },
+        {
+          "id": "air.mechanic.remote_engagement_order",
+          "label": {
+            "fr": "Ordre d’engagement distant",
+            "en": "Remote engagement order"
+          },
+          "status": "planned",
+          "handlerId": "handler.air.remote_engagement_order",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.air.remote_engagement_order.changed"
+          ],
+          "reads": [
+            "unit.configuration",
+            "knowledge.tracks",
+            "roe",
+            "inventory",
+            "unit.fuel"
+          ],
+          "writes": [
+            "unit.orders",
+            "unit.path",
+            "private.projectileInstances",
+            "inventory"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        }
+      ]
+    },
+    "cyber": {
+      "mechanicDefinitions": [
+        {
+          "id": "cyber.mechanic.report_delivery",
+          "label": {
+            "fr": "Livraison des rapports",
+            "en": "Report delivery"
+          },
+          "status": "planned",
+          "handlerId": "handler.cyber.report_delivery",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.cyber.report_delivery.changed"
+          ],
+          "reads": [
+            "private.sensorMeasurements",
+            "network.topology",
+            "network.state"
+          ],
+          "writes": [
+            "knowledge.deliveredObservations",
+            "communications.queue"
+          ],
+          "parameters": {
+            "measurementTimePreserved": true
+          }
+        }
+      ]
+    },
+    "ground": {
+      "mechanicDefinitions": [
+        {
+          "id": "ground.mechanic.special_forces_origin",
+          "label": {
+            "fr": "Origine des forces spéciales",
+            "en": "Special forces origin"
+          },
+          "status": "planned",
+          "handlerId": "handler.ground.special_forces_origin",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.ground.special_forces_origin.changed"
+          ],
+          "reads": [
+            "unit.parentInstanceId",
+            "carrier.manifest",
+            "carrier.configuration",
+            "mission.constraints"
+          ],
+          "writes": [
+            "deployment.status",
+            "carrier.manifest",
+            "unit.locationState"
+          ],
+          "parameters": {
+            "requiresWarship": true,
+            "retainInstanceId": true
+          }
+        }
+      ]
+    },
+    "coordination": {
+      "mechanicDefinitions": [
+        {
+          "id": "coordination.mechanic.observation_fusion",
+          "label": {
+            "fr": "Fusion et provenance",
+            "en": "Fusion and provenance"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.observation_fusion",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.observation_fusion.changed"
+          ],
+          "reads": [
+            "knowledge.deliveredObservations",
+            "knowledge.fusedRoots"
+          ],
+          "writes": [
+            "knowledge.trackBeliefs",
+            "knowledge.classificationBeliefs",
+            "knowledge.fusedRoots"
+          ],
+          "parameters": {}
+        },
+        {
+          "id": "coordination.mechanic.slow_mobility",
+          "label": {
+            "fr": "Allure lente unique",
+            "en": "Single slow pace"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.slow_mobility",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.slow_mobility.changed"
+          ],
+          "reads": [
+            "unit.type",
+            "unit.path",
+            "simulation.clock"
+          ],
+          "writes": [
+            "unit.position",
+            "unit.eta",
+            "unit.fuel"
+          ],
+          "parameters": {
+            "onlyAllowedPace": "slow",
+            "tokensRequired": false
+          }
+        },
+        {
+          "id": "coordination.mechanic.crisis_presentation",
+          "label": {
+            "fr": "Fenêtre de crise",
+            "en": "Crisis dialog"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.crisis_presentation",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.crisis_presentation.changed"
+          ],
+          "reads": [
+            "knowledge.crises",
+            "ui.crisisQueue"
+          ],
+          "writes": [
+            "ui.crisisQueue",
+            "ui.crisisDialog",
+            "simulation.pause"
+          ],
+          "parameters": {
+            "imageManifest": "illustrations-crises.json",
+            "revealHiddenTruth": false
+          }
+        },
+        {
+          "id": "coordination.mechanic.decision_review",
+          "label": {
+            "fr": "Revue de décision",
+            "en": "Decision review"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.decision_review",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.decision_review.changed"
+          ],
+          "reads": [
+            "knowledge.trackBeliefs",
+            "knowledge.classificationBeliefs",
+            "roe",
+            "inventory"
+          ],
+          "writes": [
+            "decision.eligibility",
+            "decision.reasons",
+            "decision.history"
+          ],
+          "parameters": {
+            "tokensEnabled": false,
+            "scoreSpendable": false
+          }
+        },
+        {
+          "id": "coordination.mechanic.automatic_contact_classification",
+          "label": {
+            "fr": "Classement automatique",
+            "en": "Automatic contact classification"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.automatic_contact_classification",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.automatic_contact_classification.changed"
+          ],
+          "reads": [
+            "knowledge.deliveredObservations",
+            "knowledge.knownReferences",
+            "knowledge.fusedRoots"
+          ],
+          "writes": [
+            "knowledge.estimatedNature",
+            "knowledge.estimatedAffiliation",
+            "knowledge.classificationHistory"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        },
+        {
+          "id": "coordination.mechanic.projectile_knowledge_view",
+          "label": {
+            "fr": "Vue des projectiles connus",
+            "en": "Known projectile view"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.projectile_knowledge_view",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.projectile_knowledge_view.changed"
+          ],
+          "reads": [
+            "private.projectileInstances",
+            "knowledge.deliveredObservations",
+            "knowledge.ownLaunches"
+          ],
+          "writes": [
+            "knowledge.projectiles",
+            "ui.projectileOverlay"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        },
+        {
+          "id": "coordination.mechanic.projectile_lifecycle",
+          "label": {
+            "fr": "Cycle des projectiles",
+            "en": "Projectile lifecycle"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.projectile_lifecycle",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.projectile_lifecycle.changed"
+          ],
+          "reads": [
+            "private.projectileInstances",
+            "world.instances",
+            "simulation.clock"
+          ],
+          "writes": [
+            "private.projectileInstances",
+            "private.impactEvents"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        },
+        {
+          "id": "coordination.mechanic.context_command_menu",
+          "label": {
+            "fr": "Menu d’ordres contextuel",
+            "en": "Context command menu"
+          },
+          "status": "planned",
+          "handlerId": "handler.coordination.context_command_menu",
+          "requiresCapabilities": [],
+          "emits": [
+            "event.coordination.context_command_menu.changed"
+          ],
+          "reads": [
+            "knowledge.tracks",
+            "unit.selection",
+            "command.eligibility",
+            "ui.pointerState"
+          ],
+          "writes": [
+            "ui.contextMenu",
+            "command.queue"
+          ],
+          "parameters": {
+            "extensionContract": "extension-pings-armes-souris.json"
+          }
+        }
+      ]
+    }
+  },
+  "coordinationRegistryAdditions": {
+    "handlers": [
+      {
+        "id": "handler.naval.datum_prediction",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.naval.acoustic_measurement",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.naval.persistent_depth",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.air.asw_search_path",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.air.dipping_sonar_cycle",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.air.mad_configuration",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.cyber.report_delivery",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.ground.special_forces_origin",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.observation_fusion",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.slow_mobility",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.crisis_presentation",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.decision_review",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.naval.active_ping_cycle",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.automatic_contact_classification",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.projectile_knowledge_view",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.projectile_lifecycle",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.air.remote_engagement_order",
+        "status": "planned",
+        "implementationVerified": false
+      },
+      {
+        "id": "handler.coordination.context_command_menu",
+        "status": "planned",
+        "implementationVerified": false
+      }
+    ],
+    "events": [
+      {
+        "id": "event.air.asw_search_path.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.air.dipping_sonar_cycle.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.air.mad_configuration.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.crisis_presentation.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.decision_review.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.observation_fusion.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.slow_mobility.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.crisis.closed",
+        "idempotent": true
+      },
+      {
+        "id": "event.crisis.created",
+        "idempotent": true
+      },
+      {
+        "id": "event.crisis.updated",
+        "idempotent": true
+      },
+      {
+        "id": "event.cyber.report_delivery.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.ground.special_forces_origin.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.naval.acoustic_measurement.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.naval.datum_prediction.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.naval.persistent_depth.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.naval.active_ping_cycle.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.automatic_contact_classification.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.projectile_knowledge_view.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.projectile_lifecycle.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.air.remote_engagement_order.changed",
+        "idempotent": true
+      },
+      {
+        "id": "event.coordination.context_command_menu.changed",
+        "idempotent": true
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "cap.active_sonar",
+        "label": {
+          "fr": "Sonar actif compatible",
+          "en": "Compatible active sonar"
+        },
+        "assignment": "explicit_configuration_only"
+      }
+    ]
+  },
+  "removeRuntimeConcepts": [
+    "action_token_balance",
+    "action_token_cost",
+    "unit_pace_selector",
+    "submarine_sprint_state",
+    "free_special_forces_insertion"
+  ],
+  "contentRevision": "2.1"
+}

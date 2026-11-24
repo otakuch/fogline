@@ -1,206 +1,234 @@
 {
-  "$schema": "./bases.schema.json",
-  "schemaVersion": 1,
-  "id": "ground",
-  "label": {
-    "fr": "Terrestre",
-    "en": "Ground"
+ "$schema": "./bases.schema.json",
+ "schemaVersion": 1,
+ "id": "ground",
+ "label": {
+  "fr": "Terrestre",
+  "en": "Ground"
+ },
+ "status": "draft",
+ "runtimeIntegrated": false,
+ "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+ "unitDefinitions": [
+  {
+   "id": "ground.unit.sof",
+   "label": {
+    "fr": "Équipe SEAL",
+    "en": "Équipe SEAL"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "sof",
+   "physicalLayer": "ground",
+   "capabilities": [
+    "cap.special_forces",
+    "cap.amphibious_transfer",
+    "cap.ground_movement"
+   ],
+   "configurations": [],
+   "sourceGameStats": {
+    "code": "NSW",
+    "speed": 38,
+    "sensor": 24,
+    "air": 1,
+    "land": 1,
+    "cost": 14,
+    "max": 1,
+    "dom": "land"
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": false
   },
-  "status": "draft",
-  "runtimeIntegrated": false,
-  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
-  "unitDefinitions": [
-    {
-      "id": "ground.unit.sof",
-      "label": {
-        "fr": "Équipe SEAL",
-        "en": "Équipe SEAL"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "sof",
-      "physicalLayer": "ground",
-      "capabilities": [
-        "cap.special_forces",
-        "cap.amphibious_transfer",
-        "cap.ground_movement"
-      ],
-      "configurations": [],
-      "sourceGameStats": {
-        "code": "NSW",
-        "speed": 38,
-        "sensor": 24,
-        "air": 1,
-        "land": 1,
-        "cost": 14,
-        "max": 1,
-        "dom": "land"
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": false
-    },
-    {
-      "id": "ground.unit.guard",
-      "label": {
-        "fr": "Peloton FAST",
-        "en": "Peloton FAST"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "guard",
-      "physicalLayer": "ground",
-      "capabilities": [
-        "cap.site_protection"
-      ],
-      "configurations": [],
-      "sourceGameStats": {
-        "code": "FAST",
-        "speed": 20,
-        "sensor": 20,
-        "air": 1,
-        "land": 1,
-        "fixed": 1,
-        "cost": 8,
-        "max": 1,
-        "dom": "land"
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": false
-    },
-    {
-      "id": "ground.unit.battery",
-      "label": {
-        "fr": "Batterie côtière défensive",
-        "en": "Batterie côtière défensive"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "battery",
-      "physicalLayer": "ground",
-      "capabilities": [
-        "cap.site_protection"
-      ],
-      "configurations": [],
-      "sourceGameStats": {
-        "code": "MLR",
-        "speed": 12,
-        "sensor": 90,
-        "air": 1,
-        "land": 1,
-        "fixed": 1,
-        "def": 6,
-        "cost": 12,
-        "max": 1,
-        "dom": "land"
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": false
-    }
-  ],
-  "mechanicDefinitions": [
-    {
-      "id": "ground.mechanic.movement",
-      "label": {
-        "fr": "Mouvement terrestre",
-        "en": "Mouvement terrestre"
-      },
-      "status": "planned",
-      "handlerId": "handler.ground.movement",
-      "requiresCapabilities": [
-        "cap.ground_movement"
-      ],
-      "emits": [
-        "event.order.accepted"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "unit.position",
-        "unit.path"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "ground.mechanic.protection",
-      "label": {
-        "fr": "Protection de site",
-        "en": "Protection de site"
-      },
-      "status": "planned",
-      "handlerId": "handler.ground.protection",
-      "requiresCapabilities": [
-        "cap.site_protection"
-      ],
-      "emits": [
-        "event.ground.site.secured"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "site.state",
-        "unit.availability"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "ground.mechanic.embarkation",
-      "label": {
-        "fr": "Embarquement et débarquement",
-        "en": "Embarquement et débarquement"
-      },
-      "status": "planned",
-      "handlerId": "handler.coordination.transportTeam",
-      "requiresCapabilities": [
-        "cap.amphibious_transfer"
-      ],
-      "emits": [
-        "event.ground.team.embarked",
-        "event.ground.team.landed"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "team.owner",
-        "carrier.capacity"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "ground.mechanic.rescue",
-      "label": {
-        "fr": "Secours et évacuation",
-        "en": "Secours et évacuation"
-      },
-      "status": "planned",
-      "handlerId": "handler.ground.rescue",
-      "requiresCapabilities": [],
-      "emits": [
-        "event.objective.changed"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "persons.state",
-        "team.availability"
-      ],
-      "parameters": {}
-    }
-  ],
-  "notes": [
-    "Draft catalogue not connected to the live game.",
-    "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
-    "Mechanic and handler records remain planned until implementation and integration tests pass."
-  ]
+  {
+   "id": "ground.unit.guard",
+   "label": {
+    "fr": "Peloton FAST",
+    "en": "Peloton FAST"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "guard",
+   "physicalLayer": "ground",
+   "capabilities": [
+    "cap.site_protection"
+   ],
+   "configurations": [],
+   "sourceGameStats": {
+    "code": "FAST",
+    "speed": 20,
+    "sensor": 20,
+    "air": 1,
+    "land": 1,
+    "fixed": 1,
+    "cost": 8,
+    "max": 1,
+    "dom": "land"
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": false
+  },
+  {
+   "id": "ground.unit.battery",
+   "label": {
+    "fr": "Batterie côtière défensive",
+    "en": "Batterie côtière défensive"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "battery",
+   "physicalLayer": "ground",
+   "capabilities": [
+    "cap.site_protection"
+   ],
+   "configurations": [],
+   "sourceGameStats": {
+    "code": "MLR",
+    "speed": 12,
+    "sensor": 90,
+    "air": 1,
+    "land": 1,
+    "fixed": 1,
+    "def": 6,
+    "cost": 12,
+    "max": 1,
+    "dom": "land"
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": false
+  }
+ ],
+ "mechanicDefinitions": [
+  {
+   "id": "ground.mechanic.movement",
+   "label": {
+    "fr": "Mouvement terrestre",
+    "en": "Mouvement terrestre"
+   },
+   "status": "planned",
+   "handlerId": "handler.ground.movement",
+   "requiresCapabilities": [
+    "cap.ground_movement"
+   ],
+   "emits": [
+    "event.order.accepted"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "unit.position",
+    "unit.path"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "ground.mechanic.protection",
+   "label": {
+    "fr": "Protection de site",
+    "en": "Protection de site"
+   },
+   "status": "planned",
+   "handlerId": "handler.ground.protection",
+   "requiresCapabilities": [
+    "cap.site_protection"
+   ],
+   "emits": [
+    "event.ground.site.secured"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "site.state",
+    "unit.availability"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "ground.mechanic.embarkation",
+   "label": {
+    "fr": "Embarquement et débarquement",
+    "en": "Embarquement et débarquement"
+   },
+   "status": "planned",
+   "handlerId": "handler.coordination.transportTeam",
+   "requiresCapabilities": [
+    "cap.amphibious_transfer"
+   ],
+   "emits": [
+    "event.ground.team.embarked",
+    "event.ground.team.landed"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "team.owner",
+    "carrier.capacity"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "ground.mechanic.rescue",
+   "label": {
+    "fr": "Secours et évacuation",
+    "en": "Secours et évacuation"
+   },
+   "status": "planned",
+   "handlerId": "handler.ground.rescue",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.objective.changed"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "persons.state",
+    "team.availability"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "ground.mechanic.special_forces_origin",
+   "label": {
+    "fr": "Origine des forces spéciales",
+    "en": "Special forces origin"
+   },
+   "status": "planned",
+   "handlerId": "handler.ground.special_forces_origin",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.ground.special_forces_origin.changed"
+   ],
+   "reads": [
+    "unit.parentInstanceId",
+    "carrier.manifest",
+    "carrier.configuration",
+    "mission.constraints"
+   ],
+   "writes": [
+    "deployment.status",
+    "carrier.manifest",
+    "unit.locationState"
+   ],
+   "parameters": {
+    "requiresWarship": true,
+    "retainInstanceId": true
+   }
+  }
+ ],
+ "notes": [
+  "Draft catalogue not connected to the live game.",
+  "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
+  "Mechanic and handler records remain planned until implementation and integration tests pass."
+ ]
 }

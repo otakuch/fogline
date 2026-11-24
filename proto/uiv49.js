@@ -55,8 +55,8 @@ const { chromium } = require('playwright'), fs = require('fs'), path = require('
     // ---------- en partie, menu et bilan : étiquette absente ; règles intactes ----------
     await st(() => { const A = __S; document.getElementById('over').hidden = true; A.newGame(21, { sc: 'c1', deck: A.SC.c1.rec.slice(), contested: true, guided: false, timer: 'easy' }); A.redraw() }); await p.waitForTimeout(300);
     need(await label() === 0 && await st(() => !document.querySelector('#hud .fxtag')), tag + ' en partie : étiquette absente de la barre'); await noX('partie'); await p.screenshot({ path: D + '/v49-partie-' + tag + '.png' });
-    const rules = await st(() => { const S = __S.s; return { tok: S.tokens, spd: S.speed, turns: S.turns, objs: S.objs.length } }); need(rules.tok === undefined && rules.spd === .5 && rules.turns === 16, tag + ' règles de la partie inchangées ' + JSON.stringify(rules));
-    await st(() => { const S = __S.s; let i = 0; while (i++ < 9000 && !S.over) __S.step(.1) }); await p.waitForTimeout(400); need(await label() === 0 && await st(() => /\d{3}/.test(document.getElementById('over').innerText)), tag + ' bilan : étiquette absente, score affiché');
+    const rules = await st(() => { const S = __S.s; return { tok: S.tokens, spd: S.speed, turns: S.turns, objs: S.objs.length } }); need(rules.tok === undefined && rules.spd === .5 && rules.turns === 22, tag + ' règles de la partie inchangées ' + JSON.stringify(rules));
+    await st(() => { const S = __S.s; let i = 0; while (i++ < 16000 && !S.over) __S.step(.1) }); await p.waitForTimeout(400); need(await label() === 0 && await st(() => /\d{3}/.test(document.getElementById('over').innerText)), tag + ' bilan : étiquette absente, score affiché');
     need(!(await st(() => __S.missing())).length, tag + ' aucun texte manquant : ' + (await st(() => __S.missing())).join(', '));
     await ctx.close();
   }

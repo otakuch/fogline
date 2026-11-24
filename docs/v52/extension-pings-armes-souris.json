@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "contentRevision": "2.1",
+  "status": "specification_only",
+  "runtimeIntegrated": false,
+  "numericalStatus": "fictional_game_parameters_not_real_capabilities",
+  "activeSonar": {
+    "actions": [
+      "ping_once",
+      "start_periodic_pings",
+      "stop_periodic_pings",
+      "analyze_contact",
+      "follow_contact"
+    ],
+    "requiresConfigurationCapability": "cap.active_sonar",
+    "gamePrototypePingIntervalSimSeconds": 12,
+    "gamePrototypeAnalysisDurationSimSeconds": 8,
+    "realRangeNm": null,
+    "gameRangeSource": "sensor_configuration_and_theatre",
+    "unitPace": "slow",
+    "requiresActionTokens": false,
+    "abstractPingQuota": false,
+    "autoAnalyzeNewObservations": true,
+    "deduplicateEmissionsBy": "commandId",
+    "reprocessIdenticalEvidenceIncreasesConfidence": false,
+    "echoRevealsTrueAffiliation": false,
+    "opponentPerceptionRequiresOwnObservation": true
+  },
+  "autoClassification": {
+    "enabledByDefault": true,
+    "axes": [
+      "localization",
+      "estimatedNature",
+      "estimatedAffiliation"
+    ],
+    "natureValues": [
+      "surface_vessel",
+      "submarine",
+      "biological",
+      "seabed_object",
+      "sensor_artifact",
+      "undetermined"
+    ],
+    "affiliationValues": [
+      "friendly",
+      "neutral",
+      "unknown",
+      "suspect",
+      "hostile"
+    ],
+    "prototypeMinConfidence": 0.75,
+    "prototypeMinMargin": 0.15,
+    "insufficientEvidenceAffiliation": "unknown",
+    "missingAISConfirmsHostility": false,
+    "sameEvidenceCanBeCountedTwice": false,
+    "manualAcceptanceRequired": false,
+    "automaticallyFiresWeapons": false,
+    "classificationRequires": "delivered_observations_and_known_references_not_truth"
+  },
+  "projectileDisplay": {
+    "enabledByDefault": true,
+    "families": [
+      "gun_projectile",
+      "rocket",
+      "anti_ship_missile",
+      "anti_air_missile",
+      "air_to_air_missile",
+      "air_to_surface_missile",
+      "torpedo"
+    ],
+    "familyAvailableOnlyWhenSimulated": true,
+    "ownProjectileVisibleFromLaunch": true,
+    "enemyProjectileVisibleOnlyWhenKnown": true,
+    "physicalStateSeparateFromPlayerView": true,
+    "knownStatuses": [
+      "in_flight",
+      "water_entry",
+      "searching",
+      "observed_interception",
+      "observed_impact",
+      "track_lost",
+      "expired"
+    ],
+    "hiddenTargetIdInDOMAllowed": false,
+    "projectileAffectedByUnitSlowPace": false,
+    "hitResolution": "swept_path_or_sufficient_substeps",
+    "impactIdempotent": true,
+    "torpedoAirWaterTransition": "one_instance_one_inventory_debit",
+    "unknownLauncherLabel": {
+      "fr": "Lanceur inconnu",
+      "en": "Unknown launcher"
+    }
+  },
+  "helicopterEngagement": {
+    "actions": [
+      "engage_contact",
+      "approach_and_engage"
+    ],
+    "requiresEffectiveLoadout": true,
+    "knownTrackOnly": true,
+    "eligibilityChecks": [
+      "weapon_target_domain",
+      "sensor_or_approved_shared_track",
+      "track_freshness",
+      "roe",
+      "inventory",
+      "weapon_game_range",
+      "fuel_and_return",
+      "sonar_phase"
+    ],
+    "outOfRangeFireAllowed": false,
+    "approachUsesSlowPace": true,
+    "revalidateBeforeLaunch": true,
+    "suspendOnNeutralFriendlyLostOrInsufficientEvidence": true,
+    "ammunitionDebitAtLaunch": 1,
+    "automaticRearmOnLanding": false
+  },
+  "pointer": {
+    "states": [
+      "selection",
+      "command_menu",
+      "placement",
+      "targeting",
+      "pan",
+      "pinch"
+    ],
+    "primaryClick": "select_or_validate_explicit_pending_order",
+    "secondaryClick": "open_command_menu_only",
+    "commandOnSecondaryRelease": false,
+    "longPressConsumesRelease": true,
+    "panReleaseIssuesOrder": false,
+    "pinchReleaseIssuesOrder": false,
+    "overlayClickPassesThrough": false,
+    "escapeCancelsDraft": true,
+    "coordinates": "single_css_screen_to_world_to_axial_hex_projection",
+    "persistentOrdersButton": true,
+    "allCommandPathsUseSameValidator": true
+  }
+}

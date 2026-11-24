@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Delivered game observation; contains no target truth identifiers",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "observationId",
+    "rootMeasurementId",
+    "sensorInstanceId",
+    "producedAt",
+    "receivedAt",
+    "measurementKind",
+    "sensorPoseAtMeasurement",
+    "measurement",
+    "uncertainty",
+    "qualityWeight"
+  ],
+  "properties": {
+    "observationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rootMeasurementId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phenomenonId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sensorInstanceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "producedAt": {
+      "type": "number",
+      "minimum": 0
+    },
+    "receivedAt": {
+      "type": "number",
+      "minimum": 0
+    },
+    "measurementKind": {
+      "enum": [
+        "bearing",
+        "bearing_range",
+        "magnetic_anomaly",
+        "classification_cue",
+        "negative_search"
+      ]
+    },
+    "sensorPoseAtMeasurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "q",
+        "r",
+        "depthM"
+      ],
+      "properties": {
+        "q": {
+          "type": "integer"
+        },
+        "r": {
+          "type": "integer"
+        },
+        "depthM": {
+          "type": "number"
+        }
+      }
+    },
+    "measurement": {
+      "type": "object"
+    },
+    "uncertainty": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "qualityWeight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "correlationGroupId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "knownTrackCandidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$comment": "Measurement payloads need typed validators before runtime use; this envelope alone does not enforce units, timestamp ordering or payload safety."
+}

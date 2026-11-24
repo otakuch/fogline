@@ -111,7 +111,7 @@ window.mkBot = (o = {}) => (S) => {
 window.playGame = (seed, sc, cfg, pol, chk) => {
   window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null, real: !!(cfg.real || window.__REAL), fleet: cfg.fleet || null, novar: !!cfg.novar }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
   const S = A.s; S.running = false; let i = 0;
-  for (; i < 9000 && !S.over; i++) { A.step(.1); if (i % (window.BOTCAD || 50) === 0 && pol) pol(S); if (i % 10 === 0 && chk) chk(S, sc); }
+  for (; i < 16000 && !S.over; i++) { A.step(.1); if (i % (window.BOTCAD || 50) === 0 && pol) pol(S); if (i % 10 === 0 && chk) chk(S, sc); }
   const r = A.score();
   return { s: r.s, ok: r.ok ? 1 : 0, st: r.stars, oo: r.doneO / r.allO, lost: S.crises.filter(c => c.closed && c.out < .5).length, n: S.crises.length, fe: S.falseEng + S.falseBoard, done: S.over ? 1 : 0, cgc: r.cgc, se1: S.seuil1 ? 1 : 0, infra: A.infra(), ul: S.unitsLost, shots: S.shots, cps: S.checks.filter(c => !c.ok).length, opt: S.checks.some(c => c.opt < 3) ? 1 : 0, cp_inf: S.checks.some(c => c.infra < 60) ? 1 : 0,
     failObj: S.objs.filter(x => x.st !== 1).map(x => { const t_ = x.c || x.k; return x.key + (x.c && !S.crises.some(c => c.type === x.c) ? '!absent' : ''); }), brk: S.asm.filter(x => x.state === 'broken').map(x => x.id) };

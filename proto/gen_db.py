@@ -264,7 +264,7 @@ for x in S:
 for x in S:
     if x.pop('diff4', None): x['diff'] = 3
 # missions plus longues : le découpage en phases, le script et les présences requises suivent
-LONG = 1.6
+LONG = 2.2  # version 52 : 1,6 jusqu'à la version 51 ; l'allure lente unique (0,55) demande des missions plus longues
 for x in S:
     if x.get('tuto'): continue
     for p in x['phases']:
@@ -335,10 +335,19 @@ VAR = {
  'e6': dict(script=[[[2, 4], 'desinfo'], [8, 'evac', 'PORT'], [16, 'cyber', 'GRID'], [12, 'desinfo', None, {'p': .5}], [18, 'cyber', 'GRID', {'p': .35}]]),
  'm6': dict(script=[[[2, 3], 'seabed'], [8, 'mine'], [12, 'ghost', None, {'g': 'fin'}], [13, 'seabed', None, {'g': 'fin'}]], grp={'fin': [1, 2]}),
 }
+_vk = LONG / 1.6  # les tours de VAR ont été écrits pour LONG = 1,6
+_vt = lambda t: [max(1, round(t[0] * _vk)), max(1, round(t[1] * _vk))] if isinstance(t, list) else max(1, round(t * _vk))
+for x in S:
+    if x['id'] == 'asw':  # définie après l'allongement général : elle suit le même rapport que les autres (14 tours -> 19)
+        for p in x['phases']:
+            p['until'] = round(p['until'] * _vk)
+            for ob in p['obj']:
+                if ob.get('k') == 'patrol' and ob.get('need'): ob['need'] = round(ob['need'] * _vk)
+        x['turns'] = x['phases'][-1]['until']
 for x in S:
     v = VAR.get(x['id'])
     if v:
-        x['script'] = v['script']
+        x['script'] = [[_vt(e[0])] + list(e[1:]) for e in v['script']]
         if 'grp' in v: x['grp'] = v['grp']
 out = {'version': 1, 'scenarios': S, 'assumptions': ASM}
 json.dump(out, open('scenarios.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

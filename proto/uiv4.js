@@ -44,7 +44,7 @@ const { chromium } = require('playwright');
     // 6. menu, légende et bilan : bandeau toujours au premier plan
     await game(); await st(p, () => __S.openMenu()); await p.waitForTimeout(250); o.menu = chk(await screen(p, 'menu'), tag); await st(p, () => __S.closeMenu());
     o.sym = await st(p, () => { try { localStorage.removeItem('seuil.shipsym') } catch (_) { } return [__S.natoOn ? __S.natoOn() : null] });
-    await st(p, () => { const A = __S; for (let i = 0; i < 9000 && !A.s.over; i++) A.step(.1); A.redraw() }); await p.waitForTimeout(500); o.bilan = chk(await screen(p, 'bilan'), tag); await p.screenshot({ path: D + '/v4-bilan-' + tag + '.png' });
+    await st(p, () => { const A = __S; for (let i = 0; i < 16000 && !A.s.over; i++) A.step(.1); A.redraw() }); await p.waitForTimeout(500); o.bilan = chk(await screen(p, 'bilan'), tag); await p.screenshot({ path: D + '/v4-bilan-' + tag + '.png' });
     o.manq = await st(p, () => __S.missing()); need(!o.manq.length, tag + ' textes manquants : ' + o.manq);
     await p.close();
   }

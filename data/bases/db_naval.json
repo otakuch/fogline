@@ -1,1859 +1,1956 @@
 {
-  "$schema": "./bases.schema.json",
-  "schemaVersion": 1,
-  "id": "naval",
-  "label": {
-    "fr": "Naval",
-    "en": "Naval"
+ "$schema": "./bases.schema.json",
+ "schemaVersion": 1,
+ "id": "naval",
+ "label": {
+  "fr": "Naval",
+  "en": "Naval"
+ },
+ "status": "draft",
+ "runtimeIntegrated": false,
+ "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+ "unitDefinitions": [
+  {
+   "id": "naval.unit.patrol",
+   "label": {
+    "fr": "LCS Freedom",
+    "en": "LCS Freedom"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "patrol",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.lcs_freedom.suw",
+     "label": {
+      "fr": "Surface (SUW)",
+      "en": "Surface (SUW)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.boarding"
+     ],
+     "sourceClassId": "lcs_freedom",
+     "sourceConfigurationId": "suw",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ]
+      ],
+      "teams": [
+       [
+        "vbss",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "id": "naval.configuration.lcs_freedom.mcm",
+     "label": {
+      "fr": "Lutte contre les mines (MCM)",
+      "en": "Mine countermeasures (MCM)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.mcm",
+      "cap.seabed_survey"
+     ],
+     "sourceClassId": "lcs_freedom",
+     "sourceConfigurationId": "mcm",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    },
+    {
+     "id": "naval.configuration.lcs_freedom.suw_mq8",
+     "label": {
+      "fr": "Surface avec MQ-8 (historique)",
+      "en": "Surface with MQ-8 (historical)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.boarding",
+      "cap.uav_obs"
+     ],
+     "sourceClassId": "lcs_freedom",
+     "sourceConfigurationId": "suw_mq8",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ],
+       [
+        "mq8",
+        1
+       ]
+      ],
+      "teams": [
+       [
+        "vbss",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LCS",
+    "speed": 20,
+    "sensor": 55,
+    "naval": 1,
+    "cost": 10,
+    "max": 2,
+    "ssm": 2,
+    "def": 5,
+    "helo": 1,
+    "dom": "sea",
+    "cls": "lcs_freedom",
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
   },
-  "status": "draft",
-  "runtimeIntegrated": false,
-  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
-  "unitDefinitions": [
+  {
+   "id": "naval.unit.frigate",
+   "label": {
+    "fr": "Arleigh Burke Flight IIA/III",
+    "en": "Arleigh Burke Flight IIA/III"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "frigate",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
     {
-      "id": "naval.unit.patrol",
-      "label": {
-        "fr": "LCS Freedom",
-        "en": "LCS Freedom"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "patrol",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
+     "id": "naval.configuration.arleigh_burke.std",
+     "label": {
+      "fr": "Escorte",
+      "en": "Escort"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.boarding",
+      "cap.air_defense",
+      "cap.sonar",
+      "cap.torpedo"
+     ],
+     "sourceClassId": "arleigh_burke",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        2
+       ]
       ],
-      "configurations": [
-        {
-          "id": "naval.configuration.lcs_freedom.suw",
-          "label": {
-            "fr": "Surface (SUW)",
-            "en": "Surface (SUW)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.boarding"
-          ],
-          "sourceClassId": "lcs_freedom",
-          "sourceConfigurationId": "suw",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ]
-            ],
-            "teams": [
-              [
-                "vbss",
-                1
-              ]
-            ]
-          }
-        },
-        {
-          "id": "naval.configuration.lcs_freedom.mcm",
-          "label": {
-            "fr": "Lutte contre les mines (MCM)",
-            "en": "Mine countermeasures (MCM)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.mcm",
-            "cap.seabed_survey"
-          ],
-          "sourceClassId": "lcs_freedom",
-          "sourceConfigurationId": "mcm",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        },
-        {
-          "id": "naval.configuration.lcs_freedom.suw_mq8",
-          "label": {
-            "fr": "Surface avec MQ-8 (historique)",
-            "en": "Surface with MQ-8 (historical)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.boarding",
-            "cap.uav_obs"
-          ],
-          "sourceClassId": "lcs_freedom",
-          "sourceConfigurationId": "suw_mq8",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ],
-              [
-                "mq8",
-                1
-              ]
-            ],
-            "teams": [
-              [
-                "vbss",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LCS",
-        "speed": 20,
-        "sensor": 55,
-        "naval": 1,
-        "cost": 10,
-        "max": 2,
-        "ssm": 2,
-        "def": 5,
-        "helo": 1,
-        "dom": "sea",
-        "cls": "lcs_freedom",
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.frigate",
-      "label": {
-        "fr": "Arleigh Burke Flight IIA/III",
-        "en": "Arleigh Burke Flight IIA/III"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "frigate",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.arleigh_burke.std",
-          "label": {
-            "fr": "Escorte",
-            "en": "Escort"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.boarding",
-            "cap.air_defense",
-            "cap.sonar",
-            "cap.torpedo"
-          ],
-          "sourceClassId": "arleigh_burke",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                2
-              ]
-            ],
-            "teams": [
-              [
-                "vbss",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "DDG",
-        "speed": 16,
-        "sensor": 85,
-        "naval": 1,
-        "cost": 18,
-        "max": 1,
-        "ssm": 4,
-        "def": 10,
-        "helo": 1,
-        "jam": 1,
-        "torp": 4,
-        "dom": "sea",
-        "cls": "arleigh_burke",
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.repair",
-      "label": {
-        "fr": "Zeus",
-        "en": "Zeus"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "repair",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.zeus.std",
-          "label": {
-            "fr": "Câbles",
-            "en": "Cables"
-          },
-          "capabilities": [
-            "cap.cable_repair",
-            "cap.seabed_survey"
-          ],
-          "sourceClassId": "zeus",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": [
-              [
-                "tech",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "ARC",
-        "speed": 9,
-        "sensor": 30,
-        "cost": 10,
-        "max": 1,
-        "dom": "sea",
-        "cls": "zeus",
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ally",
-      "label": {
-        "fr": "Patrouilleur allié",
-        "en": "Patrouilleur allié"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ally",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [],
-      "sourceGameStats": {
-        "code": "A",
-        "speed": 13,
-        "sensor": 55,
-        "naval": 1,
-        "ssm": 2,
-        "def": 5,
-        "dom": "sea"
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": false
-    },
-    {
-      "id": "naval.unit.lcsi",
-      "label": {
-        "fr": "LCS Independence",
-        "en": "LCS Independence"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lcsi",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.lcs_independence.suw",
-          "label": {
-            "fr": "Surface (SUW)",
-            "en": "Surface (SUW)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.boarding"
-          ],
-          "sourceClassId": "lcs_independence",
-          "sourceConfigurationId": "suw",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ]
-            ],
-            "teams": [
-              [
-                "vbss",
-                1
-              ]
-            ]
-          }
-        },
-        {
-          "id": "naval.configuration.lcs_independence.mcm",
-          "label": {
-            "fr": "Lutte contre les mines (MCM)",
-            "en": "Mine countermeasures (MCM)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.mcm",
-            "cap.seabed_survey"
-          ],
-          "sourceClassId": "lcs_independence",
-          "sourceConfigurationId": "mcm",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        },
-        {
-          "id": "naval.configuration.lcs_independence.suw_mq8",
-          "label": {
-            "fr": "Surface avec MQ-8 (historique)",
-            "en": "Surface with MQ-8 (historical)"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.boarding",
-            "cap.uav_obs"
-          ],
-          "sourceClassId": "lcs_independence",
-          "sourceConfigurationId": "suw_mq8",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ],
-              [
-                "mq8",
-                2
-              ]
-            ],
-            "teams": [
-              [
-                "vbss",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LCS",
-        "speed": 22,
-        "sensor": 55,
-        "naval": 1,
-        "cost": 3,
-        "max": 5,
-        "ssm": 2,
-        "def": 5,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": "patrol",
-        "cls": "lcs_independence",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ddg1000",
-      "label": {
-        "fr": "Zumwalt",
-        "en": "Zumwalt"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ddg1000",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.zumwalt.std",
-          "label": {
-            "fr": "Surface",
-            "en": "Surface"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.sonar"
-          ],
-          "sourceClassId": "zumwalt",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "DDG",
-        "speed": 17,
-        "sensor": 80,
-        "naval": 1,
-        "cost": 5,
-        "max": 5,
-        "ssm": 3,
-        "def": 6,
-        "torp": 0,
-        "helo": 1,
-        "jam": 1,
-        "dom": "sea",
-        "base": "frigate",
-        "cls": "zumwalt",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.cg",
-      "label": {
-        "fr": "Ticonderoga",
-        "en": "Ticonderoga"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "cg",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.ticonderoga.std",
-          "label": {
-            "fr": "Escorte et commandement de zone",
-            "en": "Escort and area command"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.escort",
-            "cap.air_defense",
-            "cap.sonar",
-            "cap.torpedo",
-            "cap.c2"
-          ],
-          "sourceClassId": "ticonderoga",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                2
-              ]
-            ],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "CG",
-        "speed": 16,
-        "sensor": 88,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 4,
-        "def": 10,
-        "torp": 4,
-        "helo": 1,
-        "jam": 1,
-        "dom": "sea",
-        "base": "frigate",
-        "cls": "ticonderoga",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.cvn",
-      "label": {
-        "fr": "Gerald R. Ford",
-        "en": "Gerald R. Ford"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "cvn",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.gerald_ford.exercise",
-          "label": {
-            "fr": "Exercice : deux hélicoptères",
-            "en": "Exercise: two helicopters"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.aeronaval",
-            "cap.aviation_hub",
-            "cap.c2"
-          ],
-          "sourceClassId": "gerald_ford",
-          "sourceConfigurationId": "exercise",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ],
-              [
-                "mh60s",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "CVN",
-        "speed": 15,
-        "sensor": 70,
-        "naval": 1,
-        "cost": 6,
-        "max": 5,
-        "ssm": 0,
-        "def": 6,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "gerald_ford",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.cvn68",
-      "label": {
-        "fr": "Nimitz",
-        "en": "Nimitz"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "cvn68",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.nimitz.exercise",
-          "label": {
-            "fr": "Exercice : deux hélicoptères",
-            "en": "Exercise: two helicopters"
-          },
-          "capabilities": [
-            "cap.surface_presence",
-            "cap.aeronaval",
-            "cap.aviation_hub",
-            "cap.c2"
-          ],
-          "sourceClassId": "nimitz",
-          "sourceConfigurationId": "exercise",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60r",
-                1
-              ],
-              [
-                "mh60s",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "CVN",
-        "speed": 15,
-        "sensor": 68,
-        "naval": 1,
-        "cost": 6,
-        "max": 5,
-        "ssm": 0,
-        "def": 6,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "nimitz",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.lpd",
-      "label": {
-        "fr": "San Antonio",
-        "en": "San Antonio"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lpd",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.san_antonio.std",
-          "label": {
-            "fr": "Secours et transport",
-            "en": "Rescue and lift"
-          },
-          "capabilities": [
-            "cap.lift",
-            "cap.medical",
-            "cap.surface_presence"
-          ],
-          "sourceClassId": "san_antonio",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                2
-              ]
-            ],
-            "teams": [
-              [
-                "amph",
-                2
-              ],
-              [
-                "med",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LPD",
-        "speed": 13,
-        "sensor": 50,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 0,
-        "def": 4,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "san_antonio",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.lha",
-      "label": {
-        "fr": "America (Flight 0)",
-        "en": "America (Flight 0)"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lha",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.america.std",
-          "label": {
-            "fr": "Aviation et transport",
-            "en": "Aviation and lift"
-          },
-          "capabilities": [
-            "cap.lift",
-            "cap.medical",
-            "cap.aviation_hub",
-            "cap.surface_presence"
-          ],
-          "sourceClassId": "america",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                2
-              ]
-            ],
-            "teams": [
-              [
-                "amph",
-                1
-              ],
-              [
-                "med",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LHA",
-        "speed": 14,
-        "sensor": 55,
-        "naval": 1,
-        "cost": 5,
-        "max": 5,
-        "ssm": 0,
-        "def": 5,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "america",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.lhd",
-      "label": {
-        "fr": "Wasp",
-        "en": "Wasp"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lhd",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.wasp.std",
-          "label": {
-            "fr": "Secours et transport",
-            "en": "Rescue and lift"
-          },
-          "capabilities": [
-            "cap.lift",
-            "cap.medical",
-            "cap.aviation_hub",
-            "cap.surface_presence"
-          ],
-          "sourceClassId": "wasp",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                2
-              ]
-            ],
-            "teams": [
-              [
-                "amph",
-                2
-              ],
-              [
-                "med",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LHD",
-        "speed": 14,
-        "sensor": 55,
-        "naval": 1,
-        "cost": 5,
-        "max": 5,
-        "ssm": 0,
-        "def": 5,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "wasp",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.lsd",
-      "label": {
-        "fr": "Harpers Ferry",
-        "en": "Harpers Ferry"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lsd",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.harpers_ferry.std",
-          "label": {
-            "fr": "Transport",
-            "en": "Lift"
-          },
-          "capabilities": [
-            "cap.lift",
-            "cap.surface_presence"
-          ],
-          "sourceClassId": "harpers_ferry",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": [
-              [
-                "amph",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LSD",
-        "speed": 13,
-        "sensor": 45,
-        "naval": 1,
-        "cost": 3,
-        "max": 5,
-        "ssm": 0,
-        "def": 3,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "harpers_ferry",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ssn",
-      "label": {
-        "fr": "Virginia",
-        "en": "Virginia"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ssn",
-      "physicalLayer": "subsurface",
-      "capabilities": [
-        "cap.submarine_depth_control"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.virginia.std",
-          "label": {
-            "fr": "Observation sous-marine",
-            "en": "Underwater observation"
-          },
-          "capabilities": [
-            "cap.underwater_obs",
-            "cap.sonar",
-            "cap.torpedo"
-          ],
-          "sourceClassId": "virginia",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "SSN",
-        "speed": 15,
-        "sensor": 78,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 6,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "virginia",
-        "sub": 1,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ssn688",
-      "label": {
-        "fr": "Los Angeles",
-        "en": "Los Angeles"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ssn688",
-      "physicalLayer": "subsurface",
-      "capabilities": [
-        "cap.submarine_depth_control"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.los_angeles.std",
-          "label": {
-            "fr": "Observation sous-marine",
-            "en": "Underwater observation"
-          },
-          "capabilities": [
-            "cap.underwater_obs",
-            "cap.sonar",
-            "cap.torpedo"
-          ],
-          "sourceClassId": "los_angeles",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "SSN",
-        "speed": 14,
-        "sensor": 68,
-        "naval": 1,
-        "cost": 3,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 4,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "los_angeles",
-        "sub": 1,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ssn21",
-      "label": {
-        "fr": "Seawolf",
-        "en": "Seawolf"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ssn21",
-      "physicalLayer": "subsurface",
-      "capabilities": [
-        "cap.submarine_depth_control"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.seawolf.std",
-          "label": {
-            "fr": "Observation sous-marine",
-            "en": "Underwater observation"
-          },
-          "capabilities": [
-            "cap.underwater_obs",
-            "cap.sonar",
-            "cap.torpedo"
-          ],
-          "sourceClassId": "seawolf",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "SSN",
-        "speed": 16,
-        "sensor": 88,
-        "naval": 1,
-        "cost": 5,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 8,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "seawolf",
-        "sub": 1,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.ssgn",
-      "label": {
-        "fr": "Ohio SSGN",
-        "en": "Ohio SSGN"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "ssgn",
-      "physicalLayer": "subsurface",
-      "capabilities": [
-        "cap.submarine_depth_control"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.ohio_ssgn.std",
-          "label": {
-            "fr": "Observation et soutien spécial",
-            "en": "Observation and special support"
-          },
-          "capabilities": [
-            "cap.underwater_obs",
-            "cap.sonar",
-            "cap.sof_support"
-          ],
-          "sourceClassId": "ohio_ssgn",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "SSGN",
-        "speed": 13,
-        "sensor": 62,
-        "naval": 1,
-        "cost": 5,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 4,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "ohio_ssgn",
-        "sub": 1,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.tao205",
-      "label": {
-        "fr": "John Lewis",
-        "en": "John Lewis"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "tao205",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.john_lewis.std",
-          "label": {
-            "fr": "Ravitaillement",
-            "en": "Replenishment"
-          },
-          "capabilities": [
-            "cap.logistics"
-          ],
-          "sourceClassId": "john_lewis",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "AO",
-        "speed": 11,
-        "sensor": 30,
-        "naval": 1,
-        "cost": 2,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "john_lewis",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.tao187",
-      "label": {
-        "fr": "Henry J. Kaiser",
-        "en": "Henry J. Kaiser"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "tao187",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.henry_kaiser.std",
-          "label": {
-            "fr": "Ravitaillement",
-            "en": "Replenishment"
-          },
-          "capabilities": [
-            "cap.logistics"
-          ],
-          "sourceClassId": "henry_kaiser",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "AO",
-        "speed": 10,
-        "sensor": 28,
-        "naval": 1,
-        "cost": 2,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "henry_kaiser",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.take",
-      "label": {
-        "fr": "Lewis and Clark",
-        "en": "Lewis and Clark"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "take",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.lewis_clark.std",
-          "label": {
-            "fr": "Réapprovisionnement",
-            "en": "Resupply"
-          },
-          "capabilities": [
-            "cap.logistics"
-          ],
-          "sourceClassId": "lewis_clark",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "AKE",
-        "speed": 11,
-        "sensor": 30,
-        "naval": 1,
-        "cost": 3,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "lewis_clark",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.epf",
-      "label": {
-        "fr": "Spearhead",
-        "en": "Spearhead"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "epf",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.spearhead.std",
-          "label": {
-            "fr": "Transport rapide",
-            "en": "Fast lift"
-          },
-          "capabilities": [
-            "cap.lift"
-          ],
-          "sourceClassId": "spearhead",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": [
-              [
-                "amph",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "EPF",
-        "speed": 24,
-        "sensor": 35,
-        "naval": 1,
-        "cost": 3,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "spearhead",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.mcm",
-      "label": {
-        "fr": "Avenger",
-        "en": "Avenger"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "mcm",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.avenger.std",
-          "label": {
-            "fr": "Lutte contre les mines",
-            "en": "Mine countermeasures"
-          },
-          "capabilities": [
-            "cap.mcm",
-            "cap.seabed_survey"
-          ],
-          "sourceClassId": "avenger",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "MCM",
-        "speed": 8,
-        "sensor": 30,
-        "naval": 1,
-        "cost": 2,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "avenger",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.tah",
-      "label": {
-        "fr": "Mercy",
-        "en": "Mercy"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "tah",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.mercy.std",
-          "label": {
-            "fr": "Accueil médical",
-            "en": "Medical reception"
-          },
-          "capabilities": [
-            "cap.medical",
-            "cap.lift"
-          ],
-          "sourceClassId": "mercy",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": [
-              [
-                "med",
-                2
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "AH",
-        "speed": 10,
-        "sensor": 30,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "mercy",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.esb",
-      "label": {
-        "fr": "Lewis B. Puller",
-        "en": "Lewis B. Puller"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "esb",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.lewis_puller.std",
-          "label": {
-            "fr": "Base de soutien",
-            "en": "Support base"
-          },
-          "capabilities": [
-            "cap.sof_support",
-            "cap.logistics",
-            "cap.aviation_hub"
-          ],
-          "sourceClassId": "lewis_puller",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [
-              [
-                "mh60s",
-                1
-              ]
-            ],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "ESB",
-        "speed": 10,
-        "sensor": 40,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 0,
-        "def": 2,
-        "torp": 0,
-        "helo": 1,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "lewis_puller",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.tags",
-      "label": {
-        "fr": "Pathfinder",
-        "en": "Pathfinder"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "tags",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.pathfinder.std",
-          "label": {
-            "fr": "Relevés",
-            "en": "Survey"
-          },
-          "capabilities": [
-            "cap.seabed_survey"
-          ],
-          "sourceClassId": "pathfinder",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": [
-              [
-                "tech",
-                1
-              ]
-            ]
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "AGS",
-        "speed": 9,
-        "sensor": 35,
-        "naval": 1,
-        "cost": 2,
-        "max": 5,
-        "ssm": 0,
-        "def": 0,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "pathfinder",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.lcc",
-      "label": {
-        "fr": "Blue Ridge",
-        "en": "Blue Ridge"
-      },
-      "kind": "unit_type",
-      "origin": "imported_v48",
-      "sourceKey": "lcc",
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.surface_navigation"
-      ],
-      "configurations": [
-        {
-          "id": "naval.configuration.blue_ridge.std",
-          "label": {
-            "fr": "Commandement",
-            "en": "Command"
-          },
-          "capabilities": [
-            "cap.c2",
-            "cap.surface_presence"
-          ],
-          "sourceClassId": "blue_ridge",
-          "sourceConfigurationId": "std",
-          "legacyPayloads": {
-            "air": [],
-            "teams": []
-          }
-        }
-      ],
-      "sourceGameStats": {
-        "code": "LCC",
-        "speed": 11,
-        "sensor": 70,
-        "naval": 1,
-        "cost": 4,
-        "max": 5,
-        "ssm": 0,
-        "def": 2,
-        "torp": 0,
-        "helo": 0,
-        "jam": 0,
-        "dom": "sea",
-        "base": null,
-        "cls": "blue_ridge",
-        "sub": 0,
-        "nv": 1
-      },
-      "statisticStatus": "fictional_game_values",
-      "configurationCapabilitiesAreConditional": true
-    },
-    {
-      "id": "naval.unit.humanitarian_ship",
-      "label": {
-        "fr": "Navire humanitaire de scénario",
-        "en": "Scenario humanitarian vessel"
-      },
-      "kind": "unit_type",
-      "origin": "planned_extension",
-      "sourceKey": null,
-      "physicalLayer": "surface",
-      "capabilities": [
-        "cap.humanitarian_transport",
-        "cap.convoy_navigation"
-      ],
-      "configurations": [],
-      "sourceGameStats": {},
-      "statisticStatus": "to_calibrate",
-      "configurationCapabilitiesAreConditional": false
+      "teams": [
+       [
+        "vbss",
+        1
+       ]
+      ]
+     }
     }
-  ],
-  "mechanicDefinitions": [
+   ],
+   "sourceGameStats": {
+    "code": "DDG",
+    "speed": 16,
+    "sensor": 85,
+    "naval": 1,
+    "cost": 18,
+    "max": 1,
+    "ssm": 4,
+    "def": 10,
+    "helo": 1,
+    "jam": 1,
+    "torp": 4,
+    "dom": "sea",
+    "cls": "arleigh_burke",
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.repair",
+   "label": {
+    "fr": "Zeus",
+    "en": "Zeus"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "repair",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
     {
-      "id": "naval.mechanic.navigation",
-      "label": {
-        "fr": "Navigation maritime",
-        "en": "Navigation maritime"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.navigation",
-      "requiresCapabilities": [
-        "cap.surface_navigation"
-      ],
-      "emits": [
-        "event.naval.ship.moved"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "unit.position",
-        "unit.path",
-        "unit.velocity"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "naval.mechanic.humanitarian_convoy",
-      "label": {
-        "fr": "Convoi humanitaire automatique",
-        "en": "Convoi humanitaire automatique"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.humanitarianConvoy",
-      "requiresCapabilities": [
-        "cap.convoy_navigation"
-      ],
-      "emits": [
-        "event.naval.convoy.arrived"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "convoy.manifest",
-        "convoy.route",
-        "convoy.status"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "naval.mechanic.humanitarian_losses",
-      "label": {
-        "fr": "Seuil de pertes",
-        "en": "Seuil de pertes"
-      },
-      "status": "planned",
-      "handlerId": "handler.coordination.humanitarianLossThreshold",
-      "requiresCapabilities": [
-        "cap.humanitarian_transport"
-      ],
-      "emits": [
-        "event.naval.convoy.loss_threshold",
-        "event.crisis.opened"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "convoy.uniqueLosses",
-        "convoy.emergencyEventId"
-      ],
-      "parameters": {
-        "thresholdNumerator": 1,
-        "thresholdDenominator": 2,
-        "cohort": "initialProtectedShipIds",
-        "lossStatuses": [
-          "destroyed",
-          "sunk"
-        ],
-        "emitOnce": true,
-        "automaticGameOverAtThreshold": false
-      }
-    },
-    {
-      "id": "naval.mechanic.acoustic_buoys",
-      "label": {
-        "fr": "Bouées acoustiques individuelles",
-        "en": "Bouées acoustiques individuelles"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.acousticBuoys",
-      "requiresCapabilities": [
-        "cap.acoustic_sensing"
-      ],
-      "emits": [
-        "event.naval.buoy.ready",
-        "event.naval.observation.created"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "buoy.status",
-        "buoy.energy",
-        "observation.store"
-      ],
-      "parameters": {
-        "publicProfileFile": "../DONNEES_ACOUSTIQUES_PUBLIQUES.json",
-        "referenceProfileId": "reference.sonobuoy.ssq62g",
-        "realDetectionRadiusNm": null,
-        "unknownRangeMeansUnlimited": false
-      }
-    },
-    {
-      "id": "naval.mechanic.submarine_depth",
-      "label": {
-        "fr": "Profondeur des sous-marins",
-        "en": "Profondeur des sous-marins"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.submarineDepth",
-      "requiresCapabilities": [
-        "cap.submarine_depth_control"
-      ],
-      "emits": [
-        "event.naval.depth.changed"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "unit.depth",
-        "unit.targetDepth"
-      ],
-      "parameters": {
-        "depthUnit": "m",
-        "continuousTransition": true,
-        "layerAbsenceAllowed": true,
-        "seabedClearanceRequired": true,
-        "periodicRandomDepthSwitch": false
-      }
-    },
-    {
-      "id": "naval.mechanic.acoustic_environment",
-      "label": {
-        "fr": "Propagation et couche",
-        "en": "Propagation et couche"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.acousticEnvironment",
-      "requiresCapabilities": [],
-      "emits": [
-        "event.naval.observation.created"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "observation.store"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "naval.mechanic.track_quality",
-      "label": {
-        "fr": "Maintien et perte de piste",
-        "en": "Maintien et perte de piste"
-      },
-      "status": "planned",
-      "handlerId": "handler.naval.trackQuality",
-      "requiresCapabilities": [],
-      "emits": [
-        "event.naval.track.changed"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "knowledge.tracks"
-      ],
-      "parameters": {}
-    },
-    {
-      "id": "naval.mechanic.replenishment",
-      "label": {
-        "fr": "Ravitaillement physique",
-        "en": "Ravitaillement physique"
-      },
-      "status": "planned",
-      "handlerId": "handler.coordination.transferResource",
-      "requiresCapabilities": [],
-      "emits": [
-        "event.resource.transferred"
-      ],
-      "reads": [
-        "simulation.clock",
-        "world.instances",
-        "mission.constraints"
-      ],
-      "writes": [
-        "resource.owner",
-        "resource.balance"
-      ],
-      "parameters": {}
+     "id": "naval.configuration.zeus.std",
+     "label": {
+      "fr": "Câbles",
+      "en": "Cables"
+     },
+     "capabilities": [
+      "cap.cable_repair",
+      "cap.seabed_survey"
+     ],
+     "sourceClassId": "zeus",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": [
+       [
+        "tech",
+        1
+       ]
+      ]
+     }
     }
-  ],
-  "notes": [
-    "Draft catalogue not connected to the live game.",
-    "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
-    "Mechanic and handler records remain planned until implementation and integration tests pass.",
-    "Configuration capabilities apply only to the chosen configuration.",
-    "legacyPayloads preserves source identifiers for the future payload-registry migration; it is not an executable cross-domain binding."
-  ]
+   ],
+   "sourceGameStats": {
+    "code": "ARC",
+    "speed": 9,
+    "sensor": 30,
+    "cost": 10,
+    "max": 1,
+    "dom": "sea",
+    "cls": "zeus",
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ally",
+   "label": {
+    "fr": "Patrouilleur allié",
+    "en": "Patrouilleur allié"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ally",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [],
+   "sourceGameStats": {
+    "code": "A",
+    "speed": 13,
+    "sensor": 55,
+    "naval": 1,
+    "ssm": 2,
+    "def": 5,
+    "dom": "sea"
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": false
+  },
+  {
+   "id": "naval.unit.lcsi",
+   "label": {
+    "fr": "LCS Independence",
+    "en": "LCS Independence"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lcsi",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.lcs_independence.suw",
+     "label": {
+      "fr": "Surface (SUW)",
+      "en": "Surface (SUW)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.boarding"
+     ],
+     "sourceClassId": "lcs_independence",
+     "sourceConfigurationId": "suw",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ]
+      ],
+      "teams": [
+       [
+        "vbss",
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "id": "naval.configuration.lcs_independence.mcm",
+     "label": {
+      "fr": "Lutte contre les mines (MCM)",
+      "en": "Mine countermeasures (MCM)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.mcm",
+      "cap.seabed_survey"
+     ],
+     "sourceClassId": "lcs_independence",
+     "sourceConfigurationId": "mcm",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    },
+    {
+     "id": "naval.configuration.lcs_independence.suw_mq8",
+     "label": {
+      "fr": "Surface avec MQ-8 (historique)",
+      "en": "Surface with MQ-8 (historical)"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.boarding",
+      "cap.uav_obs"
+     ],
+     "sourceClassId": "lcs_independence",
+     "sourceConfigurationId": "suw_mq8",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ],
+       [
+        "mq8",
+        2
+       ]
+      ],
+      "teams": [
+       [
+        "vbss",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LCS",
+    "speed": 22,
+    "sensor": 55,
+    "naval": 1,
+    "cost": 3,
+    "max": 5,
+    "ssm": 2,
+    "def": 5,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": "patrol",
+    "cls": "lcs_independence",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ddg1000",
+   "label": {
+    "fr": "Zumwalt",
+    "en": "Zumwalt"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ddg1000",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.zumwalt.std",
+     "label": {
+      "fr": "Surface",
+      "en": "Surface"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.sonar"
+     ],
+     "sourceClassId": "zumwalt",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "DDG",
+    "speed": 17,
+    "sensor": 80,
+    "naval": 1,
+    "cost": 5,
+    "max": 5,
+    "ssm": 3,
+    "def": 6,
+    "torp": 0,
+    "helo": 1,
+    "jam": 1,
+    "dom": "sea",
+    "base": "frigate",
+    "cls": "zumwalt",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.cg",
+   "label": {
+    "fr": "Ticonderoga",
+    "en": "Ticonderoga"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "cg",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.ticonderoga.std",
+     "label": {
+      "fr": "Escorte et commandement de zone",
+      "en": "Escort and area command"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.escort",
+      "cap.air_defense",
+      "cap.sonar",
+      "cap.torpedo",
+      "cap.c2"
+     ],
+     "sourceClassId": "ticonderoga",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        2
+       ]
+      ],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "CG",
+    "speed": 16,
+    "sensor": 88,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 4,
+    "def": 10,
+    "torp": 4,
+    "helo": 1,
+    "jam": 1,
+    "dom": "sea",
+    "base": "frigate",
+    "cls": "ticonderoga",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.cvn",
+   "label": {
+    "fr": "Gerald R. Ford",
+    "en": "Gerald R. Ford"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "cvn",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.gerald_ford.exercise",
+     "label": {
+      "fr": "Exercice : deux hélicoptères",
+      "en": "Exercise: two helicopters"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.aeronaval",
+      "cap.aviation_hub",
+      "cap.c2"
+     ],
+     "sourceClassId": "gerald_ford",
+     "sourceConfigurationId": "exercise",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ],
+       [
+        "mh60s",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "CVN",
+    "speed": 15,
+    "sensor": 70,
+    "naval": 1,
+    "cost": 6,
+    "max": 5,
+    "ssm": 0,
+    "def": 6,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "gerald_ford",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.cvn68",
+   "label": {
+    "fr": "Nimitz",
+    "en": "Nimitz"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "cvn68",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.nimitz.exercise",
+     "label": {
+      "fr": "Exercice : deux hélicoptères",
+      "en": "Exercise: two helicopters"
+     },
+     "capabilities": [
+      "cap.surface_presence",
+      "cap.aeronaval",
+      "cap.aviation_hub",
+      "cap.c2"
+     ],
+     "sourceClassId": "nimitz",
+     "sourceConfigurationId": "exercise",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60r",
+        1
+       ],
+       [
+        "mh60s",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "CVN",
+    "speed": 15,
+    "sensor": 68,
+    "naval": 1,
+    "cost": 6,
+    "max": 5,
+    "ssm": 0,
+    "def": 6,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "nimitz",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.lpd",
+   "label": {
+    "fr": "San Antonio",
+    "en": "San Antonio"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lpd",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.san_antonio.std",
+     "label": {
+      "fr": "Secours et transport",
+      "en": "Rescue and lift"
+     },
+     "capabilities": [
+      "cap.lift",
+      "cap.medical",
+      "cap.surface_presence"
+     ],
+     "sourceClassId": "san_antonio",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        2
+       ]
+      ],
+      "teams": [
+       [
+        "amph",
+        2
+       ],
+       [
+        "med",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LPD",
+    "speed": 13,
+    "sensor": 50,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 0,
+    "def": 4,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "san_antonio",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.lha",
+   "label": {
+    "fr": "America (Flight 0)",
+    "en": "America (Flight 0)"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lha",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.america.std",
+     "label": {
+      "fr": "Aviation et transport",
+      "en": "Aviation and lift"
+     },
+     "capabilities": [
+      "cap.lift",
+      "cap.medical",
+      "cap.aviation_hub",
+      "cap.surface_presence"
+     ],
+     "sourceClassId": "america",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        2
+       ]
+      ],
+      "teams": [
+       [
+        "amph",
+        1
+       ],
+       [
+        "med",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LHA",
+    "speed": 14,
+    "sensor": 55,
+    "naval": 1,
+    "cost": 5,
+    "max": 5,
+    "ssm": 0,
+    "def": 5,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "america",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.lhd",
+   "label": {
+    "fr": "Wasp",
+    "en": "Wasp"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lhd",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.wasp.std",
+     "label": {
+      "fr": "Secours et transport",
+      "en": "Rescue and lift"
+     },
+     "capabilities": [
+      "cap.lift",
+      "cap.medical",
+      "cap.aviation_hub",
+      "cap.surface_presence"
+     ],
+     "sourceClassId": "wasp",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        2
+       ]
+      ],
+      "teams": [
+       [
+        "amph",
+        2
+       ],
+       [
+        "med",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LHD",
+    "speed": 14,
+    "sensor": 55,
+    "naval": 1,
+    "cost": 5,
+    "max": 5,
+    "ssm": 0,
+    "def": 5,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "wasp",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.lsd",
+   "label": {
+    "fr": "Harpers Ferry",
+    "en": "Harpers Ferry"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lsd",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.harpers_ferry.std",
+     "label": {
+      "fr": "Transport",
+      "en": "Lift"
+     },
+     "capabilities": [
+      "cap.lift",
+      "cap.surface_presence"
+     ],
+     "sourceClassId": "harpers_ferry",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": [
+       [
+        "amph",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LSD",
+    "speed": 13,
+    "sensor": 45,
+    "naval": 1,
+    "cost": 3,
+    "max": 5,
+    "ssm": 0,
+    "def": 3,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "harpers_ferry",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ssn",
+   "label": {
+    "fr": "Virginia",
+    "en": "Virginia"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ssn",
+   "physicalLayer": "subsurface",
+   "capabilities": [
+    "cap.submarine_depth_control"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.virginia.std",
+     "label": {
+      "fr": "Observation sous-marine",
+      "en": "Underwater observation"
+     },
+     "capabilities": [
+      "cap.underwater_obs",
+      "cap.sonar",
+      "cap.torpedo"
+     ],
+     "sourceClassId": "virginia",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "SSN",
+    "speed": 15,
+    "sensor": 78,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 6,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "virginia",
+    "sub": 1,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ssn688",
+   "label": {
+    "fr": "Los Angeles",
+    "en": "Los Angeles"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ssn688",
+   "physicalLayer": "subsurface",
+   "capabilities": [
+    "cap.submarine_depth_control"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.los_angeles.std",
+     "label": {
+      "fr": "Observation sous-marine",
+      "en": "Underwater observation"
+     },
+     "capabilities": [
+      "cap.underwater_obs",
+      "cap.sonar",
+      "cap.torpedo"
+     ],
+     "sourceClassId": "los_angeles",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "SSN",
+    "speed": 14,
+    "sensor": 68,
+    "naval": 1,
+    "cost": 3,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 4,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "los_angeles",
+    "sub": 1,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ssn21",
+   "label": {
+    "fr": "Seawolf",
+    "en": "Seawolf"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ssn21",
+   "physicalLayer": "subsurface",
+   "capabilities": [
+    "cap.submarine_depth_control"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.seawolf.std",
+     "label": {
+      "fr": "Observation sous-marine",
+      "en": "Underwater observation"
+     },
+     "capabilities": [
+      "cap.underwater_obs",
+      "cap.sonar",
+      "cap.torpedo"
+     ],
+     "sourceClassId": "seawolf",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "SSN",
+    "speed": 16,
+    "sensor": 88,
+    "naval": 1,
+    "cost": 5,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 8,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "seawolf",
+    "sub": 1,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.ssgn",
+   "label": {
+    "fr": "Ohio SSGN",
+    "en": "Ohio SSGN"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "ssgn",
+   "physicalLayer": "subsurface",
+   "capabilities": [
+    "cap.submarine_depth_control"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.ohio_ssgn.std",
+     "label": {
+      "fr": "Observation et soutien spécial",
+      "en": "Observation and special support"
+     },
+     "capabilities": [
+      "cap.underwater_obs",
+      "cap.sonar",
+      "cap.sof_support"
+     ],
+     "sourceClassId": "ohio_ssgn",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "SSGN",
+    "speed": 13,
+    "sensor": 62,
+    "naval": 1,
+    "cost": 5,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 4,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "ohio_ssgn",
+    "sub": 1,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.tao205",
+   "label": {
+    "fr": "John Lewis",
+    "en": "John Lewis"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "tao205",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.john_lewis.std",
+     "label": {
+      "fr": "Ravitaillement",
+      "en": "Replenishment"
+     },
+     "capabilities": [
+      "cap.logistics"
+     ],
+     "sourceClassId": "john_lewis",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "AO",
+    "speed": 11,
+    "sensor": 30,
+    "naval": 1,
+    "cost": 2,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "john_lewis",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.tao187",
+   "label": {
+    "fr": "Henry J. Kaiser",
+    "en": "Henry J. Kaiser"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "tao187",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.henry_kaiser.std",
+     "label": {
+      "fr": "Ravitaillement",
+      "en": "Replenishment"
+     },
+     "capabilities": [
+      "cap.logistics"
+     ],
+     "sourceClassId": "henry_kaiser",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "AO",
+    "speed": 10,
+    "sensor": 28,
+    "naval": 1,
+    "cost": 2,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "henry_kaiser",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.take",
+   "label": {
+    "fr": "Lewis and Clark",
+    "en": "Lewis and Clark"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "take",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.lewis_clark.std",
+     "label": {
+      "fr": "Réapprovisionnement",
+      "en": "Resupply"
+     },
+     "capabilities": [
+      "cap.logistics"
+     ],
+     "sourceClassId": "lewis_clark",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "AKE",
+    "speed": 11,
+    "sensor": 30,
+    "naval": 1,
+    "cost": 3,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "lewis_clark",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.epf",
+   "label": {
+    "fr": "Spearhead",
+    "en": "Spearhead"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "epf",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.spearhead.std",
+     "label": {
+      "fr": "Transport rapide",
+      "en": "Fast lift"
+     },
+     "capabilities": [
+      "cap.lift"
+     ],
+     "sourceClassId": "spearhead",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": [
+       [
+        "amph",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "EPF",
+    "speed": 24,
+    "sensor": 35,
+    "naval": 1,
+    "cost": 3,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "spearhead",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.mcm",
+   "label": {
+    "fr": "Avenger",
+    "en": "Avenger"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "mcm",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.avenger.std",
+     "label": {
+      "fr": "Lutte contre les mines",
+      "en": "Mine countermeasures"
+     },
+     "capabilities": [
+      "cap.mcm",
+      "cap.seabed_survey"
+     ],
+     "sourceClassId": "avenger",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "MCM",
+    "speed": 8,
+    "sensor": 30,
+    "naval": 1,
+    "cost": 2,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "avenger",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.tah",
+   "label": {
+    "fr": "Mercy",
+    "en": "Mercy"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "tah",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.mercy.std",
+     "label": {
+      "fr": "Accueil médical",
+      "en": "Medical reception"
+     },
+     "capabilities": [
+      "cap.medical",
+      "cap.lift"
+     ],
+     "sourceClassId": "mercy",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": [
+       [
+        "med",
+        2
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "AH",
+    "speed": 10,
+    "sensor": 30,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "mercy",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.esb",
+   "label": {
+    "fr": "Lewis B. Puller",
+    "en": "Lewis B. Puller"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "esb",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.lewis_puller.std",
+     "label": {
+      "fr": "Base de soutien",
+      "en": "Support base"
+     },
+     "capabilities": [
+      "cap.sof_support",
+      "cap.logistics",
+      "cap.aviation_hub"
+     ],
+     "sourceClassId": "lewis_puller",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [
+       [
+        "mh60s",
+        1
+       ]
+      ],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "ESB",
+    "speed": 10,
+    "sensor": 40,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 0,
+    "def": 2,
+    "torp": 0,
+    "helo": 1,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "lewis_puller",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.tags",
+   "label": {
+    "fr": "Pathfinder",
+    "en": "Pathfinder"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "tags",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.pathfinder.std",
+     "label": {
+      "fr": "Relevés",
+      "en": "Survey"
+     },
+     "capabilities": [
+      "cap.seabed_survey"
+     ],
+     "sourceClassId": "pathfinder",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": [
+       [
+        "tech",
+        1
+       ]
+      ]
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "AGS",
+    "speed": 9,
+    "sensor": 35,
+    "naval": 1,
+    "cost": 2,
+    "max": 5,
+    "ssm": 0,
+    "def": 0,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "pathfinder",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.lcc",
+   "label": {
+    "fr": "Blue Ridge",
+    "en": "Blue Ridge"
+   },
+   "kind": "unit_type",
+   "origin": "imported_v48",
+   "sourceKey": "lcc",
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.surface_navigation"
+   ],
+   "configurations": [
+    {
+     "id": "naval.configuration.blue_ridge.std",
+     "label": {
+      "fr": "Commandement",
+      "en": "Command"
+     },
+     "capabilities": [
+      "cap.c2",
+      "cap.surface_presence"
+     ],
+     "sourceClassId": "blue_ridge",
+     "sourceConfigurationId": "std",
+     "legacyPayloads": {
+      "air": [],
+      "teams": []
+     }
+    }
+   ],
+   "sourceGameStats": {
+    "code": "LCC",
+    "speed": 11,
+    "sensor": 70,
+    "naval": 1,
+    "cost": 4,
+    "max": 5,
+    "ssm": 0,
+    "def": 2,
+    "torp": 0,
+    "helo": 0,
+    "jam": 0,
+    "dom": "sea",
+    "base": null,
+    "cls": "blue_ridge",
+    "sub": 0,
+    "nv": 1
+   },
+   "statisticStatus": "fictional_game_values",
+   "configurationCapabilitiesAreConditional": true
+  },
+  {
+   "id": "naval.unit.humanitarian_ship",
+   "label": {
+    "fr": "Navire humanitaire de scénario",
+    "en": "Scenario humanitarian vessel"
+   },
+   "kind": "unit_type",
+   "origin": "planned_extension",
+   "sourceKey": null,
+   "physicalLayer": "surface",
+   "capabilities": [
+    "cap.humanitarian_transport",
+    "cap.convoy_navigation"
+   ],
+   "configurations": [],
+   "sourceGameStats": {},
+   "statisticStatus": "to_calibrate",
+   "configurationCapabilitiesAreConditional": false
+  }
+ ],
+ "mechanicDefinitions": [
+  {
+   "id": "naval.mechanic.navigation",
+   "label": {
+    "fr": "Navigation maritime",
+    "en": "Navigation maritime"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.navigation",
+   "requiresCapabilities": [
+    "cap.surface_navigation"
+   ],
+   "emits": [
+    "event.naval.ship.moved"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "unit.position",
+    "unit.path",
+    "unit.velocity"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.humanitarian_convoy",
+   "label": {
+    "fr": "Convoi humanitaire automatique",
+    "en": "Convoi humanitaire automatique"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.humanitarianConvoy",
+   "requiresCapabilities": [
+    "cap.convoy_navigation"
+   ],
+   "emits": [
+    "event.naval.convoy.arrived"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "convoy.manifest",
+    "convoy.route",
+    "convoy.status"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.humanitarian_losses",
+   "label": {
+    "fr": "Seuil de pertes",
+    "en": "Seuil de pertes"
+   },
+   "status": "planned",
+   "handlerId": "handler.coordination.humanitarianLossThreshold",
+   "requiresCapabilities": [
+    "cap.humanitarian_transport"
+   ],
+   "emits": [
+    "event.naval.convoy.loss_threshold",
+    "event.crisis.opened"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "convoy.uniqueLosses",
+    "convoy.emergencyEventId"
+   ],
+   "parameters": {
+    "thresholdNumerator": 1,
+    "thresholdDenominator": 2,
+    "cohort": "initialProtectedShipIds",
+    "lossStatuses": [
+     "destroyed",
+     "sunk"
+    ],
+    "emitOnce": true,
+    "automaticGameOverAtThreshold": false
+   }
+  },
+  {
+   "id": "naval.mechanic.acoustic_buoys",
+   "label": {
+    "fr": "Bouées acoustiques individuelles",
+    "en": "Bouées acoustiques individuelles"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.acousticBuoys",
+   "requiresCapabilities": [
+    "cap.acoustic_sensing"
+   ],
+   "emits": [
+    "event.naval.buoy.ready",
+    "event.naval.observation.created"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "buoy.status",
+    "buoy.energy",
+    "observation.store"
+   ],
+   "parameters": {
+    "publicProfileFile": "../DONNEES_ACOUSTIQUES_PUBLIQUES.json",
+    "referenceProfileId": "reference.sonobuoy.ssq62g",
+    "realDetectionRadiusNm": null,
+    "unknownRangeMeansUnlimited": false
+   }
+  },
+  {
+   "id": "naval.mechanic.submarine_depth",
+   "label": {
+    "fr": "Profondeur des sous-marins",
+    "en": "Profondeur des sous-marins"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.submarineDepth",
+   "requiresCapabilities": [
+    "cap.submarine_depth_control"
+   ],
+   "emits": [
+    "event.naval.depth.changed"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "unit.depth",
+    "unit.targetDepth"
+   ],
+   "parameters": {
+    "depthUnit": "m",
+    "continuousTransition": true,
+    "layerAbsenceAllowed": true,
+    "seabedClearanceRequired": true,
+    "periodicRandomDepthSwitch": false
+   }
+  },
+  {
+   "id": "naval.mechanic.acoustic_environment",
+   "label": {
+    "fr": "Propagation et couche",
+    "en": "Propagation et couche"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.acousticEnvironment",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.naval.observation.created"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "observation.store"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.track_quality",
+   "label": {
+    "fr": "Maintien et perte de piste",
+    "en": "Maintien et perte de piste"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.trackQuality",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.naval.track.changed"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "knowledge.tracks"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.replenishment",
+   "label": {
+    "fr": "Ravitaillement physique",
+    "en": "Ravitaillement physique"
+   },
+   "status": "planned",
+   "handlerId": "handler.coordination.transferResource",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.resource.transferred"
+   ],
+   "reads": [
+    "simulation.clock",
+    "world.instances",
+    "mission.constraints"
+   ],
+   "writes": [
+    "resource.owner",
+    "resource.balance"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.datum_prediction",
+   "label": {
+    "fr": "Prédiction des zones",
+    "en": "Datum prediction"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.datum_prediction",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.naval.datum_prediction.changed"
+   ],
+   "reads": [
+    "knowledge.trackBeliefs",
+    "simulation.clock",
+    "known.geography",
+    "mobility.slowSpeeds"
+   ],
+   "writes": [
+    "knowledge.trackBeliefs"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.acoustic_measurement",
+   "label": {
+    "fr": "Mesures acoustiques de jeu",
+    "en": "Game acoustic measurements"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.acoustic_measurement",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.naval.acoustic_measurement.changed"
+   ],
+   "reads": [
+    "world.instances",
+    "sensor.configuration",
+    "environment.estimated_and_actual"
+   ],
+   "writes": [
+    "private.sensorMeasurements"
+   ],
+   "parameters": {
+    "noTruthExportToUI": true
+   }
+  },
+  {
+   "id": "naval.mechanic.persistent_depth",
+   "label": {
+    "fr": "Profondeur persistante",
+    "en": "Persistent depth"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.persistent_depth",
+   "requiresCapabilities": [],
+   "emits": [
+    "event.naval.persistent_depth.changed"
+   ],
+   "reads": [
+    "unit.depthOrder",
+    "environment.bathymetry"
+   ],
+   "writes": [
+    "unit.depthM",
+    "unit.relativeLayerState"
+   ],
+   "parameters": {}
+  },
+  {
+   "id": "naval.mechanic.active_ping_cycle",
+   "label": {
+    "fr": "Cycle de ping actif",
+    "en": "Active ping cycle"
+   },
+   "status": "planned",
+   "handlerId": "handler.naval.active_ping_cycle",
+   "requiresCapabilities": [
+    "cap.active_sonar"
+   ],
+   "emits": [
+    "event.naval.active_ping_cycle.changed"
+   ],
+   "reads": [
+    "unit.configuration",
+    "sensor.state",
+    "simulation.clock",
+    "order.queue"
+   ],
+   "writes": [
+    "private.sensorMeasurements",
+    "sensor.nextPingAt"
+   ],
+   "parameters": {
+    "extensionContract": "extension-pings-armes-souris.json"
+   }
+  }
+ ],
+ "notes": [
+  "Draft catalogue not connected to the live game.",
+  "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
+  "Mechanic and handler records remain planned until implementation and integration tests pass.",
+  "Configuration capabilities apply only to the chosen configuration.",
+  "legacyPayloads preserves source identifiers for the future payload-registry migration; it is not an executable cross-domain binding."
+ ]
 }

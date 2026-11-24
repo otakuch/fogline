@@ -53,7 +53,7 @@ const N = +(process.argv[2] || 4);
     // 5. torpilles comptées
     { const S = G('asw'), d = U('DDG-1'), c = A.startCrisis('sub'), r = rec('DDG-1-H1'), h = A.nvLaunch(d, 'torp', r.id); run(6.5);
       A.torpLaunch(c, h); A.torpLaunch(c, h); ok(h.torp === 0, 'torpilles : 2 tirées, stock à 0', h.torp);
-      h.x = c.zone.x; h.y = c.zone.y; c.located = true; const ac = A.crisisActions(c).filter(a => /torp/i.test(a.id) && a.ok);
+      A.dtFocus(c, 6, 1); h.x = c.zone.x; h.y = c.zone.y; const ac = A.crisisActions(c).filter(a => /torp/i.test(a.id) && a.ok);
       const hasOther = A.allAir().some(x => x.id !== r.id && x.kind === 'mh60r' && x.torp > 0);
       ok(ac.every(a => !String(a.label).includes(r.id)), 'torpilles : l’appareil vide ne reçoit plus d’ordre de tir', ac.map(a => a.label)); }
     // 6. MH-60S : aucune action acoustique
@@ -141,7 +141,7 @@ const N = +(process.argv[2] || 4);
       put(sn, c.sb, 30); const pg = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg && pg.ok && sheet(sn).some(b => b.dataset.v === c.id + '|ping:SSN-1' && !b.disabled), 'sous-marin : sonar actif proposé sur sa fiche', pg && pg.label);
       sn.thr = 2; const h0 = c.hold; A.doAct(pg); run(5); ok(c.located && c.alertU > S.t && sn.exposedU > S.t, 'sous-marin : un sonar actif à portée localise le contact et alerte l’adversaire', [c.hold, h0, c.located]);
       const pg2 = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg2 && !pg2.ok && /s/.test(pg2.why), 'sous-marin : sonar en recharge, raison donnée', pg2 && pg2.why); run(16); ok(uacts(sn, c).find(a => a.id === 'ping:SSN-1').ok, 'sous-marin : sonar de nouveau prêt après 20 s');
-      c.hold = 12; c.located = true; c.lostAt = 0; /* v50 : la piste se perd si elle n'est plus tenue */ const tp = uacts(sn, c).find(a => a.id === 'torpu:SSN-1'); ok(tp && tp.ok && tp.escTo === 4, 'sous-marin : torpille proposée, passage en Engager annoncé', tp && tp.label);
+      c.hold = 12; c.ev = []; put(sn, c.sb, 30); A.dtFocus(c, 6, 1); c.lostAt = 0; /* v50 : la piste se perd si elle n'est plus tenue */ const tp = uacts(sn, c).find(a => a.id === 'torpu:SSN-1'); ok(tp && tp.ok && tp.escTo === 4, 'sous-marin : torpille proposée, passage en Engager annoncé', tp && [tp.label, tp.why]);
       const t0 = sn.torp; A.doAct(tp); ok(waitFor(() => !!c.torpOn || c.closed, 20) && sn.torp === t0 - 1, 'sous-marin : torpille lancée après autorisation, stock décompté', [sn.torp, t0, S.posture]);
       ok(waitFor(() => c.closed || !c.torpOn, 20), 'sous-marin : torpille résolue (touché ou manqué)', [c.closed, c.out]); ok(S.torpN >= 1, 'sous-marin : lancement compté au bilan');
       // écoute passive : vitesse lente, sans alerte
@@ -157,9 +157,9 @@ const N = +(process.argv[2] || 4);
       ok(!h.task, 'hélicoptère : libéré après le sonar trempé');
       const ht = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); ok(ht && ht.ok, 'hélicoptère : torpille proposée', ht && [ht.label, ht.why]); S.posture = 4; const ht2 = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); const tt = h.torp; A.doAct(ht2); ok(waitFor(() => !!c.torpOn, 30) && h.torp === tt - 1, 'hélicoptère : torpille larguée', [h.torp, tt]);
       // avion de patrouille : envoyé larguer
-      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC(); c.located = true; c.hold = 9; A.subZone && 0; const p8 = S.units.find(u => u.type === 'recon'); if (p8) { p8.x = c.zone.x + 110; p8.y = c.zone.y; p8.path = []; const pa = uacts(p8, c).find(a => a.id === 'torpu:' + p8.id); ok(pa && pa.ok && /Envoyer|Send/.test(pa.label), 'avion : envoyé larguer une torpille', pa && pa.label); A.doAct(pa); ok(waitFor(() => !!c.torpOn, 120), 'avion : torpille larguée sur zone') }
+      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC(); A.dtFocus(c, 6, 1); c.hold = 9; const p8 = S.units.find(u => u.type === 'recon'); if (p8) { p8.x = c.zone.x + 110; p8.y = c.zone.y; p8.path = []; const pa = uacts(p8, c).find(a => a.id === 'torpu:' + p8.id); ok(pa && pa.ok && /Envoyer|Send|approcher|approach/i.test(pa.label), 'avion : envoyé larguer une torpille', pa && pa.label); A.doAct(pa); ok(waitFor(() => !!c.torpOn, 120), 'avion : torpille larguée sur zone') }
       // fausse cible : torpille comptée à tort
-      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC('asw', 'bio'); sn = U('SSN-1'); put(sn, c.sb, 30); c.located = true; c.hold = 9; c.zone = { x: c.sb.x, y: c.sb.y, r: 45 }; const fb = S.torpBad || 0; A.doAct(uacts(sn, c).find(a => a.id === 'torpu:SSN-1')); waitFor(() => c.closed, 30); ok(c.closed && (S.torpBad || 0) === fb + 1, 'torpille sur un contact biologique : tir à tort compté');
+      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC('asw', 'bio'); sn = U('SSN-1'); put(sn, c.sb, 30); A.dtFocus(c, 6, 1); c.hold = 9; c.zone = { x: c.sb.x, y: c.sb.y, r: 45 }; const fb = S.torpBad || 0; A.doAct(uacts(sn, c).find(a => a.id === 'torpu:SSN-1')); waitFor(() => c.closed, 30); ok(c.closed && (S.torpBad || 0) === fb + 1, 'torpille sur un contact biologique : tir à tort compté');
       // MH-60S : pas de lutte sous-marine
       S = G('e6'); c = subC(); const lp = U('LPD-1'), hs = A.nvLaunch(lp, 'any'); run(7); ok(!aswUHtml(hs) && !uacts(hs, c).length, 'MH-60S : aucune action de lutte sous-marine');
       // dossier de crise : actions d'unité renvoyées vers les fiches

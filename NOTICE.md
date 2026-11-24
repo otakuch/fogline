@@ -25,4 +25,4 @@ Altitudes et profondeurs : ETOPO à 10 minutes d'arc, NOAA National Centers for 
 
 ## Illustrations des crises (version 51)
 
-`assets/crises/` : 14 illustrations d'ambiance fournies par Naully Nicolas dans le pack « FOGLINE ASW, mobilité, crises V2.1 » (images générées, fictives, d'après le manifeste du pack). Droits à confirmer avant diffusion publique. Elles n'affirment rien sur l'état du jeu.
+`assets/crises/` : 14 illustrations d'ambiance fournies par Naully Nicolas dans le pack « FOGLINE ASW, mobilité, crises V2.1 » (images générées, fictives, d'après le manifeste du pack). Droits confirmés par Naully Nicolas le 24 novembre 2026 : il déclare les détenir. Elles n'affirment rien sur l'état du jeu.

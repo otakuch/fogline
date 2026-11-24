@@ -64,6 +64,7 @@ seuil-projet/
     ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
+    ├── uiv52.js            version 52 : datum en distribution, observations, classement automatique, revue d'engagement, pings périodiques, suivi, projectiles, menu d'ordres (66 contrôles, FR 1440 et EN 390)
     ├── uiv51.js            version 51 : sans jetons, allure lente unique, force spéciale embarquée, fenêtre de crise, clic droit (49 contrôles, FR 1440 et EN 390)
     ├── uiv50.js            version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche (53 contrôles, FR 1440 et EN 390)
     ├── uiv49.js            version 49 : illustrations des missions, étiquettes retirées, globe et satellites (148 contrôles, 1440, 1024, 768 et 390 px)
@@ -153,6 +154,7 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 - Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
 - **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
 - Vitesses x1, x2 et x4, et avance rapide × 8 jusqu'au prochain événement (bouton ⏭, ou « Avancer jusqu'au prochain événement » dans le panneau quand aucune crise n'est ouverte). L'avance rapide s'arrête pour une crise, une alerte du renseignement, un aléa ou une demande, pas pour un simple contact ni un signal. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
+- **Durées depuis la version 52 (5.52) :** local 22 tours, international 31 (`LONG` 2,2) ; les valeurs de 16 et 22 tours ci-dessus sont périmées.
 - **Plus de jetons depuis la version 51 (5.51).** Aucune action ne se paie. Ce qui limite le joueur : le temps, les délais d'autorisation (allongés par un CGC bas, la dette et la réserve d'état-major), le nombre de vérifications simultanées, les attentes de « Coordonner » et de la parole publique, les stocks et les emplois comptés. Les mentions « 1 jeton » des sections plus anciennes sont périmées.
 - Déplacer une unité est gratuit. **Une seule allure, lente** : toutes les unités et tous les navires se déplacent à 0,55 × leur vitesse de table (5.51).
 - Échelle d'affichage : 1 unité de carte vaut 1,7 mille. Ce sont des valeurs de jeu.
@@ -1542,6 +1544,123 @@ Demande de Naully du 24 novembre 2026, avec le prompt « ASW, mobilité, crises,
 
 **Non vérifié :** aucun vrai joueur, aucun téléphone réel. Rien ne dit si l'absence de jetons rend le jeu plus clair ou trop facile, si la fenêtre de crise aide ou lasse (une par crise, 5 à 7 par partie), ni si l'allure lente convient avec des durées de partie inchangées. Les droits des illustrations de crise sont à confirmer par Naully. Le dossier de conception et le manuel ne sont pas mis à jour.
 
+### 5.52 Valeurs réglées, missions allongées, datum et suite du lot B (version 52)
+
+Demande de Naully du 24 novembre 2026 : « Règle les valeurs. Rallonge les missions, garde la définition. Et confirme les droits des 14 images et continue le reste du prompt ». Lu comme : régler ce qui remplace les jetons (décisions 113 et 114), rallonger les missions pour l'allure lente (115), garder la définition du navire de guerre compatible (116), noter que Naully confirme détenir les droits des 14 illustrations de crise (119), poursuivre le lot B du prompt V2.1 (118). Branche `v52-datum`, à partir de `v51-sans-jetons`.
+
+**Valeurs réglées (`TUNE`)**
+
+| Réglage | Version 51 | Version 52 |
+|---|---|---|
+| Vérifications simultanées | 2, 3 avec la cellule d'analyse | 1, 2 avec la cellule |
+| Attente entre deux « Coordonner » | 20 s | 30 s |
+| Attente entre deux prises de parole | 25 s, 12 s avec la cellule | 35 s, 18 s avec la cellule |
+| Autorisation de posture, CGC sous 55 | + 25 % | + 40 % |
+| Autorisation de posture, CGC sous 40 | + 50 % | + 80 % |
+
+Valeurs choisies sur une mesure par scripts (10 tirages par mission, missions allongées, avant le datum) : avec les valeurs de la version 51, la référence réussit 68 parties sur 90 (76 %) ; avec celles-ci, 63 sur 90 (70 %), omniscient 97 %. `TUNE` est lisible par les tests (`__S.TUNE`).
+
+**Missions allongées (`LONG` 2,2 dans `gen_db.py`, 1,6 avant)**
+
+- Local : 22 tours (16 avant). International : 31 tours (22 avant). `asw` : 19 tours (14). Tutoriel inchangé.
+- Phases, scripts, fenêtres de tours des variantes (`VAR`, rapport `_vk`) et présences requises suivent le même rapport.
+- À la vitesse par défaut ×½ : environ 22 et 31 minutes de temps réel.
+- Les délais de décision des crises ne changent pas.
+- Plafonds de pas des scripts et des tests relevés (16 000 pas).
+
+**Navire de guerre compatible :** définition de la version 51 gardée telle quelle (5.51).
+
+**Droits des illustrations de crise :** confirmés par Naully le 24 novembre 2026 ; noté dans `NOTICE.md`. Les illustrations de mission (décision 101) ne sont pas couvertes par cette confirmation.
+
+**Fenêtre de crise :** « Fermer », « Ouvrir le dossier », « Voir sur la carte » et Échap laissent le temps arrêté ; seul « Reprendre le temps » le relance. Le joueur lit donc le dossier sans que le compte à rebours tourne.
+
+**Datum : une distribution, plus un cercle (`DT`, `c.dt`, `dtInit`, `dtPredict`, `dtFuse`, `dtLook`, `dtSum`, `dtDeliver`)**
+
+- **Avant :** la zone d'un contact sous-marin était un cercle, et plusieurs règles la recentraient sur la position vraie. **Maintenant :** une grille de probabilité de 36 × 36 cases de 12 unités, sur deux bandes de profondeur (au-dessus et au-dessous de la couche), plus une masse « hors fenêtre ». La terre vaut 0. La somme vaut toujours 1.
+- **Sans indice,** la distribution s'étale avec le temps (vitesse supposée du contact). La zone affichée (`c.zone`) en est tirée : région qui contient 90 % de la probabilité, point représentatif sur le lobe le plus lourd, jamais au milieu de deux lobes.
+- **Chaque capteur qui écoute modifie la distribution**, qu'il entende ou non : un écho resserre, un silence vide la zone couverte (recherche négative). Bouée passive, sonar de coque, sonar trempé, sous-marin allié : relèvement (une direction). Bouée active et sonar actif : distance et relèvement. Un capteur en cours de mise à l'eau ne retire rien.
+- **Observations (`c.dt.obs`) :** chaque mesure garde son identifiant, sa mesure d'origine (`rootMeasurementId`), son capteur, son heure de production et de réception, son type. Un même rapport relayé deux fois n'est appliqué qu'une fois. Un rapport tardif est fusionné avec son âge.
+- **Mesures contradictoires :** le conflit est compté et affiché ; l'estimation est reconstruite depuis la dernière mesure, sans jamais lire la position vraie.
+- **Localisé** quand 80 % de la probabilité tient dans l'empreinte de tir (rayon 26) ; **perdu** sous 45 %. États de piste : recherche, tenue, faible, perdue, retrouvée. La « tenue » de 0 à 12 n'entre plus dans la torpille.
+- **Carte :** nuage de probabilité, contour de la région, lobes. **Dossier :** trois panneaux, « Où ? » (couverture, rayon, âge, lobes, conflits, capteurs qui entendent), « Quoi ? » (hypothèses et appartenance), « Action possible » (ce qui manque pour tirer).
+- Aucun tirage ajouté : même tirage, mêmes ordres, même estimation.
+
+**Revue d'engagement (`dtReview`, `dtWhy`)**
+
+Une torpille n'est proposée que si : couverture de l'empreinte de 80 % au moins, hypothèse « sous-marin » à 75 % au moins, dernière mesure de 30 s au plus, lanceur disponible. Sinon le bouton reste visible avec le motif. Une zone étroite avec une hypothèse biologique forte ne suffit pas.
+
+**Torpille**
+
+- Réussite estimée = couverture × (0,85 − pénalités d'arme). Valeurs de jeu.
+- La visée est figée au lancement sur le point représentatif ; elle ne suit pas la cible. Durée de course selon la distance (2 à 12 s).
+- À l'arrivée : s'il y a un sous-marin dans l'empreinte, tirage de la réussite ; sinon « rien dans la zone », sans autre information. Tir manqué : contact perdu.
+- Chaque torpille a un identifiant (`T-001`).
+
+**Classement automatique (`clsAuto`)**
+
+Toutes les 2 s, pour les contacts sous-marins et les navires sans transpondeur qui ont au moins une preuve autre que le transpondeur : si l'hypothèse en tête atteint 75 % avec 15 points d'avance, elle est classée sans clic et marquée « auto ». Des preuves contraires révisent le classement ; l'ancien est gardé et la révision passe au journal. Appartenance d'un sous-marin classé : **suspect** tant qu'il n'a pas attaqué, hostile ensuite (décision 62 tranchée par le prompt).
+
+**Commandes acoustiques par unité**
+
+- **Pings périodiques (`pingp:<unité>`, `u.pingAuto`) :** un ping toutes les 30 s de simulation, aucun en pause, arrêt par le même bouton, état sauvegardé.
+- **Suivre (`follow:<unité>`, sous-marin allié) :** l'unité rejoint le point représentatif et le suit ; un ordre de route l'annule.
+- **Analyser (`acana`) :** preuve d'analyse acoustique (fiabilité 0,76) ; lancée seule quand un capteur tient le contact (`S.autoAna`).
+- « Presser » suit l'estimation et n'est plus filtré par la vérité ; il est levé après 45 s sans effet.
+
+**Hélicoptère et avion : engager, ou approcher et engager**
+
+À portée : « Lancer une torpille ». Hors de portée : « Approcher et engager », refusé avec son motif si la réserve de carburant ne couvre pas l'aller et le retour. Si la revue d'engagement n'est plus satisfaite pendant l'approche, l'attaque est suspendue et le journal dit pourquoi.
+
+**Menu d'ordres (`unitCmds`, `ctxShow`, `ctxKey`, `ctxDo`)**
+
+Clic droit, appui long, Maj+F10 ou touche O : toutes les actions de l'unité sélectionnée au point visé (route, patrouille, commandes acoustiques, profondeur, bouées, groupe). Les actions viennent de `crisisActions` et des fiches, jamais d'une seconde liste. Une action indisponible reste affichée avec sa raison. Flèches, Entrée, Échap. Une unité perdue pendant que le menu est ouvert ne reçoit aucun ordre.
+
+**Projectiles connus (`projList`, `projHtml`, `LAY.proj`)**
+
+Liste en tête de l'onglet Contacts : vos torpilles et missiles, les pistes adverses détectées, avec identifiant, famille, origine et destination connues. Couche « Projectiles » du panneau Couches. Une torpille adverse inconnue du joueur n'y figure pas.
+
+**Bases et documents**
+
+- `data/bases/asw-five-bases-additions.json`, fusionné dans les cinq catalogues par `tools/bases/merge_asw.py` (58 entrées, toutes marquées « planned ») ; `tools/bases/validate.js` : 191 identifiants, aucune erreur. Les catalogues ne sont toujours pas branchés au moteur.
+- `docs/v52/` : schéma d'observation, cas de vérification, extension du pack.
+
+**Non fait du lot B**
+
+- Registre physique commun des projectiles (collisions continues, sous-filtres par famille).
+- Missile d'hélicoptère, détecteur d'anomalie magnétique, P-3C.
+- Association de plusieurs pistes sous-marines entre elles.
+- Mode de ciblage unifié du pointeur et chaîne de coordonnées.
+- Canalisation du datum par la géographie (détroits) au-delà du masque terre et mer.
+- Branchement des cinq bases.
+- Datum pour les navires de surface : seul le contact sous-marin en a un.
+
+**Écarts avec le prompt :** bandeau « EXERCICE FICTIF » toujours retiré ; pas de grille q, r : la grille du datum est carrée, dans le repère de la carte.
+
+**Tests :** `uiv52.js`, 66 contrôles (FR 1440, EN 390). Il couvre 31 des 79 cas du pack (`docs/v52/cas-verification-asw.json`) : ASW2-001 à 004, 006 à 011, 013 à 015, 025, 026, 048, 050 à 052, 054 à 059, 068 à 070, 077 à 079. Les 48 autres ne sont pas exécutés : une partie porte sur ce qui n'est pas fait, une partie n'a pas de test écrit. Adaptés au datum : `uiv40`, `uiv41`, `uiv47`, `uiv49`, `uiv50`, `uiv51`, `navlab.js`, `stress.js`, `bots.js`.
+
+**Mesures du 24 novembre 2026, scripts seulement, niveau Complet**
+
+| Mission, 20 tirages, V51 → V52 | Référence | Prudent | Omniscient | Aucun ordre |
+|---|---|---|---|---|
+| `hc` | 17 → 15 | 14 | 19 → 20 | 0 → 0 |
+| `asw` | 16 → 13 | 8 | 20 → 19 | 0 → 0 |
+| `f2` | 5 → 9 | 6 | 20 → 20 | 2 → 0 |
+| `m6` | 18 → 16 | 20 | 19 → 20 | 0 → 0 |
+| `c1` | 10 → 12 | 6 | 17 → 18 | 0 → 0 |
+| `l12` | 11 → 13 | 16 | 20 → 19 | 0 → 0 |
+| `g3` | 12 → 11 | 14 | 19 → 18 | 2 → 1 |
+| `a4` | 19 → 16 | 18 | 20 → 19 | 0 → 0 |
+| `e6` | 15 → 14 | 14 | 20 → 20 | 1 → 1 |
+
+- Total : référence 119 sur 180 (66 %, 68 % en version 51), omniscient 173 (96 %), aucun ordre 2. La colonne « Prudent » ne donne que la version 52.
+- `asw` : la référence passe de 16 à 13, 14,6 bouées par partie, 0,2 piste perdue. Sans recentrage sur la vérité, le script localise moins vite. `hc` sans ordre : seuil de 50 % franchi 18 fois sur 20 (11 en version 50), la mission étant plus longue.
+- Banc `stress.js 2 inv exploit labo monkey` (77 scénarios, 2 parties) : 616 parties finies et reproductibles ; référence 724 et 70 %, omniscient 815 et 94 %, sans aucun tir 720 et 69 %, tir sans vérifier 420 et 25 % avec 59 % de seuil 1, saturation de messages 301 et 1 %, aucun ordre 263 et 1 %, aucune force 184 et 0 %. 53 900 clics au hasard sans blocage ni texte manquant, aucune erreur de page. **La référence revient dans la cible de 50 à 70 %** (77 % en version 51). Signalements : crises `ghost` et `sabotage` encore ouvertes plus de 8 tours (défaut 120, non corrigé).
+- Banc isolé du datum (`/home/claude/ext7/lab.js`, hors dépôt, 16 tirages, vrai sous-marin, triangle sur le centre de la zone) : localisé 9 fois avec des bouées actives, 8 avec des passives, 5 sans bouée. Mécaniques isolées de `stress.js` (8 tirages) : bouées passives et actives 38 % ; torpille sur une estimation concentrée 83 %, 67 % si le sous-marin est alerté.
+- Tests d'interface : `uiv52` (66), `uiv51` (53), `uiv50` (53), `uiv49` (152), `uiv48`, `uiv47` (148), `uiv46`, `uiv44`, `uiv43`, `uiv42`, `uiv41`, `uiv40`, `uiv39`, `uiv37`, `uiv36`, `uiv35`, `uiv34`, `uiv4`, `ui5`, `uih`, `uig`, `uigrp`, `uiob`, `uip`, `uimenu`, `uiqx`, `uidq`, `uim`, `uim2`, `uiw`, `uis`, `uid`, `uiq`, `uia`, `uic`, `uit` (FR 390, EN 1440) et `naval-alloc.test.js` sans erreur. `navlab.js` : 110 contrôles ciblés réussis, parties au hasard sans défaut.
+- Non relancés : `stress.js pair`, `stress.js 4`, `advbot.js`, `pace2.js`, `dipm.js`, `stress.js dq`, `uiv38.js` (en échec depuis la version 47).
+
+**Non vérifié :** aucun vrai joueur, aucun téléphone réel. Rien ne dit si le nuage de probabilité se lit, si la revue d'engagement se comprend, ni si une partie de 22 à 31 minutes convient. Les scripts ne posent pas leurs capteurs pour recouper, n'emploient ni les pings périodiques, ni « Suivre », ni le menu d'ordres. Les valeurs du datum (étalement, vraisemblances, seuils de 80 %, 75 % et 30 s) viennent du prompt ou de Claude, pas de parties humaines. Le dossier de conception et le manuel ne sont pas mis à jour.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1566,6 +1685,7 @@ Demande de Naully du 24 novembre 2026, avec le prompt « ASW, mobilité, crises,
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 52 | `TUNE`, `DT`, `dtG`, `dtInit`, `dtSpd`, `dtPredict`, `dtFuse`, `dtBands`, `dtLook`, `dtFlash`, `dtSee`, `dtShift`, `dtCover`, `dtSum`, `dtMiss`, `dtFocus` (aide de test), `dtDeliver`, `dtAff`, `dtAge`, `dtQ`, `dtReview`, `dtWhy`, `dtApp`, `dtFuel`, `dtDraw`, `dtHtml`, `clsAuto`, `aswUStep`, `unitCmds`, `ctxShow`, `ctxKey`, `ctxDo`, `projList`, `projHtml`, `LAY.proj`, `c.dt`, `c.cov`, `c.trkSt`, `u.pingAuto`, `u.follow`, `S.autoAna` ; `LONG`, `_vk` dans `gen_db.py` ; `tools/bases/merge_asw.py` ; `docs/v52/` |
 | Version 51 | `ordN`, `anaCap`, `anaFull`, `coordWait`, `commWait`, `cgcSlow`, `SLOW`, `NOISE1`, `SOF_R`, `sofWar`, `sofInit`, `sofHost`, `sofWhy`, `sofOut`, `sofStep`, `sofHtml`, `CW`, `CWART`, `CWSEV`, `cwSev`, `cwBase`, `cwOn`, `cwList`, `cwTick`, `cwRender`, `cwClose`, `#cw` ; `tools/crises/optimise.py` ; `assets/crises/` |
 | Version 50 | `S.hc`, `hcInit`, `hcStep`, `hcRoute`, `hcDivert`, `hcCmd`, `hcHit`, `hcDamage`, `hcLose`, `hcCheck`, `hcAfter`, `hcItems`, `hcDraw`, `hcHtml`, `hcEnd`, `dmgA`, `ENVL`, `ENV`, `envInit`, `envMeas`, `eR`, `bathGet`, `seaDepth`, `layAt`, `laySide`, `layF`, `uz`, `subm`, `zWhy`, `zCmd`, `depStep`, `depHtml`, `subInit`, `subAI`, `subReact`, `subHear`, `trkStep`, `trkInfo`, `bA`, `bStock`, `buoyWhy`, `buoyStep`, `depotFill`, `bDos`, `aswEnd`, `inrOf`, `o.ess`, crises `hcloss` et `hcport` ; `data/bases/`, `tools/bases/validate.js` |
 | Version 49 | `MART`, `MART_W`, `MART_H`, `artBase`, `artURL`, `artHtml`, `GLOBE_SPIN`, `Globe.sats`, `Globe.ang`, classes `.art`, `.art-c`, `.art-b`, `.art-i`, `.art-x` ; `tools/missions/optimise.py` ; `assets/missions/` |
@@ -1669,6 +1789,7 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv52.js                                      # version 52 : datum, observations, classement automatique, revue d'engagement, pings, suivi, projectiles, menu d'ordres
 node uiv51.js                                      # version 51 : sans jetons, allure unique, force spéciale embarquée, fenêtre de crise, clic droit
 node uiv50.js; node ../tools/bases/validate.js      # version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche ; contrôle des cinq catalogues
 node uiv49.js                                      # version 49 : illustrations des missions, étiquettes retirées, globe et satellites
@@ -1696,6 +1817,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 24 novembre 2026, version 52 (valeurs réglées, missions allongées, datum), niveau Complet, 2 parties par scénario :** référence 724 et 70 %, omniscient 815 et 94 %, tir sans vérifier 420 et 25 % avec 59 % de seuil 1, aucun ordre 263 et 1 %, aucune force 184 et 0 %. 616 parties finies et reproductibles ; 53 900 clics au hasard sans blocage. Détail : section 5.52. Branche `v52-datum`, non fusionnée dans `main`.
 
 **Résultats du 23 novembre 2026, version 48 (présomption, relèvements, scénarios variables), niveau Complet, 2 parties par scénario :** référence 731 et 72 %, omniscient 784 et 90 %, tir sans vérifier 476 et 32 %, aucun ordre 272 et 5 %, aucune force 194 et 0 %. 608 parties finies et reproductibles ; 53 114 clics au hasard sans blocage. Détail : section 5.48. Fusionnée dans `main` le 24 novembre 2026, à la demande de Naully ; le banc à 4 parties par scénario n'a pas été relancé avant, et `uiv38.js` échoue depuis la version 47.
 
@@ -2041,14 +2164,27 @@ Une évolution est terminée si :
 
 ### Décisions ouvertes de la version 51
 
-113. **Ce qui remplace les jetons :** plafond de vérifications simultanées, attentes de 20 s et 25 s, délais allongés par un CGC bas. Valeurs proposées par Claude ; les garder, les régler, ou ne rien mettre du tout.
+113. **Tranché le 24 novembre 2026 (version 52) :** valeurs réglées, voir 5.52. Ancien texte : **Ce qui remplace les jetons :** plafond de vérifications simultanées, attentes de 20 s et 25 s, délais allongés par un CGC bas. Valeurs proposées par Claude ; les garder, les régler, ou ne rien mettre du tout.
 114. **Difficulté sans jetons :** la référence passe à 77 %. Durcir après des essais avec de vrais joueurs, ou non.
-115. **Allure lente et durée :** tout se déplace à 0,55, les parties ne sont pas rallongées. Rallonger les missions, allonger les délais des crises à déplacement, ou garder.
-116. **Navire de guerre compatible :** tout navire armé ou doté d'une défense, hors sous-marin, câblier et allié ; rayon d'insertion de 255 milles. Restreindre à certaines classes, ou garder.
+115. **Tranché le 24 novembre 2026 (version 52) :** missions rallongées (`LONG` 2,2). Ancien texte : **Allure lente et durée :** tout se déplace à 0,55, les parties ne sont pas rallongées. Rallonger les missions, allonger les délais des crises à déplacement, ou garder.
+116. **Tranché le 24 novembre 2026 :** définition gardée. Ancien texte : **Navire de guerre compatible :** tout navire armé ou doté d'une défense, hors sous-marin, câblier et allié ; rayon d'insertion de 255 milles. Restreindre à certaines classes, ou garder.
 117. **Fenêtre de crise :** une par crise, toujours. Ajouter un réglage pour la couper au niveau Complet, ou non.
-118. **Lot B du prompt V2.1 :** datum en probabilité, observations, classification automatique, pings, projectiles, mini-menu. À lancer dans une version suivante, dans l'ordre que Naully choisira.
-119. **Droits des 14 illustrations de crise** et crédit dans `NOTICE.md` : à confirmer.
+118. **En partie fait en version 52** (5.52, avec la liste de ce qui reste). Ancien texte : **Lot B du prompt V2.1 :** datum en probabilité, observations, classification automatique, pings, projectiles, mini-menu. À lancer dans une version suivante, dans l'ordre que Naully choisira.
+119. **Tranché le 24 novembre 2026 :** Naully confirme détenir les droits des 14 illustrations de crise ; noté dans `NOTICE.md`.
 120. **Défaut :** crises de navire fantôme et de sous-marin ouvertes plus de 8 tours depuis l'allure lente.
+
+### Décisions ouvertes de la version 52
+
+121. **Valeurs réglées :** une vérification à la fois (deux avec la cellule d'analyse), 30 s et 35 s d'attente, + 40 % et + 80 % de délai sous 55 et 40 de CGC. La référence revient à 70 %. Les garder, ou les revoir après des essais avec de vrais joueurs.
+122. **Durée :** 22 et 31 tours, soit environ 22 et 31 minutes à ×½. Garder, ou remettre la vitesse par défaut à ×1 maintenant que tout est lent (décision 97).
+123. **Délais des crises à déplacement :** non allongés ; `ghost` et `sabotage` restent ouvertes plus de 8 tours (défaut 120).
+124. **Seuils de la revue d'engagement :** 80 % de couverture, 75 % pour l'hypothèse, 30 s d'âge (valeurs du prompt). Les garder, ou les assouplir au niveau Simple.
+125. **Classement automatique :** il classe sans clic dès 75 % et 15 points d'écart. Le joueur garde le classement manuel ; le bilan distingue « auto ». Garder, ou le réserver au niveau Simple.
+126. **Analyse acoustique automatique :** lancée seule quand un capteur tient le contact. La garder, ou en faire un ordre.
+127. **Reste du lot B** (liste en 5.52) : ordre de priorité à donner.
+128. **Fenêtre de crise :** le temps reste arrêté tant que le joueur n'a pas cliqué « Reprendre le temps ». Sans limite : la pression du délai disparaît à l'ouverture de chaque crise. Garder, ou limiter par la réserve de pause.
+129. **Défaut :** deux contrôles de `uiv52.js` passent par l'aide de test `dtFocus`, qui concentre l'estimation à la main ; ils ne prouvent pas qu'un joueur y parvient avec ses capteurs.
+130. **Défaut :** `asw` plus dure pour la référence (13 sur 20 contre 16). À observer avant de régler.
 
 ### Demandes à garder en mémoire
 

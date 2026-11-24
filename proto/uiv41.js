@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
     await tick(500);
     // 0. bandeau permanent retiré, mention fictive gardée dans la barre de titre
     const fict = await st(() => { const f = document.getElementById('fict'), g = document.querySelector('#hud .fxtag'); return [f ? getComputedStyle(f).display : 'none', g ? g.textContent : '', g ? g.getBoundingClientRect().width : 0] });
-    need(fict[0] === 'none' && /FICTI/.test(fict[1]) && fict[2] > 20, tag + ' bandeau absent, mention dans la barre : ' + fict);
+    need(fict[0] === 'none' && fict[1] === '' && fict[2] === 0, tag + ' bandeau absent, étiquette de la barre retirée (v49) : ' + fict);
     // 1. niveaux de zoom avec les vrais boutons + et −, tailles en pixels écran
     const size = () => st(() => { const lv = __S.fzLevel(), m = [...document.querySelectorAll('#fzl .fogline-marker:not([hidden])')], u = m.find(e => e.dataset.affiliation === 'friendly' && !e.classList.contains('has-map-profile')), s = u && u.querySelector('.marker-art>.tactical-symbol'), pr = m.find(e => e.classList.contains('has-map-profile')), bd = pr && pr.querySelector('.unit-affiliation .tactical-symbol'), chip = document.getElementById('fzLvl'); return { lv, f: +__S.fzFactor().toFixed(2), btn: u ? Math.round(u.getBoundingClientRect().width) : 0, sym: s ? Math.round(s.getBoundingClientRect().width) : 0, sil: pr ? Math.round(pr.getBoundingClientRect().width) : 0, badge: bd ? Math.round(bd.getBoundingClientRect().width) : 0, chip: chip.textContent, chipH: Math.round(chip.getBoundingClientRect().height), n: m.length } });
     await st(() => { const A = __S, u = A.s.units.find(x => x.type === 'frigate'); A.cam.z = A.minZ() * 1.02; A.cam.x = u.x; A.cam.y = u.y; A.redraw(); }); await tick();

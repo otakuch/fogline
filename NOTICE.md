@@ -9,6 +9,8 @@
 | OpenStreetMap contributors, through [geo-maps](https://github.com/simonepri/geo-maps) earth-lands-100m 0.6.0 | Detailed coastlines (`proto/th/hicoast.json`) | ODbL 1.0, © OpenStreetMap contributors | |
 | IBM Plex and Saira Semi Condensed, through Google Fonts | Fonts, loaded at runtime | SIL OFL 1.1 | |
 
+Mission illustrations (`assets/missions/`): eight fictional atmosphere scenes supplied by Naully Nicolas for the project (pack FOGLINE_MISSIONS_VISUELS_V1). They are not intelligence or evidence. Their licence is not stated here.
+
 No third-party name or logo implies any endorsement. APP-6 symbols have not been validated against the official text of the standard.
 
 ## Relief

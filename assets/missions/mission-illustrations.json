@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "packName": "FOGLINE_MISSIONS_VISUELS_V1",
+  "pathBase": "assets/missions/ in the repository; \"image\" paths below are relative to the repository root",
+  "gameMissionIdPolicy": "gameMissionId is the scenario id of proto/gen_db.py (resolved on 24 November 2026 from title, theme, theatre and sector). The game reads its own registry MART in proto/src.html; proto/uiv49.js checks that both agree.",
+  "imageRole": "Fictional atmosphere illustration; not live intelligence or evidence.",
+  "missions": [
+    {
+      "logicalKey": "port_wake_up_call",
+      "gameMissionId": "c1",
+      "missionTitle": "Port wake-up call",
+      "theme": "PORT CYBERATTACK",
+      "region": "Continental Europe · Benelux and northern France",
+      "image": "assets/missions/01_port_wake_up_call.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2037193,
+      "sha256": "a6281fd498a9c2c299a8292501830ac1c3c7f12e1ab18c6fdd122bb4ad2f4732",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "53% 54%",
+      "alt": {
+        "fr": "Grues à l’arrêt dans un terminal à conteneurs au crépuscule ; plusieurs navires attendent au large.",
+        "en": "Idle cranes in a container terminal at dusk, with several ships waiting offshore."
+      }
+    },
+    {
+      "logicalKey": "the_seabed",
+      "gameMissionId": "f2",
+      "missionTitle": "The seabed",
+      "theme": "CABLES AND SEABED",
+      "region": "North Atlantic · Shetland and Bergen",
+      "image": "assets/missions/02_the_seabed.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2179912,
+      "sha256": "88676c6af781719ee2c31c1d59cf02b5477b624f031e61b947324cfbd8e0335e",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "60% 60%",
+      "alt": {
+        "fr": "Un robot sous-marin inspecte un câble intact ; son navire de soutien apparaît en surface.",
+        "en": "An underwater robot inspects an intact cable, with its support vessel visible at the surface."
+      }
+    },
+    {
+      "logicalKey": "deep_water_hunt",
+      "gameMissionId": "asw",
+      "missionTitle": "Deep-water hunt",
+      "theme": "ANTI-SUBMARINE WARFARE",
+      "region": "North Atlantic",
+      "image": "assets/missions/03_deep_water_hunt.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2278861,
+      "sha256": "6a2d283cd2a878938195dbb72380dc83c34bc0f295d3a2783bc8256e52fc0758",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "50% 48%",
+      "alt": {
+        "fr": "Un convoi de navires marchands traverse une mer agitée, accompagné d’une escorte et d’un hélicoptère.",
+        "en": "A merchant convoy crosses rough seas with a naval escort and a helicopter."
+      }
+    },
+    {
+      "logicalKey": "warning_shot",
+      "gameMissionId": "l12",
+      "missionTitle": "Warning shot",
+      "theme": "NAVAL COMBAT AND ESCALATION",
+      "region": "North Atlantic · Norwegian Arctic",
+      "image": "assets/missions/04_warning_shot.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2294065,
+      "sha256": "dbaef395dec3f246fdbaba07f5493acae797873d8baa709ea2d73d3a81f95187",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "51% 53%",
+      "alt": {
+        "fr": "Un bâtiment d’escorte tire un coup d’avertissement vers une zone d’eau libre près d’un cargo en mer arctique.",
+        "en": "An escort fires a warning shot into open water near a freighter in Arctic waters."
+      }
+    },
+    {
+      "logicalKey": "tanker_held",
+      "gameMissionId": "g3",
+      "missionTitle": "Tanker held",
+      "theme": "SHIP SEIZURE",
+      "region": "Gulf of Guinea · Southern gulf",
+      "image": "assets/missions/05_tanker_held.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2163523,
+      "sha256": "a681e19675b5924c2c6ab5dd650d9ad65abf8146a25364f93ebf2c4d9b3f9a06",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "50% 56%",
+      "alt": {
+        "fr": "Une petite embarcation longe la coque d’un pétrolier au crépuscule ; un patrouilleur apparaît au loin.",
+        "en": "A small boat lies alongside a tanker at dusk, with a patrol ship in the distance."
+      }
+    },
+    {
+      "logicalKey": "commercial_corridor",
+      "gameMissionId": "a4",
+      "missionTitle": "Commercial corridor",
+      "theme": "DRONE SWARM",
+      "region": "Gulf of Aden and Red Sea",
+      "image": "assets/missions/06_commercial_corridor.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2219698,
+      "sha256": "412edb8c77c2662c13d0902175544177130f164fe2e61c4b9a8512a79f3043c3",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "50% 40%",
+      "alt": {
+        "fr": "Plusieurs drones survolent un porte-conteneurs et son escorte dans un corridor maritime.",
+        "en": "Several drones fly above a container ship and its escort in a shipping corridor."
+      }
+    },
+    {
+      "logicalKey": "evacuation_under_watch",
+      "gameMissionId": "e6",
+      "missionTitle": "Evacuation under watch",
+      "theme": "EVACUATION OF NATIONALS",
+      "region": "Eastern Mediterranean",
+      "image": "assets/missions/07_evacuation_under_watch.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2581961,
+      "sha256": "e6da8206705a7ec97459e76a344800677c12fab79b643a16c79274b6254956b5",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "52% 60%",
+      "alt": {
+        "fr": "Des civils embarquent avec leurs bagages à bord d’une embarcation militaire, aidés par l’équipage.",
+        "en": "Civilians board a naval landing craft with their luggage, assisted by the crew."
+      }
+    },
+    {
+      "logicalKey": "beneath_the_strait",
+      "gameMissionId": "m6",
+      "missionTitle": "Beneath the strait",
+      "theme": "MINE WARFARE",
+      "region": "Strait of Malacca · Southern strait and Singapore",
+      "image": "assets/missions/08_beneath_the_strait.png",
+      "mimeType": "image/png",
+      "width": 1672,
+      "height": 941,
+      "sizeBytes": 2259475,
+      "sha256": "34b9ea27222d2ae03ea590e93fd1bbd15e5ee2baa18520d14dc66242cec19405",
+      "displayAspectRatio": "16 / 9",
+      "objectFit": "cover",
+      "objectPosition": "50% 55%",
+      "alt": {
+        "fr": "Un bâtiment d’inspection met à l’eau un petit engin de reconnaissance au milieu du trafic maritime près de Singapour.",
+        "en": "An inspection vessel deploys a small survey craft amid shipping traffic near Singapore."
+      }
+    }
+  ],
+  "served": "assets/missions/web/<name>-640.webp (cards) and <name>-1280.webp (briefing), produced by tools/missions/optimise.py"
+}

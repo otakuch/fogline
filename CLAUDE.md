@@ -34,7 +34,7 @@ Le jeu entraîne à décider sous incertitude. Il oblige à estimer avant d'agir
 
 Ces règles valent même si une demande semble les contourner. Si un besoin les heurte, explique le conflit et propose une version compatible.
 
-1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. Le bandeau permanent a été retiré le 19 novembre 2026 à la demande de Naully (version 41) : la mention « EXERCICE FICTIF » reste dans la barre de titre de la partie, au briefing, au bilan et à l'accueil.
+1. **Géographie réelle, événements fictifs.** Tout scénario reste signalé comme un exercice fictif. Le bandeau permanent a été retiré le 19 novembre 2026 à la demande de Naully (version 41). Le 24 novembre 2026, Naully a demandé de retirer aussi les étiquettes « EXERCICE FICTIF » restantes (version 49) : barre de titre, accueil, écran des missions, briefing, préparation, catalogue naval, menu et bilan. Restent des phrases dans les textes : pied de l'accueil, description de cinq crises, « Géographie réelle, événements fictifs » à l'écran des missions, note de la légende. Ne remets pas d'étiquette ni de bandeau sans demande de Naully.
 2. **Armes abstraites, noms réels.** Le combat a été décidé par Naully le 4 novembre 2026, avec des valeurs de jeu fictives. Depuis le 7 novembre 2026, Naully autorise les noms réels des plateformes américaines (classes de navires, types d'aéronefs). Leurs valeurs restent fictives, et les navires gardent des numéros fictifs (DDG-1, LCS-1), sans nom de bâtiment réel. N'ajoute aucun paramètre réel d'armement : portée, charge, guidage, vulnérabilité, signature, procédure de tir ou nom d'arme réel (missile, torpille). Les tirs restent génériques.
 3. **Pas de mode d'emploi offensif.** La cyberattaque, le sabotage, le brouillage et la désinformation restent décrits par leurs effets sur la décision. N'écris jamais de technique, d'outil, d'exploit ou de recette réutilisable.
 4. **Pas de frappe stratégique jouable.** Pas d'arme nucléaire et pas de frappe contre des villes. La destruction n'est jamais un spectacle ni une source directe de points.
@@ -63,6 +63,7 @@ seuil-projet/
     ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
+    ├── uiv49.js            version 49 : illustrations des missions, étiquettes retirées, globe et satellites (148 contrôles, 1440, 1024, 768 et 390 px)
     ├── UNITS.md            fiches lisibles du catalogue, générées par gen_naval.py
     ├── scenarios.json      base générée par gen_db.py
     ├── milsymbol.js        bibliothèque de symboles APP-6
@@ -1328,6 +1329,56 @@ D'après le format de mission de la démo (probabilité d'inclusion, groupes dyn
 
 **Non vérifié :** aucun vrai joueur. Rien ne montre que le joueur distingue mieux présomption et preuve, ni qu'il place ses unités pour recouper : les scripts n'emploient aucune des deux mécaniques de façon délibérée. La lisibilité des lignes de relèvement sur une carte chargée et sur projecteur n'est pas observée. Le sens de certains mots-clés de la démo est déduit du contexte.
 
+### 5.49 Illustrations des missions, étiquettes retirées, globe tournant et satellites (version 49)
+
+Demande de Naully du 24 novembre 2026, avec l'archive `FOGLINE_MISSIONS_8_ILLUSTRATIONS_V1.zip` et son mode d'emploi. Trois demandes : ajouter les illustrations, supprimer les bandeaux « exercice fictif », ajouter un globe tournant avec des satellites. Branche `v49-illustrations`, à partir de `main` (version 48). Aucune règle de jeu ne change.
+
+**Écarts avec le mode d'emploi du pack, tranchés par la demande de Naully ou par l'état du dépôt**
+
+- Le mode d'emploi demande de garder le bandeau « EXERCICE FICTIF » ; la demande de Naully, plus récente, est de le supprimer. La demande l'emporte.
+- Il mentionne une grille hexagonale et la suppression des jetons : le dépôt n'a pas de grille hexagonale et garde ses 4 jetons par tour. Rien n'a été ajouté ni retiré de ce côté.
+
+**Illustrations (`MART`, `MART_W`, `MART_H`, `artBase`, `artURL`, `artHtml`)**
+
+- **Fichiers :** `assets/missions/*.png`, les huit originaux (1672 × 941, non modifiés, empreintes du manifeste contrôlées) ; `assets/missions/mission-illustrations.json`, le manifeste du pack complété par l'identifiant réel de chaque mission ; `assets/missions/web/<nom>-640.webp` et `<nom>-1280.webp`, dérivés servis par le jeu, produits par `tools/missions/optimise.py` (Pillow, qualité 80 ; 20 à 41 Ko et 67 à 132 Ko).
+- **Les images ne sont pas intégrées à la page** : elles sont servies à côté d'elle, contrairement au reste des ressources. Intégrées en base64, elles auraient ajouté environ 1,3 Mo par jeu de dérivés et le mode d'emploi l'exclut. `artBase()` résout le dossier une fois : `assets/missions/web/` pour `index.html` et l'artifact, `../assets/missions/web/` pour les pages de `proto/` ; `window.__artBase` le force (tests).
+- **Correspondance, par identifiant de scénario**, vérifiée sur le titre, le thème, le théâtre et le secteur :
+
+| Identifiant | Mission | Image |
+|---|---|---|
+| `c1` | Réveil au port (Port wake-up call) | `01_port_wake_up_call` |
+| `f2` | Le fond des mers (The seabed) | `02_the_seabed` |
+| `asw` | Chasse en eaux profondes (Deep-water hunt) | `03_deep_water_hunt` |
+| `l12` | Tir de semonce (Warning shot) | `04_warning_shot` |
+| `g3` | Pétrolier retenu (Tanker held) | `05_tanker_held` |
+| `a4` | Corridor commercial (Commercial corridor) | `06_commercial_corridor` |
+| `e6` | Évacuation sous regard (Evacuation under watch) | `07_evacuation_under_watch` |
+| `m6` | Sous le détroit (Beneath the strait) | `08_beneath_the_strait` |
+
+- **Cartes de l'écran des missions :** image en haut de la carte, cadre 16:9 réservé dès le premier rendu, `object-fit: cover`, recadrage du manifeste (`object-position`), dégradé discret en bas. Image décorative (`alt=""`, `aria-hidden`), chargée à la demande (`loading="lazy"`, `decoding="async"`), en 640 ou 1280 px selon l'écran (`srcset`). La carte reste un seul bouton ; thème, région, titre, description, niveau, envergure et durée sont inchangés. Survol : image agrandie de 3 %, seulement si le mouvement n'est pas réduit.
+- **Briefing :** même image en bandeau au-dessus du titre, hauteur de 120 à 200 px (150 px sur téléphone), chargée en priorité, avec le texte alternatif du manifeste précédé de « Illustration d'ambiance. » (`art.<id>`, français et anglais). Le tutoriel et les scénarios hors catalogue n'ont pas de cadre.
+- **Repli :** si une image manque, elle est retirée et le cadre garde son ratio et un fond bleu nuit ; pas d'icône cassée, pas de nouvel essai. La mission reste jouable.
+- **Ce ne sont pas des preuves.** Les images n'apparaissent dans aucun dossier, aucune légende n'affirme une menace, et les textes alternatifs ne nomment ni sabotage, ni mine, ni sous-marin adverse, ni appartenance des drones.
+- **Mise en page :** quatre colonnes à 1440 px, trois à 1024 px, deux à 768 px, une sous 760 px.
+
+**Étiquettes « exercice fictif » retirées**
+
+L'étiquette `home.fict` n'est plus affichée nulle part : barre de titre de la partie, accueil, écran des missions, briefing, préparation de la flotte, catalogue naval, menu, bilan. Les clés de texte restent dans `I18N`. Phrases gardées, parce qu'elles ne sont pas des bandeaux : pied de l'accueil (« Exercice fictif · cartes réelles · prototype… »), description de cinq crises (« Exercice fictif. Un groupe armé… »), « Géographie réelle, événements fictifs » à l'écran des missions, « Scénario fictif » dans la diplomatie, note de la légende. Garde-fou 1 mis à jour.
+
+**Globe tournant et satellites (`globeStart`, `GLOBE_SPIN`, `Globe.sats`, `Globe.ang`)**
+
+- Le globe de l'accueil tourne en continu, un tour en 150 s (avant : balancement de ±7° autour des théâtres).
+- Six satellites décrivent des orbites d'inclinaisons différentes, avec un point lumineux, un halo, une traînée qui s'efface et le tracé discret de l'orbite. Les orbites sont fixes dans l'espace ; la Terre tourne dessous. Le globe masque les satellites qui passent derrière lui.
+- **Décor seulement :** aucun satellite n'est une information de jeu, et le satellite du jeu (service SAT) n'en dépend pas.
+- **Repères des théâtres :** ils suivent la rotation, disparaissent sur la face cachée (`visibility: hidden`, donc ni cliquables ni atteints au clavier) et reviennent. Le globe s'arrête tant que le pointeur ou le focus est sur un repère. Les étiquettes sont replacées toutes les 2 s.
+- `prefers-reduced-motion` : globe et satellites immobiles. Sans WebGL : carte plate, comme avant.
+
+**Tests :** `uiv49.js` (148 contrôles, vrais écrans, français et anglais, 1440, 1024, 768 et 390 px) : six satellites en mouvement, rotation continue, arrêt au survol d'un repère, immobilité en mouvement réduit ; huit cartes avec l'image de leur mission, recadrage, cadre 16:9 rempli, image décorative, une seule zone interactive ; même image après changement de langue ; briefing ouvert au clavier ; quatre tirages au hasard ; tutoriel sans cadre ; image manquante (cadre conservé, mission lancée) ; étiquette absente de l'accueil, des missions, du briefing, de la partie et du bilan ; règles de la partie inchangées ; pas de défilement horizontal ; aucun texte manquant ; fichiers servis présents et au format WebP ; registre du jeu conforme au manifeste. `uiv4.js` et `uiv41.js` attendaient la mention fictive : ils attendent maintenant son absence.
+
+**Résultats du 24 novembre 2026 :** `uiv49` 148 contrôles réussis ; `uiv4`, `uiv41`, `uiv42`, `uih`, `uiw`, `uim`, `uim2`, `ui5`, `uiv48`, `uimenu`, `uiv37`, `uiv47`, `uig`, `uiv44`, `uit fr 390` sans erreur ; 53 200 clics au hasard sans blocage ni texte manquant. Le banc d'équilibre n'a pas été relancé : le moteur n'est pas touché.
+
+**Non vérifié :** aucun vrai joueur, aucun téléphone réel. Globe et satellites contrôlés avec un rendu logiciel sous Chromium, pas sur une carte graphique ni sous Safari. Les droits des illustrations n'ont pas été vérifiés : elles sont fournies par Naully. La fluidité de la rotation sur une machine lente n'est pas mesurée.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1352,6 +1403,7 @@ D'après le format de mission de la démo (probabilité d'inclusion, groupes dyn
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 49 | `MART`, `MART_W`, `MART_H`, `artBase`, `artURL`, `artHtml`, `GLOBE_SPIN`, `Globe.sats`, `Globe.ang`, classes `.art`, `.art-c`, `.art-b`, `.art-i`, `.art-x` ; `tools/missions/optimise.py` ; `assets/missions/` |
 | Version 48 | `PRSM`, `presNear`, `presRule`, `presStep`, `presWhy`, `presAct`, `presHtml`, `srcHtml`, `BRG`, `brgH`, `brgUnits`, `brgLines`, `brgFix`, `brgStep`, `brgDeg`, `brgHtml`, `scVaries`, `varScript`, `S.presLog`, `S.presAct`, `S.presBad`, `S.brgFix`, `S.brgFake`, `S.varOut`, `s.pres`, `s.emitLoc`, `s.stillT`, `s.t0`, `CFG.novar`, `sc.grp` |
 | Version 46 | `cabUse`, `cabL`, `qb` (ligne brisée), `tools/cables.js`, `th/cables.json` |
 | Version 44 | `NAVC`, `navRings`, `navRaster`, `navBuild`, `navGet`, `NB`, `navSnap`, `navLos`, `navCoarse`, `navAst`, `navA`, `navSmooth`, `navChk`, `navStep`, `navTo`, `FZUS`, `FZUL`, `FZSL`, `fzSilBase`, `fzSilPx`, `curOf`, `setCur` |
@@ -1452,6 +1504,7 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv49.js                                      # version 49 : illustrations des missions, étiquettes retirées, globe et satellites
 node naval-alloc.test.js; node uiv47.js            # version 47 : règles d'allocation (14 tests Node), catalogue, préparation, groupes, équipes, rappel, sauvegarde
 node uiv46.js                                      # version 46 : câbles en mer, aux ports, seulement dans les missions qui les mettent en jeu
 node uiv44.js                                      # version 44 : routes sur six théâtres, silhouettes au zoom, pointeurs, marqueurs écartés, téléphone
@@ -1797,6 +1850,14 @@ Une évolution est terminée si :
 95. **Défaut :** `uiv38.js` échoue depuis le changement de flotte de `asw` (20 novembre). À réparer.
 97. **Vitesse par défaut ×½ :** les parties durent deux fois plus longtemps en temps réel (16 à 22 min). La garder pour tous, la réserver au niveau Simple, ou enregistrer la dernière vitesse choisie. Le tutoriel reste à ×1 : l'aligner, ou non.
 96. **Défaut :** le contrôle du sonar trempé de `navlab.js` dépend du tirage (le contact n'est pas toujours tenu en 9 s). Il passe avec le script complet (`novar`), pas avec toutes les variantes.
+
+### Décisions ouvertes de la version 49
+
+98. **Phrases « exercice fictif » restantes :** pied de l'accueil, description de cinq crises, diplomatie, légende. Les retirer aussi, ou les garder.
+99. **Images hors de la page :** `fogline-…-jouable.html` seul n'affiche plus les illustrations ; il faut le dossier `assets/missions/web/` à côté. Garder ce choix, ou intégrer les dérivés à la page (environ 1,3 Mo de plus).
+100. **Rotation du globe :** un tour en 150 s, repères masqués sur la face cachée. Garder, ralentir, ou revenir au balancement autour des théâtres en gardant les satellites.
+101. **Droits des illustrations :** à confirmer par Naully avant diffusion publique ; crédit à ajouter dans `NOTICE.md` si nécessaire.
+102. **Défaut :** deux satellites d'une même traînée peuvent passer devant un repère de théâtre et gêner sa lecture un instant.
 
 ### Demandes à garder en mémoire
 

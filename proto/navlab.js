@@ -5,7 +5,7 @@ const N = +(process.argv[2] || 4);
 (async () => {
   const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1440, height: 860 } }), errs = [];
   p.on('pageerror', e => errs.push(e.message + ' @ ' + (e.stack || '').split('\n')[1]));
-  await p.goto('file://' + __dirname + '/seuil-prototype.html'); await p.addScriptTag({ path: __dirname + '/bots.js' }); await p.addScriptTag({ content: 'window.__setS=(o,c,si,f)=>{S=o;CABLES=c;SITES=si;CFG=f};window.__getS=()=>[S,CABLES,SITES,CFG];' }); await p.waitForTimeout(300);
+  await p.goto('file://' + __dirname + '/seuil-prototype.html'); await p.evaluate(() => { window.__noCW = 1 }); await p.addScriptTag({ path: __dirname + '/bots.js' }); await p.addScriptTag({ content: 'window.__setS=(o,c,si,f)=>{S=o;CABLES=c;SITES=si;CFG=f};window.__getS=()=>[S,CABLES,SITES,CFG];' }); await p.waitForTimeout(300);
   const A_ = process.env.SKIPA ? { R: [], missing: [] } : await p.evaluate(() => {
     const A = __S, R = [], ok = (c, m, d) => R.push([!!c, m, c ? '' : JSON.stringify(d === undefined ? '' : d).slice(0, 300)]);
     const run = s => { let n = Math.round(s * 10); while (n-- > 0 && !A.s.over) A.step(.1) };
@@ -157,7 +157,7 @@ const N = +(process.argv[2] || 4);
       ok(!h.task, 'hélicoptère : libéré après le sonar trempé');
       const ht = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); ok(ht && ht.ok, 'hélicoptère : torpille proposée', ht && [ht.label, ht.why]); S.posture = 4; const ht2 = uacts(h, c).find(a => a.id === 'torpu:DDG-1-H1'); const tt = h.torp; A.doAct(ht2); ok(waitFor(() => !!c.torpOn, 30) && h.torp === tt - 1, 'hélicoptère : torpille larguée', [h.torp, tt]);
       // avion de patrouille : envoyé larguer
-      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC(); c.located = true; c.hold = 9; A.subZone && 0; const p8 = S.units.find(u => u.type === 'recon'); if (p8) { const pa = uacts(p8, c).find(a => a.id === 'torpu:' + p8.id); ok(pa && pa.ok && /Envoyer|Send/.test(pa.label), 'avion : envoyé larguer une torpille', pa && pa.label); A.doAct(pa); ok(waitFor(() => !!c.torpOn, 120), 'avion : torpille larguée sur zone') }
+      S = G('asw'); S.tokens = 9; S.posture = 4; c = subC(); c.located = true; c.hold = 9; A.subZone && 0; const p8 = S.units.find(u => u.type === 'recon'); if (p8) { p8.x = c.zone.x + 110; p8.y = c.zone.y; p8.path = []; const pa = uacts(p8, c).find(a => a.id === 'torpu:' + p8.id); ok(pa && pa.ok && /Envoyer|Send/.test(pa.label), 'avion : envoyé larguer une torpille', pa && pa.label); A.doAct(pa); ok(waitFor(() => !!c.torpOn, 120), 'avion : torpille larguée sur zone') }
       // fausse cible : torpille comptée à tort
       S = G('asw'); S.tokens = 9; S.posture = 4; c = subC('asw', 'bio'); sn = U('SSN-1'); put(sn, c.sb, 30); c.located = true; c.hold = 9; c.zone = { x: c.sb.x, y: c.sb.y, r: 45 }; const fb = S.torpBad || 0; A.doAct(uacts(sn, c).find(a => a.id === 'torpu:SSN-1')); waitFor(() => c.closed, 30); ok(c.closed && (S.torpBad || 0) === fb + 1, 'torpille sur un contact biologique : tir à tort compté');
       // MH-60S : pas de lutte sous-marine

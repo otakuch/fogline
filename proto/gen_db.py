@@ -299,7 +299,7 @@ H('sup.ana', 'sup', 'Les analyses sont traitées rapidement.', 'Analyses are pro
  H('sup.weap', 'sup', 'Les stocks d’armes sont pleins.', 'Weapon stocks are full.', 'Stocks insuffisants : missiles et défense réduits de moitié.', 'Stocks fall short: missiles and defence cut by half.'),
  H('adv.weap', 'adv', 'Vos systèmes de combat sont fiables.', 'Your combat systems are reliable.', 'Un système de combat est compromis pendant trois tours : armes moins fiables.', 'A combat system is compromised for three turns: weapons less reliable.'),
  H('pos.ally', 'bonus', '', '', 'Bonne nouvelle : un patrouilleur allié est disponible plus tôt que prévu.', 'Good news: an allied patrol vessel is available earlier than planned.'),
- H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, un jeton de plus au tour 1.', 'Good news: the crisis cell is reinforced, one extra token on turn 1.'),
+ H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, vos analyses vont plus vite.', 'Good news: the crisis cell is reinforced, your analyses run faster.'),
  H('pos.calm', 'bonus', '', '', 'Bonne nouvelle : le théâtre est plus calme que prévu, moins d’aléas.', 'Good news: the theatre is calmer than expected, fewer incidents.'),
 ]
 # Version 38 (13 novembre 2026) : chasse sous-marine autour d'un convoi, conçue pour les règles réalistes (real=1 : simple indication au briefing).

@@ -85,7 +85,7 @@ const { chromium } = require('playwright');
     await p.mouse.click(pt[0], pt[1]); await p.waitForTimeout(300);
     const st = await p.evaluate(() => { const S = __S.s, u = S.units.find(x => x.type === 'recon'); return { task: u.task && u.task.kind, pat: u.task && u.task.pat, mode: u.task && u.task.mode, tok: S.tokens } });
     console.log('clic', JSON.stringify(st));
-    ok(st.task === 'buoy' && st.pat === 'bar' && st.mode === 'a' && st.tok === 3, 'largage choisi par clics, 1 jeton');
+    ok(st.task === 'buoy' && st.pat === 'bar' && st.mode === 'a', 'largage choisi par clics');
     await p.screenshot({ path: '/tmp/v40-fiche-' + lang + w + '.png' });
     // dossier d'un sous-marin localisé
     await p.evaluate(() => { const A = __S, S = A.s; let c; for (let k = 0; k < 30; k++) { c = A.startCrisis('sub'); if (c.truth === 'sousmarin') break; c.closed = true; } c.located = true; c.hold = 8; S.sel = c; A.redraw(); });

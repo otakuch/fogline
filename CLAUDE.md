@@ -64,6 +64,7 @@ seuil-projet/
     ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
+    ├── uiv51.js            version 51 : sans jetons, allure lente unique, force spéciale embarquée, fenêtre de crise, clic droit (49 contrôles, FR 1440 et EN 390)
     ├── uiv50.js            version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche (53 contrôles, FR 1440 et EN 390)
     ├── uiv49.js            version 49 : illustrations des missions, étiquettes retirées, globe et satellites (148 contrôles, 1440, 1024, 768 et 390 px)
     ├── UNITS.md            fiches lisibles du catalogue, générées par gen_naval.py
@@ -152,8 +153,8 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 - Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
 - **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
 - Vitesses x1, x2 et x4, et avance rapide × 8 jusqu'au prochain événement (bouton ⏭, ou « Avancer jusqu'au prochain événement » dans le panneau quand aucune crise n'est ouverte). L'avance rapide s'arrête pour une crise, une alerte du renseignement, un aléa ou une demande, pas pour un simple contact ni un signal. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
-- 4 jetons par tour, non reportables. CGC sous 40 : −2. CGC sous 55 : −1. CGC à 75 ou plus : +1 un tour sur deux. Réseau de commandement coupé : −1, minimum 1.
-- Déplacer une unité est gratuit. Collecter une preuve, décider, tirer ou coordonner coûte généralement 1 jeton.
+- **Plus de jetons depuis la version 51 (5.51).** Aucune action ne se paie. Ce qui limite le joueur : le temps, les délais d'autorisation (allongés par un CGC bas, la dette et la réserve d'état-major), le nombre de vérifications simultanées, les attentes de « Coordonner » et de la parole publique, les stocks et les emplois comptés. Les mentions « 1 jeton » des sections plus anciennes sont périmées.
+- Déplacer une unité est gratuit. **Une seule allure, lente** : toutes les unités et tous les navires se déplacent à 0,55 × leur vitesse de table (5.51).
 - Échelle d'affichage : 1 unité de carte vaut 1,7 mille. Ce sont des valeurs de jeu.
 
 ### 5.3 Trois états à surveiller
@@ -1476,6 +1477,71 @@ Un objectif marqué essentiel doit être atteint ou sans objet, sinon la mission
 
 **Non vérifié :** aucun vrai joueur, aucun téléphone réel. Les scripts ne donnent aucun ordre au convoi, ne choisissent ni le type ni la profondeur des bouées, ne commandent pas la profondeur d'un sous-marin. Le constat F04 de l'audit (approche frontale rapide), F02 (contrôle d'options de `e6`), F07 et F08 ne sont pas traités. Le dossier de conception et le manuel ne sont pas mis à jour.
 
+### 5.51 Sans jetons, allure lente unique, force spéciale embarquée, fenêtre de crise (version 51)
+
+Demande de Naully du 24 novembre 2026, avec le prompt « ASW, mobilité, crises, sonar et commandes » V2.1 et le pack `FOGLINE_ASW_MOBILITE_CRISES_V2_1.zip`. Le prompt donne priorité à quatre décisions de produit ; elles sont faites, avec le correctif du clic droit (lot A). Le reste du prompt (lot B) n'est pas fait : voir plus bas. Branche `v51-sans-jetons`, à partir de `v50-humanitaire-asm`.
+
+**Écarts avec le prompt :** il demande de garder le bandeau « EXERCICE FICTIF » ; Naully l'a retiré le 24 novembre (5.49), il reste retiré. La grille de cellules q, r du datum n'existe pas dans le dépôt.
+
+**Jetons supprimés (décision 103 tranchée)**
+
+- `S.tokens`, la jauge « Attention » de la barre haute, les coûts affichés, la ligne « jetons dépensés » du bilan et tous les suffixes « · 1 jeton » ont disparu. Aucun solde caché : `tok` vaut 0 sur toutes les actions de `crisisActions`, `shipActions` et `dipActions`.
+- Ce qui remplace la rareté, sans nouveau compteur :
+  - **Vérifications simultanées (`anaCap`, `anaFull`) :** 2 analyses en cours au plus, 3 avec la cellule d'analyse. Motif affiché (`why.anafull`).
+  - **Coordonner (`coordWait`) :** une fois toutes les 20 s. **Parole publique (`commWait`) :** toutes les 25 s, 12 s avec la cellule de communication.
+  - **CGC bas (`cgcSlow`) :** l'autorisation de posture prend 25 % de plus sous 55, 50 % sous 40 (avant : jetons en moins).
+  - **Moral et réserve d'état-major :** leurs effets « un jeton de moins » sont retirés ; restent les retards d'ordre et les délais.
+  - **Réserve d'état-major :** la règle « −3 par jeton au-delà du troisième » est retirée ; la réserve remonte de 3 au début d'un tour sans crise ouverte.
+  - Hypothèse `pos.token` : analyses 30 % plus rapides. Aléas : panne (analyses +5 s, coordination bloquée 20 s), renseignement opportun (analyses −4 s).
+- Le passage de posture reste un délai, plus un coût. Le compteur `S.ordN` (ordres donnés) ne sert qu'à la dette quand le réseau est coupé.
+
+**Allure lente unique (`SLOW` 0,55, `NOISE1` 0,7)**
+
+- Le sélecteur d'allure, `THR`, `FUELM`, `NOISE`, `setThr` et `thrOf` sont retirés. Toutes les unités avancent à 0,55 × leur vitesse de table ; le carburant des avions est consommé à 0,55, donc leur rayon d'action ne change pas. Navires civils et adverses : × 0,385 (`SEAV`). Convoi classique : trajet en 270 s. Sous-marin adverse : 4. Les délais de trajet des réponses (déminage, évacuation par mer, inspection, force spéciale) suivent.
+- Non ralentis : missiles, drones d'essaim, incursion aérienne, avions civils, convoi humanitaire (déjà réglé sur la durée de la partie).
+- Présomption « allure lente » : seuil ramené à 3,6.
+- **Les durées de partie et les délais de décision ne sont pas recalculés.** Conséquence mesurée : des crises de navire fantôme et de sous-marin restent ouvertes plus de 8 tours (12 scénarios signalés par le banc).
+
+**Force spéciale embarquée (`sofWar`, `sofInit`, `sofHost`, `sofWhy`, `sofOut`, `sofStep`, `sofHtml`, `SOF_R` 150)**
+
+- L'équipe est embarquée au départ sur le navire de guerre compatible le plus proche : unité navale armée ou dotée d'une défense, hors sous-marin, câblier et allié. Embarquée, elle suit le bâtiment, n'apparaît pas sur la carte et ne reçoit aucun ordre de déplacement.
+- « Reprendre par la force spéciale » et « Évacuer par la force » exigent l'équipe à bord et le bâtiment à 150 unités (255 milles) de la zone au plus. Sinon : motif affiché (bâtiment trop loin, aucun navire compatible, équipe à terre).
+- Après l'action, l'équipe rejoint son bâtiment et rembarque. Bâtiment perdu : elle reste à terre, inutilisable, jusqu'à ce qu'un autre navire compatible passe à moins de 14.
+- Fiche : ligne « Embarquement ». Pas au tutoriel. Le script de référence rapproche le bâtiment porteur.
+
+**Fenêtre de crise (`CW`, `CWART`, `CWSEV`, `cwTick`, `cwRender`, `cwClose`, `cwList`, `#cw`)**
+
+- Chaque nouvelle crise ouvre un `dialog` modal : illustration, gravité, titre, secteur, tour, délai restant, faits observés, hypothèses (sans probabilité), réponses possibles (liste tirée de `crisisActions`), boutons « Ouvrir le dossier », « Voir sur la carte », « Reprendre ». Échap ferme.
+- Le temps s'arrête pendant la lecture, sans consommer la réserve de pause ; l'état précédent est rendu à la fermeture. Plusieurs crises attendent, la plus grave d'abord (`CWSEV` : 3, 2 ou 1). `c.cwSeen` suit la sauvegarde : une crise présentée ne se rouvre pas.
+- **Illustrations :** 14 images du pack dans `assets/crises/` (originaux, manifeste `illustrations-crises.json`), dérivés `assets/crises/web/<nom>-480.webp` et `-960.webp` produits par `tools/crises/optimise.py`, servis à côté de la page comme celles des missions (`cwBase`). Mention « Illustration d'ambiance ». Image manquante : panneau neutre, la crise reste jouable. L'image dépend du type de crise, jamais de la vérité ; ce n'est pas une preuve.
+- Pas de fenêtre au tutoriel ni pour les crises silencieuses.
+- **Tests :** `build.py` écrit `window.__noCW=1` dans `t.html` seulement, pour que les tests existants ne soient pas bloqués par la fenêtre ; `uiv51.js` la rallume. `navlab.js` la coupe aussi. La page publiée l'a toujours.
+
+**Clic droit :** un appui du bouton droit sur la carte ne lance plus de glisser ni d'ordre de déplacement ; il ouvre seulement le menu contextuel.
+
+**Non fait (lot B du prompt V2.1) :** datum en distribution de probabilité et service d'observations avec provenance ; classification automatique nature et affiliation ; préparation de tir par couverture ; pings périodiques, analyser, suivre ; registre et filtres de projectiles ; hélicoptère « approcher et engager » ; mini-menu contextuel comme méthode principale ; ajouts aux cinq bases ; cas `cas-verification-asw.json`.
+
+**Tests :** `uiv51.js`, 49 contrôles (FR 1440, EN 390). Adaptés : `uiob`, `uiv34`, `uiv35`, `uiv39`, `uiv4`, `uiv40`, `uiv48`, `uiv49`, `uiv50`, `stress.js`, `bots.js`, `navlab.js`.
+
+**Mesures du 24 novembre 2026, scripts seulement, niveau Complet**
+
+| Mission, 20 tirages, V50 → V51 | Référence | Omniscient | Aucun ordre |
+|---|---|---|---|
+| `hc` | 14 → 17 | 19 → 19 | 0 → 0 |
+| `asw` | 17 → 16 | 19 → 20 | 0 → 0 |
+| `f2` | 9 → 5 | 16 → 20 | 0 → 2 |
+| `m6` | 15 → 18 | 20 → 19 | 0 → 0 |
+| `c1` | 12 → 10 | 16 → 17 | 0 → 0 |
+| `l12` | 17 → 11 | 18 → 20 | 0 → 0 |
+| `g3` | 14 → 12 | 19 → 19 | 0 → 2 |
+| `a4` | 19 → 19 | 20 → 20 | 0 → 0 |
+| `e6` | 8 → 15 | 20 → 20 | 0 → 1 |
+
+- Banc `stress.js 2 inv exploit labo monkey` : 616 parties finies et reproductibles ; référence 751 et 77 %, omniscient 798 et 95 %, tir sans vérifier 467 et 27 % avec 46 % de seuil 1, saturation de messages 309 et 3 %, aucun ordre 276 et 3 %, aucune force 197 et 0 % ; 53 685 clics au hasard sans blocage ni texte manquant. Signalements : crises `ghost`, `sub` et `sabotage` ouvertes plus de 8 tours.
+- La référence monte de 72 à 77 %, au-dessus de la cible de 50 à 70 % : sans jetons, le script fait tout ce qu'il veut. Répondre sans preuve reste au niveau de la référence (75 %). `f2` et `l12` baissent, `e6` monte ; causes non isolées.
+
+**Non vérifié :** aucun vrai joueur, aucun téléphone réel. Rien ne dit si l'absence de jetons rend le jeu plus clair ou trop facile, si la fenêtre de crise aide ou lasse (une par crise, 5 à 7 par partie), ni si l'allure lente convient avec des durées de partie inchangées. Les droits des illustrations de crise sont à confirmer par Naully. Le dossier de conception et le manuel ne sont pas mis à jour.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1500,6 +1566,7 @@ Un objectif marqué essentiel doit être atteint ou sans objet, sinon la mission
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 51 | `ordN`, `anaCap`, `anaFull`, `coordWait`, `commWait`, `cgcSlow`, `SLOW`, `NOISE1`, `SOF_R`, `sofWar`, `sofInit`, `sofHost`, `sofWhy`, `sofOut`, `sofStep`, `sofHtml`, `CW`, `CWART`, `CWSEV`, `cwSev`, `cwBase`, `cwOn`, `cwList`, `cwTick`, `cwRender`, `cwClose`, `#cw` ; `tools/crises/optimise.py` ; `assets/crises/` |
 | Version 50 | `S.hc`, `hcInit`, `hcStep`, `hcRoute`, `hcDivert`, `hcCmd`, `hcHit`, `hcDamage`, `hcLose`, `hcCheck`, `hcAfter`, `hcItems`, `hcDraw`, `hcHtml`, `hcEnd`, `dmgA`, `ENVL`, `ENV`, `envInit`, `envMeas`, `eR`, `bathGet`, `seaDepth`, `layAt`, `laySide`, `layF`, `uz`, `subm`, `zWhy`, `zCmd`, `depStep`, `depHtml`, `subInit`, `subAI`, `subReact`, `subHear`, `trkStep`, `trkInfo`, `bA`, `bStock`, `buoyWhy`, `buoyStep`, `depotFill`, `bDos`, `aswEnd`, `inrOf`, `o.ess`, crises `hcloss` et `hcport` ; `data/bases/`, `tools/bases/validate.js` |
 | Version 49 | `MART`, `MART_W`, `MART_H`, `artBase`, `artURL`, `artHtml`, `GLOBE_SPIN`, `Globe.sats`, `Globe.ang`, classes `.art`, `.art-c`, `.art-b`, `.art-i`, `.art-x` ; `tools/missions/optimise.py` ; `assets/missions/` |
 | Version 48 | `PRSM`, `presNear`, `presRule`, `presStep`, `presWhy`, `presAct`, `presHtml`, `srcHtml`, `BRG`, `brgH`, `brgUnits`, `brgLines`, `brgFix`, `brgStep`, `brgDeg`, `brgHtml`, `scVaries`, `varScript`, `S.presLog`, `S.presAct`, `S.presBad`, `S.brgFix`, `S.brgFake`, `S.varOut`, `s.pres`, `s.emitLoc`, `s.stillT`, `s.t0`, `CFG.novar`, `sc.grp` |
@@ -1602,6 +1669,7 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv51.js                                      # version 51 : sans jetons, allure unique, force spéciale embarquée, fenêtre de crise, clic droit
 node uiv50.js; node ../tools/bases/validate.js      # version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche ; contrôle des cinq catalogues
 node uiv49.js                                      # version 49 : illustrations des missions, étiquettes retirées, globe et satellites
 node naval-alloc.test.js; node uiv47.js            # version 47 : règles d'allocation (14 tests Node), catalogue, préparation, groupes, équipes, rappel, sauvegarde
@@ -1960,7 +2028,7 @@ Une évolution est terminée si :
 
 ### Décisions ouvertes de la version 50
 
-103. **Jetons :** le prompt de l'extension les dit retirés du produit ; ils sont toujours là. Les retirer demande de décider ce qui remplace le lien entre le CGC et la capacité d'agir, la réserve d'état-major et les coûts d'action, puis de refaire tout l'équilibre.
+103. **Jetons :** tranché le 24 novembre 2026, retirés en version 51 (5.51). Ancien texte : le prompt de l'extension les dit retirés du produit ; ils sont toujours là. Les retirer demande de décider ce qui remplace le lien entre le CGC et la capacité d'agir, la réserve d'état-major et les coûts d'action, puis de refaire tout l'équilibre.
 104. **Cinq bases :** catalogues rangés et contrôlés, non branchés. Lancer la seconde étape du pack (définitions, instances, gestionnaires), ou non.
 105. **Fond marin :** modèle de jeu par distance à la côte. Le remplacer par le relief ETOPO embarqué demande de le décoder avant le lancement de la partie.
 106. **Objectifs essentiels :** posés sur `hc`, `m6` et `f2`. Les étendre aux six autres missions (lesquels ?), ou non.
@@ -1970,6 +2038,17 @@ Une évolution est terminée si :
 110. **Convoi des autres missions** (`asw`, `ic`, `i10`) : il garde son réservoir unique. Le passer en navires individuels, ou non.
 111. **Défaut :** la crise de l'embarcation qui suit le convoi peut rester ouverte plus de 8 tours.
 112. **Défaut :** le fond estimé ne suit pas la bathymétrie réelle (mer du Nord trop profonde) ; une couche peut donc exister là où elle n'aurait pas de sens.
+
+### Décisions ouvertes de la version 51
+
+113. **Ce qui remplace les jetons :** plafond de vérifications simultanées, attentes de 20 s et 25 s, délais allongés par un CGC bas. Valeurs proposées par Claude ; les garder, les régler, ou ne rien mettre du tout.
+114. **Difficulté sans jetons :** la référence passe à 77 %. Durcir après des essais avec de vrais joueurs, ou non.
+115. **Allure lente et durée :** tout se déplace à 0,55, les parties ne sont pas rallongées. Rallonger les missions, allonger les délais des crises à déplacement, ou garder.
+116. **Navire de guerre compatible :** tout navire armé ou doté d'une défense, hors sous-marin, câblier et allié ; rayon d'insertion de 255 milles. Restreindre à certaines classes, ou garder.
+117. **Fenêtre de crise :** une par crise, toujours. Ajouter un réglage pour la couper au niveau Complet, ou non.
+118. **Lot B du prompt V2.1 :** datum en probabilité, observations, classification automatique, pings, projectiles, mini-menu. À lancer dans une version suivante, dans l'ordre que Naully choisira.
+119. **Droits des 14 illustrations de crise** et crédit dans `NOTICE.md` : à confirmer.
+120. **Défaut :** crises de navire fantôme et de sous-marin ouvertes plus de 8 tours depuis l'allure lente.
 
 ### Demandes à garder en mémoire
 

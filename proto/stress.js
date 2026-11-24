@@ -15,8 +15,8 @@ const want = k => !parts.length || parts.includes(k);
       const A = __S, bad = {}, note = (k, sc) => { (bad[k] = bad[k] || { n: 0, sc: {} }).n++; bad[k].sc[sc] = 1; };
       const land = (x, y) => { try { return A.isDeep(x, y); } catch (_) { return false; } };
       const chk = (S, sc) => {
-        ['se', 'cs', 'ri', 'tension', 'debt', 'tokens', 't', 'defense'].forEach(k => { if (!Number.isFinite(S[k])) note('nombre invalide ' + k, sc); });
-        if (S.tokens < 0) note('jetons négatifs', sc); if (S.tokens > 7) note('jetons > 7', sc);
+        ['se', 'cs', 'ri', 'tension', 'debt', 't', 'defense'].forEach(k => { if (!Number.isFinite(S[k])) note('nombre invalide ' + k, sc); });
+        if (S.tokens !== undefined) note('jetons encore présents', sc);
         A.assets.forEach(a => { if (!(a.hp >= 0 && a.hp <= 100)) note('hp hors bornes', sc); });
         S.units.forEach(u => { if (!Number.isFinite(u.x + u.y)) note('unité NaN', sc); if (u.x < -30 || u.x > 1470 || u.y < -30 || u.y > 930) note('unité hors carte', sc); if (!A.UT[u.type].air && land(u.x, u.y)) note('navire allié sur terre', sc); if (u.fuel < -1) note('carburant négatif', sc); if (u.buoys < 0) note('bouées négatives', sc); });
         S.ships.forEach(s => { if (!Number.isFinite(s.x + s.y)) note('navire NaN', sc); if (s.truth !== 'civil' && land(s.x, s.y)) note('navire hostile sur terre', sc); if (s.held && !s.distress && !S.units.some(u => u.board && u.board.s === s)) note('navire bloqué sans arraisonnement', sc); });
@@ -25,7 +25,7 @@ const want = k => !parts.length || parts.includes(k);
         if (S.convoy && S.convoy.hp < 0) note('convoi hp < 0', sc);
       };
       let games = 0, nonfini = 0; const det = [];
-      const bot = mkBot(), rash = (S) => { if (S.posture < 3 && !S.postureAt && S.tokens > 0) A.setPosture(3); for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice)) { const ac = A.crisisActions(c).filter(a => a.kind === 'decide' && a.ok); if (ac[0]) A.doAct(ac[Math.floor(Math.random() * ac.length)]); } };
+      const bot = mkBot(), rash = (S) => { if (S.posture < 3 && !S.postureAt) A.setPosture(3); for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice)) { const ac = A.crisisActions(c).filter(a => a.kind === 'decide' && a.ok); if (ac[0]) A.doAct(ac[Math.floor(Math.random() * ac.length)]); } };
       for (const sc of Object.keys(A.SC)) for (let sd = 1; sd <= seeds; sd++) for (const [cfg, pol] of [[{ contested: true }, bot], [{ contested: true, ideal: true }, bot], [{ contested: true }, rash], [{ contested: false }, null]]) { const r = playGame(sd * 11 + 1, sc, cfg, pol, chk); games++; if (!r.done) nonfini++; }
       for (const sc of Object.keys(A.SC)) { const x = playGame(5, sc, { contested: true }, mkBot()), y = playGame(5, sc, { contested: true }, mkBot()); if (x.s !== y.s || x.lost !== y.lost) det.push(sc); }
       return { games, nonfini, bad, nonDet: det };

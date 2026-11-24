@@ -22,3 +22,7 @@ Altitudes et profondeurs : ETOPO à 10 minutes d'arc, NOAA National Centers for 
 - Ultra Maritime, fiche AN/SSQ-62G DICASS (https://umaritime.com/wp-content/uploads/2026/03/AN-SSQ-62G.pdf), consultée le 24 novembre 2026 : profondeurs de réglage et budget d'émission. La fiche ne publie aucun rayon de détection : les portées du jeu sont des valeurs de simulation.
 - NOAA, « What is a thermocline? » et « How far does sound travel in the ocean? » (oceanservice.noaa.gov) : la couche varie selon le lieu et la saison, et peut être absente. Les couches du jeu sont des valeurs de jeu par théâtre.
 - Pictogramme « Convoi humanitaire » : `assets/symbols/humanitarian-convoy.svg`, fourni par Naully Nicolas avec le pack de l'extension.
+
+## Illustrations des crises (version 51)
+
+`assets/crises/` : 14 illustrations d'ambiance fournies par Naully Nicolas dans le pack « FOGLINE ASW, mobilité, crises V2.1 » (images générées, fictives, d'après le manifeste du pack). Droits à confirmer avant diffusion publique. Elles n'affirment rien sur l'état du jeu.

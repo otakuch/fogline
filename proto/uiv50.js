@@ -78,7 +78,7 @@ const { chromium } = require('playwright'), path = require('path'), fs = require
     // G02 / F01 : régressions de l'audit
     { const g = (sc, seed) => { const r = playGame(seed, sc, { esc: true, guided: false }, null), S = A.s; return { ok: r.ok, s: r.s, ess: S.objs.filter(o => o.ess).map(o => o.key + '=' + o.st).join(' ') }; }; out.G02 = { m6: g('m6', 325), f2: g('f2', 272) }; }
     // jetons : toujours présents (décision de Naully), aucun coût nouveau sur les ordres au convoi
-    { const S = start('hc'); quiet(S); for (let i = 0; i < 20; i++)A.step(.1); const t0 = S.tokens; V.hcCmd('hold'); V.hcCmd('resume'); V.hcCmd('wait'); out.TOK = { same: S.tokens === t0, tokens: t0 }; }
+    { const S = start('hc'); quiet(S); for (let i = 0; i < 20; i++)A.step(.1); const t0 = S.tokens; V.hcCmd('hold'); V.hcCmd('resume'); V.hcCmd('wait'); out.TOK = { same: S.tokens === undefined, tokens: t0 }; }
     out.missing = A.missing(); return out;
   });
   const j = x => JSON.stringify(x);

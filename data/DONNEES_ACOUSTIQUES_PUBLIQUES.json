@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "consultedOn": "2026-11-24",
+  "purpose": "Public reference metadata for a fictional game; not a validated acoustic performance model.",
+  "profiles": [
+    {
+      "id": "reference.sonobuoy.ssq62g",
+      "model": "AN/SSQ-62G DICASS",
+      "manufacturer": "Ultra Maritime",
+      "publicFacts": {
+        "acousticSourceType": "active",
+        "publishedDepthFamiliesMeters": {
+          "D1": [
+            15,
+            46,
+            91
+          ],
+          "D2": [
+            27,
+            122,
+            457
+          ],
+          "D3": [
+            244
+          ]
+        },
+        "minimumOperatingLifeHours": 4,
+        "transmitBudgetPingSeconds": 100,
+        "guaranteedAcousticDetectionRadiusNm": null
+      },
+      "provenance": {
+        "url": "https://umaritime.com/wp-content/uploads/2026/03/AN-SSQ-62G.pdf",
+        "kind": "manufacturer_data_sheet",
+        "rangeFinding": "No guaranteed acoustic detection radius is specified in this sheet."
+      },
+      "integrationRules": [
+        "Preserve the supported depth-family configuration; do not assume all settings are freely interchangeable.",
+        "Do not confuse operating depth, RF communication range and acoustic detection radius.",
+        "Do not relabel a passive buoy as active."
+      ],
+      "simulationParameters": {
+        "status": "to_calibrate",
+        "detectionReferenceRadiusNm": null,
+        "crossLayerEffectProfile": null,
+        "emissionCycleSeconds": null,
+        "timeScalePolicy": null,
+        "requiredLabel": "Portée de simulation — estimation"
+      }
+    }
+  ],
+  "environmentSources": [
+    {
+      "url": "https://oceanservice.noaa.gov/facts/sound.html",
+      "publisher": "NOAA",
+      "use": "Sound propagation depends on water temperature and pressure; no universal buoy detection circle follows from this description."
+    },
+    {
+      "url": "https://oceanservice.noaa.gov/facts/thermocline.html",
+      "publisher": "NOAA",
+      "use": "Thermocline presence, depth and strength vary with location and conditions."
+    }
+  ],
+  "unitConversions": {
+    "metersPerNauticalMile": 1852,
+    "depthUnit": "m",
+    "distanceUnit": "NM",
+    "simulationTimeUnit": "s"
+  },
+  "unknownValuePolicy": "null means unverified or not supplied; never interpret it as unlimited range or a verified real performance."
+}

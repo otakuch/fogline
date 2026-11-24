@@ -34,8 +34,8 @@ const N = +(process.argv[2] || 4);
       ok(A.allAir().filter(r => r.unit).length === 2, 'plafond : 2 appareils en l’air au plus'); }
     // 3. bouées finies, jamais rechargées en vol ni à l'appontage
     { const S = G('c1'), s = U('LCS-1'), r = s.air[0], h = A.nvLaunch(s, 'buoy'); run(6.5); const b0 = S.buoys.length, q = deep(s, 50);
-      const o1 = A.buoyOrder(h, q.x, q.y); ok(o1, 'bouées : ordre de pose accepté'); waitFor(() => !h.task, 60);
-      ok(Math.round(h.buoys) === 0 && S.buoys.length - b0 === 2, 'bouées : 2 cercles posés avec 8 bouées (4 par cercle)', [h.buoys, S.buoys.length - b0]);
+      const q0 = S.bSeq || 0; const o1 = A.buoyOrder(h, q.x, q.y, { pat: 'tri', mode: 'a', dep: 's' }); ok(o1, 'bouées : ordre de pose accepté'); waitFor(() => !h.task, 60); for (const [pt, md] of [['one', 'a'], ['tri', 'p'], ['one', 'p']]) { A.buoyOrder(h, q.x, q.y, { pat: pt, mode: md, dep: 's' }); waitFor(() => !h.task, 60); }
+      ok(Math.round(h.buoys) === 0 && (S.bSeq || 0) - q0 === 8, 'bouées : 8 bouées posées une à une, 8 débitées (v50)', [h.buoys, (S.bSeq || 0) - q0]);
       ok(!A.buoyOrder(h, q.x + 5, q.y), 'bouées : nouvelle pose refusée à stock vide');
       h.rtb = true; waitFor(() => r.st === 'aboard', 120); ok(r.buoys === 0, 'bouées : pas de recharge à l’appontage', r.buoys);
       run(46); ok(!A.nvLaunch(s, 'buoy') && /bou|buoy/i.test(airWhy(s, 'buoy')), 'bouées : décollage pour poser refusé, raison donnée', airWhy(s, 'buoy'));
@@ -141,11 +141,11 @@ const N = +(process.argv[2] || 4);
       put(sn, c.sb, 30); const pg = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg && pg.ok && sheet(sn).some(b => b.dataset.v === c.id + '|ping:SSN-1' && !b.disabled), 'sous-marin : sonar actif proposé sur sa fiche', pg && pg.label);
       sn.thr = 2; const h0 = c.hold; A.doAct(pg); run(5); ok(c.located && c.alertU > S.t && sn.exposedU > S.t, 'sous-marin : un sonar actif à portée localise le contact et alerte l’adversaire', [c.hold, h0, c.located]);
       const pg2 = uacts(sn, c).find(a => a.id === 'ping:SSN-1'); ok(pg2 && !pg2.ok && /s/.test(pg2.why), 'sous-marin : sonar en recharge, raison donnée', pg2 && pg2.why); run(16); ok(uacts(sn, c).find(a => a.id === 'ping:SSN-1').ok, 'sous-marin : sonar de nouveau prêt après 20 s');
-      const tp = uacts(sn, c).find(a => a.id === 'torpu:SSN-1'); ok(tp && tp.ok && tp.escTo === 4, 'sous-marin : torpille proposée, passage en Engager annoncé', tp && tp.label);
+      c.hold = 12; c.located = true; c.lostAt = 0; /* v50 : la piste se perd si elle n'est plus tenue */ const tp = uacts(sn, c).find(a => a.id === 'torpu:SSN-1'); ok(tp && tp.ok && tp.escTo === 4, 'sous-marin : torpille proposée, passage en Engager annoncé', tp && tp.label);
       const t0 = sn.torp; A.doAct(tp); ok(waitFor(() => !!c.torpOn || c.closed, 20) && sn.torp === t0 - 1, 'sous-marin : torpille lancée après autorisation, stock décompté', [sn.torp, t0, S.posture]);
       ok(waitFor(() => c.closed || !c.torpOn, 20), 'sous-marin : torpille résolue (touché ou manqué)', [c.closed, c.out]); ok(S.torpN >= 1, 'sous-marin : lancement compté au bilan');
       // écoute passive : vitesse lente, sans alerte
-      S = G('asw'); c = subC(); sn = U('SSN-1'); put(sn, c.sb, 45); sn.thr = 0; run(10); ok(c.hold > 3 && !(c.alertU > S.t), 'sous-marin : écoute passive à vitesse lente, sans alerter', [c.hold, c.alertU]);
+      S = G('asw'); c = subC(); sn = U('SSN-1'); put(sn, c.sb, 45); sn.thr = 0; c.sb.z = c.sb.zT = 30; c.sb.slow = false; c.sb.sdT = 1e9; /* v50 : même côté de la couche */ run(10); ok(c.hold > 3 && !(c.alertU > S.t), 'sous-marin : écoute passive à vitesse lente, sans alerter', [c.hold, c.alertU]);
       S = G('asw'); c = subC(); sn = U('SSN-1'); put(sn, c.sb, 45); sn.thr = 2; sn.path = [{ x: sn.x + 1, y: sn.y }]; run(4); ok(c.hold < 1, 'sous-marin : à vitesse rapide, l’écoute passive porte moins loin', c.hold);
       // bâtiment : sonar de coque
       S = G('asw'); S.tokens = 9; c = subC(); const d = U('DDG-1'); put(d, c.sb, 18); const pd = uacts(d, c).find(a => a.id === 'ping:DDG-1'); ok(pd && pd.ok, 'destroyer : sonar actif de coque proposé'); A.doAct(pd); run(5); ok(c.located, 'destroyer : contact localisé par le sonar de coque');

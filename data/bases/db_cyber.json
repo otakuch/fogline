@@ -1,0 +1,189 @@
+{
+  "$schema": "./bases.schema.json",
+  "schemaVersion": 1,
+  "id": "cyber",
+  "label": {
+    "fr": "Cyber et information",
+    "en": "Cyber and information"
+  },
+  "status": "draft",
+  "runtimeIntegrated": false,
+  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+  "unitDefinitions": [
+    {
+      "id": "cyber.unit.team",
+      "label": {
+        "fr": "Équipe de protection cyber",
+        "en": "Équipe de protection cyber"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "team",
+      "physicalLayer": "logical",
+      "capabilities": [
+        "cap.cyber_defence"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "cost": 10,
+        "max": 1,
+        "off": 1,
+        "dom": "cyber"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "cyber.unit.analysis",
+      "label": {
+        "fr": "Cellule de renseignement",
+        "en": "Cellule de renseignement"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "analysis",
+      "physicalLayer": "logical",
+      "capabilities": [
+        "cap.intelligence_analysis"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "cost": 5,
+        "max": 1,
+        "off": 1,
+        "dom": "cyber"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "cyber.unit.comm",
+      "label": {
+        "fr": "Affaires publiques",
+        "en": "Affaires publiques"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "comm",
+      "physicalLayer": "logical",
+      "capabilities": [
+        "cap.public_information"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "cost": 6,
+        "max": 1,
+        "off": 1,
+        "dom": "cyber"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    }
+  ],
+  "mechanicDefinitions": [
+    {
+      "id": "cyber.mechanic.service_dependencies",
+      "label": {
+        "fr": "Dépendances des services",
+        "en": "Dépendances des services"
+      },
+      "status": "planned",
+      "handlerId": "handler.cyber.serviceDependencies",
+      "requiresCapabilities": [],
+      "emits": [
+        "event.cyber.service.changed",
+        "event.cyber.report.delayed"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "service.state",
+        "report.delivery"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "cyber.mechanic.protection",
+      "label": {
+        "fr": "Protection numérique",
+        "en": "Protection numérique"
+      },
+      "status": "planned",
+      "handlerId": "handler.cyber.protection",
+      "requiresCapabilities": [
+        "cap.cyber_defence"
+      ],
+      "emits": [
+        "event.cyber.service.changed"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "service.state",
+        "team.availability"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "cyber.mechanic.analysis",
+      "label": {
+        "fr": "Analyse de preuves",
+        "en": "Analyse de preuves"
+      },
+      "status": "planned",
+      "handlerId": "handler.cyber.analysis",
+      "requiresCapabilities": [
+        "cap.intelligence_analysis"
+      ],
+      "emits": [
+        "event.cyber.analysis.completed"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "observation.store",
+        "team.availability"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "cyber.mechanic.public_information",
+      "label": {
+        "fr": "Information publique",
+        "en": "Information publique"
+      },
+      "status": "planned",
+      "handlerId": "handler.cyber.publicInformation",
+      "requiresCapabilities": [
+        "cap.public_information"
+      ],
+      "emits": [
+        "event.decision.scored"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "public.report",
+        "decision.history"
+      ],
+      "parameters": {}
+    }
+  ],
+  "notes": [
+    "Draft catalogue not connected to the live game.",
+    "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
+    "Mechanic and handler records remain planned until implementation and integration tests pass."
+  ]
+}

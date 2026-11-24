@@ -90,7 +90,7 @@ const { chromium } = require('playwright');
     await st(() => { __S.s.running = true; document.getElementById('fzLvl').focus(); }); await p.keyboard.press('Enter'); await tick(500);
     const leg = await st(() => { const o = document.getElementById('over'); return { open: !o.hidden, run: __S.s.running, cats: o.querySelectorAll('.fzgrid>div').length, aff: o.querySelectorAll('.fzleg .lg2')[0].children.length, sil: [...o.querySelectorAll('.fzsil img')].map(i => i.complete && i.naturalWidth > 0).filter(Boolean).length, w: [document.documentElement.scrollWidth, innerWidth] } });
     await p.screenshot({ path: D + '/v41-legende-' + tag + '.png' });
-    need(leg.open && leg.run === false && leg.cats === 29 && leg.aff === 5 && leg.sil === 9 && leg.w[0] <= leg.w[1], tag + ' légende : 29 catégories, 5 appartenances, 9 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
+    need(leg.open && leg.run === false && leg.cats === 31 && leg.aff === 5 && leg.sil === 9 && leg.w[0] <= leg.w[1], tag + ' légende : 31 catégories, 5 appartenances, 9 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
     await p.click('[data-a=legclose]'); await tick(300);
     const after = await st(() => [document.getElementById('over').hidden, __S.s.running]); need(after[0] && after[1] === true, tag + ' fermeture : temps rendu : ' + after);
     await st(() => { __S.s.running = false });

@@ -7732,7 +7732,8 @@
       {
        "k": "close",
        "key": "ob.sab",
-       "c": "sabotage"
+       "c": "sabotage",
+       "ess": 1
       },
       {
        "k": "hold",
@@ -9219,7 +9220,8 @@
       {
        "k": "close",
        "key": "ob.mine",
-       "c": "mine"
+       "c": "mine",
+       "ess": 1
       }
      ]
     },
@@ -9283,6 +9285,172 @@
      1,
      2
     ]
+   }
+  },
+  {
+   "id": "hc",
+   "sector": "all",
+   "mode": "intl",
+   "diff": 2,
+   "tags": [
+    "action",
+    "essaim",
+    "info"
+   ],
+   "title": {
+    "fr": "Convoi humanitaire",
+    "en": "Humanitarian convoy"
+   },
+   "desc": {
+    "fr": "Six navires d’aide traversent le golfe. Ils partent seuls ; à vous de les protéger des imprévus.",
+    "en": "Six aid ships cross the gulf. They leave by themselves; you protect them from the unexpected."
+   },
+   "brief": {
+    "fr": "Exercice fictif. Un convoi humanitaire quitte Abidjan pour Libreville. Des messages non vérifiés prêtent des intentions hostiles au « Cercle d’Haren », groupe entièrement fictif. Le plan suppose que les alertes arrivent à temps et que le port d’arrivée reste ouvert.",
+    "en": "Fictional exercise. A humanitarian convoy leaves Abidjan for Libreville. Unverified messages credit the “Haren Circle”, an entirely fictional group, with hostile intent. The plan assumes alerts arrive in time and the arrival port stays open."
+   },
+   "turns": 22,
+   "budget": 62,
+   "rec": [
+    "frigate",
+    "patrol",
+    "patrol",
+    "recon",
+    "comm",
+    "analysis",
+    "battery"
+   ],
+   "hyp": [
+    "info.late",
+    "ally.slow",
+    "sup.weap",
+    "adv.early",
+    "comm.sat"
+   ],
+   "assets": [
+    "PORT",
+    "PLAT",
+    "LNG",
+    "GRID",
+    "STAT"
+   ],
+   "maxA": 3,
+   "dyn": 0.3,
+   "sec": [
+    "noFalse",
+    "cs55",
+    "noLoss"
+   ],
+   "pool": {
+    "alarm": 1,
+    "sar": 1,
+    "desinfo": 1,
+    "evac": 1
+   },
+   "phases": [
+    {
+     "until": 6,
+     "obj": [
+      {
+       "k": "convoy",
+       "key": "ob.hc",
+       "ess": 1
+      }
+     ],
+     "convoy": [
+      "Abidjan",
+      "Libreville"
+     ]
+    },
+    {
+     "until": 16,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.swarm",
+       "c": "swarm"
+      }
+     ]
+    },
+    {
+     "until": 22,
+     "obj": [
+      {
+       "k": "close",
+       "key": "ob.hcport",
+       "c": "hcport"
+      },
+      {
+       "k": "hold",
+       "key": "ob.hold"
+      }
+     ]
+    }
+   ],
+   "script": [
+    [
+     3,
+     "alarm"
+    ],
+    [
+     6,
+     "swarm",
+     "convoy"
+    ],
+    [
+     10,
+     "sabotage",
+     "convoy"
+    ],
+    [
+     13,
+     "hcport"
+    ],
+    [
+     14,
+     "desinfo",
+     null,
+     {
+      "p": 0.6
+     }
+    ],
+    [
+     16,
+     "swarm",
+     "convoy",
+     {
+      "p": 0.5
+     }
+    ],
+    [
+     8,
+     "sar",
+     null,
+     {
+      "p": 0.4
+     }
+    ],
+    [
+     11,
+     "jam",
+     null,
+     {
+      "p": 0.35
+     }
+    ]
+   ],
+   "th": "gn",
+   "hc": {
+    "n": 6,
+    "alt": [
+     "Tema",
+     "Lagos",
+     "SaoTome"
+    ],
+    "grp": {
+     "fr": "Cercle d’Haren",
+     "en": "Haren Circle"
+    }
    }
   },
   {

@@ -16,3 +16,9 @@ No third-party name or logo implies any endorsement. APP-6 symbols have not been
 ## Relief
 
 Altitudes et profondeurs : ETOPO à 10 minutes d'arc, NOAA National Centers for Environmental Information, domaine public. Fichier `ETOPO_10min_Ice.vtp` du dépôt `pyvista/vtk-data`. Grilles par théâtre dans `proto/th/relief_*.png`, générées par `tools/relief/relief.py`.
+
+## Version 50 : sources des données acoustiques
+
+- Ultra Maritime, fiche AN/SSQ-62G DICASS (https://umaritime.com/wp-content/uploads/2026/03/AN-SSQ-62G.pdf), consultée le 24 novembre 2026 : profondeurs de réglage et budget d'émission. La fiche ne publie aucun rayon de détection : les portées du jeu sont des valeurs de simulation.
+- NOAA, « What is a thermocline? » et « How far does sound travel in the ocean? » (oceanservice.noaa.gov) : la couche varie selon le lieu et la saison, et peut être absente. Les couches du jeu sont des valeurs de jeu par théâtre.
+- Pictogramme « Convoi humanitaire » : `assets/symbols/humanitarian-convoy.svg`, fourni par Naully Nicolas avec le pack de l'extension.

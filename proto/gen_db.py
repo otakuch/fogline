@@ -239,6 +239,23 @@ W('em', 'e6', 'all', 'intl', 2, ['info', 'action'], ('Évacuation sous regard', 
 W('ad', 'a6', 'ad_b', 'local', 2, ['mer', 'info'], ('Le détroit et l’annonce', 'The strait and the announcement'), ('Fermer le détroit sur une rumeur, ou risquer un navire ?', 'Close the strait on a rumour, or risk a ship?'), ('Une annonce de mines circule à Bab-el-Mandeb. Le trafic commercial attend une décision. Le plan suppose que vos sources sont solides.', 'A mine announcement is circulating at Bab-el-Mandeb. Commercial traffic awaits a decision. The plan assumes your sources are sound.'), ['frigate', 'recon', 'comm'], ['info.sources', 'adv.early', 'comm.delay', 'sup.naval'], P3([close('ob.desinfo', 'desinfo')], [close('ob.mine', 'mine')], [close('ob.ghost', 'ghost'), HOLD]), [[2, 'desinfo'], [4, 'mine'], [7, 'ghost']], {'mine': 1, 'desinfo': 1, 'ghost': 1})
 W('ml', 'm6', 'ml_s', 'local', 3, ['sous-marin', 'mer'], ('Sous le détroit', 'Beneath the strait'), ('Trafic dense, câbles vulnérables et annonce de mines en même temps.', 'Dense traffic, vulnerable cables and a mine announcement all at once.'), ('Le sud du détroit concentre câbles et trafic. Le plan suppose que vous aurez une unité disponible pour chaque alerte.', 'The southern strait concentrates cables and traffic. The plan assumes you will have a unit available for each alert.'), ['frigate', 'repair', 'drone'], ['sup.naval', 'adv.double', 'info.late', 'comm.pnt'], P3([close('ob.seabed', 'seabed')], [close('ob.mine', 'mine')], [patrol('ob.lane', 'ml_s', 25), HOLD]), [[2, 'seabed'], [5, 'mine']], {'mine': 1, 'seabed': 1, 'ghost': 1})
 
+# ---------- version 50 : convoi humanitaire (golfe de Guinée). Le convoi part seul dès la première phase ; groupe terroriste entièrement fictif.
+W('gn', 'hc', 'all', 'intl', 2, ['action', 'essaim', 'info'], ('Convoi humanitaire', 'Humanitarian convoy'),
+  ('Six navires d’aide traversent le golfe. Ils partent seuls ; à vous de les protéger des imprévus.', 'Six aid ships cross the gulf. They leave by themselves; you protect them from the unexpected.'),
+  ('Exercice fictif. Un convoi humanitaire quitte Abidjan pour Libreville. Des messages non vérifiés prêtent des intentions hostiles au « Cercle d’Haren », groupe entièrement fictif. Le plan suppose que les alertes arrivent à temps et que le port d’arrivée reste ouvert.', 'Fictional exercise. A humanitarian convoy leaves Abidjan for Libreville. Unverified messages credit the “Haren Circle”, an entirely fictional group, with hostile intent. The plan assumes alerts arrive in time and the arrival port stays open.'),
+  ['frigate', 'patrol', 'patrol', 'recon', 'comm', 'analysis'], ['info.late', 'ally.slow', 'sup.weap', 'adv.early', 'comm.sat'],
+  P3([{'k': 'convoy', 'key': 'ob.hc', 'ess': 1}], [close('ob.swarm', 'swarm')], [close('ob.hcport', 'hcport'), HOLD], t=(4, 10, 14)),
+  [[2, 'alarm'], [4, 'swarm', 'convoy'], [6, 'sabotage', 'convoy'], [8, 'hcport'], [9, 'desinfo', None, {'p': .6}], [10, 'swarm', 'convoy', {'p': .5}], [5, 'sar', None, {'p': .4}], [7, 'jam', None, {'p': .35}]],
+  {'alarm': 1, 'sar': 1, 'desinfo': 1}, assets=['PORT', 'PLAT', 'LNG', 'GRID', 'STAT'],
+  hc={'n': 6, 'alt': ['Tema', 'Lagos', 'SaoTome'], 'grp': {'fr': 'Cercle d’Haren', 'en': 'Haren Circle'}})
+S[-1]['phases'][0]['convoy'] = ['Abidjan', 'Libreville']
+# objectifs essentiels : leur échec empêche la victoire, quel que soit le reste (audit V48, constat F01)
+ESS = {'m6': 'ob.mine', 'f2': 'ob.sab'}
+for x in S:
+    for ph in x['phases']:
+        for i, o in enumerate(ph['obj']):
+            if ESS.get(x['id']) == o.get('key'): ph['obj'][i] = dict(o, ess=1)
+
 for x in S:
     if x.get('tuto') or x.get('req'): continue
     if 'mer' in x['tags'] and x['id'][0] != 'c': x['pool'].setdefault('mine', 1)

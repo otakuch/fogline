@@ -1,0 +1,296 @@
+{
+  "$schema": "./bases.schema.json",
+  "schemaVersion": 1,
+  "id": "air",
+  "label": {
+    "fr": "Aérien",
+    "en": "Air"
+  },
+  "status": "draft",
+  "runtimeIntegrated": false,
+  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+  "unitDefinitions": [
+    {
+      "id": "air.unit.recon",
+      "label": {
+        "fr": "P-8A Poseidon",
+        "en": "P-8A Poseidon"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "recon",
+      "physicalLayer": "air",
+      "capabilities": [
+        "cap.air_surveillance",
+        "cap.acoustic_deployment"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "code": "P8",
+        "speed": 36,
+        "sensor": 105,
+        "air": 1,
+        "fuel": 125,
+        "cost": 12,
+        "max": 2,
+        "buoys": 129,
+        "torp": 4,
+        "dom": "air"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "air.unit.drone",
+      "label": {
+        "fr": "MQ-4C Triton",
+        "en": "MQ-4C Triton"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "drone",
+      "physicalLayer": "air",
+      "capabilities": [
+        "cap.air_surveillance"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "code": "MQ4",
+        "speed": 22,
+        "sensor": 62,
+        "air": 1,
+        "cost": 7,
+        "max": 2,
+        "dom": "air"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "air.unit.armed",
+      "label": {
+        "fr": "MQ-9 Reaper",
+        "en": "MQ-9 Reaper"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "armed",
+      "physicalLayer": "air",
+      "capabilities": [
+        "cap.air_surveillance"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "code": "MQ9",
+        "speed": 17,
+        "sensor": 50,
+        "air": 1,
+        "cost": 10,
+        "max": 2,
+        "ssm": 2,
+        "dom": "air"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "air.unit.fighter",
+      "label": {
+        "fr": "F/A-18E/F Super Hornet",
+        "en": "F/A-18E/F Super Hornet"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "fighter",
+      "physicalLayer": "air",
+      "capabilities": [
+        "cap.air_interception"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "code": "FA18",
+        "speed": 66,
+        "sensor": 48,
+        "air": 1,
+        "fuel": 100,
+        "cost": 12,
+        "max": 1,
+        "ssm": 3,
+        "def": 3,
+        "jam": 1,
+        "dom": "air"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    },
+    {
+      "id": "air.unit.helo",
+      "label": {
+        "fr": "MH-60R Seahawk",
+        "en": "MH-60R Seahawk"
+      },
+      "kind": "unit_type",
+      "origin": "imported_v48",
+      "sourceKey": "helo",
+      "physicalLayer": "air",
+      "capabilities": [
+        "cap.acoustic_deployment",
+        "cap.acoustic_sensing"
+      ],
+      "configurations": [],
+      "sourceGameStats": {
+        "code": "MH60",
+        "speed": 30,
+        "sensor": 40,
+        "air": 1,
+        "fuel": 90,
+        "buoys": 25,
+        "torp": 2,
+        "emb": 1,
+        "dom": "air"
+      },
+      "statisticStatus": "fictional_game_values",
+      "configurationCapabilitiesAreConditional": false
+    }
+  ],
+  "mechanicDefinitions": [
+    {
+      "id": "air.mechanic.sortie_lifecycle",
+      "label": {
+        "fr": "Cycle de sortie",
+        "en": "Cycle de sortie"
+      },
+      "status": "planned",
+      "handlerId": "handler.air.sortieLifecycle",
+      "requiresCapabilities": [
+        "cap.air_surveillance"
+      ],
+      "emits": [
+        "event.air.sortie.changed"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "unit.fuel",
+        "unit.readiness",
+        "carrier.reference"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "air.mechanic.surveillance",
+      "label": {
+        "fr": "Surveillance aérienne",
+        "en": "Surveillance aérienne"
+      },
+      "status": "planned",
+      "handlerId": "handler.air.surveillance",
+      "requiresCapabilities": [
+        "cap.air_surveillance"
+      ],
+      "emits": [
+        "event.air.observation.created"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "observation.store"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "air.mechanic.interception",
+      "label": {
+        "fr": "Interception aérienne",
+        "en": "Interception aérienne"
+      },
+      "status": "planned",
+      "handlerId": "handler.air.interception",
+      "requiresCapabilities": [
+        "cap.air_interception"
+      ],
+      "emits": [
+        "event.air.interception.resolved"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "unit.inventory",
+        "engagement.result"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "air.mechanic.transport",
+      "label": {
+        "fr": "Transport aérien",
+        "en": "Transport aérien"
+      },
+      "status": "planned",
+      "handlerId": "handler.coordination.transportTeam",
+      "requiresCapabilities": [
+        "cap.air_transport"
+      ],
+      "emits": [
+        "event.ground.team.embarked",
+        "event.ground.team.landed"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "team.owner",
+        "carrier.capacity"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "air.mechanic.buoy_deployment",
+      "label": {
+        "fr": "Largage individuel",
+        "en": "Largage individuel"
+      },
+      "status": "planned",
+      "handlerId": "handler.coordination.deployAcousticSensor",
+      "requiresCapabilities": [
+        "cap.acoustic_deployment"
+      ],
+      "emits": [
+        "event.air.buoy.released",
+        "event.naval.buoy.ready"
+      ],
+      "reads": [
+        "simulation.clock",
+        "world.instances",
+        "mission.constraints"
+      ],
+      "writes": [
+        "aircraft.inventory",
+        "world.acousticSensors"
+      ],
+      "parameters": {
+        "defaultPattern": "single",
+        "defaultRequestedMode": "active",
+        "perSuccessfulDropDebit": 1,
+        "capabilityAndStockRequired": true,
+        "autoRefillOnLanding": false
+      }
+    }
+  ],
+  "notes": [
+    "Draft catalogue not connected to the live game.",
+    "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
+    "Mechanic and handler records remain planned until implementation and integration tests pass."
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "status": "acceptance_specifications_not_executed",
+  "cases": [
+    {
+      "id": "H01",
+      "area": "humanitarian",
+      "title": "Route A → B",
+      "setup": "Lancer sans ordre de mouvement.",
+      "expected": "Chaque navire suit une route valide en mer et rejoint sa destination."
+    },
+    {
+      "id": "H02",
+      "area": "humanitarian",
+      "title": "Seuil exact",
+      "setup": "Quatre navires initiaux, deux perdus.",
+      "expected": "Une seule crise de seuil est émise."
+    },
+    {
+      "id": "H03",
+      "area": "humanitarian",
+      "title": "Sous le seuil",
+      "setup": "Quatre navires initiaux, un perdu, plusieurs endommagés.",
+      "expected": "Aucune crise de seuil de pertes de navires."
+    },
+    {
+      "id": "H04",
+      "area": "humanitarian",
+      "title": "Effectif impair",
+      "setup": "Cinq navires initiaux ; passer de deux à trois pertes.",
+      "expected": "Le déclenchement intervient à trois pertes."
+    },
+    {
+      "id": "H05",
+      "area": "humanitarian",
+      "title": "Pertes simultanées",
+      "setup": "Passer de zéro à quatre pertes sur six dans le même pas.",
+      "expected": "Un seul franchissement et une seule crise."
+    },
+    {
+      "id": "H06",
+      "area": "humanitarian",
+      "title": "Dénominateur stable",
+      "setup": "Perdre une escorte, ajouter un renfort, faire arriver des navires.",
+      "expected": "Le manifeste initial humanitaire reste le seul dénominateur."
+    },
+    {
+      "id": "H07",
+      "area": "humanitarian",
+      "title": "Persistance du seuil",
+      "setup": "Franchir le seuil, sauvegarder et recharger deux fois.",
+      "expected": "Aucune deuxième émission de crise."
+    },
+    {
+      "id": "H08",
+      "area": "humanitarian",
+      "title": "Crise prioritaire",
+      "setup": "Franchir 50 % pendant que le directeur est à son plafond.",
+      "expected": "L’urgence est visible immédiatement, sans effacer les autres dossiers."
+    },
+    {
+      "id": "H09",
+      "area": "humanitarian",
+      "title": "Gestion après le seuil",
+      "setup": "Atteindre trois pertes sur six avec des survivants.",
+      "expected": "Secours et déroutement restent jouables ; aucune fin de partie automatique au seul seuil."
+    },
+    {
+      "id": "H10",
+      "area": "humanitarian",
+      "title": "Destruction totale",
+      "setup": "Un impact fait passer de zéro à la perte de tous les navires.",
+      "expected": "Le franchissement est enregistré une fois, puis l’état terminal est résolu sans faux survivants."
+    },
+    {
+      "id": "H11",
+      "area": "humanitarian",
+      "title": "Connaissance de la menace",
+      "setup": "Faire approcher une embarcation sans preuve d’hostilité.",
+      "expected": "Le statut connu reste incertain ; l’origine terroriste fictive n’est pas révélée par le seul spawn."
+    },
+    {
+      "id": "H12",
+      "area": "humanitarian",
+      "title": "Hasard reproductible",
+      "setup": "Recharger un même état avec les mêmes ordres et pas de simulation.",
+      "expected": "Les événements, tirages et stocks restent cohérents."
+    },
+    {
+      "id": "B01",
+      "area": "buoys",
+      "title": "Défaut actif",
+      "setup": "Ouvrir les commandes en Simple, Complet et via le conseiller.",
+      "expected": "Le défaut individuel est actif si le matériel et le stock sont compatibles."
+    },
+    {
+      "id": "B02",
+      "area": "buoys",
+      "title": "Comptage individuel",
+      "setup": "Larguer une bouée puis un triangle de trois.",
+      "expected": "Un puis trois matériels sont débités ; quatre objets individuels sont créés."
+    },
+    {
+      "id": "B03",
+      "area": "buoys",
+      "title": "Chargement passif",
+      "setup": "Demander une pose active avec un stock seulement passif.",
+      "expected": "L’ordre actif est refusé et une alternative compatible est expliquée."
+    },
+    {
+      "id": "B04",
+      "area": "buoys",
+      "title": "Cible invalide",
+      "setup": "Demander une pose sur la terre ou avec stock vide.",
+      "expected": "Aucun matériel créé ni stock débité."
+    },
+    {
+      "id": "B05",
+      "area": "buoys",
+      "title": "Annulation",
+      "setup": "Annuler avant largage, puis après un autre largage effectif.",
+      "expected": "Pas de consommation avant le largage ; pas de remboursement après."
+    },
+    {
+      "id": "B06",
+      "area": "buoys",
+      "title": "Déploiement physique",
+      "setup": "Observer une bouée pendant sa descente et sa mise en service.",
+      "expected": "Aucune détection avant disponibilité du capteur."
+    },
+    {
+      "id": "B07",
+      "area": "buoys",
+      "title": "Stock physique",
+      "setup": "Faire rentrer le porteur et remplir son carburant.",
+      "expected": "Les bouées ne réapparaissent pas gratuitement."
+    },
+    {
+      "id": "B08",
+      "area": "buoys",
+      "title": "Portée non publiée",
+      "setup": "Charger la fiche publique avec rayon réel null.",
+      "expected": "Aucune portée garantie n’est inventée ; le rayon de jeu porte son statut de simulation."
+    },
+    {
+      "id": "B09",
+      "area": "buoys",
+      "title": "Échelle",
+      "setup": "Comparer un même rayon en NM à plusieurs zooms et grilles.",
+      "expected": "La distance physique reste identique et respecte 1 NM = 1852 m."
+    },
+    {
+      "id": "S01",
+      "area": "submarine",
+      "title": "Changement progressif",
+      "setup": "Donner un ordre sous la couche puis observer plusieurs pas.",
+      "expected": "La profondeur évolue vers sa cible sans saut ni cycle arbitraire."
+    },
+    {
+      "id": "S02",
+      "area": "submarine",
+      "title": "Couche absente",
+      "setup": "Charger un environnement sans couche.",
+      "expected": "La commande relative à une couche absente est expliquée et désactivée."
+    },
+    {
+      "id": "S03",
+      "area": "submarine",
+      "title": "Fond insuffisant",
+      "setup": "Demander une profondeur sous la couche dépassant le fond sûr.",
+      "expected": "L’ordre est refusé ou borné avec une explication ; pas de passage dans le fond."
+    },
+    {
+      "id": "S04",
+      "area": "submarine",
+      "title": "Profondeur du capteur",
+      "setup": "Comparer capteur et cible de part et d’autre puis du même côté de la couche.",
+      "expected": "Le modèle utilise leurs profondeurs réelles, sans certitude ni invisibilité absolue."
+    },
+    {
+      "id": "S05",
+      "area": "submarine",
+      "title": "Perte de piste",
+      "setup": "Sortir des conditions de détection puis réacquérir.",
+      "expected": "La piste vieillit et s’élargit ; la position vraie reste cachée avant réacquisition."
+    },
+    {
+      "id": "S06",
+      "area": "submarine",
+      "title": "Couches physiques",
+      "setup": "Superposer horizontalement surface et sous-marin immergé.",
+      "expected": "Pas de répulsion artificielle ; contrôle de proximité conservé pour volumes compatibles."
+    },
+    {
+      "id": "D01",
+      "area": "databases",
+      "title": "Références",
+      "setup": "Charger les cinq catalogues et leurs identifiants.",
+      "expected": "Aucun doublon ni référence de capacité, événement ou gestionnaire absent."
+    },
+    {
+      "id": "D02",
+      "area": "databases",
+      "title": "Largage atomique",
+      "setup": "Interrompre la transaction débit du porteur/création d’une bouée.",
+      "expected": "Le débit et la création réussissent ensemble, ou aucun des deux."
+    },
+    {
+      "id": "D03",
+      "area": "databases",
+      "title": "Identité transportée",
+      "setup": "Embarquer, transporter et débarquer une équipe.",
+      "expected": "Une seule instance et un seul propriétaire actif à chaque étape."
+    },
+    {
+      "id": "D04",
+      "area": "databases",
+      "title": "Dépendance cyber",
+      "setup": "Couper une liaison utilisée par un capteur fonctionnel.",
+      "expected": "L’effet déclaré porte sur le rapport ou la commande, sans effacer la mesure physique."
+    },
+    {
+      "id": "D05",
+      "area": "databases",
+      "title": "Double événement",
+      "setup": "Transmettre deux fois le même événement de perte.",
+      "expected": "Un seul débit, une seule perte et une seule crise éventuelle."
+    },
+    {
+      "id": "D06",
+      "area": "databases",
+      "title": "Séparation des connaissances",
+      "setup": "Charger une vérité ennemie profonde puis afficher ses dossiers.",
+      "expected": "Les vues du joueur n’obtiennent que les observations autorisées."
+    },
+    {
+      "id": "G01",
+      "area": "game",
+      "title": "Règles persistantes",
+      "setup": "Parcourir les commandes et le bilan.",
+      "expected": "Aucun jeton d’action ; scores de décision conservés et non dépensables."
+    },
+    {
+      "id": "G02",
+      "area": "game",
+      "title": "Objectif essentiel",
+      "setup": "Perdre un objectif essentiel en gagnant les bonus.",
+      "expected": "Les bonus ne transforment pas cet échec en victoire complète."
+    }
+  ]
+}

@@ -17,8 +17,8 @@ const { chromium } = require('playwright');
     // clavier : focus sur Missions puis Entrée
     await p.focus('[data-a=play]'); await p.keyboard.press('Enter'); await p.waitForTimeout(400);
     const ms = await p.evaluate(() => { const c = [...document.querySelectorAll('.ms-card')]; return { n: c.length, ids: c.map(e => e.dataset.v), th: c.map(e => e.querySelector('.ms-th').textContent), rg: [...new Set(c.map(e => __S.thOf(__S.SC[e.dataset.v])))], diff: c.map(e => __S.SC[e.dataset.v].diff), pl: __S.PLAYABLE().map(x => x.id), sw: [document.documentElement.scrollWidth, innerWidth], fict: /FICTI/i.test(document.querySelector('.ms').innerText) } });
-    need(ms.n === 8 && ms.ids.join() === ms.pl.join(), tag + ' huit cartes, celles de PLAYABLE : ' + ms.ids);
-    need(new Set(ms.th).size === 8, tag + ' huit thèmes distincts : ' + ms.th.join(' | '));
+    need(ms.n === 9 && ms.ids.join() === ms.pl.join(), tag + ' neuf cartes, celles de PLAYABLE : ' + ms.ids);
+    need(new Set(ms.th).size === 9, tag + ' neuf thèmes distincts : ' + ms.th.join(' | '));
     need(ms.rg.length === 6, tag + ' six régions : ' + ms.rg);
     need([1, 2, 3].every(d => ms.diff.includes(d)), tag + ' trois niveaux de difficulté : ' + ms.diff);
     need(ms.sw[0] <= ms.sw[1] && ms.fict, tag + ' pas de défilement horizontal, mention fictive : ' + ms.sw);

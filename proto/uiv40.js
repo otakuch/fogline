@@ -52,7 +52,7 @@ const { chromium } = require('playwright');
     });
     console.log(lang, w, JSON.stringify(r));
     ok(r.dot.join() === '129,25,4,2,4', 'dotations');
-    ok(r.bar.n >= 3 && r.bar.cnt === r.bar.n * 4 && r.bar.act === r.bar.cnt && r.bar.left === 129 - r.bar.cnt, 'barrière active, consommation réelle');
+    ok(r.bar.n >= 3 && r.bar.cnt === r.bar.n && r.bar.act === r.bar.cnt && r.bar.left === 129 - r.bar.cnt, 'barrière active, consommation réelle');
     ok(r.alert && r.pinged, 'sous-marin alerté par les bouées actives');
     ok(r.loc, 'contact localisé');
     ok(r.killOk && r.torpRun && r.frTorp === 3 && r.busy, 'torpille du destroyer, une seule à la fois');

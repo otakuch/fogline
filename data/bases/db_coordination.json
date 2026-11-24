@@ -1,0 +1,844 @@
+{
+  "$schema": "./bases.schema.json",
+  "schemaVersion": 1,
+  "id": "coordination",
+  "label": {
+    "fr": "Coordination",
+    "en": "Coordination"
+  },
+  "status": "draft",
+  "runtimeIntegrated": false,
+  "sourceCommit": "0bddf14c24ed05d65c8b051825b7f2fb8d0f03a5",
+  "unitDefinitions": [],
+  "mechanicDefinitions": [],
+  "notes": [
+    "Draft catalogue not connected to the live game.",
+    "Imported statistics are V48 game values; setup fleet costs are not action tokens.",
+    "Mechanic and handler records remain planned until implementation and integration tests pass."
+  ],
+  "capabilities": [
+    {
+      "id": "cap.acoustic_deployment",
+      "label": {
+        "fr": "acoustic deployment",
+        "en": "acoustic deployment"
+      }
+    },
+    {
+      "id": "cap.acoustic_sensing",
+      "label": {
+        "fr": "acoustic sensing",
+        "en": "acoustic sensing"
+      }
+    },
+    {
+      "id": "cap.aeronaval",
+      "label": {
+        "fr": "aeronaval",
+        "en": "aeronaval"
+      }
+    },
+    {
+      "id": "cap.air_defense",
+      "label": {
+        "fr": "air defense",
+        "en": "air defense"
+      }
+    },
+    {
+      "id": "cap.air_interception",
+      "label": {
+        "fr": "air interception",
+        "en": "air interception"
+      }
+    },
+    {
+      "id": "cap.air_surveillance",
+      "label": {
+        "fr": "air surveillance",
+        "en": "air surveillance"
+      }
+    },
+    {
+      "id": "cap.air_transport",
+      "label": {
+        "fr": "air transport",
+        "en": "air transport"
+      }
+    },
+    {
+      "id": "cap.amphibious_transfer",
+      "label": {
+        "fr": "amphibious transfer",
+        "en": "amphibious transfer"
+      }
+    },
+    {
+      "id": "cap.aviation_hub",
+      "label": {
+        "fr": "aviation hub",
+        "en": "aviation hub"
+      }
+    },
+    {
+      "id": "cap.boarding",
+      "label": {
+        "fr": "boarding",
+        "en": "boarding"
+      }
+    },
+    {
+      "id": "cap.c2",
+      "label": {
+        "fr": "c2",
+        "en": "c2"
+      }
+    },
+    {
+      "id": "cap.cable_repair",
+      "label": {
+        "fr": "cable repair",
+        "en": "cable repair"
+      }
+    },
+    {
+      "id": "cap.convoy_navigation",
+      "label": {
+        "fr": "convoy navigation",
+        "en": "convoy navigation"
+      }
+    },
+    {
+      "id": "cap.cyber_defence",
+      "label": {
+        "fr": "cyber defence",
+        "en": "cyber defence"
+      }
+    },
+    {
+      "id": "cap.escort",
+      "label": {
+        "fr": "escort",
+        "en": "escort"
+      }
+    },
+    {
+      "id": "cap.ground_movement",
+      "label": {
+        "fr": "ground movement",
+        "en": "ground movement"
+      }
+    },
+    {
+      "id": "cap.humanitarian_transport",
+      "label": {
+        "fr": "humanitarian transport",
+        "en": "humanitarian transport"
+      }
+    },
+    {
+      "id": "cap.intelligence_analysis",
+      "label": {
+        "fr": "intelligence analysis",
+        "en": "intelligence analysis"
+      }
+    },
+    {
+      "id": "cap.lift",
+      "label": {
+        "fr": "lift",
+        "en": "lift"
+      }
+    },
+    {
+      "id": "cap.logistics",
+      "label": {
+        "fr": "logistics",
+        "en": "logistics"
+      }
+    },
+    {
+      "id": "cap.mcm",
+      "label": {
+        "fr": "mcm",
+        "en": "mcm"
+      }
+    },
+    {
+      "id": "cap.medical",
+      "label": {
+        "fr": "medical",
+        "en": "medical"
+      }
+    },
+    {
+      "id": "cap.public_information",
+      "label": {
+        "fr": "public information",
+        "en": "public information"
+      }
+    },
+    {
+      "id": "cap.seabed_survey",
+      "label": {
+        "fr": "seabed survey",
+        "en": "seabed survey"
+      }
+    },
+    {
+      "id": "cap.site_protection",
+      "label": {
+        "fr": "site protection",
+        "en": "site protection"
+      }
+    },
+    {
+      "id": "cap.sof_support",
+      "label": {
+        "fr": "sof support",
+        "en": "sof support"
+      }
+    },
+    {
+      "id": "cap.sonar",
+      "label": {
+        "fr": "sonar",
+        "en": "sonar"
+      }
+    },
+    {
+      "id": "cap.special_forces",
+      "label": {
+        "fr": "special forces",
+        "en": "special forces"
+      }
+    },
+    {
+      "id": "cap.submarine_depth_control",
+      "label": {
+        "fr": "submarine depth control",
+        "en": "submarine depth control"
+      }
+    },
+    {
+      "id": "cap.surface_navigation",
+      "label": {
+        "fr": "surface navigation",
+        "en": "surface navigation"
+      }
+    },
+    {
+      "id": "cap.surface_presence",
+      "label": {
+        "fr": "surface presence",
+        "en": "surface presence"
+      }
+    },
+    {
+      "id": "cap.torpedo",
+      "label": {
+        "fr": "torpedo",
+        "en": "torpedo"
+      }
+    },
+    {
+      "id": "cap.uav_obs",
+      "label": {
+        "fr": "uav obs",
+        "en": "uav obs"
+      }
+    },
+    {
+      "id": "cap.underwater_obs",
+      "label": {
+        "fr": "underwater obs",
+        "en": "underwater obs"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "event.order.accepted",
+      "label": {
+        "fr": "Ordre validé",
+        "en": "Ordre validé"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.air.sortie.changed",
+      "label": {
+        "fr": "État de sortie modifié",
+        "en": "État de sortie modifié"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.air.observation.created",
+      "label": {
+        "fr": "Observation aérienne",
+        "en": "Observation aérienne"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.air.interception.resolved",
+      "label": {
+        "fr": "Interception résolue",
+        "en": "Interception résolue"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.air.buoy.released",
+      "label": {
+        "fr": "Bouée effectivement larguée",
+        "en": "Bouée effectivement larguée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.cyber.service.changed",
+      "label": {
+        "fr": "Service numérique modifié",
+        "en": "Service numérique modifié"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.cyber.report.delayed",
+      "label": {
+        "fr": "Rapport retardé",
+        "en": "Rapport retardé"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.cyber.analysis.completed",
+      "label": {
+        "fr": "Analyse terminée",
+        "en": "Analyse terminée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.ground.team.embarked",
+      "label": {
+        "fr": "Équipe embarquée",
+        "en": "Équipe embarquée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.ground.team.landed",
+      "label": {
+        "fr": "Équipe débarquée",
+        "en": "Équipe débarquée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.ground.site.secured",
+      "label": {
+        "fr": "Site sécurisé",
+        "en": "Site sécurisé"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.ship.moved",
+      "label": {
+        "fr": "Navire déplacé",
+        "en": "Navire déplacé"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.ship.lost",
+      "label": {
+        "fr": "Navire définitivement perdu",
+        "en": "Navire définitivement perdu"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.convoy.arrived",
+      "label": {
+        "fr": "Arrivée du convoi",
+        "en": "Arrivée du convoi"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.convoy.loss_threshold",
+      "label": {
+        "fr": "Seuil humanitaire franchi",
+        "en": "Seuil humanitaire franchi"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.buoy.ready",
+      "label": {
+        "fr": "Bouée disponible",
+        "en": "Bouée disponible"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.observation.created",
+      "label": {
+        "fr": "Observation acoustique",
+        "en": "Observation acoustique"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.depth.changed",
+      "label": {
+        "fr": "Profondeur modifiée",
+        "en": "Profondeur modifiée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.naval.track.changed",
+      "label": {
+        "fr": "Qualité de piste modifiée",
+        "en": "Qualité de piste modifiée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.resource.transferred",
+      "label": {
+        "fr": "Transfert physique de ressource",
+        "en": "Transfert physique de ressource"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.crisis.opened",
+      "label": {
+        "fr": "Crise ouverte",
+        "en": "Crise ouverte"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.objective.changed",
+      "label": {
+        "fr": "Objectif actualisé",
+        "en": "Objectif actualisé"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    },
+    {
+      "id": "event.decision.scored",
+      "label": {
+        "fr": "Décision évaluée",
+        "en": "Décision évaluée"
+      },
+      "instanceFields": [
+        "id",
+        "simulationStep",
+        "simulationTime",
+        "sourceInstanceId",
+        "targetInstanceId",
+        "payload"
+      ],
+      "idempotent": true
+    }
+  ],
+  "handlers": [
+    {
+      "id": "handler.air.interception",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.air.sortieLifecycle",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.air.surveillance",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.coordination.deployAcousticSensor",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.coordination.humanitarianLossThreshold",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.coordination.transferResource",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.coordination.transportTeam",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.cyber.analysis",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.cyber.protection",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.cyber.publicInformation",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.cyber.serviceDependencies",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.ground.movement",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.ground.protection",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.ground.rescue",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.acousticBuoys",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.acousticEnvironment",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.humanitarianConvoy",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.navigation",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.submarineDepth",
+      "status": "planned",
+      "implementationVerified": false
+    },
+    {
+      "id": "handler.naval.trackQuality",
+      "status": "planned",
+      "implementationVerified": false
+    }
+  ],
+  "crossDomainRules": [
+    {
+      "id": "coordination.rule.buoy_release",
+      "mechanics": [
+        "air.mechanic.buoy_deployment",
+        "naval.mechanic.acoustic_buoys"
+      ],
+      "events": [
+        "event.air.buoy.released",
+        "event.naval.buoy.ready"
+      ],
+      "atomic": true
+    },
+    {
+      "id": "coordination.rule.team_transport",
+      "mechanics": [
+        "air.mechanic.transport",
+        "ground.mechanic.embarkation"
+      ],
+      "events": [
+        "event.ground.team.embarked",
+        "event.ground.team.landed"
+      ],
+      "atomic": true
+    },
+    {
+      "id": "coordination.rule.humanitarian_emergency",
+      "mechanics": [
+        "naval.mechanic.humanitarian_convoy",
+        "naval.mechanic.humanitarian_losses"
+      ],
+      "events": [
+        "event.naval.ship.lost",
+        "event.naval.convoy.loss_threshold",
+        "event.crisis.opened"
+      ],
+      "atomic": true
+    },
+    {
+      "id": "coordination.rule.sensor_reporting",
+      "mechanics": [
+        "cyber.mechanic.service_dependencies",
+        "naval.mechanic.track_quality"
+      ],
+      "events": [
+        "event.cyber.report.delayed",
+        "event.naval.track.changed"
+      ],
+      "atomic": false
+    },
+    {
+      "id": "coordination.rule.submarine_environment",
+      "mechanics": [
+        "naval.mechanic.submarine_depth",
+        "naval.mechanic.acoustic_environment"
+      ],
+      "events": [
+        "event.naval.depth.changed",
+        "event.naval.observation.created"
+      ],
+      "atomic": false
+    }
+  ],
+  "policies": {
+    "tokensEnabled": false,
+    "decisionScoresSpendable": false,
+    "essentialObjectivesMandatory": true,
+    "runtimeStateSeparateFromCatalogues": true,
+    "handlerExecution": "whitelist_only_no_eval",
+    "cyberRange": "logical_topology_not_geographic_radius",
+    "physicalLayers": [
+      "ground",
+      "surface",
+      "subsurface",
+      "air"
+    ],
+    "metersPerNauticalMile": 1852,
+    "depthUnit": "m",
+    "distanceUnit": "NM",
+    "simulationTimeUnit": "s",
+    "gridContract": "shared_hex_grid_when_integrated",
+    "knownStateSeparateFromTruth": true
+  },
+  "simulationOrder": [
+    "validate_orders",
+    "movement_and_deployment",
+    "physical_measurements",
+    "report_delivery",
+    "resolve_interactions",
+    "commit_losses",
+    "thresholds_and_crises",
+    "objectives",
+    "decision_score",
+    "snapshot"
+  ],
+  "catalogueFiles": [
+    {
+      "domain": "air",
+      "file": "db_aerien.json"
+    },
+    {
+      "domain": "cyber",
+      "file": "db_cyber.json"
+    },
+    {
+      "domain": "ground",
+      "file": "db_terrestre.json"
+    },
+    {
+      "domain": "naval",
+      "file": "db_naval.json"
+    }
+  ]
+}

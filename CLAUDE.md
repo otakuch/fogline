@@ -1714,6 +1714,8 @@ Demande de Naully du 25 novembre 2026 : « supprime les scoring avec les options
 
 **Non vérifié :** aucun vrai joueur. Rien ne dit si le jeu reste un exercice de choix quand tout peut être vérifié à la fois ; seul le temps limite encore la collecte de preuves. Le dossier de conception et le manuel ne sont pas mis à jour.
 
+**Vidéo de présentation (25 novembre 2026, demande de Naully) :** `docs/video/fogline-presentation-en-v53.mp4`, 54,5 s, 1280 × 720, 30 images par seconde, en anglais, sans son. Titre, accueil, missions, briefing de « Deep-water hunt », puis un exemple de chasse sous-marine filmé dans le jeu (tirage 21) : ouverture de la crise, nuage de probabilité, trois bouées actives larguées par le P-8A, contact localisé et classé automatiquement, conditions d'engagement réunies. Aucun tir n'est montré. Les légendes sont ajoutées par le script ; l'état du jeu vient du moteur, sans l'aide de test `dtFocus`. Script : `tools/video/film.js` (`node film.js still` pour les images clés, `full` pour la vidéo).
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.

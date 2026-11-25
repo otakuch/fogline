@@ -308,7 +308,7 @@ CLASSES = [
       [F('Fiche ancienne, utilisée pour le rôle et la classe seulement.', 'Old fact file, used for role and class only.')],
       ['lcc'],
       G(4, 2, 11, 70, 2, 0, 0, 'local'),
-      [C('std', F('Commandement', 'Command'), ['c2', 'surface_presence'], [], [], F('Maintient les jetons et les délais d’autorisation quand le réseau de commandement est coupé.', 'Keeps tokens and authorisation delays when the command network is cut.'))],
+      [C('std', F('Commandement', 'Command'), ['c2', 'surface_presence'], [], [], F('Maintient les délais d’autorisation quand le réseau de commandement est coupé.', 'Keeps authorisation delays when the command network is cut.'))],
       F('N’ajoute ni unités ni renseignement omniscient.', 'Adds no units and no omniscient intelligence.')),
   cls('constellation', 'program', 'Constellation', 'FFG', None, None,
       F('Frégate lance-missiles : référence de programme, non déployable.', 'Guided-missile frigate: programme reference, not deployable.'),

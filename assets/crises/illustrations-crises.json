@@ -1,0 +1,411 @@
+{
+ "schemaVersion": 2,
+ "status": "runtime_integrated_v51",
+ "runtimeIntegrated": true,
+ "presentationLabel": {
+  "fr": "Illustration d’ambiance",
+  "en": "Atmospheric illustration"
+ },
+ "truthIndependent": true,
+ "fallback": {
+  "kind": "neutral_panel",
+  "label": {
+   "fr": "Crise — illustration indisponible",
+   "en": "Crisis — illustration unavailable"
+  }
+ },
+ "assets": [
+  {
+   "id": "asw_contact",
+   "file": "crise-contact-sous-marin.png",
+   "crisisTypes": [
+    "sub",
+    "alarm"
+   ],
+   "title": {
+    "fr": "Contact sous-marin incertain",
+    "en": "Uncertain underwater contact"
+   },
+   "alt": {
+    "fr": "Hélicoptère en recherche acoustique et bouée sur une mer sombre.",
+    "en": "Helicopter conducting an acoustic search beside a buoy on a dark sea."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "df241ba804fe8182503cc1cbd150250bd9f8afe4b751576931f26cdfe901d50a",
+   "byteLength": 1755769,
+   "web": [
+    "web/crise-contact-sous-marin-480.webp",
+    "web/crise-contact-sous-marin-960.webp"
+   ]
+  },
+  {
+   "id": "drones",
+   "file": "crise-drones.png",
+   "crisisTypes": [
+    "swarm",
+    "site"
+   ],
+   "title": {
+    "fr": "Drones à identifier",
+    "en": "Unidentified drones"
+   },
+   "alt": {
+    "fr": "Drones observés près d’un corridor maritime et d’une infrastructure portuaire.",
+    "en": "Drones observed near a shipping corridor and port infrastructure."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "c73fe33fcaaf3cc8ba7180b9ee53cee216b395f52eb941f9aebc2547baef506a",
+   "byteLength": 1777660,
+   "web": [
+    "web/crise-drones-480.webp",
+    "web/crise-drones-960.webp"
+   ]
+  },
+  {
+   "id": "fast_boats",
+   "file": "crise-vedettes.png",
+   "crisisTypes": [
+    "raid"
+   ],
+   "title": {
+    "fr": "Approche de vedettes",
+    "en": "Approaching small craft"
+   },
+   "alt": {
+    "fr": "Embarcations approchant un convoi sous la surveillance d’une escorte.",
+    "en": "Small craft approaching a convoy watched by an escort."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "5be03056bc3aad14eb8874e2502362463d169281e88c5b9e18e5a1126f63fb05",
+   "byteLength": 1909701,
+   "web": [
+    "web/crise-vedettes-480.webp",
+    "web/crise-vedettes-960.webp"
+   ]
+  },
+  {
+   "id": "missile_threat",
+   "file": "crise-menace-missile.png",
+   "crisisTypes": [
+    "salvo"
+   ],
+   "title": {
+    "fr": "Menace aérienne",
+    "en": "Airborne threat"
+   },
+   "alt": {
+    "fr": "Escorte navale et traînées lumineuses lointaines au-dessus de l’horizon.",
+    "en": "Naval escort and distant light trails above the horizon."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "8259d26f2ff793d2a2d4d1d1624273fb6ddab6710b3743b74283e0629d54a527",
+   "byteLength": 1942028,
+   "web": [
+    "web/crise-menace-missile-480.webp",
+    "web/crise-menace-missile-960.webp"
+   ]
+  },
+  {
+   "id": "search_rescue",
+   "file": "crise-secours-en-mer.png",
+   "crisisTypes": [
+    "sar"
+   ],
+   "title": {
+    "fr": "Secours en mer",
+    "en": "Search and rescue"
+   },
+   "alt": {
+    "fr": "Équipe de secours rejoignant un radeau de survie.",
+    "en": "Rescue crew approaching a liferaft."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "648589f25ad2c885a7e0d6e6bac384298ec036fbf34bff9adb520d5b38cadd12",
+   "byteLength": 1868454,
+   "web": [
+    "web/crise-secours-en-mer-480.webp",
+    "web/crise-secours-en-mer-960.webp"
+   ]
+  },
+  {
+   "id": "humanitarian_loss",
+   "file": "crise-convoi-humanitaire.png",
+   "crisisTypes": [
+    "humanitarian_losses"
+   ],
+   "title": {
+    "fr": "Convoi humanitaire en difficulté",
+    "en": "Humanitarian convoy in distress"
+   },
+   "alt": {
+    "fr": "Convoi humanitaire et moyens de secours auprès d’un cargo immobilisé.",
+    "en": "Humanitarian convoy and rescue craft beside a disabled cargo ship."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "905351deb07121c9f18b898079ee870c85aea0bcb6e39b57cb45a91fa31f0969",
+   "byteLength": 1985293,
+   "web": [
+    "web/crise-convoi-humanitaire-480.webp",
+    "web/crise-convoi-humanitaire-960.webp"
+   ]
+  },
+  {
+   "id": "cyber_port",
+   "file": "crise-cyber-port.png",
+   "crisisTypes": [
+    "cyber"
+   ],
+   "title": {
+    "fr": "Incident cyber portuaire",
+    "en": "Port cyber incident"
+   },
+   "alt": {
+    "fr": "Port partiellement éteint et opérateurs dans un centre de contrôle.",
+    "en": "Partly darkened port and operators in a control room."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "9f84cccd028096803902952e6711e05830e23c9b7f9694d628c480b5278d30e8",
+   "byteLength": 1738271,
+   "web": [
+    "web/crise-cyber-port-480.webp",
+    "web/crise-cyber-port-960.webp"
+   ]
+  },
+  {
+   "id": "electronic_warfare",
+   "file": "crise-brouillage.png",
+   "crisisTypes": [
+    "jam"
+   ],
+   "title": {
+    "fr": "Liaisons dégradées",
+    "en": "Degraded communications"
+   },
+   "alt": {
+    "fr": "Antennes navales et écrans de passerelle présentant des signaux dégradés.",
+    "en": "Naval antennas and bridge displays showing degraded signals."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "a0d6ab48bd182cff72f9847e035262db582bace5561051d2a4c3821ab64d3414",
+   "byteLength": 1712278,
+   "web": [
+    "web/crise-brouillage-480.webp",
+    "web/crise-brouillage-960.webp"
+   ]
+  },
+  {
+   "id": "ship_seizure",
+   "file": "crise-navire-saisi.png",
+   "crisisTypes": [
+    "seize"
+   ],
+   "title": {
+    "fr": "Navire sous contrainte",
+    "en": "Ship in a seizure crisis"
+   },
+   "alt": {
+    "fr": "Pétrolier arrêté observé à distance par une escorte.",
+    "en": "Stopped tanker observed from a distance by an escort."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "5c7e3ca569ca89619437d57a31f9ae49974b5c9bb40f1ecf45c657ccec4996c9",
+   "byteLength": 1780879,
+   "web": [
+    "web/crise-navire-saisi-480.webp",
+    "web/crise-navire-saisi-960.webp"
+   ]
+  },
+  {
+   "id": "mine_alert",
+   "file": "crise-alerte-mines.png",
+   "crisisTypes": [
+    "mine"
+   ],
+   "title": {
+    "fr": "Alerte aux mines",
+    "en": "Mine alert"
+   },
+   "alt": {
+    "fr": "Moyens de reconnaissance près de l’entrée d’un détroit.",
+    "en": "Survey craft near a strait entrance."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "8ebeef9e7762320407e4a49768e882f992c051010d0ca3f886c9bd17eb346019",
+   "byteLength": 2054349,
+   "web": [
+    "web/crise-alerte-mines-480.webp",
+    "web/crise-alerte-mines-960.webp"
+   ]
+  },
+  {
+   "id": "seabed",
+   "file": "crise-fonds-marins.png",
+   "crisisTypes": [
+    "seabed",
+    "sabotage"
+   ],
+   "title": {
+    "fr": "Incident sur les fonds marins",
+    "en": "Seabed incident"
+   },
+   "alt": {
+    "fr": "Robot sous-marin inspectant un câble sur un fond rocheux.",
+    "en": "Underwater robot inspecting a cable on a rocky seabed."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "b371db563b11e3090af60cb0f3cada86501af3f0022142d9b2173827d8d35a3e",
+   "byteLength": 1953705,
+   "web": [
+    "web/crise-fonds-marins-480.webp",
+    "web/crise-fonds-marins-960.webp"
+   ]
+  },
+  {
+   "id": "evacuation",
+   "file": "crise-evacuation.png",
+   "crisisTypes": [
+    "evac"
+   ],
+   "title": {
+    "fr": "Évacuation de civils",
+    "en": "Civilian evacuation"
+   },
+   "alt": {
+    "fr": "Civils et personnel de secours préparant un embarquement sur un quai.",
+    "en": "Civilians and rescue personnel preparing to board from a quay."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "b8cc486eb2e44dd45ed76643a48e7a054839e54ec9dcccee375340756d13e7e3",
+   "byteLength": 1983343,
+   "web": [
+    "web/crise-evacuation-480.webp",
+    "web/crise-evacuation-960.webp"
+   ]
+  },
+  {
+   "id": "maritime_tension",
+   "file": "crise-tension-maritime.png",
+   "crisisTypes": [
+    "incursion",
+    "ghost",
+    "mirror"
+   ],
+   "title": {
+    "fr": "Tension maritime",
+    "en": "Maritime tension"
+   },
+   "alt": {
+    "fr": "Silhouettes navales observées à distance dans la brume.",
+    "en": "Naval silhouettes observed from a distance in mist."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "7857adc6b64c551b289fbb513681ad9cbc5a7f4565c484589f03a5dcc9d35fce",
+   "byteLength": 1806599,
+   "web": [
+    "web/crise-tension-maritime-480.webp",
+    "web/crise-tension-maritime-960.webp"
+   ]
+  },
+  {
+   "id": "information_crisis",
+   "file": "crise-information.png",
+   "crisisTypes": [
+    "desinfo",
+    "expose"
+   ],
+   "title": {
+    "fr": "Informations à vérifier",
+    "en": "Information under review"
+   },
+   "alt": {
+    "fr": "Analystes comparant des informations maritimes dans un centre de veille.",
+    "en": "Analysts comparing maritime reports in a monitoring room."
+   },
+   "source": "generated_fictional_illustration",
+   "informationalStatus": "atmospheric_not_game_state",
+   "width": 1672,
+   "height": 941,
+   "format": "PNG",
+   "sha256": "033018a7b506a284933030cb1c227b5b874c3807cbeb398c4c13ad120f27311a",
+   "byteLength": 1924777,
+   "web": [
+    "web/crise-information-480.webp",
+    "web/crise-information-960.webp"
+   ]
+  }
+ ],
+ "byCrisisType": {
+  "sub": "asw_contact",
+  "alarm": "asw_contact",
+  "swarm": "drones",
+  "site": "drones",
+  "raid": "fast_boats",
+  "salvo": "missile_threat",
+  "sar": "search_rescue",
+  "humanitarian_losses": "humanitarian_loss",
+  "cyber": "cyber_port",
+  "jam": "electronic_warfare",
+  "seize": "ship_seizure",
+  "mine": "mine_alert",
+  "seabed": "seabed",
+  "sabotage": "seabed",
+  "evac": "evacuation",
+  "incursion": "maritime_tension",
+  "ghost": "maritime_tension",
+  "mirror": "maritime_tension",
+  "desinfo": "information_crisis",
+  "expose": "information_crisis"
+ }
+}

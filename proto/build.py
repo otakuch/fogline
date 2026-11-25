@@ -29,7 +29,7 @@ for k, v in R:
 for k, v in R:
     s = s.replace(k, v, 1)
 open(os.path.join(d, 'seuil-prototype.html'), 'w', encoding='utf-8').write(s)
-open(os.path.join(d, 't.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' + s)
+open(os.path.join(d, 't.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><script>/* page de test : la fenêtre de crise (v51) est coupée par défaut, uiv51.js la rallume */window.__noCW=1</script>' + s)
 open(os.path.join(d, '../index.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' + s)
 print(len(s))
 

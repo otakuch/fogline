@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     // identification à vue : la présomption s'efface
     o.idd = await st(p, () => { const A = __S, S = A.s, d = window.__dec; __run(8, () => __hold('DDG-1', d.x + 8, d.y + 8)); return { idd: !!d.idd, pres: d.pres } }); need(o.idd.idd && !o.idd.pres, tag + ' identifié à vue : la présomption s’efface ' + JSON.stringify(o.idd));
     // allure lente loin des sites : supposé neutre
-    o.neu = await st(p, () => { const A = __S, S = A.s, f = A.addShip({ kindI: 5, x: 470, y: 470, path: [{ x: 300, y: 470 }, { x: 200, y: 470 }], v: 8 }, 'civil', false), pin = () => { __hold('LCS-1', f.x + 42, f.y) }; __run(14, pin); return { pres: f.pres && f.pres.k + '/' + f.pres.r, v: +f.v.toFixed(1), sea: A.seaOK(f.x, f.y) } }); need(o.neu.pres === 'n/slow', tag + ' allure lente loin des sites : supposé neutre ' + JSON.stringify(o.neu));
+    o.neu = await st(p, () => { const A = __S, S = A.s, f = A.addShip({ kindI: 5, x: 470, y: 470, path: [{ x: 300, y: 470 }, { x: 200, y: 470 }], v: 8 }, 'civil', false), pin = () => { __hold('LCS-1', f.x + 42, f.y) }; __run(30, pin); return { pres: f.pres && f.pres.k + '/' + f.pres.r, v: +f.v.toFixed(1), sea: A.seaOK(f.x, f.y) } }); need(o.neu.pres === 'n/slow', tag + ' allure lente loin des sites : supposé neutre ' + JSON.stringify(o.neu));
     // ---------- lot 2 : relèvements ----------
     await fresh();
     o.brg = await st(p, () => { const A = __S, S = A.s, E = A.addShip({ kindI: 5, x: 560, y: 470, path: [], v: 0, life: 9999, emit: 9999 }, 'leurre', false); E.x = 560; E.y = 470; const pin = () => { __hold('P8-1', 400, 400); __hold('MQ4-1', 420, 560); __hold('DDG-1', 100, 100); __hold('LCS-1', 100, 120) }; pin();

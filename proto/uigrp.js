@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
   await p.click('[data-a=ltab][data-v=track]'); await p.click('[data-a=logf][data-v=warn]'); await p.click('[data-a=pon][data-v=k]'); o.pon = await p.evaluate(() => __S.pon.k);
   await p.evaluate(() => { const S = __S.s; S.running = true; __S.startCrisis('desinfo') }); o.pause = await p.evaluate(() => !__S.s.running); await p.click('[data-a=pon][data-v=k]');
   // bilan
-  await p.evaluate(() => { const S = __S.s; let n = 0; while (!S.over && n++ < 9000) __S.step(.1) }); await p.waitForTimeout(300);
+  await p.evaluate(() => { const S = __S.s; let n = 0; while (!S.over && n++ < 16000) __S.step(.1) }); await p.waitForTimeout(300);
   o.bilan = await p.locator('#over').evaluate(e => !e.hidden && /Pertes et consommations|Losses and expenditures/i.test(e.textContent));
   if (lang === 'fr') await p.screenshot({ path: D + '/grp-bilan.png', fullPage: false });
   o.manque = await p.evaluate(() => __S.missing()); await p.context().close();

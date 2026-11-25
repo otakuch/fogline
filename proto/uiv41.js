@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
     await tick(500);
     // 0. bandeau permanent retiré, mention fictive gardée dans la barre de titre
     const fict = await st(() => { const f = document.getElementById('fict'), g = document.querySelector('#hud .fxtag'); return [f ? getComputedStyle(f).display : 'none', g ? g.textContent : '', g ? g.getBoundingClientRect().width : 0] });
-    need(fict[0] === 'none' && /FICTI/.test(fict[1]) && fict[2] > 20, tag + ' bandeau absent, mention dans la barre : ' + fict);
+    need(fict[0] === 'none' && fict[1] === '' && fict[2] === 0, tag + ' bandeau absent, étiquette de la barre retirée (v49) : ' + fict);
     // 1. niveaux de zoom avec les vrais boutons + et −, tailles en pixels écran
     const size = () => st(() => { const lv = __S.fzLevel(), m = [...document.querySelectorAll('#fzl .fogline-marker:not([hidden])')], u = m.find(e => e.dataset.affiliation === 'friendly' && !e.classList.contains('has-map-profile')), s = u && u.querySelector('.marker-art>.tactical-symbol'), pr = m.find(e => e.classList.contains('has-map-profile')), bd = pr && pr.querySelector('.unit-affiliation .tactical-symbol'), chip = document.getElementById('fzLvl'); return { lv, f: +__S.fzFactor().toFixed(2), btn: u ? Math.round(u.getBoundingClientRect().width) : 0, sym: s ? Math.round(s.getBoundingClientRect().width) : 0, sil: pr ? Math.round(pr.getBoundingClientRect().width) : 0, badge: bd ? Math.round(bd.getBoundingClientRect().width) : 0, chip: chip.textContent, chipH: Math.round(chip.getBoundingClientRect().height), n: m.length } });
     await st(() => { const A = __S, u = A.s.units.find(x => x.type === 'frigate'); A.cam.z = A.minZ() * 1.02; A.cam.x = u.x; A.cam.y = u.y; A.redraw(); }); await tick();
@@ -66,14 +66,14 @@ const { chromium } = require('playwright');
       A.cam.z = A.minZ() * 3; A.cam.x = c.sb.x; A.cam.y = c.sb.y; c.sb.seen = false; c.located = false; A.redraw(); A.fzSync();
       const find = () => [...document.querySelectorAll('#fzl .fogline-marker')].find(x => (x.getAttribute('aria-label') || '').includes(c.id));
       o.hidden = !find() && !A.fzItems('detail').some(i => i.o === c);
-      c.located = true; c.sb.seen = true; A.fzSync(); let e = find();
+      A.dtFocus(c, 6, 1); c.sb.seen = true; A.fzSync(); let e = find();
       o.seen = e ? { type: e.dataset.type, aff: e.dataset.affiliation, img: !!e.querySelector('img'), aria: e.getAttribute('aria-label'), html: e.innerHTML } : null;
       c.truth = 'bio'; e && (e.dataset.sigtest = '1'); const sig = JSON.stringify(A.fzSub(c)); c.truth = 'sousmarin'; o.same = sig === JSON.stringify(A.fzSub(c));
       A.classify(c, 'sousmarin'); A.fzSync(); e = find(); o.cls = e ? [e.dataset.type, e.dataset.affiliation, !!e.querySelector('img[data-sil="sous_marin"]')] : null; return o
     });
     need(sub.hidden, tag + ' sous-marin non détecté : aucun marqueur');
     need(sub.seen && sub.seen.type === 'inconnu' && sub.seen.aff === 'unknown' && !sub.seen.img && !/Sous-marin ·|Submarine ·/.test(sub.seen.aria) && sub.same, tag + ' écho non classé : symbole non classifié, sans silhouette, indépendant de la vérité : ' + JSON.stringify(sub.seen && { t: sub.seen.type, a: sub.seen.aff, aria: sub.seen.aria }));
-    need(sub.cls && sub.cls[0] === 'sous_marin' && sub.cls[1] === 'hostile' && sub.cls[2], tag + ' après classement par le joueur : sous-marin, silhouette : ' + sub.cls);
+    need(sub.cls && sub.cls[0] === 'sous_marin' && sub.cls[1] === 'unfriendly' && sub.cls[2], tag + ' après classement : sous-marin suspect tant qu’il n’a pas attaqué, silhouette : ' + sub.cls);
     // 6. cinq appartenances, quatre silhouettes chargées
     const aff = await st(() => { const A = __S, o = {}; ['friendly', 'neutral', 'hostile', 'unfriendly', 'unknown'].forEach(a => { const d = document.createElement('div'); d.innerHTML = A.tacticalSymbol('navire_surface', a); o[a] = [d.firstChild.style.color, d.innerHTML.includes('stroke-dasharray')] }); o.map = [...new Set([...document.querySelectorAll('#fzl .fogline-marker')].map(e => e.dataset.affiliation))].sort().join(','); return o });
     need(aff.friendly[0] === 'rgb(127, 209, 244)' && aff.neutral[0] === 'rgb(152, 211, 131)' && aff.hostile[0] === 'rgb(255, 119, 119)' && aff.unfriendly[0] === 'rgb(242, 181, 68)' && aff.unknown[0] === 'rgb(244, 223, 120)' && aff.unfriendly[1] && !aff.hostile[1], tag + ' cinq couleurs, cadre suspect pointillé : ' + JSON.stringify(aff));
@@ -90,7 +90,7 @@ const { chromium } = require('playwright');
     await st(() => { __S.s.running = true; document.getElementById('fzLvl').focus(); }); await p.keyboard.press('Enter'); await tick(500);
     const leg = await st(() => { const o = document.getElementById('over'); return { open: !o.hidden, run: __S.s.running, cats: o.querySelectorAll('.fzgrid>div').length, aff: o.querySelectorAll('.fzleg .lg2')[0].children.length, sil: [...o.querySelectorAll('.fzsil img')].map(i => i.complete && i.naturalWidth > 0).filter(Boolean).length, w: [document.documentElement.scrollWidth, innerWidth] } });
     await p.screenshot({ path: D + '/v41-legende-' + tag + '.png' });
-    need(leg.open && leg.run === false && leg.cats === 29 && leg.aff === 5 && leg.sil === 9 && leg.w[0] <= leg.w[1], tag + ' légende : 29 catégories, 5 appartenances, 9 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
+    need(leg.open && leg.run === false && leg.cats === 31 && leg.aff === 5 && leg.sil === 9 && leg.w[0] <= leg.w[1], tag + ' légende : 31 catégories, 5 appartenances, 9 silhouettes chargées, temps suspendu : ' + JSON.stringify(leg));
     await p.click('[data-a=legclose]'); await tick(300);
     const after = await st(() => [document.getElementById('over').hidden, __S.s.running]); need(after[0] && after[1] === true, tag + ' fermeture : temps rendu : ' + after);
     await st(() => { __S.s.running = false });

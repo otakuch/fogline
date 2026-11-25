@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fogline:catalogues:1",
+  "title": "FOGLINE logical catalogue draft",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "id",
+    "label",
+    "status",
+    "runtimeIntegrated",
+    "sourceCommit",
+    "unitDefinitions",
+    "mechanicDefinitions",
+    "notes"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./bases.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "enum": [
+        "air",
+        "cyber",
+        "ground",
+        "naval",
+        "coordination"
+      ]
+    },
+    "label": {
+      "$ref": "#/$defs/label"
+    },
+    "status": {
+      "const": "draft"
+    },
+    "runtimeIntegrated": {
+      "const": false
+    },
+    "sourceCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "unitDefinitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/unit"
+      }
+    },
+    "mechanicDefinitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mechanic"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    },
+    "handlers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "implementationVerified"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "const": "planned"
+          },
+          "implementationVerified": {
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "crossDomainRules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "mechanics",
+          "events",
+          "atomic"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "mechanics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "atomic": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "policies": {
+      "type": "object"
+    },
+    "simulationOrder": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "catalogueFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "domain",
+          "file"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "label": {
+      "type": "object",
+      "required": [
+        "fr",
+        "en"
+      ],
+      "properties": {
+        "fr": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "required": [
+        "id",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.]+$"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        }
+      },
+      "additionalProperties": true
+    },
+    "unit": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record"
+        }
+      ],
+      "required": [
+        "kind",
+        "origin",
+        "sourceKey",
+        "physicalLayer",
+        "capabilities",
+        "configurations",
+        "sourceGameStats",
+        "statisticStatus",
+        "configurationCapabilitiesAreConditional"
+      ],
+      "properties": {
+        "kind": {
+          "const": "unit_type"
+        },
+        "origin": {
+          "enum": [
+            "imported_v48",
+            "planned_extension"
+          ]
+        },
+        "sourceKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "physicalLayer": {
+          "enum": [
+            "surface",
+            "subsurface",
+            "air",
+            "ground",
+            "logical"
+          ]
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "configurations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label",
+              "capabilities"
+            ]
+          }
+        },
+        "sourceGameStats": {
+          "type": "object"
+        },
+        "statisticStatus": {
+          "enum": [
+            "fictional_game_values",
+            "to_calibrate"
+          ]
+        },
+        "configurationCapabilitiesAreConditional": {
+          "type": "boolean"
+        }
+      }
+    },
+    "mechanic": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record"
+        }
+      ],
+      "required": [
+        "status",
+        "handlerId",
+        "requiresCapabilities",
+        "emits",
+        "reads",
+        "writes",
+        "parameters"
+      ],
+      "properties": {
+        "status": {
+          "const": "planned"
+        },
+        "handlerId": {
+          "type": "string"
+        },
+        "requiresCapabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "writes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

@@ -239,6 +239,23 @@ W('em', 'e6', 'all', 'intl', 2, ['info', 'action'], ('Évacuation sous regard', 
 W('ad', 'a6', 'ad_b', 'local', 2, ['mer', 'info'], ('Le détroit et l’annonce', 'The strait and the announcement'), ('Fermer le détroit sur une rumeur, ou risquer un navire ?', 'Close the strait on a rumour, or risk a ship?'), ('Une annonce de mines circule à Bab-el-Mandeb. Le trafic commercial attend une décision. Le plan suppose que vos sources sont solides.', 'A mine announcement is circulating at Bab-el-Mandeb. Commercial traffic awaits a decision. The plan assumes your sources are sound.'), ['frigate', 'recon', 'comm'], ['info.sources', 'adv.early', 'comm.delay', 'sup.naval'], P3([close('ob.desinfo', 'desinfo')], [close('ob.mine', 'mine')], [close('ob.ghost', 'ghost'), HOLD]), [[2, 'desinfo'], [4, 'mine'], [7, 'ghost']], {'mine': 1, 'desinfo': 1, 'ghost': 1})
 W('ml', 'm6', 'ml_s', 'local', 3, ['sous-marin', 'mer'], ('Sous le détroit', 'Beneath the strait'), ('Trafic dense, câbles vulnérables et annonce de mines en même temps.', 'Dense traffic, vulnerable cables and a mine announcement all at once.'), ('Le sud du détroit concentre câbles et trafic. Le plan suppose que vous aurez une unité disponible pour chaque alerte.', 'The southern strait concentrates cables and traffic. The plan assumes you will have a unit available for each alert.'), ['frigate', 'repair', 'drone'], ['sup.naval', 'adv.double', 'info.late', 'comm.pnt'], P3([close('ob.seabed', 'seabed')], [close('ob.mine', 'mine')], [patrol('ob.lane', 'ml_s', 25), HOLD]), [[2, 'seabed'], [5, 'mine']], {'mine': 1, 'seabed': 1, 'ghost': 1})
 
+# ---------- version 50 : convoi humanitaire (golfe de Guinée). Le convoi part seul dès la première phase ; groupe terroriste entièrement fictif.
+W('gn', 'hc', 'all', 'intl', 2, ['action', 'essaim', 'info'], ('Convoi humanitaire', 'Humanitarian convoy'),
+  ('Six navires d’aide traversent le golfe. Ils partent seuls ; à vous de les protéger des imprévus.', 'Six aid ships cross the gulf. They leave by themselves; you protect them from the unexpected.'),
+  ('Exercice fictif. Un convoi humanitaire quitte Abidjan pour Libreville. Des messages non vérifiés prêtent des intentions hostiles au « Cercle d’Haren », groupe entièrement fictif. Le plan suppose que les alertes arrivent à temps et que le port d’arrivée reste ouvert.', 'Fictional exercise. A humanitarian convoy leaves Abidjan for Libreville. Unverified messages credit the “Haren Circle”, an entirely fictional group, with hostile intent. The plan assumes alerts arrive in time and the arrival port stays open.'),
+  ['frigate', 'patrol', 'patrol', 'recon', 'comm', 'analysis'], ['info.late', 'ally.slow', 'sup.weap', 'adv.early', 'comm.sat'],
+  P3([{'k': 'convoy', 'key': 'ob.hc', 'ess': 1}], [close('ob.swarm', 'swarm')], [close('ob.hcport', 'hcport'), HOLD], t=(4, 10, 14)),
+  [[2, 'alarm'], [4, 'swarm', 'convoy'], [6, 'sabotage', 'convoy'], [8, 'hcport'], [9, 'desinfo', None, {'p': .6}], [10, 'swarm', 'convoy', {'p': .5}], [5, 'sar', None, {'p': .4}], [7, 'jam', None, {'p': .35}]],
+  {'alarm': 1, 'sar': 1, 'desinfo': 1}, assets=['PORT', 'PLAT', 'LNG', 'GRID', 'STAT'],
+  hc={'n': 6, 'alt': ['Tema', 'Lagos', 'SaoTome'], 'grp': {'fr': 'Cercle d’Haren', 'en': 'Haren Circle'}})
+S[-1]['phases'][0]['convoy'] = ['Abidjan', 'Libreville']
+# objectifs essentiels : leur échec empêche la victoire, quel que soit le reste (audit V48, constat F01)
+ESS = {'m6': 'ob.mine', 'f2': 'ob.sab'}
+for x in S:
+    for ph in x['phases']:
+        for i, o in enumerate(ph['obj']):
+            if ESS.get(x['id']) == o.get('key'): ph['obj'][i] = dict(o, ess=1)
+
 for x in S:
     if x.get('tuto') or x.get('req'): continue
     if 'mer' in x['tags'] and x['id'][0] != 'c': x['pool'].setdefault('mine', 1)
@@ -247,7 +264,7 @@ for x in S:
 for x in S:
     if x.pop('diff4', None): x['diff'] = 3
 # missions plus longues : le découpage en phases, le script et les présences requises suivent
-LONG = 1.6
+LONG = 2.2  # version 52 : 1,6 jusqu'à la version 51 ; l'allure lente unique (0,55) demande des missions plus longues
 for x in S:
     if x.get('tuto'): continue
     for p in x['phases']:
@@ -282,7 +299,7 @@ H('sup.ana', 'sup', 'Les analyses sont traitées rapidement.', 'Analyses are pro
  H('sup.weap', 'sup', 'Les stocks d’armes sont pleins.', 'Weapon stocks are full.', 'Stocks insuffisants : missiles et défense réduits de moitié.', 'Stocks fall short: missiles and defence cut by half.'),
  H('adv.weap', 'adv', 'Vos systèmes de combat sont fiables.', 'Your combat systems are reliable.', 'Un système de combat est compromis pendant trois tours : armes moins fiables.', 'A combat system is compromised for three turns: weapons less reliable.'),
  H('pos.ally', 'bonus', '', '', 'Bonne nouvelle : un patrouilleur allié est disponible plus tôt que prévu.', 'Good news: an allied patrol vessel is available earlier than planned.'),
- H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, un jeton de plus au tour 1.', 'Good news: the crisis cell is reinforced, one extra token on turn 1.'),
+ H('pos.token', 'bonus', '', '', 'Bonne nouvelle : la cellule de crise est renforcée, vos analyses vont plus vite.', 'Good news: the crisis cell is reinforced, your analyses run faster.'),
  H('pos.calm', 'bonus', '', '', 'Bonne nouvelle : le théâtre est plus calme que prévu, moins d’aléas.', 'Good news: the theatre is calmer than expected, fewer incidents.'),
 ]
 # Version 38 (13 novembre 2026) : chasse sous-marine autour d'un convoi, conçue pour les règles réalistes (real=1 : simple indication au briefing).
@@ -318,10 +335,19 @@ VAR = {
  'e6': dict(script=[[[2, 4], 'desinfo'], [8, 'evac', 'PORT'], [16, 'cyber', 'GRID'], [12, 'desinfo', None, {'p': .5}], [18, 'cyber', 'GRID', {'p': .35}]]),
  'm6': dict(script=[[[2, 3], 'seabed'], [8, 'mine'], [12, 'ghost', None, {'g': 'fin'}], [13, 'seabed', None, {'g': 'fin'}]], grp={'fin': [1, 2]}),
 }
+_vk = LONG / 1.6  # les tours de VAR ont été écrits pour LONG = 1,6
+_vt = lambda t: [max(1, round(t[0] * _vk)), max(1, round(t[1] * _vk))] if isinstance(t, list) else max(1, round(t * _vk))
+for x in S:
+    if x['id'] == 'asw':  # définie après l'allongement général : elle suit le même rapport que les autres (14 tours -> 19)
+        for p in x['phases']:
+            p['until'] = round(p['until'] * _vk)
+            for ob in p['obj']:
+                if ob.get('k') == 'patrol' and ob.get('need'): ob['need'] = round(ob['need'] * _vk)
+        x['turns'] = x['phases'][-1]['until']
 for x in S:
     v = VAR.get(x['id'])
     if v:
-        x['script'] = v['script']
+        x['script'] = [[_vt(e[0])] + list(e[1:]) for e in v['script']]
         if 'grp' in v: x['grp'] = v['grp']
 out = {'version': 1, 'scenarios': S, 'assumptions': ASM}
 json.dump(out, open('scenarios.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

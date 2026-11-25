@@ -1,0 +1,640 @@
+{
+  "schemaVersion": 2,
+  "status": "acceptance_specifications_not_live_test_results",
+  "executionRequiredInTargetRepository": true,
+  "cases": [
+    {
+      "id": "ASW2-001",
+      "group": "belief",
+      "status": "specified_not_executed",
+      "given": "Une distribution normalisée en eau ouverte.",
+      "when": "Prédire sans observation nouvelle.",
+      "expected": "La masse reste normalisée ; aucune concentration gratuite ni utilisation du cap secret."
+    },
+    {
+      "id": "ASW2-002",
+      "group": "belief",
+      "status": "specified_not_executed",
+      "given": "Deux lobes plausibles séparés.",
+      "when": "Afficher le datum.",
+      "expected": "Deux zones sont conservées ; le milieu vide ne devient pas un point confirmé."
+    },
+    {
+      "id": "ASW2-003",
+      "group": "belief",
+      "status": "specified_not_executed",
+      "given": "Une distribution proche d’une côte et d’une limite de fenêtre.",
+      "when": "Propager.",
+      "expected": "Pas de masse dans la terre ; masse hors fenêtre conservée ou fenêtre étendue."
+    },
+    {
+      "id": "ASW2-004",
+      "group": "fusion",
+      "status": "specified_not_executed",
+      "given": "Un rapport déjà livré et fusionné.",
+      "when": "Retransmettre son rootMeasurementId via un autre relais.",
+      "expected": "Aucune nouvelle réduction d’incertitude ni preuve supplémentaire."
+    },
+    {
+      "id": "ASW2-005",
+      "group": "fusion",
+      "status": "specified_not_executed",
+      "given": "Deux récepteurs distincts observent une même émission.",
+      "when": "Fusionner leurs mesures avec racines distinctes et phénomène commun.",
+      "expected": "La géométrie utile est conservée avec prise en compte de la corrélation."
+    },
+    {
+      "id": "ASW2-006",
+      "group": "fusion",
+      "status": "specified_not_executed",
+      "given": "Deux relèvements presque parallèles, erreurs larges.",
+      "when": "Fusionner.",
+      "expected": "La piste ne devient pas un point précis par un bonus fixe."
+    },
+    {
+      "id": "ASW2-007",
+      "group": "fusion",
+      "status": "specified_not_executed",
+      "given": "Une mesure de jeu portée+relèvement cohérente.",
+      "when": "Fusionner un seul capteur compatible.",
+      "expected": "Une zone peut se préciser sans exiger deux plateformes."
+    },
+    {
+      "id": "ASW2-008",
+      "group": "fusion",
+      "status": "specified_not_executed",
+      "given": "Mesures contradictoires ou sous-flux numérique.",
+      "when": "Mettre à jour.",
+      "expected": "Conflit explicite, état fini ; aucun recours à la position vraie."
+    },
+    {
+      "id": "ASW2-009",
+      "group": "time",
+      "status": "specified_not_executed",
+      "given": "Rapport produit à t=100 et reçu à t=130.",
+      "when": "Traiter à t=130.",
+      "expected": "Fusion historique puis propagation de 30 secondes ; la mesure ne semble pas actuelle."
+    },
+    {
+      "id": "ASW2-010",
+      "group": "time",
+      "status": "specified_not_executed",
+      "given": "Mêmes événements, graine et durée simulée.",
+      "when": "Exécuter avec deux cadences d’affichage.",
+      "expected": "Même connaissance et consommation ; le rendu ne génère pas de mesures."
+    },
+    {
+      "id": "ASW2-011",
+      "group": "classification",
+      "status": "specified_not_executed",
+      "given": "Localisation étroite et hypothèse biologique forte.",
+      "when": "Demander un engagement.",
+      "expected": "La position ne confirme pas l’hostilité ; la revue explique le refus."
+    },
+    {
+      "id": "ASW2-012",
+      "group": "classification",
+      "status": "specified_not_executed",
+      "given": "Ancienne piste amie perdue ; nouveau contact proche.",
+      "when": "Réassocier.",
+      "expected": "L’identité amie n’est pas copiée sans indices suffisants."
+    },
+    {
+      "id": "ASW2-013",
+      "group": "negative",
+      "status": "specified_not_executed",
+      "given": "Capteur inactif ou zone sans probabilité utile de détection.",
+      "when": "Constater aucune mesure.",
+      "expected": "Pas de preuve négative inventée."
+    },
+    {
+      "id": "ASW2-014",
+      "group": "negative",
+      "status": "specified_not_executed",
+      "given": "Recherche réellement effectuée avec couverture de jeu connue.",
+      "when": "Recevoir un rapport négatif valide.",
+      "expected": "La vraisemblance négative est proportionnée à cette couverture."
+    },
+    {
+      "id": "ASW2-015",
+      "group": "truth",
+      "status": "specified_not_executed",
+      "given": "Deux mondes secrets différents produisent les mêmes observations livrées.",
+      "when": "Afficher carte, conseiller, popup et revue.",
+      "expected": "Les sorties de connaissance restent identiques ; pas de fuite via titre, alt, identifiant ou image."
+    },
+    {
+      "id": "ASW2-016",
+      "group": "layer",
+      "status": "specified_not_executed",
+      "given": "Sous-marin et capteur séparés par une couche locale.",
+      "when": "Comparer avec un capteur de profondeur compatible.",
+      "expected": "Différence cohérente, sans invisibilité absolue ni précision garantie."
+    },
+    {
+      "id": "ASW2-017",
+      "group": "layer",
+      "status": "specified_not_executed",
+      "given": "Théâtre sans couche définie.",
+      "when": "Laisser passer 80 secondes.",
+      "expected": "Aucun basculement sous la couche ni couche universelle à 150 m."
+    },
+    {
+      "id": "ASW2-018",
+      "group": "buoy",
+      "status": "specified_not_executed",
+      "given": "Matériel actif compatible en stock, mode Simple ou conseiller.",
+      "when": "Poser une seule bouée.",
+      "expected": "Un seul objet et un seul débit ; actif par défaut dans tous les chemins."
+    },
+    {
+      "id": "ASW2-019",
+      "group": "buoy",
+      "status": "specified_not_executed",
+      "given": "Matériel uniquement passif.",
+      "when": "Demander le mode actif.",
+      "expected": "Refus expliqué ; pas de conversion fictive en bouée active."
+    },
+    {
+      "id": "ASW2-020",
+      "group": "buoy",
+      "status": "specified_not_executed",
+      "given": "Stock entamé.",
+      "when": "Apponter, sauvegarder, recharger puis annuler une pose.",
+      "expected": "Aucun rechargement gratuit ni double débit."
+    },
+    {
+      "id": "ASW2-021",
+      "group": "air",
+      "status": "specified_not_executed",
+      "given": "Avion de patrouille arrivé sur une zone.",
+      "when": "Laisser l’ordre de recherche actif.",
+      "expected": "Circuit compatible avec l’allure lente, pas de stationnaire ; carburant consommé."
+    },
+    {
+      "id": "ASW2-022",
+      "group": "air",
+      "status": "specified_not_executed",
+      "given": "Hélicoptère au sonar trempé.",
+      "when": "Donner un déplacement.",
+      "expected": "Cycle de remontée/transfert cohérent ; pas de téléportation de capteur."
+    },
+    {
+      "id": "ASW2-023",
+      "group": "air",
+      "status": "specified_not_executed",
+      "given": "Deux variantes, une seule avec MAD déclaré.",
+      "when": "Ouvrir les actions.",
+      "expected": "Le MAD n’apparaît disponible que pour la variante compatible."
+    },
+    {
+      "id": "ASW2-024",
+      "group": "engagement",
+      "status": "specified_not_executed",
+      "given": "Piste qui vieillit avant l’arrivée du moyen.",
+      "when": "Calculer la revue.",
+      "expected": "Couverture sur distribution projetée ; âge, identification, risque et ROE séparés."
+    },
+    {
+      "id": "ASW2-025",
+      "group": "engagement",
+      "status": "specified_not_executed",
+      "given": "Ordre valide puis cible changeant de route en secret.",
+      "when": "Lancer l’action.",
+      "expected": "Un débit atomique ; point estimé conservé ; pas de correction omnisciente."
+    },
+    {
+      "id": "ASW2-026",
+      "group": "engagement",
+      "status": "specified_not_executed",
+      "given": "Résultat physique sans observation reçue.",
+      "when": "Ouvrir le dossier.",
+      "expected": "Résultat non confirmé ; aucun message de destruction révélé par la vérité seule."
+    },
+    {
+      "id": "ASW2-027",
+      "group": "tokens",
+      "status": "specified_not_executed",
+      "given": "Solde ancien nul, négatif ou absent.",
+      "when": "Effectuer chaque famille d’action avec matériel disponible.",
+      "expected": "Aucun blocage, débit ou recharge de jetons ; score décisionnel conservé."
+    },
+    {
+      "id": "ASW2-028",
+      "group": "tokens",
+      "status": "specified_not_executed",
+      "given": "Partie longue et moral dégradé.",
+      "when": "Changer de tour, consulter le tutoriel et le conseiller.",
+      "expected": "Pas de recréation cachée de jetons ni de quota abstrait sous un autre nom."
+    },
+    {
+      "id": "ASW2-029",
+      "group": "mobility",
+      "status": "specified_not_executed",
+      "given": "Unités mobiles de chaque domaine et camp.",
+      "when": "Créer, patrouiller, escorter, poursuivre, revenir et renforcer.",
+      "expected": "Allure lente unique par type, sans accélération cachée."
+    },
+    {
+      "id": "ASW2-030",
+      "group": "mobility",
+      "status": "specified_not_executed",
+      "given": "Ancienne sauvegarde et ordre à allure maximale.",
+      "when": "Charger puis reprendre.",
+      "expected": "Normalisation vers lente, sans multiplicateur normal ou rapide survivant."
+    },
+    {
+      "id": "ASW2-031",
+      "group": "mobility",
+      "status": "specified_not_executed",
+      "given": "Groupe mixte de vitesses lentes différentes.",
+      "when": "Suivre une route.",
+      "expected": "Cohésion selon le membre limitant ; aucune unité ne dépasse sa vitesse lente."
+    },
+    {
+      "id": "ASW2-032",
+      "group": "mobility",
+      "status": "specified_not_executed",
+      "given": "Route et durée simulée identiques dans les trois modes temporels.",
+      "when": "Comparer les positions et ETA.",
+      "expected": "Distances équivalentes indépendantes du nombre d’images ou du zoom."
+    },
+    {
+      "id": "ASW2-033",
+      "group": "mobility",
+      "status": "specified_not_executed",
+      "given": "Délais de crise hérités de la vitesse normale.",
+      "when": "Rejouer les missions après calibration lente.",
+      "expected": "Les objectifs restent atteignables avec une politique raisonnable et un matériel adapté."
+    },
+    {
+      "id": "ASW2-034",
+      "group": "special_forces",
+      "status": "specified_not_executed",
+      "given": "SEAL embarqué sur un navire de guerre compatible.",
+      "when": "Préparer puis lancer une insertion.",
+      "expected": "Même instance, validations aux deux étapes et manifeste débité une seule fois."
+    },
+    {
+      "id": "ASW2-035",
+      "group": "special_forces",
+      "status": "specified_not_executed",
+      "given": "Porteur civil, humanitaire ou navire militaire sans capacité.",
+      "when": "Demander une insertion via UI, conseiller et IA.",
+      "expected": "Tous les chemins refusent avec raison ; aucun départ autonome terrestre ou aérien."
+    },
+    {
+      "id": "ASW2-036",
+      "group": "special_forces",
+      "status": "specified_not_executed",
+      "given": "Équipe embarquée sollicitée par deux crises.",
+      "when": "Envoyer deux ordres simultanés.",
+      "expected": "Un seul départ, pas de duplication ni double consommation de place."
+    },
+    {
+      "id": "ASW2-037",
+      "group": "special_forces",
+      "status": "specified_not_executed",
+      "given": "Porteur perdu avant départ, puis équipe déjà à terre dans un autre cas.",
+      "when": "Mettre à jour les états.",
+      "expected": "Premier transfert suspendu ; deuxième équipe reste à terre avec récupération à résoudre."
+    },
+    {
+      "id": "ASW2-038",
+      "group": "special_forces",
+      "status": "specified_not_executed",
+      "given": "Ancien SEAL libre sans porteur.",
+      "when": "Migrer.",
+      "expected": "Réserve non déployable ; exception explicite pour opération déjà débarquée, sans nouvelle insertion gratuite."
+    },
+    {
+      "id": "ASW2-039",
+      "group": "crisis",
+      "status": "specified_not_executed",
+      "given": "Nouvelle crise connue et jeu en cours en solo.",
+      "when": "Recevoir event.crisis.created.",
+      "expected": "Une fenêtre s’ouvre, simulation et compteurs en pause ; contenu fondé sur la connaissance."
+    },
+    {
+      "id": "ASW2-040",
+      "group": "crisis",
+      "status": "specified_not_executed",
+      "given": "Même crise actualisée ou événement rejoué.",
+      "when": "Livrer mise à jour, doublon et rechargement.",
+      "expected": "Pas de seconde ouverture automatique, ni répétition d’un effet de score."
+    },
+    {
+      "id": "ASW2-041",
+      "group": "crisis",
+      "status": "specified_not_executed",
+      "given": "Trois crises simultanées dont une déjà close.",
+      "when": "Consulter la file.",
+      "expected": "Ordre gravité/date, aucune fenêtre empilée, état courant et réponses périmées retirées."
+    },
+    {
+      "id": "ASW2-042",
+      "group": "crisis",
+      "status": "specified_not_executed",
+      "given": "Fenêtre ouverte, jeu initialement en pause ou en cours.",
+      "when": "Fermer, appuyer sur Échap puis choisir Reprendre.",
+      "expected": "Fermer conserve la pause ; seul Reprendre relance ; focus restauré."
+    },
+    {
+      "id": "ASW2-043",
+      "group": "crisis",
+      "status": "specified_not_executed",
+      "given": "Image absente, lente ou mode mobile/clavier.",
+      "when": "Ouvrir et lire une crise.",
+      "expected": "Décisions toujours accessibles, fallback neutre, dialogue lisible et focus maîtrisé."
+    },
+    {
+      "id": "ASW2-044",
+      "group": "convoy",
+      "status": "specified_not_executed",
+      "given": "Trois navires protégés initiaux et des escortes.",
+      "when": "Perdre successivement un puis deux navires protégés.",
+      "expected": "Pas de crise à 1/3 ; une seule crise à 2/3 ; escortes exclues."
+    },
+    {
+      "id": "ASW2-045",
+      "group": "convoy",
+      "status": "specified_not_executed",
+      "given": "Quatre navires initiaux, arrivées et renforts.",
+      "when": "Perdre deux navires initiaux puis sauvegarder/recharger.",
+      "expected": "Déclenchement à 2/4, dénominateur figé et alerte idempotente, partie non terminée automatiquement."
+    },
+    {
+      "id": "ASW2-046",
+      "group": "collision",
+      "status": "specified_not_executed",
+      "given": "Navire de surface et sous-marin immergé à mêmes coordonnées horizontales.",
+      "when": "Résoudre les collisions.",
+      "expected": "Pas de répulsion entre couches distinctes ; contrôles de fond et obstacles conservés."
+    },
+    {
+      "id": "ASW2-047",
+      "group": "save",
+      "status": "specified_not_executed",
+      "given": "Distribution multimodale, rapports en attente, équipe en transfert et crise acquittée.",
+      "when": "Sauvegarder et recharger.",
+      "expected": "États et RNG conservés ; aucun nouveau rapport, stock, clone ou popup gratuit."
+    },
+    {
+      "id": "ASW2-048",
+      "group": "active_ping",
+      "status": "specified_not_executed",
+      "given": "Sous-marin compatible à allure lente et contact ambigu.",
+      "when": "Émettre un ping unique.",
+      "expected": "Un cycle et des observations de jeu ; aucune identité vraie copiée ni accélération."
+    },
+    {
+      "id": "ASW2-049",
+      "group": "active_ping",
+      "status": "specified_not_executed",
+      "given": "Même ordre livré deux fois.",
+      "when": "Traiter les deux commandId identiques.",
+      "expected": "Une seule émission ; aucune preuve en double."
+    },
+    {
+      "id": "ASW2-050",
+      "group": "active_ping",
+      "status": "specified_not_executed",
+      "given": "Pings périodiques actifs puis arrêt et chargement.",
+      "when": "Arrêter après une émission et recharger.",
+      "expected": "Pas d’émission future réactivée ; réception d’un écho déjà émis possible."
+    },
+    {
+      "id": "ASW2-051",
+      "group": "active_ping",
+      "status": "specified_not_executed",
+      "given": "Partie en pause et plusieurs cadences d’affichage.",
+      "when": "Attendre puis reprendre à durée simulée égale.",
+      "expected": "Aucun cycle ni analyse en pause ; mêmes observations quelle que soit la cadence."
+    },
+    {
+      "id": "ASW2-052",
+      "group": "active_ping",
+      "status": "specified_not_executed",
+      "given": "Capteur absent ou indisponible.",
+      "when": "Ouvrir les ordres acoustiques.",
+      "expected": "Action indisponible avec motif ; aucun quota abstrait ni jeton inventé."
+    },
+    {
+      "id": "ASW2-053",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Indices connus cohérents de neutralité.",
+      "when": "Terminer l’analyse.",
+      "expected": "Classement neutre automatique et tracé, sans validation manuelle ni tir."
+    },
+    {
+      "id": "ASW2-054",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Indices connus cohérents d’hostilité.",
+      "when": "Terminer l’analyse.",
+      "expected": "Classement hostile automatique lorsque critères atteints ; ROE et position restent indépendants."
+    },
+    {
+      "id": "ASW2-055",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Écho localisé sans preuve d’appartenance.",
+      "when": "Analyser.",
+      "expected": "Nature estimée possible ; affiliation inconnue, aucun ennemi déduit du seul ping."
+    },
+    {
+      "id": "ASW2-056",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Contact sans AIS ni réponse.",
+      "when": "Actualiser le dossier.",
+      "expected": "Ni neutralité ni hostilité confirmée par cette seule absence."
+    },
+    {
+      "id": "ASW2-057",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Les mêmes preuves sont réanalysées.",
+      "when": "Cliquer plusieurs fois sur Analyser.",
+      "expected": "Pas de hausse artificielle de confiance ni de nouveaux scores."
+    },
+    {
+      "id": "ASW2-058",
+      "group": "auto_classification",
+      "status": "specified_not_executed",
+      "given": "Piste anciennement hostile puis preuves contraires.",
+      "when": "Recevoir et analyser de nouveaux indices.",
+      "expected": "Révision traçable ; engagement en approche suspendu si préconditions perdues."
+    },
+    {
+      "id": "ASW2-059",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Une munition alliée de chaque famille simulée.",
+      "when": "Lancer en respectant l’emport.",
+      "expected": "Chaque projectile ou groupe explicitement compté est visible et identifiable dès départ."
+    },
+    {
+      "id": "ASW2-060",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Projectile adverse non détecté puis observation valide.",
+      "when": "Comparer la carte avant et après réception.",
+      "expected": "Aucun objet secret avant réception ; vue connue ensuite, sans lanceur ou cible cachés révélés."
+    },
+    {
+      "id": "ASW2-061",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Torpille larguée par hélicoptère.",
+      "when": "Passer de l’air à l’eau et résoudre.",
+      "expected": "Une instance stable, un débit et un seul impact au maximum."
+    },
+    {
+      "id": "ASW2-062",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Projectile très rapide franchissant un obstacle entre deux pas.",
+      "when": "Exécuter avec pas distincts à durée égale.",
+      "expected": "Collision sur trajet ou sous-pas ; pas de traversée due au seul test de position finale."
+    },
+    {
+      "id": "ASW2-063",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Projectile actif en sauvegarde et impact déjà consommé.",
+      "when": "Charger puis reprendre.",
+      "expected": "Pas de copie de projectile, second impact, second débit ou réapprovisionnement."
+    },
+    {
+      "id": "ASW2-064",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Allure lente unique des plateformes.",
+      "when": "Tirer missile puis torpille.",
+      "expected": "Vitesses de projectile propres au profil, pas de multiplicateur lente appliqué aux munitions."
+    },
+    {
+      "id": "ASW2-065",
+      "group": "projectile",
+      "status": "specified_not_executed",
+      "given": "Interaction physique non observée.",
+      "when": "Lire journal et infobulle.",
+      "expected": "Pas de message de destruction certaine ni d’attribut exposant une cible secrète."
+    },
+    {
+      "id": "ASW2-066",
+      "group": "helicopter_remote",
+      "status": "specified_not_executed",
+      "given": "Hélicoptère armé et hostile connu dans la portée de jeu.",
+      "when": "Donner Engager.",
+      "expected": "Validations communes et un seul tir avec débit physique."
+    },
+    {
+      "id": "ASW2-067",
+      "group": "helicopter_remote",
+      "status": "specified_not_executed",
+      "given": "Hélicoptère de secours sans armement ou arme de mauvais domaine.",
+      "when": "Choisir l’engagement.",
+      "expected": "Refus motivé ; pas de capacité héritée d’un autre appareil."
+    },
+    {
+      "id": "ASW2-068",
+      "group": "helicopter_remote",
+      "status": "specified_not_executed",
+      "given": "Cible hors portée et réserve suffisante.",
+      "when": "Choisir Approcher et engager.",
+      "expected": "Déplacement lent vers une solution connue ; aucun tir hors portée ni téléportation."
+    },
+    {
+      "id": "ASW2-069",
+      "group": "helicopter_remote",
+      "status": "specified_not_executed",
+      "given": "En approche, contact devenu neutre, ami, perdu ou trop ancien.",
+      "when": "Réévaluer avant tir.",
+      "expected": "Attaque suspendue, raison visible et absence de poursuite omnisciente."
+    },
+    {
+      "id": "ASW2-070",
+      "group": "helicopter_remote",
+      "status": "specified_not_executed",
+      "given": "Carburant insuffisant pour retour ou liaison perdue.",
+      "when": "Réévaluer la mission.",
+      "expected": "Comportement annoncé et retour/suspension cohérent ; pas de carburant gratuit."
+    },
+    {
+      "id": "ASW2-071",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Unité sélectionnée et point différent sur la carte.",
+      "when": "Presser puis relâcher le clic droit.",
+      "expected": "Menu seulement ; aucune sélection, poursuite ou route créée par pointerup."
+    },
+    {
+      "id": "ASW2-072",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Mode sélection sans ordre en attente.",
+      "when": "Cliquer à gauche sur un contact.",
+      "expected": "Sélection/dossier uniquement ; aucun tir ou déplacement implicite."
+    },
+    {
+      "id": "ASW2-073",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Glissement au-delà du seuil ou pincement.",
+      "when": "Relâcher les pointeurs.",
+      "expected": "Carte déplacée/zoomée ; aucun clic d’ordre synthétique."
+    },
+    {
+      "id": "ASW2-074",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Appui long tactile sur une cible.",
+      "when": "Ouvrir le menu puis relâcher.",
+      "expected": "Une seule ouverture ; relâchement consommé sans exécuter une action."
+    },
+    {
+      "id": "ASW2-075",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Ciblage, zooms et densités de pixels variés.",
+      "when": "Valider le même hexagone visuel.",
+      "expected": "Même destination, sans décalage lié au DPR ou au rectangle de carte."
+    },
+    {
+      "id": "ASW2-076",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Ciblage et panneau ou fenêtre de crise devant la carte.",
+      "when": "Cliquer dans la fenêtre puis fermer.",
+      "expected": "Aucun ordre derrière le panneau ; états temporaires propres."
+    },
+    {
+      "id": "ASW2-077",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Ordre préparé puis Échap, pointercancel ou perte de capture.",
+      "when": "Revenir à la carte.",
+      "expected": "Pas d’ordre fantôme ni débit ; curseur et focus restaurés."
+    },
+    {
+      "id": "ASW2-078",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Menu affiché, unité perdue ou stock consommé ailleurs.",
+      "when": "Valider une entrée devenue périmée.",
+      "expected": "Revalidation au service commun et refus explicite sans double consommation."
+    },
+    {
+      "id": "ASW2-079",
+      "group": "pointer",
+      "status": "specified_not_executed",
+      "given": "Navigation uniquement au clavier et petit écran.",
+      "when": "Ouvrir Ordres, parcourir, annuler et redimensionner.",
+      "expected": "Menu accessible, focus maîtrisé et contenu dans l’écran."
+    }
+  ],
+  "contentRevision": "2.1"
+}

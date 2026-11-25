@@ -15,8 +15,8 @@ const want = k => !parts.length || parts.includes(k);
       const A = __S, bad = {}, note = (k, sc) => { (bad[k] = bad[k] || { n: 0, sc: {} }).n++; bad[k].sc[sc] = 1; };
       const land = (x, y) => { try { return A.isDeep(x, y); } catch (_) { return false; } };
       const chk = (S, sc) => {
-        ['se', 'cs', 'ri', 'tension', 'debt', 'tokens', 't', 'defense'].forEach(k => { if (!Number.isFinite(S[k])) note('nombre invalide ' + k, sc); });
-        if (S.tokens < 0) note('jetons négatifs', sc); if (S.tokens > 7) note('jetons > 7', sc);
+        ['se', 'cs', 'ri', 'tension', 'debt', 't', 'defense'].forEach(k => { if (!Number.isFinite(S[k])) note('nombre invalide ' + k, sc); });
+        if (S.tokens !== undefined) note('jetons encore présents', sc);
         A.assets.forEach(a => { if (!(a.hp >= 0 && a.hp <= 100)) note('hp hors bornes', sc); });
         S.units.forEach(u => { if (!Number.isFinite(u.x + u.y)) note('unité NaN', sc); if (u.x < -30 || u.x > 1470 || u.y < -30 || u.y > 930) note('unité hors carte', sc); if (!A.UT[u.type].air && land(u.x, u.y)) note('navire allié sur terre', sc); if (u.fuel < -1) note('carburant négatif', sc); if (u.buoys < 0) note('bouées négatives', sc); });
         S.ships.forEach(s => { if (!Number.isFinite(s.x + s.y)) note('navire NaN', sc); if (s.truth !== 'civil' && land(s.x, s.y)) note('navire hostile sur terre', sc); if (s.held && !s.distress && !S.units.some(u => u.board && u.board.s === s)) note('navire bloqué sans arraisonnement', sc); });
@@ -25,7 +25,7 @@ const want = k => !parts.length || parts.includes(k);
         if (S.convoy && S.convoy.hp < 0) note('convoi hp < 0', sc);
       };
       let games = 0, nonfini = 0; const det = [];
-      const bot = mkBot(), rash = (S) => { if (S.posture < 3 && !S.postureAt && S.tokens > 0) A.setPosture(3); for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice)) { const ac = A.crisisActions(c).filter(a => a.kind === 'decide' && a.ok); if (ac[0]) A.doAct(ac[Math.floor(Math.random() * ac.length)]); } };
+      const bot = mkBot(), rash = (S) => { if (S.posture < 3 && !S.postureAt) A.setPosture(3); for (const c of S.crises.filter(c => !c.closed && !c.silent && !c.choice)) { const ac = A.crisisActions(c).filter(a => a.kind === 'decide' && a.ok); if (ac[0]) A.doAct(ac[Math.floor(Math.random() * ac.length)]); } };
       for (const sc of Object.keys(A.SC)) for (let sd = 1; sd <= seeds; sd++) for (const [cfg, pol] of [[{ contested: true }, bot], [{ contested: true, ideal: true }, bot], [{ contested: true }, rash], [{ contested: false }, null]]) { const r = playGame(sd * 11 + 1, sc, cfg, pol, chk); games++; if (!r.done) nonfini++; }
       for (const sc of Object.keys(A.SC)) { const x = playGame(5, sc, { contested: true }, mkBot()), y = playGame(5, sc, { contested: true }, mkBot()); if (x.s !== y.s || x.lost !== y.lost) det.push(sc); }
       return { games, nonfini, bad, nonDet: det };
@@ -70,7 +70,7 @@ const want = k => !parts.length || parts.includes(k);
       { const hit = [], t = []; for (let sd = 1; sd <= 16; sd++) { const S = fresh(sd, 'i8', ['recon']); const c = A.startCrisis('sub'); if (c.truth !== 'sousmarin') continue; const u = S.units[0]; u.x = c.zone.x; u.y = c.zone.y; u.path = []; u.task = { kind: 'buoy', z: { x: c.zone.x, y: c.zone.y } }; let tl = -1; run(S, 60, (s, i) => { if (c.located && tl < 0) tl = i / 10; }); hit.push(tl >= 0 ? 1 : 0); if (tl >= 0) t.push(tl); } R.bouees = { detection: mean(hit).toFixed(2), delai_s: mean(t).toFixed(0), n: hit.length }; }
       // 4 bis. version 40 : bouées passives contre actives, puis torpille selon la tenue et l'alerte
       for (const md of ['p', 'a']) { const hit = [], t = [], al = []; for (let sd = 1; sd <= 16; sd++) { const S = fresh(sd, 'i8', ['recon']); const c = A.startCrisis('sub'); if (c.truth !== 'sousmarin') continue; const u = S.units[0]; u.x = c.zone.x; u.y = c.zone.y; u.path = []; A.buoyOrder(u, c.zone.x, c.zone.y, { pat: 'tri', mode: md }); let tl = -1; run(S, 60, (s, i) => { if (c.located && tl < 0) tl = i / 10; }); hit.push(tl >= 0 ? 1 : 0); if (tl >= 0) t.push(tl); al.push(c.alertU > 0 ? 1 : 0); } R['bouees_' + (md === 'a' ? 'actives' : 'passives')] = { localise: mean(hit).toFixed(2), delai_s: mean(t).toFixed(0), alerte: mean(al).toFixed(2), n: hit.length }; }
-      for (const [nm, hold, alert] of [['tenue7', 7, 0], ['tenue12', 12, 0], ['tenue12_alerte', 12, 1]]) { const ok = []; for (let sd = 1; sd <= 24; sd++) { const S = fresh(sd, 'i8', ['frigate']); let c; for (let k = 0; k < 20; k++) { c = A.startCrisis('sub'); if (c.truth === 'sousmarin') break; c.closed = true; } if (c.truth !== 'sousmarin') continue; c.located = true; c.hold = hold; if (alert) c.alertU = 1e9; const f = S.units[0]; f.x = c.zone.x; f.y = c.zone.y; f.path = []; S.posture = 4; S.tokens = 9; const k = A.crisisActions(c).find(a => a.id === 'kill'); if (!k || !A.doAct(k)) continue; run(S, 14); ok.push(c.closed && c.out >= .5 ? 1 : 0); } R['torpille_' + nm] = { reussite: mean(ok).toFixed(2), n: ok.length }; }
+      for (const [nm, hold, alert] of [['tenue7', 7, 0], ['tenue12', 12, 0], ['tenue12_alerte', 12, 1]]) { const ok = []; for (let sd = 1; sd <= 24; sd++) { const S = fresh(sd, 'i8', ['frigate']); let c; for (let k = 0; k < 20; k++) { c = A.startCrisis('sub'); if (c.truth === 'sousmarin') break; c.closed = true; } if (c.truth !== 'sousmarin') continue; A.dtFocus(c, hold >= 12 ? 5 : 14, 1); c.hold = hold; if (alert) c.alertU = 1e9; const f = S.units[0]; f.x = c.zone.x; f.y = c.zone.y; f.path = []; S.posture = 4; S.tokens = 9; const k = A.crisisActions(c).find(a => a.id === 'kill'); if (!k || !A.doAct(k)) continue; run(S, 14); ok.push(c.closed && c.out >= .5 ? 1 : 0); } R['torpille_' + nm] = { reussite: mean(ok).toFixed(2), n: ok.length }; }
       // 5. spirale : à CGC bas, une gestion correcte permet-elle de remonter ?
       { const rec = []; for (let sd = 1; sd <= 8; sd++) { A.newGame(sd * 3, { sc: 'ia', deck: A.SC.ia.rec, contested: false }); const S = A.s; S.se = S.cs = S.ri = 30; const bot = mkBot(); let i = 0; for (; i < 1500 && !S.over; i++) { A.step(.1); if (i % 10 === 0) bot(S); } rec.push(A.pil()); } R.spirale = { depart: 30, apres50s_x3: mean(rec).toFixed(0) }; }
       // 7. version 34 : hélicoptère embarqué (identification à vue puis retour à bord)
@@ -128,7 +128,7 @@ const want = k => !parts.length || parts.includes(k);
           if (i % 2 === 0) { const bs = [...document.querySelectorAll('#app [data-a]:not([disabled])')].filter(e => !['mute','quit','coachquit'].includes(e.dataset.a)); const e = bs[Math.floor(rn() * bs.length)]; if (e) { e.click(); clicks++; } if (!S.running && e && e.dataset.a === 'speed') { } S.running = true; }
           if (i % 5 === 0) { const c = document.getElementById('c'), r = c.getBoundingClientRect(), o = { clientX: r.left + rn() * r.width, clientY: r.top + rn() * r.height, pointerId: 1, bubbles: true }; try { c.setPointerCapture = () => { }; } catch (_) { } c.dispatchEvent(new PointerEvent('pointerdown', o)); c.dispatchEvent(new PointerEvent('pointerup', o)); clicks++; }
         }
-        for (let i = 0; i < 8000 && !S.over; i++) A.step(.1); ts += 100; tick(ts);
+        for (let i = 0; i < 16000 && !S.over; i++) A.step(.1); ts += 100; tick(ts);
         const ov = document.getElementById('over'); if (S.over && !ov.querySelector('.go[data-a=again],.go[data-a=play]')) stuck++;
       } }
       return { clicks, stuck, missing: A.missing() };

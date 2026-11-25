@@ -71,7 +71,7 @@ Fichier généré par `python3 gen_naval.py` : ne pas le modifier à la main. Le
 - **Lewis B. Puller · Base de soutien** : Soutien d’un détachement spécial, Ravitaillement à la mer, Accueil aérien étendu — Pont validé par configuration pour un MH-60S.
 - **Zeus · Câbles** : Expertise et réparation de câbles, Relevés des fonds
 - **Pathfinder · Relevés** : Relevés des fonds
-- **Blue Ridge · Commandement** : Commandement et continuité des liaisons, Présence et surveillance de surface — Maintient les jetons et les délais d’autorisation quand le réseau de commandement est coupé.
+- **Blue Ridge · Commandement** : Commandement et continuité des liaisons, Présence et surveillance de surface — Maintient les délais d’autorisation quand le réseau de commandement est coupé.
 
 ## Appareils et équipes
 

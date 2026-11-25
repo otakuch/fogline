@@ -18,8 +18,8 @@ const { chromium } = require('playwright');
     const act = await st(() => { const A = __S, S = A.s, c = S.crises[S.crises.length - 1], r = []; for (let i = 0; i < 12; i++) { const a = A.crisisActions(c).find(x => x.kind === 'decide' && x.ok && !x.escTo); if (!a) break; r.push(A.doAct(a)); if (c.choice || c.closed) break } return { done: r.length, ordN: S.ordN } }); need(act.done >= 1 && act.ordN >= 1, tag + ' une action part sans solde ' + JSON.stringify(act));
     // analystes : plafond de vérifications simultanées, avec son motif
     const ana = await st(() => { const A = __S, S = A.s; const cs = ['desinfo', 'incursion', 'alarm', 'cyber'].map(k => A.startCrisis(k)).filter(Boolean); let run = 0, why = null; for (const c of cs) for (const a of A.crisisActions(c).filter(x => x.kind === 'collect' && /osint|radar|src|log|trace|sig/.test(x.id))) { if (a.ok) { A.doAct(a); run++ } else if (a.why && !why && S.jobs.length >= 1) why = a.why } return { jobs: S.jobs.length, run, why } });
-    need(ana.jobs <= 2 && ana.jobs >= 1 && !!ana.why, tag + ' vérifications simultanées plafonnées, motif affiché ' + JSON.stringify(ana));
-    const wait = await st(() => { const A = __S, S = A.s; S.debt = 3; A.coord(); const d1 = S.debt; A.coord(); const d2 = S.debt; for (let i = 0; i < 320; i++)A.step(.1); S.debt = 3; A.coord(); return [d1, d2, S.debt] }); need(wait[0] === 1.5 && wait[1] === 1.5 && wait[2] === 1.5, tag + ' coordonner : une fois, puis attente ' + wait);
+    need(ana.jobs === ana.run && ana.jobs >= 3 && !ana.why, tag + ' version 53 : vérifications simultanées sans plafond ' + JSON.stringify(ana));
+    const wait = await st(() => { const A = __S, S = A.s; S.debt = 3; A.coord(); const d1 = S.debt; A.coord(); const d2 = S.debt; for (let i = 0; i < 320; i++)A.step(.1); S.debt = 3; A.coord(); return [d1, d2, S.debt] }); need(wait[0] === 1.5 && wait[1] === 0 && wait[2] === 1.5, tag + ' version 53 : coordonner sans attente ' + wait);
 
     // 2. allure lente unique
     await game('la', false); const u0 = (await st(() => __S.s.units.filter(u => __S.UT[u.type].naval).map(u => u.id)))[0];

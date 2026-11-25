@@ -64,6 +64,7 @@ seuil-projet/
     ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
+    ├── uiv53.js            version 53 : options hors du score et des contrôles, actions sans plafond ni attente ni emplois comptés (20 contrôles, FR 1440 et EN 390)
     ├── uiv52.js            version 52 : datum en distribution, observations, classement automatique, revue d'engagement, pings périodiques, suivi, projectiles, menu d'ordres (66 contrôles, FR 1440 et EN 390)
     ├── uiv51.js            version 51 : sans jetons, allure lente unique, force spéciale embarquée, fenêtre de crise, clic droit (49 contrôles, FR 1440 et EN 390)
     ├── uiv50.js            version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche (53 contrôles, FR 1440 et EN 390)
@@ -154,6 +155,7 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 - Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
 - **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
 - Vitesses x1, x2 et x4, et avance rapide × 8 jusqu'au prochain événement (bouton ⏭, ou « Avancer jusqu'au prochain événement » dans le panneau quand aucune crise n'est ouverte). L'avance rapide s'arrête pour une crise, une alerte du renseignement, un aléa ou une demande, pas pour un simple contact ni un signal. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
+- **Depuis la version 53 (5.53) :** plus de plafond de vérifications, plus d'attente entre deux coordinations ou prises de parole, plus d'emplois comptés ; le contrôle de phase ne demande plus que 60 % d'infrastructures et le score n'a plus d'axe « options ».
 - **Durées depuis la version 52 (5.52) :** local 22 tours, international 31 (`LONG` 2,2) ; les valeurs de 16 et 22 tours ci-dessus sont périmées.
 - **Plus de jetons depuis la version 51 (5.51).** Aucune action ne se paie. Ce qui limite le joueur : le temps, les délais d'autorisation (allongés par un CGC bas, la dette et la réserve d'état-major), le nombre de vérifications simultanées, les attentes de « Coordonner » et de la parole publique, les stocks et les emplois comptés. Les mentions « 1 jeton » des sections plus anciennes sont périmées.
 - Déplacer une unité est gratuit. **Une seule allure, lente** : toutes les unités et tous les navires se déplacent à 0,55 × leur vitesse de table (5.51).
@@ -1661,6 +1663,57 @@ Liste en tête de l'onglet Contacts : vos torpilles et missiles, les pistes adve
 
 **Non vérifié :** aucun vrai joueur, aucun téléphone réel. Rien ne dit si le nuage de probabilité se lit, si la revue d'engagement se comprend, ni si une partie de 22 à 31 minutes convient. Les scripts ne posent pas leurs capteurs pour recouper, n'emploient ni les pings périodiques, ni « Suivre », ni le menu d'ordres. Les valeurs du datum (étalement, vraisemblances, seuils de 80 %, 75 % et 30 s) viennent du prompt ou de Claude, pas de parties humaines. Le dossier de conception et le manuel ne sont pas mis à jour.
 
+### 5.53 Options hors du score, actions sans limite d'emploi (version 53)
+
+Demande de Naully du 25 novembre 2026 : « supprime les scoring avec les options et laisse la main libre sur l'utilisation illimitée des actions ». Lu comme : les « options » (Veille, Air, Mer, Réparer, Cyber, Parole) ne comptent plus dans le score ni dans les contrôles de phase ; rien ne limite plus le nombre de fois où une action peut être employée. Branche `v53-actions-libres`, à partir de `v52-datum`.
+
+**Options retirées du score et des contrôles**
+
+- **Contrôle de phase :** infrastructures à 60 % ou plus, seulement. La condition « au moins 3 options » est retirée.
+- **Score :** l'axe O (20 % de P) disparaît. `P = (0,44 C + 0,37 D + 0,19 T) × (0,3 + 0,7 eng)` : les trois axes restants gardent leurs proportions. La qualité des contrôles (`MP`) ne lit plus que les infrastructures.
+- **Écran :** plus de jauge « Options » dans la barre haute, plus de ligne « Options ≥ 3 » dans l'ordre d'opération, plus de ligne « Options conservées » au bilan. La rangée des moyens disponibles (Veille, Air, Mer…) reste dans l'ordre d'opération, au niveau Complet, comme information.
+- `optionState` reste dans le code : le directeur s'en sert pour ne pas lancer une crise qu'aucun moyen ne peut traiter.
+- Ces lignes remplacent 5.3 (point de contrôle) et 5.9 (axe O).
+
+**Actions sans limite d'emploi**
+
+| Limite | Version 52 | Version 53 |
+|---|---|---|
+| Vérifications simultanées | 1, 2 avec la cellule d'analyse | sans plafond |
+| Attente entre deux « Coordonner » | 30 s | aucune |
+| Attente entre deux prises de parole | 35 s, 18 s avec la cellule | aucune |
+| Emplois de la force spéciale | 3, 2 ou 1 selon le niveau | non comptés |
+| Sorties des chasseurs et de l'avion de patrouille | 8, 6 ou 5 | non comptées |
+| Opérations de l'équipe cyber | 9, 8 ou 6 | non comptées |
+
+- Les compteurs restent dans le code à une valeur hors d'atteinte (`FREE_N`, un nombre fini pour que la sauvegarde le garde) ; ils ne sont plus affichés. Fiches : « Emploi libre ».
+- **Ce qui reste, parce que ce ne sont pas des limites d'emploi mais de la matière ou du temps :** stocks (bouées, torpilles, tirs, réserves de défense), carburant des avions, remise en condition, durée d'une analyse, équipe cyber occupée pendant son opération, délai d'autorisation de posture (allongé par un CGC bas, la dette et la réserve d'état-major), revue d'engagement, portées. Les valeurs `TUNE.cg55` et `TUNE.cg40` de la version 52 restent ; `TUNE.ana`, `anaC`, `coord`, `comm` et `commC` ne servent plus.
+- **Conséquences à connaître :** « Coordonner » efface 1,5 de dette à chaque clic, sans attente : la dette de coordination et l'axe T du score se remettent à zéro à volonté. La parole publique répétée garde son effet décroissant puis négatif (troisième prise de parole et suivantes).
+
+**Tests :** `uiv53.js`, 20 contrôles (FR 1440, EN 390) : contrôle de phase tenu avec moins de 3 options, score identique quel que soit le nombre d'options, écran sans jauge ni condition, vérifications sans plafond, coordination et parole sans attente, emplois non comptés et jamais épuisés, valeur gardée par la sauvegarde, aucun compteur géant à l'écran. Adaptés : `uiv34`, `uiv35`, `uiv39`, `uiv51`.
+
+**Mesures du 25 novembre 2026, scripts seulement, niveau Complet**
+
+| Mission, 20 tirages, V52 → V53 | Référence | Prudent | Omniscient | Aucun ordre |
+|---|---|---|---|---|
+| `hc` | 15 → 19 | 14 → 19 | 20 → 20 | 0 → 0 |
+| `asw` | 13 → 14 | 8 → 9 | 19 → 20 | 0 → 0 |
+| `f2` | 9 → 11 | 6 → 8 | 20 → 20 | 0 → 0 |
+| `m6` | 16 → 19 | 20 → 20 | 20 → 20 | 0 → 0 |
+| `c1` | 12 → 12 | 6 → 6 | 18 → 18 | 0 → 0 |
+| `l12` | 13 → 18 | 16 → 17 | 19 → 19 | 0 → 0 |
+| `g3` | 11 → 15 | 14 → 17 | 18 → 19 | 1 → 1 |
+| `a4` | 16 → 18 | 18 → 19 | 19 → 19 | 0 → 0 |
+| `e6` | 14 → 17 | 14 → 18 | 20 → 20 | 1 → 1 |
+
+- Total : référence 143 sur 180 (79 %, 66 % en version 52), prudent 133 (74 %), omniscient 175 (97 %), aucun ordre 2.
+- Banc `stress.js 2 inv exploit labo monkey` (77 scénarios, 2 parties) : 616 parties finies et reproductibles ; référence 754 et 78 % (724 et 70 %), omniscient 826 et 95 %, sans aucun tir 741 et 73 %, tir sans vérifier 422 et 25 % avec 59 % de seuil 1, saturation de messages 242 et 1 %, aucun ordre 256 et 1 %, aucune force 229 et 0 %. 53 814 clics au hasard sans blocage ni texte manquant, aucune erreur de page.
+- **La référence repasse au-dessus de la cible de 50 à 70 %.** C'est l'effet direct de la demande : le script vérifie tout en parallèle et coordonne sans attendre. Rien n'a été réglé pour compenser.
+- Tests d'interface : les 36 de la suite, `uiv51`, `uiv52` et `uiv53` sans erreur. `navlab.js 4` : 110 contrôles ciblés réussis, 32 parties au hasard sans défaut.
+- Non relancés : `stress.js pair`, `stress.js 4`, `advbot.js`, `pace2.js`, `dipm.js`, `stress.js dq`, `uiv38.js`.
+
+**Non vérifié :** aucun vrai joueur. Rien ne dit si le jeu reste un exercice de choix quand tout peut être vérifié à la fois ; seul le temps limite encore la collecte de preuves. Le dossier de conception et le manuel ne sont pas mis à jour.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1685,6 +1738,7 @@ Liste en tête de l'onglet Contacts : vos torpilles et missiles, les pistes adve
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 53 | `FREE_N`, `anaCap` et `anaFull` neutralisés, `coord`, `comm`, `score` (axe O retiré), `newTurn` (contrôle de phase), `opordHtml`, `useEnd` ; `spendSortie`, `useTeam`, `newTurn`, `coordWait`, `commWait` exposés aux tests |
 | Version 52 | `TUNE`, `DT`, `dtG`, `dtInit`, `dtSpd`, `dtPredict`, `dtFuse`, `dtBands`, `dtLook`, `dtFlash`, `dtSee`, `dtShift`, `dtCover`, `dtSum`, `dtMiss`, `dtFocus` (aide de test), `dtDeliver`, `dtAff`, `dtAge`, `dtQ`, `dtReview`, `dtWhy`, `dtApp`, `dtFuel`, `dtDraw`, `dtHtml`, `clsAuto`, `aswUStep`, `unitCmds`, `ctxShow`, `ctxKey`, `ctxDo`, `projList`, `projHtml`, `LAY.proj`, `c.dt`, `c.cov`, `c.trkSt`, `u.pingAuto`, `u.follow`, `S.autoAna` ; `LONG`, `_vk` dans `gen_db.py` ; `tools/bases/merge_asw.py` ; `docs/v52/` |
 | Version 51 | `ordN`, `anaCap`, `anaFull`, `coordWait`, `commWait`, `cgcSlow`, `SLOW`, `NOISE1`, `SOF_R`, `sofWar`, `sofInit`, `sofHost`, `sofWhy`, `sofOut`, `sofStep`, `sofHtml`, `CW`, `CWART`, `CWSEV`, `cwSev`, `cwBase`, `cwOn`, `cwList`, `cwTick`, `cwRender`, `cwClose`, `#cw` ; `tools/crises/optimise.py` ; `assets/crises/` |
 | Version 50 | `S.hc`, `hcInit`, `hcStep`, `hcRoute`, `hcDivert`, `hcCmd`, `hcHit`, `hcDamage`, `hcLose`, `hcCheck`, `hcAfter`, `hcItems`, `hcDraw`, `hcHtml`, `hcEnd`, `dmgA`, `ENVL`, `ENV`, `envInit`, `envMeas`, `eR`, `bathGet`, `seaDepth`, `layAt`, `laySide`, `layF`, `uz`, `subm`, `zWhy`, `zCmd`, `depStep`, `depHtml`, `subInit`, `subAI`, `subReact`, `subHear`, `trkStep`, `trkInfo`, `bA`, `bStock`, `buoyWhy`, `buoyStep`, `depotFill`, `bDos`, `aswEnd`, `inrOf`, `o.ess`, crises `hcloss` et `hcport` ; `data/bases/`, `tools/bases/validate.js` |
@@ -1789,6 +1843,7 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv53.js                                      # version 53 : options hors du score, actions sans limite d'emploi
 node uiv52.js                                      # version 52 : datum, observations, classement automatique, revue d'engagement, pings, suivi, projectiles, menu d'ordres
 node uiv51.js                                      # version 51 : sans jetons, allure unique, force spéciale embarquée, fenêtre de crise, clic droit
 node uiv50.js; node ../tools/bases/validate.js      # version 50 : convoi humanitaire, seuil de 50 %, bouées à l'unité, profondeur et couche ; contrôle des cinq catalogues
@@ -1817,6 +1872,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 25 novembre 2026, version 53 (options hors du score, actions sans limite), niveau Complet, 2 parties par scénario :** référence 754 et 78 %, omniscient 826 et 95 %, tir sans vérifier 422 et 25 % avec 59 % de seuil 1, aucun ordre 256 et 1 %, aucune force 229 et 0 %. 616 parties finies et reproductibles ; 53 814 clics au hasard sans blocage. La référence repasse au-dessus de la cible. Détail : section 5.53. Branche `v53-actions-libres`, non fusionnée dans `main`.
 
 **Résultats du 24 novembre 2026, version 52 (valeurs réglées, missions allongées, datum), niveau Complet, 2 parties par scénario :** référence 724 et 70 %, omniscient 815 et 94 %, tir sans vérifier 420 et 25 % avec 59 % de seuil 1, aucun ordre 263 et 1 %, aucune force 184 et 0 %. 616 parties finies et reproductibles ; 53 900 clics au hasard sans blocage. Détail : section 5.52. Branche `v52-datum`, non fusionnée dans `main`.
 
@@ -2175,7 +2232,7 @@ Une évolution est terminée si :
 
 ### Décisions ouvertes de la version 52
 
-121. **Valeurs réglées :** une vérification à la fois (deux avec la cellule d'analyse), 30 s et 35 s d'attente, + 40 % et + 80 % de délai sous 55 et 40 de CGC. La référence revient à 70 %. Les garder, ou les revoir après des essais avec de vrais joueurs.
+121. **Tranché le 25 novembre 2026 (version 53) :** limites retirées, voir 5.53. Ancien texte : **Valeurs réglées :** une vérification à la fois (deux avec la cellule d'analyse), 30 s et 35 s d'attente, + 40 % et + 80 % de délai sous 55 et 40 de CGC. La référence revient à 70 %. Les garder, ou les revoir après des essais avec de vrais joueurs.
 122. **Durée :** 22 et 31 tours, soit environ 22 et 31 minutes à ×½. Garder, ou remettre la vitesse par défaut à ×1 maintenant que tout est lent (décision 97).
 123. **Délais des crises à déplacement :** non allongés ; `ghost` et `sabotage` restent ouvertes plus de 8 tours (défaut 120).
 124. **Seuils de la revue d'engagement :** 80 % de couverture, 75 % pour l'hypothèse, 30 s d'âge (valeurs du prompt). Les garder, ou les assouplir au niveau Simple.
@@ -2185,6 +2242,14 @@ Une évolution est terminée si :
 128. **Fenêtre de crise :** le temps reste arrêté tant que le joueur n'a pas cliqué « Reprendre le temps ». Sans limite : la pression du délai disparaît à l'ouverture de chaque crise. Garder, ou limiter par la réserve de pause.
 129. **Défaut :** deux contrôles de `uiv52.js` passent par l'aide de test `dtFocus`, qui concentre l'estimation à la main ; ils ne prouvent pas qu'un joueur y parvient avec ses capteurs.
 130. **Défaut :** `asw` plus dure pour la référence (13 sur 20 contre 16). À observer avant de régler.
+
+### Décisions ouvertes de la version 53
+
+131. **Lecture de la demande :** « options » lu comme les six moyens Veille, Air, Mer, Réparer, Cyber, Parole ; « utilisation illimitée » lu comme la fin des plafonds, des attentes et des emplois comptés. Les stocks (bouées, torpilles, tirs, défense), le carburant et les délais d'autorisation restent. Les rendre illimités aussi, ou non.
+132. **Coordonner sans attente :** la dette de coordination s'efface à volonté ; l'axe T du score (19 % de P) et la réserve d'état-major perdent presque tout leur poids. Retirer aussi cet axe, ou redonner un prix à « Coordonner ».
+133. **Difficulté :** la référence remonte à 78 % (79 % sur les neuf missions). Accepter, ou durcir ailleurs après des essais avec de vrais joueurs.
+134. **Rangée des moyens :** elle reste affichée dans l'ordre d'opération au niveau Complet, sans enjeu. La garder comme information, ou la retirer.
+135. **Poids du score :** les 20 % de l'axe retiré sont répartis sur les trois autres (44, 37 et 19 %). Garder cette répartition, ou en choisir une autre.
 
 ### Demandes à garder en mémoire
 

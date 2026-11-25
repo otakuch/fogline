@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
     o.sofEmplois = await p.locator('#right .uemp [data-a=uact]').count(); need(o.sofEmplois >= 1, tag + ' emploi proposé pendant une prise');
     if (!mob) await p.screenshot({ path: D + '/v34-sof.png' });
     await p.click('#right .uemp [data-a=uact]'); await p.waitForTimeout(150);
-    o.sofParti = await p.evaluate(() => { const u = __S.s.units.find(u => u.id === 'NSW-1'); return [!!u.da, u.uses, u.usesMax]; }); need(o.sofParti[0] && o.sofParti[1] === o.sofParti[2] - 1, tag + ' action directe lancée depuis la fiche : ' + o.sofParti);
+    o.sofParti = await p.evaluate(() => { const u = __S.s.units.find(u => u.id === 'NSW-1'); return [!!u.da, u.uses, u.usesMax]; }); need(o.sofParti[0] && o.sofParti[1] > 1e6 && !o.sofParti[2], /* version 53 : emplois non comptés */ tag + ' action directe lancée depuis la fiche : ' + o.sofParti);
     o.dissuasion = await p.evaluate(() => { const A = __S, S = A.s, g = S.units.find(u => u.id === 'FAST-1'), here = A.thSites().find(s => Math.hypot(s.x - g.x, s.y - g.y) < 8); return [here && here.id, window.__c.target]; }); need(o.dissuasion[0] && o.dissuasion[0] !== o.dissuasion[1], tag + ' la prise évite le site tenu par le peloton : ' + o.dissuasion);
     await sel(p, 'FAST-1', mob); o.redep = [await p.locator('#right [data-a=redep]').count(), await p.locator('#right [data-a=patnew]').count()]; need(o.redep[0] >= 1 && o.redep[1] === 0, tag + ' redéploiement par sous-menu, pas de patrouille : ' + o.redep);
     await p.click('#right [data-a=redep]'); await p.waitForTimeout(150); o.redepGo = await p.evaluate(() => { const u = __S.s.units.find(u => u.id === 'FAST-1'); return u.path.length; }); need(o.redepGo === 1, tag + ' redéploiement lancé');

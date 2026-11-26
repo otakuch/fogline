@@ -26,3 +26,11 @@ Altitudes et profondeurs : ETOPO à 10 minutes d'arc, NOAA National Centers for 
 ## Illustrations des crises (version 51)
 
 `assets/crises/` : 14 illustrations d'ambiance fournies par Naully Nicolas dans le pack « FOGLINE ASW, mobilité, crises V2.1 » (images générées, fictives, d'après le manifeste du pack). Droits confirmés par Naully Nicolas le 24 novembre 2026 : il déclare les détenir. Elles n'affirment rien sur l'état du jeu.
+
+## Sons (version 56)
+
+`assets/audio/` : pack « FOGLINE Audio complet V1 » fourni par Naully Nicolas le 26 novembre 2026. 170 fichiers WAV conservés à l'identique (empreintes dans `catalogue-audio-complet.json`) : 4 fonds en boucle, 16 effets et 50 signatures d'interface, donnés par le pack comme une synthèse procédurale originale (recettes dans `assets/audio/production/`), et 100 répliques en anglais produites par synthèse vocale, sans prise de voix humaine (trois modèles de voix génériques, d'après le pack). Aucun échantillon tiers n'est déclaré ; la vidéo citée comme référence par le pack n'a fourni aucun son. Les démonstrations MP3 du pack ne sont pas dans le dépôt.
+
+`assets/audio/web/` : dérivés MP3 de ces fichiers, produits par `tools/audio/optimise.py` avec ffmpeg et servis par le jeu. `tools/audio/unit-response-resolver.mjs` et son test viennent du pack ; `proto/audio.js` en porte la logique dans la page.
+
+Les droits de ce pack n'ont pas été vérifiés ici : ils sont à confirmer par Naully Nicolas avant toute diffusion commerciale. Les sons d'origine du jeu (`proto/son-pack.json`, `docs/third-party/SOUND-CREDITS.md`) restent en repli.

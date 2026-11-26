@@ -1,0 +1,3665 @@
+{
+  "schemaVersion": 1,
+  "status": "asset_library_ready_game_integration_pending",
+  "date": "2026-11-26",
+  "profiles": [
+    {
+      "id": "surface",
+      "label": {
+        "fr": "Navires de guerre",
+        "en": "Naval bridge"
+      },
+      "voiceModelPrototypeEn": "rms",
+      "selectionPhraseIds": [
+        "surface.selection.01",
+        "surface.selection.02",
+        "surface.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "surface.accepted.01",
+        "surface.accepted.02",
+        "surface.accepted.03"
+      ],
+      "selectionSfx": [
+        "surface_selection_01",
+        "surface_selection_02"
+      ],
+      "acceptedSfx": [
+        "surface_accepted_01",
+        "surface_accepted_02"
+      ]
+    },
+    {
+      "id": "submarine",
+      "label": {
+        "fr": "Sous-marins",
+        "en": "Submarine control room"
+      },
+      "voiceModelPrototypeEn": "awb",
+      "selectionPhraseIds": [
+        "submarine.selection.01",
+        "submarine.selection.02",
+        "submarine.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "submarine.accepted.01",
+        "submarine.accepted.02",
+        "submarine.accepted.03"
+      ],
+      "selectionSfx": [
+        "submarine_selection_01",
+        "submarine_selection_02"
+      ],
+      "acceptedSfx": [
+        "submarine_accepted_01",
+        "submarine_accepted_02"
+      ]
+    },
+    {
+      "id": "helicopter",
+      "label": {
+        "fr": "Hélicoptères",
+        "en": "Helicopter crew"
+      },
+      "voiceModelPrototypeEn": "slt",
+      "selectionPhraseIds": [
+        "helicopter.selection.01",
+        "helicopter.selection.02",
+        "helicopter.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "helicopter.accepted.01",
+        "helicopter.accepted.02",
+        "helicopter.accepted.03"
+      ],
+      "selectionSfx": [
+        "helicopter_selection_01",
+        "helicopter_selection_02"
+      ],
+      "acceptedSfx": [
+        "helicopter_accepted_01",
+        "helicopter_accepted_02"
+      ]
+    },
+    {
+      "id": "maritime_patrol",
+      "label": {
+        "fr": "Patrouille maritime",
+        "en": "Maritime patrol crew"
+      },
+      "voiceModelPrototypeEn": "rms",
+      "selectionPhraseIds": [
+        "maritime_patrol.selection.01",
+        "maritime_patrol.selection.02",
+        "maritime_patrol.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "maritime_patrol.accepted.01",
+        "maritime_patrol.accepted.02",
+        "maritime_patrol.accepted.03"
+      ],
+      "selectionSfx": [
+        "maritime_patrol_selection_01",
+        "maritime_patrol_selection_02"
+      ],
+      "acceptedSfx": [
+        "maritime_patrol_accepted_01",
+        "maritime_patrol_accepted_02"
+      ]
+    },
+    {
+      "id": "fighter",
+      "label": {
+        "fr": "Avions de combat",
+        "en": "Combat aircraft crew"
+      },
+      "voiceModelPrototypeEn": "awb",
+      "selectionPhraseIds": [
+        "fighter.selection.01",
+        "fighter.selection.02",
+        "fighter.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "fighter.accepted.01",
+        "fighter.accepted.02",
+        "fighter.accepted.03"
+      ],
+      "selectionSfx": [
+        "fighter_selection_01",
+        "fighter_selection_02"
+      ],
+      "acceptedSfx": [
+        "fighter_accepted_01",
+        "fighter_accepted_02"
+      ]
+    },
+    {
+      "id": "drone",
+      "label": {
+        "fr": "Drones téléopérés",
+        "en": "Remote operator"
+      },
+      "voiceModelPrototypeEn": "slt",
+      "selectionPhraseIds": [
+        "drone.selection.01",
+        "drone.selection.02",
+        "drone.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "drone.accepted.01",
+        "drone.accepted.02",
+        "drone.accepted.03"
+      ],
+      "selectionSfx": [
+        "drone_selection_01",
+        "drone_selection_02"
+      ],
+      "acceptedSfx": [
+        "drone_accepted_01",
+        "drone_accepted_02"
+      ]
+    },
+    {
+      "id": "special_forces",
+      "label": {
+        "fr": "Forces spéciales",
+        "en": "Special detachment"
+      },
+      "voiceModelPrototypeEn": "rms",
+      "selectionPhraseIds": [
+        "special_forces.selection.01",
+        "special_forces.selection.02",
+        "special_forces.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "special_forces.accepted.01",
+        "special_forces.accepted.02",
+        "special_forces.accepted.03"
+      ],
+      "selectionSfx": [
+        "special_forces_selection_01",
+        "special_forces_selection_02"
+      ],
+      "acceptedSfx": [
+        "special_forces_accepted_01",
+        "special_forces_accepted_02"
+      ]
+    },
+    {
+      "id": "ground",
+      "label": {
+        "fr": "Unités terrestres",
+        "en": "Ground unit"
+      },
+      "voiceModelPrototypeEn": "awb",
+      "selectionPhraseIds": [
+        "ground.selection.01",
+        "ground.selection.02",
+        "ground.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "ground.accepted.01",
+        "ground.accepted.02",
+        "ground.accepted.03"
+      ],
+      "selectionSfx": [
+        "ground_selection_01",
+        "ground_selection_02"
+      ],
+      "acceptedSfx": [
+        "ground_accepted_01",
+        "ground_accepted_02"
+      ]
+    },
+    {
+      "id": "cyber",
+      "label": {
+        "fr": "Équipes cyber",
+        "en": "Cyber analyst"
+      },
+      "voiceModelPrototypeEn": "slt",
+      "selectionPhraseIds": [
+        "cyber.selection.01",
+        "cyber.selection.02",
+        "cyber.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "cyber.accepted.01",
+        "cyber.accepted.02",
+        "cyber.accepted.03"
+      ],
+      "selectionSfx": [
+        "cyber_selection_01",
+        "cyber_selection_02"
+      ],
+      "acceptedSfx": [
+        "cyber_accepted_01",
+        "cyber_accepted_02"
+      ]
+    },
+    {
+      "id": "humanitarian",
+      "label": {
+        "fr": "Secours et humanitaire",
+        "en": "Relief coordination"
+      },
+      "voiceModelPrototypeEn": "slt",
+      "selectionPhraseIds": [
+        "humanitarian.selection.01",
+        "humanitarian.selection.02",
+        "humanitarian.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "humanitarian.accepted.01",
+        "humanitarian.accepted.02",
+        "humanitarian.accepted.03"
+      ],
+      "selectionSfx": [
+        "humanitarian_selection_01",
+        "humanitarian_selection_02"
+      ],
+      "acceptedSfx": [
+        "humanitarian_accepted_01",
+        "humanitarian_accepted_02"
+      ]
+    },
+    {
+      "id": "support",
+      "label": {
+        "fr": "Réparation et soutien",
+        "en": "Support crew"
+      },
+      "voiceModelPrototypeEn": "rms",
+      "selectionPhraseIds": [
+        "support.selection.01",
+        "support.selection.02",
+        "support.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "support.accepted.01",
+        "support.accepted.02",
+        "support.accepted.03"
+      ],
+      "selectionSfx": [
+        "support_selection_01",
+        "support_selection_02"
+      ],
+      "acceptedSfx": [
+        "support_accepted_01",
+        "support_accepted_02"
+      ]
+    },
+    {
+      "id": "task_group",
+      "label": {
+        "fr": "Task groups",
+        "en": "Group command"
+      },
+      "voiceModelPrototypeEn": "rms",
+      "selectionPhraseIds": [
+        "task_group.selection.01",
+        "task_group.selection.02",
+        "task_group.selection.03"
+      ],
+      "acceptedPhraseIds": [
+        "task_group.accepted.01",
+        "task_group.accepted.02",
+        "task_group.accepted.03"
+      ],
+      "selectionSfx": [
+        "task_group_selection_01",
+        "task_group_selection_02"
+      ],
+      "acceptedSfx": [
+        "task_group_accepted_01",
+        "task_group_accepted_02"
+      ]
+    }
+  ],
+  "orderPhraseIds": {
+    "move": [
+      "order.move.01",
+      "order.move.02"
+    ],
+    "patrol": [
+      "order.patrol.01",
+      "order.patrol.02"
+    ],
+    "escort": [
+      "order.escort.01",
+      "order.escort.02"
+    ],
+    "observe": [
+      "order.observe.01",
+      "order.observe.02"
+    ],
+    "analyze": [
+      "order.analyze.01",
+      "order.analyze.02"
+    ],
+    "sonar": [
+      "order.sonar.01",
+      "order.sonar.02"
+    ],
+    "depth": [
+      "order.depth.01",
+      "order.depth.02"
+    ],
+    "buoy": [
+      "order.buoy.01",
+      "order.buoy.02"
+    ],
+    "engage": [
+      "order.engage.01",
+      "order.engage.02"
+    ],
+    "return": [
+      "order.return.01",
+      "order.return.02"
+    ],
+    "deploy": [
+      "order.deploy.01",
+      "order.deploy.02"
+    ],
+    "cyber": [
+      "order.cyber.01",
+      "order.cyber.02"
+    ]
+  },
+  "phrases": [
+    {
+      "id": "surface.selection.01",
+      "profile": "surface",
+      "phase": "selection",
+      "text": {
+        "fr": "Passerelle à l’écoute.",
+        "en": "Bridge here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "surface.selection.02",
+      "profile": "surface",
+      "phase": "selection",
+      "text": {
+        "fr": "Commandement naval à l’écoute.",
+        "en": "Naval command listening."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "surface.selection.03",
+      "profile": "surface",
+      "phase": "selection",
+      "text": {
+        "fr": "Passerelle en ligne.",
+        "en": "Bridge on the line."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "surface.accepted.01",
+      "profile": "surface",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu en passerelle.",
+        "en": "Bridge copies your order."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "surface.accepted.02",
+      "profile": "surface",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "surface.accepted.03",
+      "profile": "surface",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Instruction received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/surface.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.selection.01",
+      "profile": "submarine",
+      "phase": "selection",
+      "text": {
+        "fr": "Central à l’écoute.",
+        "en": "Control room listening."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.selection.02",
+      "profile": "submarine",
+      "phase": "selection",
+      "text": {
+        "fr": "Sous-marin en ligne.",
+        "en": "Submarine on the line."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.selection.03",
+      "profile": "submarine",
+      "phase": "selection",
+      "text": {
+        "fr": "Central en ligne.",
+        "en": "Submarine here."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.accepted.01",
+      "profile": "submarine",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu au central.",
+        "en": "Control room copies."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.accepted.02",
+      "profile": "submarine",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu au central.",
+        "en": "Order received."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "submarine.accepted.03",
+      "profile": "submarine",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Instruction acknowledged."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/submarine.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.selection.01",
+      "profile": "helicopter",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipage à l’écoute.",
+        "en": "Flight crew here."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.selection.02",
+      "profile": "helicopter",
+      "phase": "selection",
+      "text": {
+        "fr": "Hélicoptère en ligne.",
+        "en": "Helicopter listening."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.selection.03",
+      "profile": "helicopter",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipage en ligne.",
+        "en": "Aircrew on the line."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.accepted.01",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu par l’équipage.",
+        "en": "Aircrew copies."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.accepted.02",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Instruction received."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "helicopter.accepted.03",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/helicopter.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.selection.01",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "text": {
+        "fr": "Patrouille maritime à l’écoute.",
+        "en": "Maritime patrol here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.selection.02",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipage de patrouille en ligne.",
+        "en": "Patrol crew listening."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.selection.03",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "text": {
+        "fr": "Avion de patrouille à l’écoute.",
+        "en": "Patrol aircraft here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.accepted.01",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "text": {
+        "fr": "Mission reçue.",
+        "en": "Assignment received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.accepted.02",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Patrol crew copies."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "maritime_patrol.accepted.03",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/maritime_patrol.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.selection.01",
+      "profile": "fighter",
+      "phase": "selection",
+      "text": {
+        "fr": "Pilote à l’écoute.",
+        "en": "Pilot listening."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.selection.02",
+      "profile": "fighter",
+      "phase": "selection",
+      "text": {
+        "fr": "Patrouille aérienne en ligne.",
+        "en": "Flight on the line."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.selection.03",
+      "profile": "fighter",
+      "phase": "selection",
+      "text": {
+        "fr": "Appareil à l’écoute.",
+        "en": "Flight here."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.accepted.01",
+      "profile": "fighter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu.",
+        "en": "Flight copies."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.accepted.02",
+      "profile": "fighter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Instruction received."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "fighter.accepted.03",
+      "profile": "fighter",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/fighter.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.selection.01",
+      "profile": "drone",
+      "phase": "selection",
+      "text": {
+        "fr": "Station de contrôle à l’écoute.",
+        "en": "Remote station here."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.selection.02",
+      "profile": "drone",
+      "phase": "selection",
+      "text": {
+        "fr": "Opérateur en ligne.",
+        "en": "Operator on the line."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.selection.03",
+      "profile": "drone",
+      "phase": "selection",
+      "text": {
+        "fr": "Contrôle drone à l’écoute.",
+        "en": "Drone control listening."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.accepted.01",
+      "profile": "drone",
+      "phase": "accepted",
+      "text": {
+        "fr": "Commande reçue.",
+        "en": "Command received."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.accepted.02",
+      "profile": "drone",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Remote station copies."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "drone.accepted.03",
+      "profile": "drone",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre enregistré.",
+        "en": "Order recorded."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/drone.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.selection.01",
+      "profile": "special_forces",
+      "phase": "selection",
+      "text": {
+        "fr": "Détachement à l’écoute.",
+        "en": "Detachment here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.selection.02",
+      "profile": "special_forces",
+      "phase": "selection",
+      "text": {
+        "fr": "Chef d’équipe en ligne.",
+        "en": "Team leader listening."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.selection.03",
+      "profile": "special_forces",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe spéciale à l’écoute.",
+        "en": "Special detachment here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.accepted.01",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "text": {
+        "fr": "Consigne reçue.",
+        "en": "Instruction received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.accepted.02",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu par l’équipe.",
+        "en": "Team copies."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "special_forces.accepted.03",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/special_forces.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.selection.01",
+      "profile": "ground",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe terrestre à l’écoute.",
+        "en": "Ground team here."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.selection.02",
+      "profile": "ground",
+      "phase": "selection",
+      "text": {
+        "fr": "Chef de section en ligne.",
+        "en": "Section leader listening."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.selection.03",
+      "profile": "ground",
+      "phase": "selection",
+      "text": {
+        "fr": "Unité terrestre en ligne.",
+        "en": "Ground unit on the line."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.accepted.01",
+      "profile": "ground",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu.",
+        "en": "Ground team copies."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.accepted.02",
+      "profile": "ground",
+      "phase": "accepted",
+      "text": {
+        "fr": "Consigne reçue.",
+        "en": "Instruction received."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "ground.accepted.03",
+      "profile": "ground",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "awb",
+      "audio": {
+        "en": "audio/unites/vo/en/ground.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.selection.01",
+      "profile": "cyber",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe cyber à l’écoute.",
+        "en": "Cyber team here."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.selection.02",
+      "profile": "cyber",
+      "phase": "selection",
+      "text": {
+        "fr": "Analyste en ligne.",
+        "en": "Analyst listening."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.selection.03",
+      "profile": "cyber",
+      "phase": "selection",
+      "text": {
+        "fr": "Cellule cyber en ligne.",
+        "en": "Cyber station on the line."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.accepted.01",
+      "profile": "cyber",
+      "phase": "accepted",
+      "text": {
+        "fr": "Tâche reçue.",
+        "en": "Task received."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.accepted.02",
+      "profile": "cyber",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction enregistrée.",
+        "en": "Instruction recorded."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "cyber.accepted.03",
+      "profile": "cyber",
+      "phase": "accepted",
+      "text": {
+        "fr": "Consigne reçue.",
+        "en": "Cyber team copies."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/cyber.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.selection.01",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "text": {
+        "fr": "Coordination des secours à l’écoute.",
+        "en": "Relief coordination here."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.selection.02",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe de secours en ligne.",
+        "en": "Relief crew listening."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.selection.03",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe humanitaire à l’écoute.",
+        "en": "Humanitarian team here."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.accepted.01",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "text": {
+        "fr": "Mission reçue.",
+        "en": "Assignment received."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.accepted.02",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Relief crew copies."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "humanitarian.accepted.03",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/humanitarian.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.selection.01",
+      "profile": "support",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe de soutien à l’écoute.",
+        "en": "Support crew here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.selection.02",
+      "profile": "support",
+      "phase": "selection",
+      "text": {
+        "fr": "Équipe technique en ligne.",
+        "en": "Repair station listening."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.selection.03",
+      "profile": "support",
+      "phase": "selection",
+      "text": {
+        "fr": "Soutien en ligne.",
+        "en": "Support team on the line."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.accepted.01",
+      "profile": "support",
+      "phase": "accepted",
+      "text": {
+        "fr": "Intervention reçue.",
+        "en": "Task received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.accepted.02",
+      "profile": "support",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction reçue.",
+        "en": "Support crew copies."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "support.accepted.03",
+      "profile": "support",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/support.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.selection.01",
+      "profile": "task_group",
+      "phase": "selection",
+      "text": {
+        "fr": "Commandement du groupe à l’écoute.",
+        "en": "Group command here."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.selection.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.selection.02",
+      "profile": "task_group",
+      "phase": "selection",
+      "text": {
+        "fr": "Coordinateur du groupe en ligne.",
+        "en": "Group coordinator listening."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.selection.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.selection.03",
+      "profile": "task_group",
+      "phase": "selection",
+      "text": {
+        "fr": "Commandement du groupe en ligne.",
+        "en": "Group command on the line."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.selection.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.accepted.01",
+      "profile": "task_group",
+      "phase": "accepted",
+      "text": {
+        "fr": "Ordre reçu pour le groupe.",
+        "en": "Group command copies."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.accepted.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.accepted.02",
+      "profile": "task_group",
+      "phase": "accepted",
+      "text": {
+        "fr": "Instruction de groupe reçue.",
+        "en": "Group order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.accepted.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "task_group.accepted.03",
+      "profile": "task_group",
+      "phase": "accepted",
+      "text": {
+        "fr": "Bien reçu.",
+        "en": "Order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/task_group.accepted.03.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.move.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "move",
+      "text": {
+        "fr": "Route reçue.",
+        "en": "Route received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.move.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.move.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "move",
+      "text": {
+        "fr": "Cap demandé reçu.",
+        "en": "Course order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.move.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.patrol.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "patrol",
+      "text": {
+        "fr": "Patrouille reçue.",
+        "en": "Patrol order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.patrol.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.patrol.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "patrol",
+      "text": {
+        "fr": "Route de patrouille reçue.",
+        "en": "Patrol route acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.patrol.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.escort.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "escort",
+      "text": {
+        "fr": "Mission d’escorte reçue.",
+        "en": "Escort assignment received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.escort.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.escort.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "escort",
+      "text": {
+        "fr": "Ordre d’escorte reçu.",
+        "en": "Escort order acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.escort.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.observe.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "observe",
+      "text": {
+        "fr": "Observation demandée reçue.",
+        "en": "Observation task received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.observe.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.observe.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "observe",
+      "text": {
+        "fr": "Mission de surveillance reçue.",
+        "en": "Monitoring task acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.observe.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.analyze.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "analyze",
+      "text": {
+        "fr": "Demande d’analyse reçue.",
+        "en": "Analysis request received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.analyze.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.analyze.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "analyze",
+      "text": {
+        "fr": "Examen du contact demandé.",
+        "en": "Contact review requested."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.analyze.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.sonar.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "sonar",
+      "text": {
+        "fr": "Ordre sonar reçu.",
+        "en": "Sonar order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.sonar.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.sonar.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "sonar",
+      "text": {
+        "fr": "Demande acoustique reçue.",
+        "en": "Acoustic task acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.sonar.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.depth.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "depth",
+      "text": {
+        "fr": "Consigne de profondeur reçue.",
+        "en": "Depth order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.depth.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.depth.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "depth",
+      "text": {
+        "fr": "Changement de profondeur reçu.",
+        "en": "Depth change acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.depth.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.buoy.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "buoy",
+      "text": {
+        "fr": "Ordre de bouée reçu.",
+        "en": "Buoy order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.buoy.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.buoy.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "buoy",
+      "text": {
+        "fr": "Déploiement de bouée demandé.",
+        "en": "Buoy deployment acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.buoy.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.engage.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "engage",
+      "text": {
+        "fr": "Ordre d’engagement reçu.",
+        "en": "Engagement order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.engage.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.engage.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "engage",
+      "text": {
+        "fr": "Conditions d’engagement à vérifier.",
+        "en": "Engagement conditions under review."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.engage.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.return.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "return",
+      "text": {
+        "fr": "Ordre de retour reçu.",
+        "en": "Return order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.return.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.return.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "return",
+      "text": {
+        "fr": "Route de retour reçue.",
+        "en": "Recovery route acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.return.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.deploy.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "deploy",
+      "text": {
+        "fr": "Ordre de déploiement reçu.",
+        "en": "Deployment order received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.deploy.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.deploy.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "deploy",
+      "text": {
+        "fr": "Demande de transfert reçue.",
+        "en": "Transfer request acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.deploy.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.cyber.01",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "cyber",
+      "text": {
+        "fr": "Tâche cyber reçue.",
+        "en": "Cyber task received."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.cyber.01.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "order.cyber.02",
+      "profile": "command",
+      "phase": "accepted",
+      "orderType": "cyber",
+      "text": {
+        "fr": "Mission d’analyse reçue.",
+        "en": "Analysis assignment acknowledged."
+      },
+      "voiceModel": "rms",
+      "audio": {
+        "en": "audio/unites/vo/en/order.cyber.02.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "status.queued",
+      "profile": "command",
+      "phase": "queued",
+      "text": {
+        "fr": "Ordre en attente de transmission.",
+        "en": "Order queued. Awaiting transmission."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/status.queued.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "status.rejected",
+      "profile": "command",
+      "phase": "rejected",
+      "text": {
+        "fr": "Ordre indisponible. Vérifiez les conditions.",
+        "en": "Order unavailable. Check requirements."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/status.rejected.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "status.busy",
+      "profile": "command",
+      "phase": "busy",
+      "text": {
+        "fr": "Unité occupée. Action non démarrée.",
+        "en": "Unit occupied. Action not started."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/status.busy.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    },
+    {
+      "id": "status.cancelled",
+      "profile": "command",
+      "phase": "cancelled",
+      "text": {
+        "fr": "Annulation de l’ordre reçue.",
+        "en": "Order cancellation acknowledged."
+      },
+      "voiceModel": "slt",
+      "audio": {
+        "en": "audio/unites/vo/en/status.cancelled.wav",
+        "fr": null
+      },
+      "status": "english_synthetic_prototype_french_script_only"
+    }
+  ],
+  "assets": [
+    {
+      "id": "surface_selection_01",
+      "kind": "nonverbal",
+      "profile": "surface",
+      "phase": "selection",
+      "file": "audio/unites/sfx/surface_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "9119d0bdec6f83cbc46134e0daec3e4d12da842e18c4c44d95a3f4b1634b3f85"
+    },
+    {
+      "id": "surface_selection_02",
+      "kind": "nonverbal",
+      "profile": "surface",
+      "phase": "selection",
+      "file": "audio/unites/sfx/surface_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "d3fe1c8b151312749af93874efcf4448e0f6349cd49bd11450d2faa665cc7b27"
+    },
+    {
+      "id": "surface_accepted_01",
+      "kind": "nonverbal",
+      "profile": "surface",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/surface_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "2d5b37604c33b59873f5b282f14339ff6bddbb7c79019b1c9f54d1252b596713"
+    },
+    {
+      "id": "surface_accepted_02",
+      "kind": "nonverbal",
+      "profile": "surface",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/surface_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "58eead3007e34ce00a4742e6a98031732b1d3068ce4ccc2b0c168a47f044d963"
+    },
+    {
+      "id": "submarine_selection_01",
+      "kind": "nonverbal",
+      "profile": "submarine",
+      "phase": "selection",
+      "file": "audio/unites/sfx/submarine_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "5a594f994a37a5a7732de477b5887123135f43ec79812732bf8311d4c90a3393"
+    },
+    {
+      "id": "submarine_selection_02",
+      "kind": "nonverbal",
+      "profile": "submarine",
+      "phase": "selection",
+      "file": "audio/unites/sfx/submarine_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "b5014962a4ee646a10c728d6e5f6836056c8705cf122816d20ffaa8e75e98f9f"
+    },
+    {
+      "id": "submarine_accepted_01",
+      "kind": "nonverbal",
+      "profile": "submarine",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/submarine_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "466b14886f5077751c509bcfe109621f641dfb6a45b386f35825603626653958"
+    },
+    {
+      "id": "submarine_accepted_02",
+      "kind": "nonverbal",
+      "profile": "submarine",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/submarine_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "45a1909c5da6041090f940738cbe2e6d9eaf89d209a9d76759637e55fc0f0b6f"
+    },
+    {
+      "id": "helicopter_selection_01",
+      "kind": "nonverbal",
+      "profile": "helicopter",
+      "phase": "selection",
+      "file": "audio/unites/sfx/helicopter_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "70d88b32420a36187c68e5c1c2989806544dd814dacde50dc86deb8620506497"
+    },
+    {
+      "id": "helicopter_selection_02",
+      "kind": "nonverbal",
+      "profile": "helicopter",
+      "phase": "selection",
+      "file": "audio/unites/sfx/helicopter_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "356dac468dca13fc83c96494b2376d26e23d79fa07e4b993e7273f76559da442"
+    },
+    {
+      "id": "helicopter_accepted_01",
+      "kind": "nonverbal",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/helicopter_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "fd9274394c00ec683c5e21d5288b1e27e5459f55ff913dae560373a1ca7aa17b"
+    },
+    {
+      "id": "helicopter_accepted_02",
+      "kind": "nonverbal",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/helicopter_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "11629c6b1564db1dec066ca9782fc4b636ac7483f6d4c4739d2ea0f163725bc5"
+    },
+    {
+      "id": "maritime_patrol_selection_01",
+      "kind": "nonverbal",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "file": "audio/unites/sfx/maritime_patrol_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "70682a85fd56c4a0ca51f796ecf55bb5a677e70837c4a53f0580b52d999620b2"
+    },
+    {
+      "id": "maritime_patrol_selection_02",
+      "kind": "nonverbal",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "file": "audio/unites/sfx/maritime_patrol_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "8a268ffd267508e1f30ea1ea53de0c6df93663de3b88cb94bdeb5389eea19a59"
+    },
+    {
+      "id": "maritime_patrol_accepted_01",
+      "kind": "nonverbal",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/maritime_patrol_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "438ab11e2364b2cb1e9489900d4128736d4206fac4f7eb31d25979fdcb4970a6"
+    },
+    {
+      "id": "maritime_patrol_accepted_02",
+      "kind": "nonverbal",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/maritime_patrol_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "b81225715214979e833e63c114b630df33255ed4947837c9b86aaacd2b031b34"
+    },
+    {
+      "id": "fighter_selection_01",
+      "kind": "nonverbal",
+      "profile": "fighter",
+      "phase": "selection",
+      "file": "audio/unites/sfx/fighter_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "6964558abab3f9733efb599c41353193cd8c39fedf7a141338a96999f39af15c"
+    },
+    {
+      "id": "fighter_selection_02",
+      "kind": "nonverbal",
+      "profile": "fighter",
+      "phase": "selection",
+      "file": "audio/unites/sfx/fighter_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "98bd0f6be0833ac4eca5f516d538a157eba0217c98907350893539ae2cd567c8"
+    },
+    {
+      "id": "fighter_accepted_01",
+      "kind": "nonverbal",
+      "profile": "fighter",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/fighter_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "e295715232ea84e0ba461fc96d6a4e3e718cd12352182f007234fdaac9cd0593"
+    },
+    {
+      "id": "fighter_accepted_02",
+      "kind": "nonverbal",
+      "profile": "fighter",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/fighter_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "e7550e100db1a5fbbead3dd219cefa0ad4acad8f46fc27c88e1d389594aa370a"
+    },
+    {
+      "id": "drone_selection_01",
+      "kind": "nonverbal",
+      "profile": "drone",
+      "phase": "selection",
+      "file": "audio/unites/sfx/drone_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "d9c31353f0474fd669f2d708bc0d1d6ec130bc27e4af14eec6c112de518a96d1"
+    },
+    {
+      "id": "drone_selection_02",
+      "kind": "nonverbal",
+      "profile": "drone",
+      "phase": "selection",
+      "file": "audio/unites/sfx/drone_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "9fd409b4faf8a8d4361ede9d5306ef62595148223ab7be4bc2351498142a528d"
+    },
+    {
+      "id": "drone_accepted_01",
+      "kind": "nonverbal",
+      "profile": "drone",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/drone_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "b1ab90b3292a6a640bf425216bd44451fc3675be3fcda32a34443a5b8fd0da4f"
+    },
+    {
+      "id": "drone_accepted_02",
+      "kind": "nonverbal",
+      "profile": "drone",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/drone_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "fc975224bf9816e07f8f506b97bcbcccf8b85202cb005498cf4115bb70eccc12"
+    },
+    {
+      "id": "special_forces_selection_01",
+      "kind": "nonverbal",
+      "profile": "special_forces",
+      "phase": "selection",
+      "file": "audio/unites/sfx/special_forces_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "800422a7b8f079793ef9e5725ab3f5ed29888925923eb3d97ca7052982572784"
+    },
+    {
+      "id": "special_forces_selection_02",
+      "kind": "nonverbal",
+      "profile": "special_forces",
+      "phase": "selection",
+      "file": "audio/unites/sfx/special_forces_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "4e96ad4af4304b4338d113e3d163fe8d844746140baba9c8d4bcd65e00555e44"
+    },
+    {
+      "id": "special_forces_accepted_01",
+      "kind": "nonverbal",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/special_forces_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "5e7a9310efc5545564cacc305022f238bdf99b243749f600d897ed06c7750434"
+    },
+    {
+      "id": "special_forces_accepted_02",
+      "kind": "nonverbal",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/special_forces_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "60c13e0da3976850bfa613f8ab02db60485a703eb2a370d8d149e2bd4df844d8"
+    },
+    {
+      "id": "ground_selection_01",
+      "kind": "nonverbal",
+      "profile": "ground",
+      "phase": "selection",
+      "file": "audio/unites/sfx/ground_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "798a0f1a4722c2597bec3d41a43b207d0f3e7da6dd1cc8f57cd5eb75044ec2bb"
+    },
+    {
+      "id": "ground_selection_02",
+      "kind": "nonverbal",
+      "profile": "ground",
+      "phase": "selection",
+      "file": "audio/unites/sfx/ground_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "4e076163ad9425fea8ae6436b9766e3d99b874f22fb4a348b72c88ae2e3e37e6"
+    },
+    {
+      "id": "ground_accepted_01",
+      "kind": "nonverbal",
+      "profile": "ground",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/ground_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "8cde62b3fbecfd5d05f6390b656010a633e39ffc1ef1e41ded7298a1e9385eba"
+    },
+    {
+      "id": "ground_accepted_02",
+      "kind": "nonverbal",
+      "profile": "ground",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/ground_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "4802aeb1bd0bbc140123538f55780cdef161630aef33b765d02b2d5cc66db080"
+    },
+    {
+      "id": "cyber_selection_01",
+      "kind": "nonverbal",
+      "profile": "cyber",
+      "phase": "selection",
+      "file": "audio/unites/sfx/cyber_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "03438bb8262ee28f4f458c3550a233bae1212956e7a1750dbda69b9ed798ce61"
+    },
+    {
+      "id": "cyber_selection_02",
+      "kind": "nonverbal",
+      "profile": "cyber",
+      "phase": "selection",
+      "file": "audio/unites/sfx/cyber_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "3321d73d31e976eee18d7f9728023ca0bb8c10f186a55bfd6fb4a93599a0f5f7"
+    },
+    {
+      "id": "cyber_accepted_01",
+      "kind": "nonverbal",
+      "profile": "cyber",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/cyber_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "ef0b58ee576e2c23e7f43a4b9243ddc7be49bf2dd0ded14bcc603d22ca5f6032"
+    },
+    {
+      "id": "cyber_accepted_02",
+      "kind": "nonverbal",
+      "profile": "cyber",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/cyber_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "821adf8db389542b23f4a1b1673e8f7e61afedd64759155f8babd9cd11053a1f"
+    },
+    {
+      "id": "humanitarian_selection_01",
+      "kind": "nonverbal",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "file": "audio/unites/sfx/humanitarian_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "89c4c34587076b248e20052b37eaf1735d6a634be5da3023216a48d8515bbb2d"
+    },
+    {
+      "id": "humanitarian_selection_02",
+      "kind": "nonverbal",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "file": "audio/unites/sfx/humanitarian_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "a45867eef5c310e7a3b20be5256dc3fae91f1bc9781800d134167fae40d2e4b3"
+    },
+    {
+      "id": "humanitarian_accepted_01",
+      "kind": "nonverbal",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/humanitarian_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "215a161f3ef3120d7a5d9ef6c57ab8ed1cfe7b21a2222eb8a8f2e4ad6603967f"
+    },
+    {
+      "id": "humanitarian_accepted_02",
+      "kind": "nonverbal",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/humanitarian_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "03a7f8e9e13f39b9ed2abbd7272ef760186ee1bf75485571cfeec973d8b8c1cb"
+    },
+    {
+      "id": "support_selection_01",
+      "kind": "nonverbal",
+      "profile": "support",
+      "phase": "selection",
+      "file": "audio/unites/sfx/support_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "de75fa0a7d104c4dae2d8e600159d0440337c04195608a21f9c6f404d1d46cd3"
+    },
+    {
+      "id": "support_selection_02",
+      "kind": "nonverbal",
+      "profile": "support",
+      "phase": "selection",
+      "file": "audio/unites/sfx/support_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "6609f6ca354397ec5523e5f4670359c60a24753ec34c1390c8e572301ced3ba4"
+    },
+    {
+      "id": "support_accepted_01",
+      "kind": "nonverbal",
+      "profile": "support",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/support_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "95a735c7511f21f3daa5203e32c9f39a777b18846fbff1b2e74c46e47a500610"
+    },
+    {
+      "id": "support_accepted_02",
+      "kind": "nonverbal",
+      "profile": "support",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/support_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "c57b9ef3f552d2653e548f4213a431a9667b0131b8a58b95f07abef03867a38d"
+    },
+    {
+      "id": "task_group_selection_01",
+      "kind": "nonverbal",
+      "profile": "task_group",
+      "phase": "selection",
+      "file": "audio/unites/sfx/task_group_selection_01.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "fa7686df08eda194db0936f8a98364f3a9cb90e6fe8097bd1859f75fed6a77ce"
+    },
+    {
+      "id": "task_group_selection_02",
+      "kind": "nonverbal",
+      "profile": "task_group",
+      "phase": "selection",
+      "file": "audio/unites/sfx/task_group_selection_02.wav",
+      "durationSeconds": 0.16,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "e072e920e108307b7017bd2812ac1f743d15d80804f74886e7e9a80c20f8ae49"
+    },
+    {
+      "id": "task_group_accepted_01",
+      "kind": "nonverbal",
+      "profile": "task_group",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/task_group_accepted_01.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "54c171a2ffafc01b59817147944c6fdfa578b80b17ba4b7720e718557cbff0cc"
+    },
+    {
+      "id": "task_group_accepted_02",
+      "kind": "nonverbal",
+      "profile": "task_group",
+      "phase": "accepted",
+      "file": "audio/unites/sfx/task_group_accepted_02.wav",
+      "durationSeconds": 0.29,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "55ab3044c3800e158dbe1d2166906578c3d80fb39b378dc8fce502a0a1acd762"
+    },
+    {
+      "id": "surface.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/surface.selection.01.wav",
+      "durationSeconds": 1.07,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "d42e62bb103407899007dc0dce5083bb1cfa68e6715f9b6742a7c5a512a11a40"
+    },
+    {
+      "id": "surface.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/surface.selection.02.wav",
+      "durationSeconds": 2.05,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "7597c8a10e059f41c238e9b08de216bb47a9f0e63e613c9fb696d9c490927b5d"
+    },
+    {
+      "id": "surface.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/surface.selection.03.wav",
+      "durationSeconds": 1.555,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "883c11f1c9a7e221557fb9cb25a52be31f7031f1867270ef905f282588f2be50"
+    },
+    {
+      "id": "surface.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/surface.accepted.01.wav",
+      "durationSeconds": 2.19,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "157893779b332a297fd699f5e872c3ae7ea75a84e2fabbf6160be1642e982627"
+    },
+    {
+      "id": "surface.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/surface.accepted.02.wav",
+      "durationSeconds": 1.48,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "765eddb54558051f5d22b9b50bfd051f0c7b5d484cebfc5d35faa7ac83173e45"
+    },
+    {
+      "id": "surface.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "surface",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/surface.accepted.03.wav",
+      "durationSeconds": 1.83,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "32bf0e4e1703686a2cd6433b407b33062af9c34b5894c88836d22cafd14058ae"
+    },
+    {
+      "id": "submarine.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/submarine.selection.01.wav",
+      "durationSeconds": 1.625,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "021d7d2ce2cb5029aed328c6ae284d7981c27501343730915ded1d0db3416bed"
+    },
+    {
+      "id": "submarine.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/submarine.selection.02.wav",
+      "durationSeconds": 1.67,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "86dc1325e288c29b301795c79f18f8a4835d7b03c5ae27c2e29ada699eccad04"
+    },
+    {
+      "id": "submarine.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/submarine.selection.03.wav",
+      "durationSeconds": 1.25,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "eab4fc5d8f573b5b11794728ace32b1e3fd58007ddedc6b9ac7634f34e1d8117"
+    },
+    {
+      "id": "submarine.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/submarine.accepted.01.wav",
+      "durationSeconds": 1.74,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "37a9b9e7c7eb64d9e37766c1475a89101cc9220c4646729834579b12e3633b29"
+    },
+    {
+      "id": "submarine.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/submarine.accepted.02.wav",
+      "durationSeconds": 1.12,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4f40e7f93d2a428bfacbb27e482936b68582bf511f2119cf505a704ccbc0aa2d"
+    },
+    {
+      "id": "submarine.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "submarine",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/submarine.accepted.03.wav",
+      "durationSeconds": 1.875,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f4c401104c0ed15f3c1248738c19aba3fa561bc88e2131b13ae02eed8ede8aee"
+    },
+    {
+      "id": "helicopter.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/helicopter.selection.01.wav",
+      "durationSeconds": 1.4,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "5e621e36498de44bb925a8fe515f114253c5fd52b697ccec4f67d2431ea3823a"
+    },
+    {
+      "id": "helicopter.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/helicopter.selection.02.wav",
+      "durationSeconds": 1.915,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "8736ee61d9a2c15e662ec7d0ff3ceae4850715eb8067a02780ddeac9366b57ab"
+    },
+    {
+      "id": "helicopter.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/helicopter.selection.03.wav",
+      "durationSeconds": 1.525,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "c45d3e00239e5ccb04c90c8839bd4e224ddf86419cd27f61ccda37e3ec4da396"
+    },
+    {
+      "id": "helicopter.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/helicopter.accepted.01.wav",
+      "durationSeconds": 1.605,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e89ae46a7e50ba08cd894ca60fbb99fbfaf66a9a1e98e8c65eb6de20b3111922"
+    },
+    {
+      "id": "helicopter.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/helicopter.accepted.02.wav",
+      "durationSeconds": 1.92,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "5f634706e511a74cad2f7b6df4b9424bd44903a07361c1b2f1f39fa3b73d2915"
+    },
+    {
+      "id": "helicopter.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "helicopter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/helicopter.accepted.03.wav",
+      "durationSeconds": 1.56,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e21a11c48a9cef5932788d1d0b9fad7f0a2a8a91c0afdbe2689bf96d78f75a62"
+    },
+    {
+      "id": "maritime_patrol.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/maritime_patrol.selection.01.wav",
+      "durationSeconds": 1.855,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "338da7c237bb86361ec5c036412b5f8859a91712ece88cfa1fc6402fd3845af2"
+    },
+    {
+      "id": "maritime_patrol.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/maritime_patrol.selection.02.wav",
+      "durationSeconds": 1.765,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "32519ee77df57ea4a8d4cdc18a02791c7bd8794b2dc11fa938f21126b1bb9d4a"
+    },
+    {
+      "id": "maritime_patrol.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/maritime_patrol.selection.03.wav",
+      "durationSeconds": 1.92,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "56dbabc8e381a656d69e807bd352813b200a2d30a3f62723bf808d0f1cd00982"
+    },
+    {
+      "id": "maritime_patrol.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/maritime_patrol.accepted.01.wav",
+      "durationSeconds": 1.685,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e0f5e524efa99aa1debd674a23c2f07ce6e80bf583847b69f0f613bcfdcdc92a"
+    },
+    {
+      "id": "maritime_patrol.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/maritime_patrol.accepted.02.wav",
+      "durationSeconds": 1.86,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0835c81c1105fe9a511895a58bffe6dbce53bbc18a78087b027b7567e0e84e56"
+    },
+    {
+      "id": "maritime_patrol.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "maritime_patrol",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/maritime_patrol.accepted.03.wav",
+      "durationSeconds": 1.525,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "29b8b7db9cf754ba6d4183e6f79db4272e5b666d624d1ca7e3c728197dea3aba"
+    },
+    {
+      "id": "fighter.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/fighter.selection.01.wav",
+      "durationSeconds": 1.3,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "9b4a6ae0ab7a56037e5be5eafee88e40a4d64cc75825ae3deb3b5448501ab05f"
+    },
+    {
+      "id": "fighter.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/fighter.selection.02.wav",
+      "durationSeconds": 1.335,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "ab6be40f16b9c34467067867e0544c62660306726602578ee6005ab5633daa4a"
+    },
+    {
+      "id": "fighter.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/fighter.selection.03.wav",
+      "durationSeconds": 1.025,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "2fd591c9e5a2f85744e0581c4bc7857276f90c3aaea8f74a4f21965e5ec60d7d"
+    },
+    {
+      "id": "fighter.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/fighter.accepted.01.wav",
+      "durationSeconds": 1.3,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "43402e46ef2a22ca685f26226c02d2211a89636faf51bfb73883c08216c46e87"
+    },
+    {
+      "id": "fighter.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/fighter.accepted.02.wav",
+      "durationSeconds": 1.595,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "7b8aa8864438e8ef1110e83df35730956b00b63e89c404624c3259b5e8dce6af"
+    },
+    {
+      "id": "fighter.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "fighter",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/fighter.accepted.03.wav",
+      "durationSeconds": 1.395,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4a89e83d9c7f390870c58287d91eb55b06bf69f0437553a5a6ebdac56d4f30a9"
+    },
+    {
+      "id": "drone.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/drone.selection.01.wav",
+      "durationSeconds": 1.81,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "2f2887c97448c74fa6c4d3a620c99900a4a448afe72359863b5cf413f8177a54"
+    },
+    {
+      "id": "drone.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/drone.selection.02.wav",
+      "durationSeconds": 1.705,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "06636f5e2a574ce3000fa4a4bf58185f4c151a420dc9e158dcb49d3790eb7245"
+    },
+    {
+      "id": "drone.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/drone.selection.03.wav",
+      "durationSeconds": 2.01,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "88ed3a36571d98c44737511a2951dc1461010a1ca730bb6a168d090dce24c21c"
+    },
+    {
+      "id": "drone.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/drone.accepted.01.wav",
+      "durationSeconds": 1.44,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "d5b793286610861a18f9462c971925a92d8c92e52432eb7b4809d6a2d3b35585"
+    },
+    {
+      "id": "drone.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/drone.accepted.02.wav",
+      "durationSeconds": 2.215,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a5d7105aa854a683c8e8d900338258ee32d3affae0c9e303ea6625ffa8d7ff71"
+    },
+    {
+      "id": "drone.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "drone",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/drone.accepted.03.wav",
+      "durationSeconds": 1.43,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "facd1776183a6f3ac4376ab505dd7867471a4e15bff918488f1f3fe1c67c6423"
+    },
+    {
+      "id": "special_forces.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/special_forces.selection.01.wav",
+      "durationSeconds": 1.495,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "7ad4dd6a23e70b11cf9239939e08f6900218dcb62ade7c0877680235b705d197"
+    },
+    {
+      "id": "special_forces.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/special_forces.selection.02.wav",
+      "durationSeconds": 1.72,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "1207c85f0c47a80ba5970e9eaa7275cb3d75418032d0f09b58951a4a39b0b3d9"
+    },
+    {
+      "id": "special_forces.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/special_forces.selection.03.wav",
+      "durationSeconds": 1.925,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4aecd9f002bc5a567db952aeddee036d4a44d15fa717867edcd955c4a7f74ce0"
+    },
+    {
+      "id": "special_forces.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/special_forces.accepted.01.wav",
+      "durationSeconds": 1.83,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "32bf0e4e1703686a2cd6433b407b33062af9c34b5894c88836d22cafd14058ae"
+    },
+    {
+      "id": "special_forces.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/special_forces.accepted.02.wav",
+      "durationSeconds": 1.355,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0f49c46255c88c468243c30a88b3cf4071952f4ba7e629d49bc0c12f6d362f62"
+    },
+    {
+      "id": "special_forces.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "special_forces",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/special_forces.accepted.03.wav",
+      "durationSeconds": 1.525,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "29b8b7db9cf754ba6d4183e6f79db4272e5b666d624d1ca7e3c728197dea3aba"
+    },
+    {
+      "id": "ground.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/ground.selection.01.wav",
+      "durationSeconds": 1.43,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "b52c50e16b36282af7af5e3a9e7c8ff93dcc7b3c6776616a01b50da394f9509e"
+    },
+    {
+      "id": "ground.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/ground.selection.02.wav",
+      "durationSeconds": 1.68,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "3d2ad2928eab4b94db05f211df3e355186ef150868e2641d933c88e90cf0bb68"
+    },
+    {
+      "id": "ground.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/ground.selection.03.wav",
+      "durationSeconds": 1.73,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "3bb5e9bca09dd413db7a369c1cf8c67d8e765646d02660bfe8166e21973f3f8a"
+    },
+    {
+      "id": "ground.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/ground.accepted.01.wav",
+      "durationSeconds": 1.725,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "89909248c7c5dfc23002e1c654aa6cc40c1eab65157761e00d2f03a50cdff294"
+    },
+    {
+      "id": "ground.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/ground.accepted.02.wav",
+      "durationSeconds": 1.595,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "7b8aa8864438e8ef1110e83df35730956b00b63e89c404624c3259b5e8dce6af"
+    },
+    {
+      "id": "ground.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "ground",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/ground.accepted.03.wav",
+      "durationSeconds": 1.395,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4a89e83d9c7f390870c58287d91eb55b06bf69f0437553a5a6ebdac56d4f30a9"
+    },
+    {
+      "id": "cyber.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/cyber.selection.01.wav",
+      "durationSeconds": 1.39,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "6df82f1d22ae5a1394ff85cde761690855a17fc31d77f32972e2bc4b81dd4af7"
+    },
+    {
+      "id": "cyber.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/cyber.selection.02.wav",
+      "durationSeconds": 1.57,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "55d93674ce37bcb81173d193ab6a1a621144e937865dbbad776bd7cca10a9bf1"
+    },
+    {
+      "id": "cyber.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/cyber.selection.03.wav",
+      "durationSeconds": 1.965,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "77ad7a69ad4f7b1fd3d700573509806a90b8f1b04f1eeb13f9962b69b0800f18"
+    },
+    {
+      "id": "cyber.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/cyber.accepted.01.wav",
+      "durationSeconds": 1.405,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "62772a049e7e8bfa46fedfad2f9ed99e03d407929373e144eb2abd56d903a3b7"
+    },
+    {
+      "id": "cyber.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/cyber.accepted.02.wav",
+      "durationSeconds": 2.015,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "1013479dbe2763b91d54bc637193202a98d0743f91c04a0bac0b84a9874b9a87"
+    },
+    {
+      "id": "cyber.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "cyber",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/cyber.accepted.03.wav",
+      "durationSeconds": 1.805,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "cba4115d7cb3c56f937495260bceddf565f2b994302526a8418da1372eb7f49e"
+    },
+    {
+      "id": "humanitarian.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/humanitarian.selection.01.wav",
+      "durationSeconds": 2.095,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "202860cc6eecbd60e475875384397dd712a2f5006a79dc96a796cc41a5acc7be"
+    },
+    {
+      "id": "humanitarian.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/humanitarian.selection.02.wav",
+      "durationSeconds": 1.795,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "8f8d87f2781397d7da3ca3ca93e5290e6b8aa66f7c2ee4482893cb9fee4fd066"
+    },
+    {
+      "id": "humanitarian.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/humanitarian.selection.03.wav",
+      "durationSeconds": 2.145,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "78e390d8298049dfc2f371a2190440da707773b6ccfb40e4ac98cc7ae96544ab"
+    },
+    {
+      "id": "humanitarian.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/humanitarian.accepted.01.wav",
+      "durationSeconds": 1.685,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "2b5ee255b9f6837309405e307d6e87b96403bffaa27d839cfc287b1e32ec64ae"
+    },
+    {
+      "id": "humanitarian.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/humanitarian.accepted.02.wav",
+      "durationSeconds": 1.895,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "b89c10419021be8a3c93f4eaf264c7991470f2fc3112406d7bbfb3c424056e02"
+    },
+    {
+      "id": "humanitarian.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "humanitarian",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/humanitarian.accepted.03.wav",
+      "durationSeconds": 1.56,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e21a11c48a9cef5932788d1d0b9fad7f0a2a8a91c0afdbe2689bf96d78f75a62"
+    },
+    {
+      "id": "support.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/support.selection.01.wav",
+      "durationSeconds": 1.62,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0c19cd57ef8d75663ec192e0abfe8b4abdde5c5a5de7904a574c1f91fe6c0fc3"
+    },
+    {
+      "id": "support.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/support.selection.02.wav",
+      "durationSeconds": 2.165,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "30a94465172d39e9c5bf0f6ceb6b4d4b8519bf31c542742081ae4d07d0c19b63"
+    },
+    {
+      "id": "support.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/support.selection.03.wav",
+      "durationSeconds": 2.08,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f12b72d64d36b6b5525752813fb29e8053d7d4b976d82f20601ffebf544c2019"
+    },
+    {
+      "id": "support.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/support.accepted.01.wav",
+      "durationSeconds": 1.595,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f5cd1002b65c4627bc39b1889c2c89095f3b2dfd805403248b157e04777bfb14"
+    },
+    {
+      "id": "support.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/support.accepted.02.wav",
+      "durationSeconds": 1.99,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "6a2c4080d6e6b704dbe5aab7b34f295523728d02e8658f80b23ef463962fe4f7"
+    },
+    {
+      "id": "support.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "support",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/support.accepted.03.wav",
+      "durationSeconds": 1.525,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "29b8b7db9cf754ba6d4183e6f79db4272e5b666d624d1ca7e3c728197dea3aba"
+    },
+    {
+      "id": "task_group.selection.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/task_group.selection.01.wav",
+      "durationSeconds": 1.625,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a865980c9e0ff339df881e8a9777c881684f7be43b4241434af423b238051364"
+    },
+    {
+      "id": "task_group.selection.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/task_group.selection.02.wav",
+      "durationSeconds": 2.245,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "741007b21cc60d1799ad3d69992654bf26cafd4d794f7e8459585b6d40b4463e"
+    },
+    {
+      "id": "task_group.selection.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "selection",
+      "file": "audio/unites/vo/en/task_group.selection.03.wav",
+      "durationSeconds": 1.94,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4ad5a673cc9f1ec9e72b5e79ac409417d8f7f0e88e2afd63250fb6b0ba838593"
+    },
+    {
+      "id": "task_group.accepted.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/task_group.accepted.01.wav",
+      "durationSeconds": 1.87,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "82bcae922a633d169b6400d096fa65c030eabe444a38c24f028056fd9bdf5464"
+    },
+    {
+      "id": "task_group.accepted.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/task_group.accepted.02.wav",
+      "durationSeconds": 1.485,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "ac586b55349bb437a1e2d97269d04a5661a9a5281039d73695f797b5106fa91f"
+    },
+    {
+      "id": "task_group.accepted.03",
+      "kind": "voice",
+      "language": "en",
+      "profile": "task_group",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/task_group.accepted.03.wav",
+      "durationSeconds": 1.525,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "29b8b7db9cf754ba6d4183e6f79db4272e5b666d624d1ca7e3c728197dea3aba"
+    },
+    {
+      "id": "order.move.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.move.01.wav",
+      "durationSeconds": 1.435,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a3c8fa533a3f93ed55842d05eec060c844ffd5c5a88b2a4ef6ddec39a0eac961"
+    },
+    {
+      "id": "order.move.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.move.02.wav",
+      "durationSeconds": 1.855,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f0fd8cd246b571d3fab452da6bb8335a1e16024738f6ab0e43b4bdeca123f36f"
+    },
+    {
+      "id": "order.patrol.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.patrol.01.wav",
+      "durationSeconds": 1.665,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "274f971ded727a39aaaa8b5578502e0acfb0087b3b6130bd596677bac450c509"
+    },
+    {
+      "id": "order.patrol.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.patrol.02.wav",
+      "durationSeconds": 2.075,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0aa6ec3378f15aff70dde30447d33ad37a71934de7eb35af6ab370b3d4654c01"
+    },
+    {
+      "id": "order.escort.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.escort.01.wav",
+      "durationSeconds": 2.105,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e58c95ceee177d42ee1d66953c5deec13777cd4621013bd1b6032b1484caf17d"
+    },
+    {
+      "id": "order.escort.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.escort.02.wav",
+      "durationSeconds": 1.975,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "e436b96dab70e79126b90621682b46d5376c32d22220b28f7a913f10ee457f1a"
+    },
+    {
+      "id": "order.observe.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.observe.01.wav",
+      "durationSeconds": 2.155,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f20f7af331981b695b28fef3f40cffbf9c1056832dfc97d02d7ed08adb6d0616"
+    },
+    {
+      "id": "order.observe.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.observe.02.wav",
+      "durationSeconds": 2.31,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "ca34902b28cdb7e3ad5c93249d351d1e535e231cd504e5a4cca65207ec3dc7d1"
+    },
+    {
+      "id": "order.analyze.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.analyze.01.wav",
+      "durationSeconds": 2.215,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "9c115595108fa974053304a2000ebef3290a3f1440d6f4d34a26c61b4b8bc95a"
+    },
+    {
+      "id": "order.analyze.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.analyze.02.wav",
+      "durationSeconds": 2.245,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "4476d20e45687df54b34a2d0c91956f875a66521c5885abc6369f6bda3867a2a"
+    },
+    {
+      "id": "order.sonar.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.sonar.01.wav",
+      "durationSeconds": 1.75,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0af348664f4e4beb206154718606c3ea08a39c2d01c887e4adb785b679cf4242"
+    },
+    {
+      "id": "order.sonar.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.sonar.02.wav",
+      "durationSeconds": 2.25,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "0c7e3822d87a958e79e2ba37362afe5a04172c683770fa74a24d1ade57d87710"
+    },
+    {
+      "id": "order.depth.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.depth.01.wav",
+      "durationSeconds": 1.615,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "681d8e0ff2525434ca45be55d6435a62588df68573d963b65bb2fe6b00d7a0e8"
+    },
+    {
+      "id": "order.depth.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.depth.02.wav",
+      "durationSeconds": 2.175,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a3fdbbdaad354beb67f1298d6e50b19f58f35e9e6742a1223ac538214ca85425"
+    },
+    {
+      "id": "order.buoy.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.buoy.01.wav",
+      "durationSeconds": 1.58,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "7b260553d5fb94ed77fc4b84d9ed9e13075244670d31307a48da29ad60325ddb"
+    },
+    {
+      "id": "order.buoy.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.buoy.02.wav",
+      "durationSeconds": 2.235,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a52e4e43461c7ef5e3dba4efd551f8d99526836eb91264e77bfe15e07c857162"
+    },
+    {
+      "id": "order.engage.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.engage.01.wav",
+      "durationSeconds": 2.15,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "55f042e4578af5b8761c7dc105b4ff61b078da5369d0376e2863c8451917d836"
+    },
+    {
+      "id": "order.engage.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.engage.02.wav",
+      "durationSeconds": 2.985,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "f543195a13a5105e4497b3c48be8033bbbd751064fbf41e483466e9c65d8c280"
+    },
+    {
+      "id": "order.return.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.return.01.wav",
+      "durationSeconds": 1.705,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "d660baffa9d77acaf6b6f4633799f7fffcfe1b31a1c857f71f2d01ca9a5fddd1"
+    },
+    {
+      "id": "order.return.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.return.02.wav",
+      "durationSeconds": 2.22,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "88d1649d49e34caf5df742ee63f5a4c6be37ee4454ce5f47f970d37c36e6827b"
+    },
+    {
+      "id": "order.deploy.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.deploy.01.wav",
+      "durationSeconds": 2.015,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "9bbad18f9741a15dad2f984c840d1c900695ecc6630ded03c36b7d7fc4b3923f"
+    },
+    {
+      "id": "order.deploy.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.deploy.02.wav",
+      "durationSeconds": 2.415,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "55e68faf11e807f201dfa3a4ace8ad8b6cfa410ac6985f344c721bdf45613ae5"
+    },
+    {
+      "id": "order.cyber.01",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.cyber.01.wav",
+      "durationSeconds": 1.89,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "38cd1efa0b92746c5d305a323d2f7d73576cd585eadc5c34fb4c20cc8808d008"
+    },
+    {
+      "id": "order.cyber.02",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "accepted",
+      "file": "audio/unites/vo/en/order.cyber.02.wav",
+      "durationSeconds": 2.59,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "21b97eb54f7fd50d1d66d585a35eba73409d040987ee87ea877ad04c3ff1b26a"
+    },
+    {
+      "id": "status.queued",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "queued",
+      "file": "audio/unites/vo/en/status.queued.wav",
+      "durationSeconds": 2.745,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "fe43d2208122948ded4a0ac7e3c51f3b5da9c50fbeff781dec052311c325a206"
+    },
+    {
+      "id": "status.rejected",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "rejected",
+      "file": "audio/unites/vo/en/status.rejected.wav",
+      "durationSeconds": 2.835,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "b89bc39469f35267b36ca4683c449b682fbd906130a5a299143206630965e9fa"
+    },
+    {
+      "id": "status.busy",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "busy",
+      "file": "audio/unites/vo/en/status.busy.wav",
+      "durationSeconds": 2.89,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "02434d951a71d1dae9e142e7d5384e37e8c24792b7b3c0e0a10a1b0ac78e57e6"
+    },
+    {
+      "id": "status.cancelled",
+      "kind": "voice",
+      "language": "en",
+      "profile": "command",
+      "phase": "cancelled",
+      "file": "audio/unites/vo/en/status.cancelled.wav",
+      "durationSeconds": 2.44,
+      "bus": "comms",
+      "origin": "generic_flite_speech_synthesis_not_human_recording",
+      "sha256": "a164876d3076deb2ab936cf1ea25b2c15f48ec4b415c6f65007bc90e1608a6f2"
+    },
+    {
+      "id": "command_pending",
+      "kind": "nonverbal",
+      "profile": "command",
+      "phase": "command_pending",
+      "file": "audio/unites/sfx/command_pending.wav",
+      "durationSeconds": 0.28,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "147f3c47272b50ddadb493198659bb425d39bfc15743b4b28e515ba59c2c8787"
+    },
+    {
+      "id": "command_rejected",
+      "kind": "nonverbal",
+      "profile": "command",
+      "phase": "command_rejected",
+      "file": "audio/unites/sfx/command_rejected.wav",
+      "durationSeconds": 0.32,
+      "bus": "ui",
+      "origin": "original_procedural_synthesis",
+      "sha256": "93ed0e1dfcf93769a17ab06d8418f1e1dbcf8008be4d8aaf261528f1b607eaf8"
+    }
+  ],
+  "statusSfx": {
+    "queued": "command_pending",
+    "rejected": "command_rejected",
+    "busy": "command_rejected",
+    "cancelled": "command_pending"
+  },
+  "counts": {
+    "profiles": 12,
+    "nonverbalClips": 50,
+    "englishSyntheticVoiceClips": 100,
+    "frenchRecordedClips": 0,
+    "bilingualTexts": 100
+  },
+  "notHumanVoiceActing": true,
+  "gameRuntimeIntegrated": false,
+  "languagePolicy": "Exact-language asset, optional device TTS, otherwise signature plus subtitle; never silently use English audio for French text.",
+  "globalCatalogue": "catalogue-audio-complet.json",
+  "packIntegrationStatus": "paths_unified_mixer_connection_pending"
+}

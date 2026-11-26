@@ -1,0 +1,22 @@
+{
+  "scope": "files_paths_checksums_and_pure_resolver_not_game_integration",
+  "assetFilesVerified": 170,
+  "uniqueAssetIds": 170,
+  "sourceBytesPreserved": true,
+  "bilingualTextEntries": 118,
+  "frenchVoiceFiles": 0,
+  "unitProfiles": 12,
+  "resolverChecks": {
+    "resolverTestsPassed": 22,
+    "scope": "pure_resolver_only_not_live_browser_or_game"
+  },
+  "acceptanceCasesSpecified": 22,
+  "runtimeAcceptanceCasesExecuted": 0,
+  "demo": {
+    "durationSeconds": 90.024,
+    "integratedLoudnessLUFS": "-22.44",
+    "truePeakDbTP": "-4.86"
+  },
+  "humanListeningValidationPerformed": false,
+  "publishedGameModified": false
+}

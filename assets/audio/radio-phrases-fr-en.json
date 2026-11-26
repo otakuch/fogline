@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "status": "scripts_only_not_recorded",
+  "voiceDirection": "calm_original_voice_short_reports_not_an_imitation",
+  "phrases": [
+    {
+      "id": "order_ack",
+      "fr": "Ordre reçu.",
+      "en": "Order received.",
+      "whenKnown": "accepted_own_order",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "helicopter_airborne",
+      "fr": "Hélicoptère en vol.",
+      "en": "Helicopter airborne.",
+      "whenKnown": "known_friendly_takeoff",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "helicopter_return",
+      "fr": "Retour au porteur.",
+      "en": "Returning to carrier.",
+      "whenKnown": "known_return_order_started",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "sonar_emitted",
+      "fr": "Ping émis.",
+      "en": "Ping transmitted.",
+      "whenKnown": "known_own_emission_optional_not_every_cycle",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "contact_unknown",
+      "fr": "Contact acoustique. Identification incertaine.",
+      "en": "Acoustic contact. Identity uncertain.",
+      "whenKnown": "delivered_unclassified_contact",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "analysis_running",
+      "fr": "Analyse en cours. Contact non classé.",
+      "en": "Analysis in progress. Contact unclassified.",
+      "whenKnown": "known_analysis_started",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "classified_neutral",
+      "fr": "Contact évalué neutre.",
+      "en": "Contact assessed as neutral.",
+      "whenKnown": "current_known_neutral_classification",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "classified_hostile",
+      "fr": "Contact classé hostile.",
+      "en": "Contact classified as hostile.",
+      "whenKnown": "current_known_hostile_classification",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "track_lost",
+      "fr": "Piste perdue. Dernière estimation conservée.",
+      "en": "Track lost. Last estimate retained.",
+      "whenKnown": "known_track_degraded_to_lost",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "torpedo_release",
+      "fr": "Torpille larguée.",
+      "en": "Torpedo released.",
+      "whenKnown": "known_actual_release",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "missile_launch",
+      "fr": "Départ missile signalé.",
+      "en": "Missile launch reported.",
+      "whenKnown": "known_actual_launch",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "result_unconfirmed",
+      "fr": "Résultat non confirmé.",
+      "en": "Result unconfirmed.",
+      "whenKnown": "known_report_without_outcome_confirmation",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "new_crisis",
+      "fr": "Nouvelle crise signalée.",
+      "en": "New crisis reported.",
+      "whenKnown": "new_known_crisis_once",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "humanitarian_crisis",
+      "fr": "Convoi en difficulté. Secours à coordonner.",
+      "en": "Convoy in distress. Rescue coordination required.",
+      "whenKnown": "known_humanitarian_crisis",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "comms_degraded",
+      "fr": "Liaison dégradée.",
+      "en": "Communications degraded.",
+      "whenKnown": "known_link_degradation",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "damage",
+      "fr": "Avarie signalée.",
+      "en": "Damage reported.",
+      "whenKnown": "delivered_friendly_damage_report",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "unavailable",
+      "fr": "Ordre indisponible. Vérifiez les conditions.",
+      "en": "Order unavailable. Check requirements.",
+      "whenKnown": "player_order_rejected",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    },
+    {
+      "id": "resolved",
+      "fr": "Situation stabilisée.",
+      "en": "Situation stabilized.",
+      "whenKnown": "known_objective_resolved",
+      "recordingFile": null,
+      "revalidateAtPlayback": true
+    }
+  ]
+}

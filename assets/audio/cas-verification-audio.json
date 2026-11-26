@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "status": "specified_not_executed_in_game",
+  "cases": [
+    {
+      "id": "AUDIO-01",
+      "area": "Activation",
+      "given": "Première ouverture sans interaction.",
+      "expected": "Pas de lecture forcée ; activation après action utilisateur et erreur gérée.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-02",
+      "area": "Connaissance",
+      "given": "Deux mondes secrets avec les mêmes observations livrées.",
+      "expected": "Même sortie sonore et même intensité musicale.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-03",
+      "area": "Sonar",
+      "given": "Survol, ping réel et émission répétée avec identifiant identique.",
+      "expected": "Pas de son au survol ; un son par événement admissible ; aucun doublon.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-04",
+      "area": "Écho",
+      "given": "Contact biologique ou hostile encore indéterminé.",
+      "expected": "Même signal de détection neutre, sans identité révélée.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-05",
+      "area": "Classement",
+      "given": "Phrase hostile en file puis classement neutre reçu.",
+      "expected": "Phrase mise à jour ou supprimée avant lecture, sous-titre cohérent.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-06",
+      "area": "Crise",
+      "given": "Ouverture, mise à jour puis chargement de la même crise.",
+      "expected": "Signal initial unique, pas de répétition par rendu ni par image.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-07",
+      "area": "Pause",
+      "given": "Fenêtre de crise met la simulation en pause.",
+      "expected": "Signal de présentation permis ; nouveaux pings physiques et compteurs arrêtés.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-08",
+      "area": "Accélération",
+      "given": "Même partie en vitesse normale puis accélérée.",
+      "expected": "Voix non accélérées ; densité bornée sans changer le monde.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-09",
+      "area": "Onglet",
+      "given": "Retour après une période masquée.",
+      "expected": "Reprise douce sans lecture de toute l’ancienne file.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-10",
+      "area": "Sauvegarde",
+      "given": "Chargement au milieu d’un engagement connu.",
+      "expected": "Ambiance restaurée, pas de nouveaux tirs ni de notifications rejouées.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-11",
+      "area": "Hasard",
+      "given": "Même graine avec son complet et silence.",
+      "expected": "Mêmes détections, crises, trajectoires, stocks et dégâts.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-12",
+      "area": "Projectile",
+      "given": "Départ adverse non observé et impact non confirmé.",
+      "expected": "Aucun son ou message de résultat provenant de la vérité cachée.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-13",
+      "area": "Voix",
+      "given": "Plusieurs messages arrivant ensemble.",
+      "expected": "Une voix à la fois, alertes prioritaires et messages périmés retirés.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-14",
+      "area": "Accessibilité",
+      "given": "Silence, mono ou voix coupées.",
+      "expected": "Toutes les informations restent présentes à l’écran.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-15",
+      "area": "Exemple",
+      "given": "Écouter un exemple dans les réglages.",
+      "expected": "Aucun ping, projectile, score, stock ou événement métier créé.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-16",
+      "area": "Fichier absent",
+      "given": "Un WAV ne charge pas ou ne se décode pas.",
+      "expected": "Repli propre et gameplay fonctionnel.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-17",
+      "area": "Ressources",
+      "given": "Session longue et changements de mission.",
+      "expected": "Nombre de nœuds et boucles borné, aucune ambiance doublée.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-18",
+      "area": "Confort",
+      "given": "Écoute humaine au casque, sur haut-parleurs et téléphone.",
+      "expected": "Clarté et fatigue évaluées ; ajustements documentés, sans validation déduite des seules mesures.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-COMBINED-01",
+      "area": "integration_combined_pack",
+      "given": "Réception d’ordre avec anciennes et nouvelles routes branchées.",
+      "expected": "Une seule signature et une seule voix pour la même phase ; le vrai tir reste un événement distinct.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-COMBINED-02",
+      "area": "integration_combined_pack",
+      "given": "Réponse de sélection en file lorsqu’une crise critique est connue.",
+      "expected": "La crise est prioritaire, la sélection périmée est retirée et une seule voix parle.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-COMBINED-03",
+      "area": "integration_combined_pack",
+      "given": "Profil avec voix anglaise, interface et sous-titres français.",
+      "expected": "Anglais seulement sur choix explicite, sous-titre traduit de la même entrée ; aucun remplacement silencieux.",
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "AUDIO-COMBINED-04",
+      "area": "integration_combined_pack",
+      "given": "Chargement du pack fusionné depuis son dossier final.",
+      "expected": "Les 170 fichiers, scripts, profils et références utilisent les chemins du catalogue commun sans collision.",
+      "status": "specified_not_executed"
+    }
+  ],
+  "runtimeCasesExecutedHere": 0
+}

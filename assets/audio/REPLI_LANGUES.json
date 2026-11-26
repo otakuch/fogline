@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "integration_policy_not_live_game",
+  "default": "follow_game_language",
+  "recordedLanguages": [
+    "en"
+  ],
+  "frenchAudioFilesPresent": false,
+  "frenchTextsPresent": true,
+  "fallbackOrder": [
+    "exact_language_file",
+    "optional_available_device_voice",
+    "nonverbal_signature_plus_subtitle"
+  ],
+  "crossLanguageVoiceOnlyByExplicitPlayerChoice": true,
+  "subtitleLanguageMayFollowGameSeparately": true,
+  "noForcedEnglishFallbackForFrench": true,
+  "deviceSpeechFailureBlocksGame": false,
+  "selectionDebounceRealMs": 120,
+  "sameUnitSelectionCooldownRealSeconds": 5,
+  "globalSelectionCooldownRealSeconds": 0.7,
+  "maximumSpeechQueue": 2,
+  "maximumConcurrentSpeech": 1,
+  "orderMessageLifetimeRealSeconds": 5,
+  "runtimeIntegrationVerified": false
+}

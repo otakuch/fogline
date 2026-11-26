@@ -17,7 +17,8 @@ s = rd('src.html')
 th = rd('th/theatres.json')
 for k in json.loads(th):
     if os.path.exists(os.path.join(d, f'th/{k}.jpg')): th = th.replace(f'__THIMG_{k}__', b64(f'th/{k}.jpg'))
-R = [('__NAVALJS__', rd('naval-alloc.js')), ('__NAVAL__', rd('naval-catalogue.json')), ('__MILSYMBOL__', rd('milsymbol.js')),
+# v56 : modules de la page (son, vue rapprochée 3D), insérés tels quels dans le script principal
+R = [('/*__AUDJS__*/', rd('audio.js').replace('__AUDLIB__', rd('audio-lib.json'))), ('/*__V3DJS__*/', rd('vue3d.js')), ('__NAVALJS__', rd('naval-alloc.js')), ('__NAVAL__', rd('naval-catalogue.json')), ('__MILSYMBOL__', rd('milsymbol.js')),
      ('__MAPLIBRE__', rd('vendor/maplibre-gl.js').replace('</script', '<\\/script')),
      ('__THREE__', three_quiet(rd('vendor/three.min.js')).replace('</script', '<\\/script')),
      ('__IMG__', b64('../maps/theatre.jpg')), ('__MASK__', rd('mask.rle')), ('__GEO__', rd('geo.json')),
@@ -29,7 +30,7 @@ for k, v in R:
 for k, v in R:
     s = s.replace(k, v, 1)
 open(os.path.join(d, 'seuil-prototype.html'), 'w', encoding='utf-8').write(s)
-open(os.path.join(d, 't.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><script>/* page de test : la fenêtre de crise (v51) est coupée par défaut, uiv51.js la rallume ; les contacts sous-marins gardent leur zone de départ, que le jeu ne trace plus (v55) : uiv55.js et playGame la retirent */window.__noCW=1;window.__subZone=1</script>' + s)
+open(os.path.join(d, 't.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><script>/* page de test : la fenêtre de crise (v51) est coupée par défaut, uiv51.js la rallume ; les contacts sous-marins gardent leur zone de départ, que le jeu ne trace plus (v55) : uiv55.js et playGame la retirent */window.__noCW=1;window.__subZone=1;/* v56 : la vue rapprochée 3D est coupée pour les anciens tests, uiv56.js la rallume */window.__noV3D=1</script>' + s)
 open(os.path.join(d, '../index.html'), 'w', encoding='utf-8').write('<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">' + s)
 print(len(s))
 

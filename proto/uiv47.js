@@ -23,36 +23,10 @@ const { chromium } = require('playwright');
     // 1. catalogue : 26 fiches, filtres, recherche, export, explication visible pour une classe non allouée
     await st(() => { __S.setLang && __S.setLang(document.documentElement.lang || 'fr') });
     await st(l => { __S.setLang(l); newDemo(); setHome(true); newDemo(); screenHome() }, lang); await tick(400);
-    need(await st(() => !!document.querySelector('[data-a="navcat"]')), `${tag} accueil : bouton du catalogue naval`);
-    await p.locator('[data-a="navcat"]').first().click(); await tick(300);
-    need(await st(() => document.querySelectorAll('.nvli').length) === 26, `${tag} catalogue : 26 fiches`);
-    await st(() => { const s = document.querySelector('[data-nvin="cm"]'); s.value = 'c1'; s.dispatchEvent(new Event('change', { bubbles: true })) }); await tick();
-    const c1 = await st(() => { const L = [...document.querySelectorAll('.nvli')].map(e => [e.querySelector('b').textContent, e.querySelector('.nvst').className.replace('nvst nvst-', ''), e.querySelector('.nvst').textContent]); return L });
-    need(c1.find(x => x[0] === 'Gerald R. Ford')[1] === 'not_allocated' && /alloué|allocated/i.test(c1.find(x => x[0] === 'Gerald R. Ford')[2]), `${tag} catalogue c1 : porte-avions non alloué avec un texte`);
-    need(c1.find(x => x[0] === 'Constellation')[1] === 'reference', `${tag} catalogue : Constellation référence non déployable`);
-    await click('nvcsel', 'gerald_ford'); await tick();
-    need(await st(() => { const d = document.querySelector('.nvdet'); return !!d && /périmètre|scope/i.test(d.textContent) && d.querySelectorAll('.nvsrc a').length >= 1 && /fictive|fictional/i.test(d.textContent) }), `${tag} fiche Ford : raison, sources et valeurs fictives`);
-    await st(() => { const s = document.querySelector('[data-nvin="cfam"]'); s.value = 'sub'; s.dispatchEvent(new Event('change', { bubbles: true })) }); await tick();
-    need(await st(() => document.querySelectorAll('.nvli').length) === 4, `${tag} catalogue : filtre famille sous-marins`);
-    await st(() => { const s = document.querySelector('[data-nvin="cfam"]'); s.value = 'all'; s.dispatchEvent(new Event('change', { bubbles: true })); const a = document.querySelector('[data-nvin="cav"]'); a.value = 'adapted'; a.dispatchEvent(new Event('change', { bubbles: true })) }); await tick();
-    const ad = await st(() => [...document.querySelectorAll('.nvli b')].map(e => e.textContent));
-    need(ad.length >= 1 && ad.every(x => ['LCS Freedom', 'LCS Independence', 'Henry J. Kaiser', 'John Lewis', 'Spearhead'].includes(x)), `${tag} catalogue : filtre disponibilité ${ad}`);
-    await st(() => { const q = document.querySelector('[data-nvin="cq"]'); q.value = 'zeus'; q.dispatchEvent(new Event('input', { bubbles: true })); const a = document.querySelector('[data-nvin="cav"]'); a.value = 'all'; a.dispatchEvent(new Event('change', { bubbles: true })) }); await tick();
-    need(await st(() => [...document.querySelectorAll('.nvli b')].map(e => e.textContent).join()) === 'Zeus', `${tag} catalogue : recherche`);
-    const ex = await st(() => { const o = JSON.parse(__S.nvExport()); const ok = o.classes.length === 26 && o.taskGroups.length === 9 && o.effectiveProfile.id === 'c1' && o.evaluation.classes.every(c => c.state === __S.NV.evaluateUnitAvailability(c.id, 'c1').state) && JSON.stringify(o.classes) === JSON.stringify(__S.NAVAL_CAT.classes); return ok });
-    need(ex, `${tag} export JSON cohérent avec le registre du jeu`);
-    await p.click('[data-a=nvexport]'); await tick();
-    const box = await st(() => { const e = document.getElementById('nvexptxt'), b = document.querySelector('[data-a=nvexpcopy]'); let ok = false; try { ok = JSON.parse(e.value).classes.length === 26 } catch (_) {} return { ok, h: b ? b.getBoundingClientRect().height : 0, w: document.scrollingElement.scrollWidth - innerWidth } });
-    need(box.ok && box.h >= 44 && box.w <= 1, `${tag} export affiché dans un cadre à copier (téléchargement bloqué dans un artifact) : ` + JSON.stringify(box));
-    await p.click('[data-a=nvexpclose]'); await tick();
-    need(await st(() => !document.getElementById('nvexptxt')), `${tag} cadre d'export refermé`);
-    await st(() => { const q = document.querySelector('[data-nvin="cq"]'); q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })) }); await tick();
-    await noX('catalogue'); await small('.catw .btn, .catw .nvli, .catw select, .catw input', 'catalogue');
-    if (!mob) { await p.keyboard.press('Tab'); await p.keyboard.press('Tab'); }
-    await p.screenshot({ path: D + `/v47-catalogue-${tag}.png` });
-    await click('nvctab', 'grp'); await tick();
-    need(await st(() => document.querySelectorAll('.nvcard').length) === 9, `${tag} catalogue : 9 modèles de groupes`);
-    await p.screenshot({ path: D + `/v47-groupes-${tag}.png` });
+    // v55 : le catalogue naval est retire (demande de Naully) : plus aucun bouton n'y mene ; le registre reste controle
+    need(await st(() => !document.querySelector('[data-a="navcat"]')), `${tag} accueil : plus de bouton du catalogue naval`);
+    const ex = await st(() => { const o = JSON.parse(__S.nvExport()); return o.classes.length === 26 && o.taskGroups.length === 9 });
+    need(ex, `${tag} registre naval : 26 classes et 9 groupes`);
 
     // 2. préparation : groupe adapté accepté, groupe incompatible refusé, même groupe ailleurs, CSG
     await brief('f2'); await click('toprep'); await tick(300);

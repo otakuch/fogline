@@ -5,7 +5,7 @@ const N = +(process.argv[2] || 4);
 (async () => {
   const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1440, height: 860 } }), errs = [];
   p.on('pageerror', e => errs.push(e.message + ' @ ' + (e.stack || '').split('\n')[1]));
-  await p.goto('file://' + __dirname + '/seuil-prototype.html'); await p.evaluate(() => { window.__noCW = 1 }); await p.addScriptTag({ path: __dirname + '/bots.js' }); await p.addScriptTag({ content: 'window.__setS=(o,c,si,f)=>{S=o;CABLES=c;SITES=si;CFG=f};window.__getS=()=>[S,CABLES,SITES,CFG];' }); await p.waitForTimeout(300);
+  await p.goto('file://' + __dirname + '/seuil-prototype.html'); await p.evaluate(() => { window.__noCW = 1; window.__subZone = 1 }); await p.addScriptTag({ path: __dirname + '/bots.js' }); await p.addScriptTag({ content: 'window.__setS=(o,c,si,f)=>{S=o;CABLES=c;SITES=si;CFG=f};window.__getS=()=>[S,CABLES,SITES,CFG];' }); await p.waitForTimeout(300);
   const A_ = process.env.SKIPA ? { R: [], missing: [] } : await p.evaluate(() => {
     const A = __S, R = [], ok = (c, m, d) => R.push([!!c, m, c ? '' : JSON.stringify(d === undefined ? '' : d).slice(0, 300)]);
     const run = s => { let n = Math.round(s * 10); while (n-- > 0 && !A.s.over) A.step(.1) };
@@ -176,7 +176,7 @@ const N = +(process.argv[2] || 4);
   console.log('== partie A :', A_.R.length, 'contrôles,', fail, 'échec(s) ; textes manquants', JSON.stringify(A_.missing));
   // ---------- partie B : parties complètes, script de référence + ordres navals au hasard
   const B_ = await p.evaluate(N => {
-    const A = __S, bad = {}, note = (k, sc, d) => { const o = bad[k] = bad[k] || { n: 0, sc: {}, d }; o.n++; o.sc[sc] = 1 };
+    window.__subZone = 0; const A = __S, bad = {}, note = (k, sc, d) => { const o = bad[k] = bad[k] || { n: 0, sc: {}, d }; o.n++; o.sc[sc] = 1 };
     const VA = ['aboard', 'deploying', 'deployed', 'returning', 'recovering', 'lost'], VT = ['aboard', 'embarked', 'deploying', 'deployed', 'recovering', 'lost'], OUT = ['deploying', 'deployed', 'returning', 'recovering'];
     let rnd = 1; const rr = () => (rnd = (rnd * 16807) % 2147483647) / 2147483647, pick = L => L[Math.floor(rr() * L.length)];
     let lastLog = 0, lastT = 0, svN = 0; const clicks = {}, noEff = {};

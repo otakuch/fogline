@@ -27,6 +27,15 @@ window.mkBot = (o = {}) => (S) => {
     const acts = A.crisisActions(c), act = id => acts.find(a => a.id === id);
     if (o.safe) { if (act('dismiss')) { if (!c.cls) A.classify(c, 'bio'); A.doAct(act('dismiss')); } continue; }
     if (o.oracle && c.truth !== 'sousmarin') { if (!c.cls) A.classify(c, c.truth); if (act('dismiss')) A.doAct(act('dismiss')); continue; }
+    if (c.found === false) { /* v55 : aucune zone de départ. Le script fouille autour de ce que l'alerte désigne, avec les mêmes ordres que le joueur ; l'omniscient va droit au contact. */
+      let h = o.oracle ? { x: c.sb.x, y: c.sb.y } : A.subPub(c); if (!h) continue;
+      if (!o.oracle && c.hint.k === 'convoy' && S.convoy && S.convoy.path && S.convoy.path.length) { let left = 185, a = { x: S.convoy.x, y: S.convoy.y }; for (const w of S.convoy.path) { const d = dist(a, w); if (d >= left) { a = { x: a.x + (w.x - a.x) * left / d, y: a.y + (w.y - a.y) * left / d }; left = 0; break } left -= d; a = w } h = a }
+      for (const u of S.units.filter(u => (u.type === 'recon' || u.type === 'helo') && A.usable(u) && !u.rtb && !u.task && (u.buoys || 0) >= 3 && !(u.ready > S.t) && !(u.dep > S.t))) { if (S.t - (u._bT || -99) < 22) continue; const k = c._bk = (c._bk || 0) + 1, an = k * 2.4, rr = k === 1 || o.oracle ? 0 : 40 + 22 * ((k - 2) % 3); if (A.buoyOrder(u, h.x + Math.cos(an) * rr, h.y + Math.sin(an) * rr, { pat: 'tri', mode: 'a', dep: k % 2 ? 's' : 'd' })) u._bT = S.t; }
+      S.units.filter(u => A.UT[u.type].naval && A.usable(u) && A.sonR(u) >= 40 && !u.pressing && !u.escort && !u.board && !u.assist).forEach((u, i) => { if (!u.path.length && dist(u, h) > 55) { const an = i * 3.1 + 1; A.orderMove(u, h.x + Math.cos(an) * 30, h.y + Math.sin(an) * 30) } });
+      const ls = act('ssn'); if (ls && ls.ok) A.doAct(ls);
+      const pg = acts.find(a => a.id.startsWith('ping:') && a.ok && S.units.some(u => u.id === a.unit && A.UT[u.type].naval && dist(u, h) < 70)); if (pg) A.doAct(pg);
+      continue;
+    }
     if (!S.buoys.length && act('buoy') && act('buoy').ok && !S.units.some(u => u.task && u.task.kind === 'buoy')) A.doAct(act('buoy'));
     else if (act('dip') && act('dip').ok && !S.buoys.length) A.doAct(act('dip'));
     else if (!S.buoys.length && !c.located) { const pg = acts.find(a => a.id.startsWith('ping:') && a.ok); if (pg) A.doAct(pg); }
@@ -109,7 +118,7 @@ window.mkBot = (o = {}) => (S) => {
   if (e && !e.path.length) { const c = [...A.assets].sort((a, b) => a.hp - b.hp)[0]; if (c.hp < 85) { const q = c.pts ? nearestOn(c, e) : c; /* v46 : point du câble le plus proche du câblier */ if (dist(e, q) > 30) A.orderMove(e, q.x, q.y); } }
 };
 window.playGame = (seed, sc, cfg, pol, chk) => {
-  window.__noEsc = !cfg.esc; const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null, real: !!(cfg.real || window.__REAL), fleet: cfg.fleet || null, novar: !!cfg.novar }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
+  window.__noEsc = !cfg.esc; window.__subZone = cfg.subzone ? 1 : 0; /* v55 : les scripts jouent le jeu réel, sans zone de départ */ const A = window.__S; A.newGame(seed, { sc, deck: cfg.deck || A.SC[sc].rec, contested: !!cfg.contested, ideal: !!cfg.ideal, guided: cfg.guided !== undefined ? !!cfg.guided : !!window.__GUIDED, timer: cfg.timer || window.__TIMER, qx: cfg.qx || null, real: !!(cfg.real || window.__REAL), fleet: cfg.fleet || null, novar: !!cfg.novar }); A.startJams(); if (cfg.evade === false) A.s.evade = false; if (cfg.wstate) A.s.wstate = cfg.wstate;
   const S = A.s; S.running = false; let i = 0;
   for (; i < 16000 && !S.over; i++) { A.step(.1); if (i % (window.BOTCAD || 50) === 0 && pol) pol(S); if (i % 10 === 0 && chk) chk(S, sc); }
   const r = A.score();

@@ -9467,8 +9467,8 @@
     "en": "Deep-water hunt"
    },
    "desc": {
-    "fr": "Un convoi traverse le passage entre l’Islande et l’Écosse. Un sous-marin l’attend peut-être ; plusieurs échos n’en sont pas.",
-    "en": "A convoy crosses the gap between Iceland and Scotland. A submarine may be waiting for it; several echoes are nothing of the kind."
+    "fr": "Un convoi traverse le passage entre l’Islande et l’Écosse. Un sous-marin le guette sur sa route ; d’autres échos n’en sont pas.",
+    "en": "A convoy crosses the gap between Iceland and Scotland. A submarine is lying in wait on its route; other echoes are nothing of the kind."
    },
    "brief": {
     "fr": "Le convoi appareille de Reykjavik au tour 5. Le plan suppose que vos deux avions de patrouille tiennent l’air, que les bouées couvrent la route et que le destroyer garde son hélicoptère.",
@@ -9582,12 +9582,13 @@
    "script": [
     [
      3,
-     "sub"
+     "sub",
+     "sousmarin"
     ],
     [
      7,
      "sub",
-     null,
+     "faux",
      {
       "g": "sub"
      }

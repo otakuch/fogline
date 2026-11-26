@@ -64,6 +64,8 @@ seuil-projet/
     ├── uiv48.js            version 48 : présomption automatique, relèvements et recoupement, scénarios variables (41 contrôles, FR 1440 et EN 390)
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
+    ├── uiv55.js            version 55 : contact sans zone de départ, portée du sonar, suivi à distance, catalogue et jetons absents (48 contrôles, FR 1440 et EN 390)
+    ├── uiv54.js            version 54 : chasse sous-marine (ordre de chasse, écho dès le premier contact, sous-marin en attente, faux échos ; 48 contrôles, FR 1440 et EN 390)
     ├── uiv53.js            version 53 : options hors du score et des contrôles, actions sans plafond ni attente ni emplois comptés (20 contrôles, FR 1440 et EN 390)
     ├── uiv52.js            version 52 : datum en distribution, observations, classement automatique, revue d'engagement, pings périodiques, suivi, projectiles, menu d'ordres (66 contrôles, FR 1440 et EN 390)
     ├── uiv51.js            version 51 : sans jetons, allure lente unique, force spéciale embarquée, fenêtre de crise, clic droit (49 contrôles, FR 1440 et EN 390)
@@ -1716,6 +1718,127 @@ Demande de Naully du 25 novembre 2026 : « supprime les scoring avec les options
 
 **Vidéo de présentation (25 novembre 2026, demande de Naully) :** `docs/video/fogline-presentation-en-v53.mp4`, 54,5 s, 1280 × 720, 30 images par seconde, en anglais, sans son. Titre, accueil, missions, briefing de « Deep-water hunt », puis un exemple de chasse sous-marine filmé dans le jeu (tirage 21) : ouverture de la crise, nuage de probabilité, trois bouées actives larguées par le P-8A, contact localisé et classé automatiquement, conditions d'engagement réunies. Aucun tir n'est montré. Les légendes sont ajoutées par le script ; l'état du jeu vient du moteur, sans l'aide de test `dtFocus`. Script : `tools/video/film.js` (`node film.js still` pour les images clés, `full` pour la vidéo).
 
+### 5.54 Chasse sous-marine retravaillée (version 54)
+
+Demande de Naully du 26 novembre 2026 : « retravaille le scénario lutte anti-sous-marine car le gameplay ne fonctionne pas, j'active les unités, le sous-marin ennemi n'apparaît pas ». Branche `v54-chasse`, à partir de `main` (version 53).
+
+**Constat, par un banc « joueur naïf » (`/home/claude/asw2/lab.js`, hors dépôt), version 53**
+
+- L'écho n'était affiché que si un capteur entendait le contact **et** que l'estimation était déjà concentrée à 80 % : même un script qui relançait tous les capteurs toutes les 5 s ne le voyait que 23 à 30 % du temps.
+- Tant que le convoi n'avait pas appareillé, le sous-marin prenait pour cible un **site à terre** et s'éloignait de l'estimation à 4 à 7 unités par seconde : la zone affichée ne le contenait plus après une trentaine de secondes.
+- Une recherche sans résultat faisait fuir la probabilité hors de la fenêtre du datum (`out` jusqu'à 1) : l'estimation ne voulait alors plus rien dire.
+- Les bouées du dossier étaient toutes posées à 27 m, alors que le sous-marin se tient souvent sous la couche.
+- Au niveau Simple (défaut), la fiche d'une unité n'offrait aucune action de lutte sous-marine.
+- Un faux écho laissé sans réponse était une crise perdue, avec pénalités.
+
+**Ordre de chasse (`seekUnits`, `seekSet`, `seekStep`, `u.seek`, actions `seekall` et `seek:<unité>`)**
+
+- **« Lancer la chasse »**, première action du dossier d'un contact sous-marin, à tous les niveaux (au niveau Simple, c'est le bouton de vérification, avec son libellé propre) : toutes les unités libres dotées de bouées ou d'un sonar rejoignent l'estimation et emploient seules leur capteur ; si aucun hélicoptère n'est en vol, le bâtiment le plus proche en lance un. Si toutes chassent déjà un autre contact, la moitié la plus proche est réaffectée.
+- **Par unité**, dans sa fiche (section « Lutte sous-marine », aussi au niveau Simple) et dans le menu d'ordres : chasser tel contact, ou arrêter.
+- Comportement, réévalué toutes les 2 s, seulement tant que **personne n'entend** le contact (8 s de silence) : avion ou hélicoptère avec bouées, un triangle toutes les 26 s, une fois sur deux décalé du centre (jusqu'à 90), immersions alternées de part et d'autre de la couche ; hélicoptère, sonar trempé ; destroyer et sous-marin, approche à 30 de l'estimation puis sonar actif ; sous-marin, écoute.
+- Un ordre de route arrête la chasse de l'unité. Gratuit. Les sonars actifs alertent toujours le sous-marin : la chasse est l'outil simple, pas le plus discret. Pas au tutoriel.
+- Les ordres passent par `crisisActions` ; rien ne lit la position vraie.
+
+**Écho sur la carte**
+
+- Il apparaît **dès qu'un capteur entend** le contact, à la position estimée (`c.zone`), jamais à la position vraie.
+- Il reste ensuite : après 10 s de silence, il est estompé et daté (« Écho K2 · il y a 40 s »).
+- Les anciens symboles suivent la même règle (ils dessinaient la position vraie).
+
+**Sous-marin**
+
+- **Cible d'attente (`subWait`, `subSpawn`) :** tant que le convoi n'a pas appareillé, il guette sur sa route (zone de patrouille de la mission, sinon le début du trajet) au lieu de viser un site ; il naît à 35 à 80 de ce poste. Convoi en route : il naît 150 à 220 devant lui, sur son trajet.
+- **Allures (`ASW.vQ` 2, `vF` 4, `vT` 5,5 ; avant 4 et 7) :** discret 2, rapide 4 (× 1,2 s'il est alerté), transit 5,5 quand il est à plus de 170 d'un convoi et que personne ne l'entend. En attente : toujours 2.
+- **Nature imposable par le scénario :** `[tour, 'sub', 'sousmarin']` ou `'faux'` (banc de poissons 65 %, épave 35 %). Dans une mission qui prévoit un vrai sous-marin, le premier contact est celui-là (`S.subReal`), même s'il vient du directeur.
+
+**Estimation (datum)**
+
+- Départ plus net : centre à 45 au plus de la position vraie sur chaque axe (90 avant), écart type 50 (70 avant) ; rayon affiché d'environ 120 (158 avant).
+- Étalement accordé aux nouvelles allures (`dtSpd`, facteur 0,34 au lieu de 0,5).
+- Une recherche sans résultat redistribue la probabilité **dans** la fenêtre : la part « hors fenêtre » ne grossit plus que par les bords (`dtFuse`).
+
+**Issues**
+
+- Faux écho arrivé à échéance (180 s, 110 avant) : 0,6 s'il a été entendu ou classé, 0,4 « non éclairci » sinon ; plus de pénalité ni de passage par `failCrisis`.
+- Vrai sous-marin, convoi arrivé : 0,7 s'il a été entendu au moins une fois, 0,4 sinon.
+
+**Mission `asw` :** premier contact (tour 3) vrai sous-marin, deuxième faux, les suivants tirés comme avant ; description mise à jour. Le dossier explique la chasse en tête de « Comment chasser un sous-marin ». Le conseil propose la chasse tant que rien n'est entendu.
+
+**Tests :** `uiv54.js`, 48 contrôles (FR 1440, EN 390) : parcours réel au niveau Simple jusqu'au bouton, un clic engage plusieurs unités, contact entendu, écho affiché aussitôt et placé sur l'estimation, écho estompé et daté, ordre de route, fiche d'unité, faux écho, scénario, convoi attaqué sans ordre. `uiv50.js` adapté (perte de piste plus tardive).
+
+**Mesures du 26 novembre 2026, scripts seulement**
+
+| Joueur qui clique une fois « Lancer la chasse » par contact, 20 parties, niveau Simple | Version 54 |
+|---|---|
+| Vrais sous-marins entendus | 40 sur 42, médiane 24 s |
+| Écho d'un vrai sous-marin visible | 81 % du temps |
+| Faux échos entendus | 39 sur 39, médiane 10 s |
+| Convoi sans autre décision | 5 perdus sur 20 ; les autres arrivent avec 27 à 75 % |
+
+Repère en version 53, script qui relance tous les capteurs du dossier toutes les 5 s (10 parties) : 20 vrais sous-marins entendus sur 24, écho visible 23 % du temps.
+
+| `asw`, 20 tirages, V53 → V54 | Référence | Prudent | Omniscient | Aucun ordre |
+|---|---|---|---|---|
+| Missions réussies | 14 → 19 | 9 → 2 | 20 → 20 | 0 → 0 |
+
+- **La référence gagne 19 fois sur 20 :** la chasse est devenue trop facile pour le script, qui presse le sous-marin dès qu'il est localisé. Rien n'a été durci (décision 136).
+- Sans ordre : convoi à 47 % en moyenne, mission jamais réussie. `hc` et `f2` ne bougent pas.
+- Banc et autres tests : voir section 8.
+
+**Non vérifié :** aucun vrai joueur. Le « joueur naïf » est un script : il dit que l'écho apparaît quand on clique, pas que la chasse se comprend ni qu'elle est intéressante. Les crises sous-marines des scénarios hors catalogue suivent les mêmes règles et n'ont été vues que par le banc. Le dossier de conception, le manuel et la vidéo de présentation ne sont pas mis à jour.
+
+### 5.55 Sans zone de départ, portée du sonar, suivi à distance, catalogue retiré (version 55)
+
+Demande de Naully du 26 novembre 2026 : « Supprime le compteur token. Retravaille aussi la mécanique pour les sous-marins en indiquant la portée du sonar ; quand un sous-marin poursuit un contact il reste à distance, avec un mode suivi de cible (possibilité d'annuler). Supprime le catalogue d'unités. Supprime le cercle de départ, le joueur doit trouver la zone de recherche par lui-même. » Branche `v55-recherche`, à partir de `v54-chasse`.
+
+**Compteur de jetons :** il n'existe plus depuis la version 51. Le site public servait encore la version 48 (publication GitHub Pages du 25 novembre en échec) : c'est là qu'il était visible. La publication a été relancée le 26 novembre par un commit vide sur `main` ; le site sert la version 53. Dernière mention écrite retirée (`how.2`).
+
+**Catalogue naval retiré :** plus de bouton à l'accueil, au briefing ni à la préparation ; le bouton « Fiche » de la préparation disparaît aussi. `screenCat` reste dans le code, sans accès (actions `navcat` et `nvfiche` neutralisées). La préparation de la flotte et l'ordre de bataille restent.
+
+**Contact sous-marin sans zone de départ (`hid`, `c.found`, `c.hint`, `hintName`, `subPub`, `subFound`)**
+
+- À l'ouverture, rien n'est tracé : ni nuage, ni cercle, ni écho. Le contact ne se clique pas sur la carte, les vues d'ensemble, tactique et 3D ne le situent pas, « Rallier les crises » l'ignore.
+- L'alerte nomme seulement ce que le contact menace (`c.hint`) : la route du convoi (zone de patrouille), la route devant le convoi, un câble ou un site. « Voir sur la carte » centre sur cet objet.
+- Le joueur cherche lui-même : déplacement d'un sous-marin ou d'un bâtiment (écoute passive), sonar actif par unité, bouées larguées depuis la fiche d'un avion ou d'un hélicoptère. Ces ordres par unité sont ouverts au niveau Simple.
+- Refusés avec leur motif tant que rien n'est entendu : « Lancer la chasse », la chasse par unité, les bouées et le sonar héliporté du dossier (ils enverraient l'unité sur la position cachée), le suivi.
+- **Premier écho** (un capteur entend, ou le sous-marin attaque) : message au journal, l'estimation apparaît (nuage, écho), la chasse et le suivi deviennent possibles.
+- L'estimation interne existe dès l'ouverture mais n'est jamais montrée ni employée par une action avant le premier écho. Le conseil ne propose rien pour un contact caché.
+- En attente, le sous-marin s'arrête à 35 à 70 du point de guet (`sb.wr`), au lieu de s'y poser.
+- Pas au tutoriel. Option de test : `CFG.subzone` ou `window.__subZone` gardent la zone de départ ; `build.py` la pose dans `t.html` pour les anciens contrôles, `playGame` (`bots.js`) et `uiv55.js` la retirent.
+
+**Portée du sonar (`sonR`, `pingR`)**
+
+- Une seule fonction donne la portée d'écoute au moteur, à la carte et à la fiche : sous-marin 60, destroyer 48, autres bâtiments 14 (34 en silence radar), multipliée par le bruit propre en règles réalistes.
+- Carte : cercle vert continu pour l'écoute, pointillé ambre pour le sonar actif, avec la portée en milles. Toujours tracé pour un sous-marin ; pour les autres bâtiments et l'hélicoptère, quand l'unité est sélectionnée ou que la couche Capteurs est allumée.
+- Fiche, section « Lutte sous-marine » : « Écoute passive ≈ 100 milles (cercle vert) », sonar actif et sa portée.
+- La portée affichée est la portée nominale : la couche et l'allure du contact la réduisent, sans que le cercle le montre.
+
+**Suivi de cible à distance (`followSet`, `standOff`, `ASW.fol` 32, `folIn` 22, `folOut` 40, action `follow:<unité>`)**
+
+- Sous-marins alliés, à tous les niveaux, dès qu'un contact a été entendu : « Suivre le contact K à distance (≈ 55 milles) ». Le même bouton devient « Annuler le suivi » ; un ordre de route l'annule aussi ; la clôture du contact y met fin.
+- Le sous-marin se tient entre 22 et 40 de l'estimation : il approche au-delà, s'écarte en deçà, écoute sans émettre. Contact muet depuis 10 s : il change d'immersion toutes les 25 s pour le chercher de l'autre côté de la couche.
+- La chasse (5.54) d'un sous-marin garde la même distance, au lieu d'approcher à 30.
+- Carte : trait tireté du sous-marin à l'estimation, cercle de distance quand il est sélectionné. État « Suit le contact K à ≈ 55 milles ».
+- Il suit l'estimation, pas la position vraie : quand l'estimation saute d'un lobe à l'autre, il met quelques secondes à reprendre sa distance.
+
+**Scripts :** `bots.js` joue le jeu réel. Contact caché : il fouille autour de l'objet désigné avec les ordres du joueur (bouées par `buoyOrder`, déplacement des bâtiments à sonar, écoute, sonar actif) ; l'omniscient va droit au contact.
+
+**Tests :** `uiv55.js`, 48 contrôles (FR 1440, EN 390). `uiv47.js` adapté (catalogue absent, 124 contrôles), `navlab.js` (zone de départ gardée pour les contrôles ciblés, retirée pour les parties).
+
+**Mesures du 26 novembre 2026, scripts seulement, niveau Complet, jeu réel (sans zone de départ)**
+
+| `asw`, 20 tirages | V53 | V54 | V55 |
+|---|---|---|---|
+| Référence | 14 | 19 | 17 |
+| Prudent | 9 | 2 | 1 |
+| Omniscient | 20 | 20 | 20 |
+| Aucun ordre | 0 | 0 | 0 |
+
+- La référence largue 26 bouées par partie (11 en version 54) : elle fouille davantage. Les huit autres missions ne bougent pas (référence 146 sur 180 au total).
+- Banc et autres tests : voir section 8.
+
+**Non vérifié :** aucun vrai joueur. Rien ne dit si l'indice de l'alerte suffit à un débutant pour chercher, ni si la recherche à la main est intéressante ou seulement longue. Le script fouille avec méthode autour de l'objet désigné ; un joueur n'a pas cette aide. Le cercle de sonar ne montre pas l'effet de la couche. Les avertissements du renseignement sur un sous-marin gardent leur texte. Le dossier de conception, le manuel, les captures et la vidéo ne sont pas mis à jour.
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1740,6 +1863,8 @@ Demande de Naully du 25 novembre 2026 : « supprime les scoring avec les options
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 55 | `hid`, `c.found`, `c.hint`, `hintName`, `subPub`, `subFound`, `sonR`, `followSet`, `standOff`, `ASW.fol`, `ASW.folIn`, `ASW.folOut`, `sb.wr`, `CFG.subzone`, `window.__subZone` ; catalogue (`screenCat`) sans accès |
+| Version 54 | `seekUnits`, `seekSet`, `seekStep`, `u.seek`, `c.seekK`, `subWait`, `subSpawn`, `S.subReal`, `ASW.vQ`, `ASW.vF`, `ASW.vT`, `ASW.seekB`, `dtFuse` (recherche négative), `dtInit`, `dtSpd`, `fzItems` (écho daté), actions `seekall` et `seek:<unité>` |
 | Version 53 | `FREE_N`, `anaCap` et `anaFull` neutralisés, `coord`, `comm`, `score` (axe O retiré), `newTurn` (contrôle de phase), `opordHtml`, `useEnd` ; `spendSortie`, `useTeam`, `newTurn`, `coordWait`, `commWait` exposés aux tests |
 | Version 52 | `TUNE`, `DT`, `dtG`, `dtInit`, `dtSpd`, `dtPredict`, `dtFuse`, `dtBands`, `dtLook`, `dtFlash`, `dtSee`, `dtShift`, `dtCover`, `dtSum`, `dtMiss`, `dtFocus` (aide de test), `dtDeliver`, `dtAff`, `dtAge`, `dtQ`, `dtReview`, `dtWhy`, `dtApp`, `dtFuel`, `dtDraw`, `dtHtml`, `clsAuto`, `aswUStep`, `unitCmds`, `ctxShow`, `ctxKey`, `ctxDo`, `projList`, `projHtml`, `LAY.proj`, `c.dt`, `c.cov`, `c.trkSt`, `u.pingAuto`, `u.follow`, `S.autoAna` ; `LONG`, `_vk` dans `gen_db.py` ; `tools/bases/merge_asw.py` ; `docs/v52/` |
 | Version 51 | `ordN`, `anaCap`, `anaFull`, `coordWait`, `commWait`, `cgcSlow`, `SLOW`, `NOISE1`, `SOF_R`, `sofWar`, `sofInit`, `sofHost`, `sofWhy`, `sofOut`, `sofStep`, `sofHtml`, `CW`, `CWART`, `CWSEV`, `cwSev`, `cwBase`, `cwOn`, `cwList`, `cwTick`, `cwRender`, `cwClose`, `#cw` ; `tools/crises/optimise.py` ; `assets/crises/` |
@@ -1845,6 +1970,8 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv55.js                                      # version 55 : sans zone de départ, portée du sonar, suivi à distance, catalogue retiré
+node uiv54.js                                      # version 54 : chasse sous-marine retravaillée
 node uiv53.js                                      # version 53 : options hors du score, actions sans limite d'emploi
 node uiv52.js                                      # version 52 : datum, observations, classement automatique, revue d'engagement, pings, suivi, projectiles, menu d'ordres
 node uiv51.js                                      # version 51 : sans jetons, allure unique, force spéciale embarquée, fenêtre de crise, clic droit
@@ -1874,6 +2001,10 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 26 novembre 2026, version 55 (sans zone de départ, portée du sonar, suivi à distance, catalogue retiré), niveau Complet, 2 parties par scénario, jeu réel :** référence 753 et 78 %, omniscient 827 et 95 %, tir sans vérifier 424 et 26 % avec 59 % de seuil 1, aucun ordre 257 et 1 %, aucune force 230 et 0 %. 616 parties finies et reproductibles. `asw`, 20 tirages : référence 17, omniscient 20, aucun ordre 0. Tests d'interface : `uiv55` (48), `uiv54`, `uiv53`, `uiv52`, `uiv51` et les 36 autres de la suite sans erreur ; `navlab.js 3` : 110 contrôles ciblés, 24 parties au hasard sans défaut ; 53 814 clics au hasard sans blocage ni texte manquant, sur la page de test, qui garde la zone de départ. Détail : section 5.55. Branche `v55-recherche`, fusionnée dans `main` le 26 novembre 2026 à la demande de Naully.
+
+**Résultats du 26 novembre 2026, version 54 (chasse sous-marine retravaillée), niveau Complet, 2 parties par scénario :** référence 750 et 77 %, omniscient 828 et 95 %, tir sans vérifier 425 et 26 % avec 59 % de seuil 1, aucun ordre 257 et 1 %, aucune force 230 et 0 %. 616 parties finies et reproductibles (signalement attendu : la crise du vrai sous-marin reste ouverte plus de 8 tours sur `asw` et `ic`, jusqu'à l'arrivée du convoi). `asw` : référence 19 sur 20. Tests d'interface : `uiv54` (48), `uiv53`, `uiv52`, `uiv51`, `uiv50` et les 35 autres de la suite sans erreur ; `navlab.js 3` : 110 contrôles ciblés, 24 parties au hasard sans défaut ; 53 814 clics au hasard sans blocage ni texte manquant. Détail : section 5.54. Branche `v54-chasse`, non fusionnée dans `main`.
 
 **Résultats du 25 novembre 2026, version 53 (options hors du score, actions sans limite), niveau Complet, 2 parties par scénario :** référence 754 et 78 %, omniscient 826 et 95 %, tir sans vérifier 422 et 25 % avec 59 % de seuil 1, aucun ordre 256 et 1 %, aucune force 229 et 0 %. 616 parties finies et reproductibles ; 53 814 clics au hasard sans blocage. La référence repasse au-dessus de la cible. Détail : section 5.53. Branche `v53-actions-libres`, non fusionnée dans `main`.
 
@@ -2252,6 +2383,28 @@ Une évolution est terminée si :
 133. **Difficulté :** la référence remonte à 78 % (79 % sur les neuf missions). Accepter, ou durcir ailleurs après des essais avec de vrais joueurs.
 134. **Rangée des moyens :** elle reste affichée dans l'ordre d'opération au niveau Complet, sans enjeu. La garder comme information, ou la retirer.
 135. **Poids du score :** les 20 % de l'axe retiré sont répartis sur les trois autres (44, 37 et 19 %). Garder cette répartition, ou en choisir une autre.
+
+### Décisions ouvertes de la version 54
+
+136. **Chasse trop facile pour le script :** la référence réussit `asw` 19 fois sur 20. Durcir (sous-marin plus rapide, pression plus longue, bouées plus rares) après des essais avec de vrais joueurs, ou accepter.
+137. **Chasse automatique :** un clic engage toutes les unités libres, qui emploient seules leurs capteurs, sonars actifs compris. La garder aussi large, ou la réserver au niveau Simple et laisser le niveau Complet tout faire à la main.
+138. **Écho qui reste :** après le premier contact, l'écho reste affiché à l'estimation, daté, tant que la crise est ouverte. Le garder, ou l'effacer après un délai.
+139. **Faux écho non éclairci :** issue 0,4 sans pénalité, compté parmi les crises perdues au bilan. Le garder ainsi, ou ne pas le compter.
+140. **Premier contact toujours réel dans `asw` :** le joueur qui rejoue le sait. Le garder, ou tirer l'ordre des contacts.
+141. **Défaut :** dans les scénarios hors catalogue qui visent un câble ou un site, le sous-marin plus lent arrive plus tard ; non mesuré scénario par scénario.
+
+### Décisions ouvertes de la version 55
+
+142. **Indice de l'alerte :** l'alerte nomme ce que le contact menace (route du convoi, câble, site), sans zone. Le garder, le rendre plus vague, ou ne rien dire du tout.
+143. **Chasse automatique :** refusée avant le premier écho, permise après. La garder ainsi, ou la retirer tout à fait pour que la poursuite se fasse aussi à la main.
+144. **Ordres par unité au niveau Simple :** sonar actif, pings périodiques, suivi et torpille par unité y sont maintenant ouverts, puisque le joueur doit chercher seul. Garder, ou réserver une partie au niveau Complet.
+145. **Distance de suivi :** 22 à 40 unités de carte (≈ 55 milles), réglée pour rester à portée d'écoute. La régler, ou la laisser choisir au joueur.
+146. **Suivi pour les bâtiments de surface :** réservé aux sous-marins. L'ouvrir au destroyer, ou non.
+147. **Catalogue naval :** bouton retiré, code gardé sans accès. Supprimer aussi le code et `gen_naval.py`, ou garder pour plus tard. La préparation de la flotte reste.
+148. **Autres crises à zone** (navire fantôme, signal, mines) : elles gardent leur cercle. Les traiter de la même façon, ou non.
+149. **Défaut :** le cercle de sonar affiche la portée nominale ; la couche peut la réduire d'un tiers sans que rien ne le montre.
+
+**Tranché le 26 novembre 2026** (« Valide les décisions et déploie la version »), lu comme la validation des choix en place : l'indice de l'alerte est gardé (142) ; la chasse automatique reste refusée avant le premier écho et permise après (143) ; les ordres par unité restent ouverts au niveau Simple (144) ; la distance de suivi reste de 22 à 40 unités, environ 55 milles (145) ; le suivi reste réservé aux sous-marins (146) ; le code du catalogue est gardé sans accès (147) ; les autres crises à zone gardent leur cercle (148). Les versions 54 et 55 sont fusionnées dans `main`. Le défaut 149 reste ouvert.
 
 ### Demandes à garder en mémoire
 

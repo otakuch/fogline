@@ -1943,6 +1943,8 @@ Demande de Naully du 26 novembre 2026, avec deux prompts (« Vue rapprochée 3D 
 - **Suite d'interface, sur l'assemblage final :** les 36 tests de la suite, `uiv51` à `uiv55`, `uiv56` (62 contrôles sur l'assemblage final), `uiaud`, `v56monkey` et `navlab.js 3` sans erreur ni texte manquant. `uiaud.js` a échoué une fois sur un contrôle au format téléphone (le second toucher ne tombait plus sur l'unité) : le test recalcule maintenant le point visé ; relancé deux fois, 79 contrôles réussis. Les anciens tests tournent sur la page de test, vue rapprochée coupée ; le banc, les clics au hasard et `navlab.js` tournent sur la page publiée, vue active.
 - `tourcmp.js` : tour par tour sur `d3`, 31 arrêts, mission réussie, 807 contre 866 pour la référence en temps réel ; semi-réel sur `la` non fini dans les 420 s du script (tour 20 sur 22), comme en version 55, avec le même état à l'arrêt.
 
+**Livraison :** branche `v56-vue-rapprochee` poussée, puis fusionnée dans `main` le 26 novembre 2026 après les tests, à la demande de Naully (« à déployer sur github ») : le site public sert la version 56. Artifact d'essai privé https://claude.ai/artifact/RRZZ4TMQGBwvrbAFv9GJKK mis à jour (page, fonds, effets et signatures ; les 100 voix anglaises n'y sont pas déposées : elles sont sur le site). L'artifact officiel du prototype reste en version 55.
+
 **Non vérifié**
 
 - Aucun vrai joueur, aucun téléphone réel. Rien ne dit si le rythme lent plaît, s'il aide à décider, ni si la vue rapprochée sert à autre chose qu'à regarder.
@@ -2119,7 +2121,7 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
 
-**Résultats du 26 novembre 2026, version 56 (vue rapprochée 3D, rythme ×¼, pas fixe, système sonore) :** voir « Mesures » en 5.56. Branche `v56-vue-rapprochee`.
+**Résultats du 26 novembre 2026, version 56 (vue rapprochée 3D, rythme ×¼, pas fixe, système sonore) :** voir « Mesures » en 5.56. Branche `v56-vue-rapprochee`, fusionnée dans `main` le 26 novembre 2026 à la demande de Naully.
 
 **Résultats du 26 novembre 2026, version 55 (sans zone de départ, portée du sonar, suivi à distance, catalogue retiré), niveau Complet, 2 parties par scénario, jeu réel :** référence 753 et 78 %, omniscient 827 et 95 %, tir sans vérifier 424 et 26 % avec 59 % de seuil 1, aucun ordre 257 et 1 %, aucune force 230 et 0 %. 616 parties finies et reproductibles. `asw`, 20 tirages : référence 17, omniscient 20, aucun ordre 0. Tests d'interface : `uiv55` (48), `uiv54`, `uiv53`, `uiv52`, `uiv51` et les 36 autres de la suite sans erreur ; `navlab.js 3` : 110 contrôles ciblés, 24 parties au hasard sans défaut ; 53 814 clics au hasard sans blocage ni texte manquant, sur la page de test, qui garde la zone de départ. Détail : section 5.55. Branche `v55-recherche`, fusionnée dans `main` le 26 novembre 2026 à la demande de Naully.
 

@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "status": "integration_contract_not_runtime_code",
+  "masterDefaultLinear": 0.65,
+  "busGainDb": {
+    "ambience": -13,
+    "music": -17,
+    "ui": -5,
+    "sonar": -4,
+    "comms": -3,
+    "alerts": -3,
+    "weapons": -9
+  },
+  "gainMeaning": "Digital bus gain after the supplied asset level; not a sound pressure level.",
+  "ducking": {
+    "onVoice": {
+      "ambienceDb": -6,
+      "musicDb": -10,
+      "weaponsDb": -5
+    },
+    "onCriticalAlert": {
+      "ambienceDb": -5,
+      "musicDb": -8
+    },
+    "attackMs": 70,
+    "releaseMs": 650
+  },
+  "priorityOrder": [
+    "critical_alert",
+    "damage_or_mission_alert",
+    "voice_report",
+    "order_receipt",
+    "sonar",
+    "weapon_report",
+    "selection",
+    "ambience"
+  ],
+  "maxConcurrent": {
+    "voice": 1,
+    "sonar": 3,
+    "weapons": 4,
+    "ambience": 4
+  },
+  "realTimeCooldownSeconds": {
+    "ui_select": 0.08,
+    "ui_order_ack": 0.3,
+    "classification_update": 2,
+    "crisis_attention": 3,
+    "crisis_critical": 10
+  },
+  "loopFadeSeconds": 2,
+  "knowledgeGate": "own_action_or_delivered_player_observation",
+  "privateWorldEventsAllowed": false,
+  "audioRngSeparateFromGameRng": true,
+  "simulationRateChangesAudioPitch": false,
+  "pause": {
+    "worldEvents": "stop_scheduling",
+    "roomGainMultiplier": 0.45,
+    "uiAndNewCrisisPresentationAllowed": true,
+    "replayBacklogOnResume": false
+  },
+  "backgroundTab": {
+    "default": "fade_out",
+    "changesSimulationPauseRules": false
+  },
+  "saveLoad": {
+    "restoreKnownAmbience": true,
+    "replayEventHistory": false
+  },
+  "radio": {
+    "recordingsPresent": false,
+    "phrasesFile": "radio-phrases-fr-en.json",
+    "subtitlesRequired": true,
+    "maxQueuedMessages": 2,
+    "defaultExpiryRealSeconds": 6,
+    "revalidateKnownClassificationAtPlayback": true,
+    "unitPhrasesFile": "bibliotheque-reponses.json"
+  },
+  "eventBindings": [
+    {
+      "assetId": "amb_ops_room",
+      "trigger": null,
+      "loop": true,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": false
+    },
+    {
+      "assetId": "amb_open_sea",
+      "trigger": null,
+      "loop": true,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": false
+    },
+    {
+      "assetId": "amb_underwater",
+      "trigger": null,
+      "loop": true,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": false
+    },
+    {
+      "assetId": "amb_tension",
+      "trigger": null,
+      "loop": true,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": false
+    },
+    {
+      "assetId": "ui_select",
+      "trigger": "ui.selection.changed",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "ui_order_ack",
+      "trigger": "event.order.accepted",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "ui_unavailable",
+      "trigger": "ui.order.rejected",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "radio_open",
+      "trigger": "presentation.radio.begin",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "radio_close",
+      "trigger": "presentation.radio.end",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "sonar_emit",
+      "trigger": "knowledge.ownSonarEmission",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "sonar_contact",
+      "trigger": "knowledge.acousticObservation.delivered",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "classification_update",
+      "trigger": "knowledge.classification.changed",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "crisis_attention",
+      "trigger": "event.crisis.created",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "crisis_critical",
+      "trigger": "knowledge.crisis.severityRaised",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "missile_launch",
+      "trigger": "knowledge.weaponLaunch.missile",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "torpedo_release",
+      "trigger": "knowledge.weaponLaunch.torpedo",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "impact_observed",
+      "trigger": "knowledge.impact.observed",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "unit_damage",
+      "trigger": "knowledge.friendlyDamage.delivered",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "mission_resolved",
+      "trigger": "knowledge.objective.resolved",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    },
+    {
+      "assetId": "comms_degraded",
+      "trigger": "knowledge.link.degraded",
+      "loop": false,
+      "dedupeKey": "sourceEventId",
+      "knowledgeGateRequired": true
+    }
+  ],
+  "assetsFile": "catalogue-audio-complet.json",
+  "calibration": "human_audition_still_required",
+  "unitResponseLibrary": "bibliotheque-reponses.json",
+  "singlePresentationQueue": true,
+  "singleAudioEngine": true,
+  "unitResolverEntry": "unit-response-resolver.mjs",
+  "unitResponseBindings": [
+    {
+      "kind": "selection",
+      "source": "explicit_ui_selection",
+      "requires": "controlled_known_actor"
+    },
+    {
+      "kind": "accepted",
+      "source": "known_unit_order_receipt",
+      "requires": "receiptKnown_and_stage_unit_received"
+    },
+    {
+      "kind": "queued",
+      "source": "known_pending_order",
+      "speaker": "command_center"
+    },
+    {
+      "kind": "rejected",
+      "source": "visible_order_rejection",
+      "speaker": "command_center"
+    },
+    {
+      "kind": "busy",
+      "source": "known_unit_unavailable",
+      "speaker": "command_center"
+    },
+    {
+      "kind": "cancelled",
+      "source": "known_order_cancellation"
+    }
+  ],
+  "duplicateSuppression": [
+    {
+      "when": "unit_profile_selection_response_scheduled",
+      "suppress": [
+        "generic_ui_selection_click_for_same_event"
+      ]
+    },
+    {
+      "when": "known_unit_order_receipt_response_scheduled",
+      "suppress": [
+        "ui_order_ack_for_same_phase",
+        "mission_phrase_order_ack_for_same_phase"
+      ]
+    },
+    {
+      "when": "task_group_order_summary_scheduled",
+      "suppress": [
+        "child_unit_acknowledgements_for_same_groupCommandId"
+      ]
+    }
+  ],
+  "suppressionMustNotHideLaterExecutionEvents": true,
+  "unitSelectionDebounceRealMs": 120,
+  "sameUnitSelectionCooldownRealSeconds": 5,
+  "globalSelectionCooldownRealSeconds": 0.7,
+  "sourceGraphsRuntimeIntegrated": false
+}

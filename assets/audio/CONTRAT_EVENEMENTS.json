@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "controlledKnownUnitsOnly": true,
+  "selection": "explicit_user_selection_after_settling_not_hover_or_render",
+  "accepted": "known_receipt_by_unit_not_merely_client_click_or_local_validation",
+  "queued": "command_center_feedback_not_unit_receipt",
+  "rejected": "distinct_refusal_cue_with_visible_reason",
+  "taskGroup": "one_group_summary_suppress_child_acknowledgements",
+  "deduplication": "commandId_or_groupCommandId_and_phase",
+  "doesNotConfirmExecution": true,
+  "replayHistoryOnLoad": false,
+  "criticalAlertsPreemptSelection": true,
+  "gameplayRngUsed": false,
+  "tokensOrScoresConsumed": false,
+  "changesUnitPace": false,
+  "effectsOnlyMode": "nonverbal_signatures_and_visual_log",
+  "optionalDetailedMode": "command_center_order_phrases",
+  "defaultVoiceMode": "profile_short_acknowledgement"
+}

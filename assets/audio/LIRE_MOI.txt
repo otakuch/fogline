@@ -1,0 +1,15 @@
+FOGLINE — Audio complet V1 — 26 novembre 2026
+
+Ce pack unique remplace l’envoi séparé des bibliothèques Environnement sonore V1 et Réponses des unités V1. Le prompt unique fait autorité pour leur intégration commune.
+
+Commencer par FOGLINE_DEMO_AUDIO_COMPLET_V1.mp3 : quatre-vingt-dix secondes combinant fonds, signatures, voix d’unités, sonar et alertes. Les deux anciennes démonstrations restent dans demos/. Les démonstrations ne sont pas des pistes de mission à boucler.
+
+170 fichiers WAV : 4 ambiances en boucle, 16 effets généraux, 50 signatures d’interface et 100 clips de voix synthétiques anglaises. Douze profils d’unités ; 118 entrées textuelles français/anglais. Les 18 scripts de mission et les voix françaises ne sont pas enregistrés. Les voix anglaises sont des prototypes de synthèse, sans prise de voix humaine.
+
+Transmettre ce ZIP et PROMPT_CLAUDE_AUDIO_COMPLET_V1.txt à Claude avec les sources actuelles du jeu. Le catalogue et les chemins sont unifiés ; le résolveur pur est fourni, mais le branchement sur le mixer et la file de présentation dans le jeu reste à faire. Les WAV sources sont conservés à l’identique ; aucun original des anciens packs n’a été modifié.
+
+Les voix françaises peuvent utiliser une voix de l’appareil si disponible et choisie ; sinon sons courts et sous-titres. Le joueur peut choisir explicitement les voix anglaises avec des sous-titres français.
+
+Les tests Node concernent la logique pure. Les scénarios d’acceptation audio restent à exécuter sur le jeu. L’écoute humaine et la vérification dans le navigateur restent nécessaires. Le jeu publié n’a pas été modifié.
+
+Les recettes dans production/ régénèrent les deux banques sources dans leurs dossiers initiaux ; PROVENANCE_PACKS.json décrit leur déplacement vers le catalogue commun. Elles ne sont pas le moteur de lecture du jeu.

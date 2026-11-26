@@ -65,6 +65,12 @@ seuil-projet/
     ├── v48m.js             mesure par mission : référence, omniscient, aucun ordre, avec les compteurs de présomption, de relèvement et de variante
     ├── v48p.js             justesse des présomptions par règle et par vérité
     ├── uiv55.js            version 55 : contact sans zone de départ, portée du sonar, suivi à distance, catalogue et jetons absents (48 contrôles, FR 1440 et EN 390)
+    ├── vue3d.js            version 56 : vue rapprochée 3D (module inséré dans la page par build.py)
+    ├── audio.js            version 56 : système sonore complet (module inséré dans la page) ; audio-lib.json : bibliothèque compacte générée par tools/audio/optimise.py
+    ├── uiv56.js            version 56 : vue rapprochée, portées, animations, rythme ×¼ (60 contrôles, FR 1440 et EN 390)
+    ├── v56speed.js         version 56 : même partie par la vraie boucle à ×¼, ×1, ×4 et en images irrégulières ; résultats identiques
+    ├── v56monkey.js        version 56 : gestes au hasard avec la vue allumée
+    ├── uiaud.js            version 56 : système sonore sur le vrai jeu, servi en HTTP (79 contrôles, journal de présentation)
     ├── uiv54.js            version 54 : chasse sous-marine (ordre de chasse, écho dès le premier contact, sous-marin en attente, faux échos ; 48 contrôles, FR 1440 et EN 390)
     ├── uiv53.js            version 53 : options hors du score et des contrôles, actions sans plafond ni attente ni emplois comptés (20 contrôles, FR 1440 et EN 390)
     ├── uiv52.js            version 52 : datum en distribution, observations, classement automatique, revue d'engagement, pings périodiques, suivi, projectiles, menu d'ordres (66 contrôles, FR 1440 et EN 390)
@@ -130,6 +136,8 @@ python3 build.py
 
 `build.py` remplace dans `src.html` les marqueurs `__RELIEF__`, `__SND__`, `__VEC__`, `__MAPLIBRE__`, `__THREE__`, `__MILSYMBOL__`, `__IMG__`, `__MASK__`, `__DB__`, `__GEO__`, `__TH__`, `__WORLD__`, `__NAVALJS__` (module `naval-alloc.js`) et `__NAVAL__` (`naval-catalogue.json`). Après un changement de `gen_naval.py` : `python3 gen_naval.py`, puis `python3 build.py`. Dans `th/theatres.json`, `__THIMG_<théâtre>__` est remplacé par la carte `th/<théâtre>.jpg`. Ne modifie jamais `seuil-prototype.html` à la main.
 
+Depuis la version 56, `build.py` insère aussi deux modules dans le script principal, aux marqueurs `/*__AUDJS__*/` (`audio.js`, avec `audio-lib.json`) et `/*__V3DJS__*/` (`vue3d.js`). Ils partagent la portée du script : ils lisent `S`, `UT`, `cam` et les fonctions du jeu, et ne se chargent pas seuls. Les fichiers audio ne sont pas intégrés à la page : `assets/audio/web/` est servi à côté d'elle, comme les illustrations. Après un changement du pack : `python3 tools/audio/optimise.py`, puis `python3 build.py`.
+
 **Prérequis :** Python 3, Node.js et Playwright avec Chromium.
 
 **Sources :** si ce dossier n'est pas disponible dans la conversation, demande `seuil-fogline.zip` à Naully. Ne reconstruis pas les sources à partir de la page publiée sans l'accord de Naully.
@@ -157,6 +165,7 @@ Le code fait foi. Ces valeurs doivent rester à jour dans ce fichier et dans le 
 - Un tour dure 30 secondes simulées. Local : 16 tours (8 min à x1) et 2 crises simultanées. International : 22 tours (11 min à x1) et 3 crises simultanées. `gen_db.py` multiplie par `LONG` (1,6) les phases, le script et les présences requises, sauf pour le tutoriel.
 - **Rythme (`calm`, `CALM`) :** une nouvelle crise attend 60 s après le début de la précédente et 30 s après une fin de crise. Une seule démarre par tour. Les crises en attente passent après celles qu'un objectif exige. Dans les 2 derniers tours, seules ces dernières sortent encore.
 - Vitesses x1, x2 et x4, et avance rapide × 8 jusqu'au prochain événement (bouton ⏭, ou « Avancer jusqu'au prochain événement » dans le panneau quand aucune crise n'est ouverte). L'avance rapide s'arrête pour une crise, une alerte du renseignement, un aléa ou une demande, pas pour un simple contact ni un signal. En commandement complet, la pause dispose d'une réserve de 90 secondes réelles, sauf en horloge idéale. En commandement guidé, elle est illimitée.
+- **Depuis la version 56 (5.56) :** la boucle joue des pas fixes de 1/60 s ; vitesse ×¼ ajoutée ; dans la vue rapprochée 3D, le jeu passe à ×¼ et le ralenti au zoom ne s'applique pas.
 - **Depuis la version 53 (5.53) :** plus de plafond de vérifications, plus d'attente entre deux coordinations ou prises de parole, plus d'emplois comptés ; le contrôle de phase ne demande plus que 60 % d'infrastructures et le score n'a plus d'axe « options ».
 - **Durées depuis la version 52 (5.52) :** local 22 tours, international 31 (`LONG` 2,2) ; les valeurs de 16 et 22 tours ci-dessus sont périmées.
 - **Plus de jetons depuis la version 51 (5.51).** Aucune action ne se paie. Ce qui limite le joueur : le temps, les délais d'autorisation (allongés par un CGC bas, la dette et la réserve d'état-major), le nombre de vérifications simultanées, les attentes de « Coordonner » et de la parole publique, les stocks et les emplois comptés. Les mentions « 1 jeton » des sections plus anciennes sont périmées.
@@ -371,6 +380,7 @@ Fond de salle en 3 boucles (`room`, `srv`, `ops`), mixé selon l'état : accueil
 
 - **Crises :** `sub` et `seabed` sonar, `jam` parasite et souffle, `cyber` accroc, `desinfo` téléscripteur, `sar`, `evac` et `mine` radio, `alarm` réglage radio. Compte à rebours : `tick`, `tick2`.
 - **Garde-fous :** aucun bruit d'arme ni d'explosion. Les bruits passent par `Math.random`, jamais par `R()`. Le son ne porte aucune information exclusive.
+- **Version 56 :** le système sonore complet (5.56) remplace les trois fonds par ceux du pack, supprime le ping décoratif et ajoute, à la demande du prompt sonore, des départs et des impacts d'armes « contenus ». La règle « aucun bruit d'arme » ci-dessus ne tient donc plus telle quelle (décision 158).
 - **Test :** `uia.js` contrôle le chargement, les modes et les événements, pas la qualité à l'oreille.
 - **Avant diffusion :** confirmer sur Freesound les licences de kyles 452454, thaighaudio 349689, dergraph 832122 et cloyen 800349.
 
@@ -1839,6 +1849,110 @@ Demande de Naully du 26 novembre 2026 : « Supprime le compteur token. Retravail
 
 **Non vérifié :** aucun vrai joueur. Rien ne dit si l'indice de l'alerte suffit à un débutant pour chercher, ni si la recherche à la main est intéressante ou seulement longue. Le script fouille avec méthode autour de l'objet désigné ; un joueur n'a pas cette aide. Le cercle de sonar ne montre pas l'effet de la couche. Les avertissements du renseignement sur un sous-marin gardent leur texte. Le dossier de conception, le manuel, les captures et la vidéo ne sont pas mis à jour.
 
+### 5.56 Vue rapprochée 3D, rythme lent accélérable, pas fixe et système sonore complet (version 56)
+
+Demande de Naully du 26 novembre 2026, avec deux prompts (« Vue rapprochée 3D des unités navales et aériennes », deuxième rédaction ; « Système sonore complet V1 ») et le pack `FOGLINE_AUDIO_COMPLET_V1.zip` : « Voici les modifications à faire pour la nouvelle version et à déployer sur github ». Branche `v56-vue-rapprochee`, à partir de `main` (version 55). Aucune règle, aucun tirage, aucun score ni aucune vitesse d'unité ne change : la version ajoute un affichage, un rythme et du son.
+
+**Écarts avec les prompts, signalés à Naully avant de coder (lot 0)**
+
+- **Pas du moteur :** le prompt supposait un pas fixe. La boucle de la page appelait `step` avec un pas égal au temps d'une image × la vitesse (0,1 s au plus) : une même partie ne donnait pas le même résultat selon la vitesse ou la fluidité. La boucle passe à un **pas fixe de 1/60 s** (`STEP`) ; `step` lui-même ne change pas, et les scripts (`playGame`, pas de 0,1 s) non plus. Décision 150.
+- **Bruits d'armes :** 5.13 octies interdisait tout bruit d'arme. Le prompt sonore, plus récent, demande des départs et des impacts « contenus » : il l'emporte. Aucune explosion spectaculaire, aucun point lié au son. Décision 158.
+- **Carte hexagonale :** le prompt sonore la cite ; elle n'existe pas, rien n'est créé.
+- **Fusion dans `main` :** le prompt de la vue demandait de ne pas fusionner ; la demande de Naully est de déployer. La fusion a été faite après les tests (voir « Livraison »).
+- **Vitesses de table (prompt, section 6) :** celles du code font foi (5.32, × 0,55 depuis 5.51).
+
+**Boucle à pas fixe et interpolation (`STEP`, `loop.acc`, `lerpList`, `lerpSnap`, `lerpOn`, `lerpOff`)**
+
+- La boucle accumule le temps de jeu (temps réel × vitesse × ralenti au zoom) et joue des pas de 1/60 s. Elle rend la main après 14 ms de calcul dans une image (au moins 6 pas joués) : sur une machine lente, le jeu ralentit au lieu de se figer.
+- L'affichage montre chaque objet mobile entre sa position du pas précédent et celle du pas courant (unités, navires, avions, missiles, torpilles, pistes, convoi). Les positions du jeu sont rendues aussitôt après le dessin : l'état n'est jamais modifié.
+- Points d'accroche de test : `window.__onStep(S)` après chaque pas, `window.__noBudget`.
+- **Conséquence :** une partie jouée dans la page ne suit plus exactement la même trajectoire qu'en version 55 (le pas a changé), mais elle est désormais la même à toutes les vitesses.
+
+**Rythme lent, accélérable (`V3D.spd` 0,25, `V3D.was`, `spd0`, `zTime`, bouton `#sp025`, `#spEff`)**
+
+- Nouveau bouton **×¼** dans la série ×¼, ×½, ×1, ×2, ×4, ×8, ×16 et l'avance rapide.
+- À l'entrée dans la vue rapprochée, la vitesse passe à ×¼, sauf si elle est déjà plus lente ; à la sortie, elle revient à la vitesse d'avant l'entrée. Un choix manuel tient jusqu'à la sortie. Ni au tutoriel, ni au tour par tour.
+- **Un seul facteur :** dans la vue, le ralenti au zoom de la version 43 ne s'applique pas (`zTime()` vaut 1). Sur la carte, il reste inchangé. La barre haute affiche la vitesse réellement appliquée quand elle diffère du bouton (« temps ×0,2 »).
+- Retours automatiques (crise à échéance, pause automatique du niveau Simple, fin d'avance rapide) : ×½ sur la carte, ×¼ dans la vue ; la vitesse rendue à la sortie est alors plafonnée à ×½.
+- La vitesse par défaut de la carte reste ×½. Les vitesses de table des unités ne changent pas.
+
+**Vue rapprochée 3D (`proto/vue3d.js` ; `V3D`, `v3dTick`, `v3dCam`, `v3dFrame`, `v3dOn`, `v3dOff`, `v3dEnter`, `v3dExit`, `v3dToggle`)**
+
+- **Entrée :** facteur de zoom au-delà de 6 (`V3D.in` ; le niveau détaillé des silhouettes commence à 2,4) avec une unité navale ou aérienne sélectionnée, sinon l'unité amie la plus proche du centre, à 60 px au plus. Fondu entre 6 et 7,5 ; inclinaison progressive jusqu'au facteur 12 (`V3D.full`), 57° au plus. Nord en haut tant que la vue est verticale.
+- **Sortie :** dézoomer, Échap (avant de désélectionner) ou le bouton « 3D » de la colonne de zoom ; le zoom revient juste sous le seuil.
+- **Réglage** « Vue rapprochée 3D » dans le panneau Couches, actif par défaut, gardé dans `seuil.v3d`.
+- **Caméra :** glisser pour déplacer, Maj + glisser pour tourner (le clic droit garde le menu, refusé dans la vue), molette, flèches, C ou Origine pour recentrer. Elle suit l'unité, avec le décalage du joueur, borné ; pour un aéronef, elle suit aussi son altitude d'affichage. Un clic sur un objet visible le sélectionne et la caméra glisse vers lui.
+- **Décor :** maillage du relief de la version 37 (`reliefMesh`, relief aplati par `V3D.vs` 0,35) sous un plan de mer quadrillé qui défile ; sans relief, la mer seule. Grain, balayage lent, crochets d'angle autour de la sélection avec cap et état.
+- **Modèles (`v3Parts`, `v3Obj`, `v3dModel`) :** construits en code, un par classe : destroyer, LCS, câblier, patrouilleur allié, cargo, bâtiment de soutien, porte-avions, sous-marin allié (estompé sous la surface), P-8A, MQ-4C, MQ-9A, F/A-18 (par paire), MH-60R ; coque générique et bâtiment de guerre générique pour les contacts. Rendu holographique (faces translucides, arêtes, bande de balayage), antenne qui tourne si le radar est actif, rotor, hélice, tourelle orientée vers la cible, sillage. **Hors échelle :** taille apparente de 46 à 160 px selon le zoom et la classe ; les distances restent exactes. Le rappel est affiché dans la vue et dans la légende.
+- **Altitude d'affichage (`V3D.alt`, en px) :** hélicoptère 70, MQ-9A 125, P-8A 150, F/A-18 165, MQ-4C 185 ; trait vertical jusqu'à la mer. Sans effet sur les règles.
+- **Ce que le joueur a le droit de voir :** la vue lit `fzItems`, la liste qu'affiche déjà la carte. Contact Détecté : simple repère ; Classé : coque générique à la couleur de l'appartenance connue ; Identifié : modèle. Un contact sous-marin n'a jamais de modèle : contour, point représentatif, empreinte de tir et nuage de probabilité, seulement après le premier écho. Pistes de salve et d'essaim : seulement si elles sont détectées (règle de `projList`).
+- **Hors périmètre :** unités terrestres et hors carte (repère simple).
+- **Ordres :** depuis les panneaux, comme avant. Un clic sur le décor, un placement (patrouille, bouées, zone) ou le clic droit sont refusés avec le motif « Revenez à la carte pour désigner un point. ».
+- **Absente :** sur téléphone (critère existant, 980 px), sans WebGL, au bilan, en vue d'ensemble. `prefers-reduced-motion` : pas de mouvement de caméra automatique, pas de balayage, marques d'issue seules. Sous 25 images par seconde pendant 3 s : proposition non bloquante de revenir à la carte.
+
+**Portées, une seule source (`RNG`, `uRanges`, `rngOf`, `thrR`)**
+
+`RNG = {fire: 170, thr: 175, thrJam: 110, icp: 110, icpAt: 65}` remplace les nombres écrits en dur. `uRanges(u)` donne à la carte et à la vue les mêmes cercles : capteur (réduit en silence radar), écoute, sonar actif, tir, interception (pendant un raid, une salve ou un essaim). Un cercle dont l'arc sort de l'écran est rappelé en bas de la vue (« Hors cadre »).
+
+**Animations (`fxEv`, `v3dFx`, `v3FxUpd`)**
+
+`fxEv(type, données)` est le seul point d'entrée : le moteur l'appelle après ses propres tirages. Il ne modifie rien dans `S`, ne tire aucun nombre par `R()`, et sert aussi le son. Les animations avancent en temps simulé.
+
+| Événement du moteur | Animation |
+|---|---|
+| Tentative d'interception (`stepCombat`) | Missile sol-air : départ, traînée, éclat et « interceptée », ou dépassement et « manquée » ; durée distance ÷ `V3D.fx` (110), de 1 à 4 s |
+| La même, à moins de 20 du défenseur (`V3D.gun`), et piste abattue par `stepSwarm` | Canon : traceurs, éclat. Habillage, sans règle ni cercle |
+| Tir du joueur (`fireAt`) | Départ ; le projectile est celui de `S.mis` ; marques « arrivée » ou « perdue » de `S.trkFx` |
+| Coup reçu (`hitUnit`) | Onde et éclat ; avarie visible à 50 % d'état ou moins ; l'unité perdue disparaît |
+| Torpille (`torpLaunch`, `stepTorp`) | Entrée dans l'eau, course vers le point de visée figé, identifiant et empreinte ; quatre fins : neutralisé, manquée, rien dans la zone, tir à tort |
+| Sonar actif, impulsion de bouée | Onde à la portée du moteur ; câble pour le sonar trempé |
+
+- La piste d'affichage d'une interception avance d'une partie seulement du chemin restant : convention d'affichage, la marque du moteur reste celle de la carte.
+- **Cadrage (`v3dEngage`, `V3D.fz`) :** la caméra recule pour montrer le tireur et sa cible, jamais au-delà du seuil d'entrée, puis revient. Un geste du joueur l'annule pour cet engagement. Cible encore hors cadre : repère en bord d'écran avec la distance.
+- **Carte 2D :** aucun zoom ni déplacement forcé. Seul ajout : une ligne d'engagement fine entre le tireur et sa cible (`engLines`, liste d'affichage hors de `S`).
+- Au tour par tour et en mouvement réduit : marques d'issue seules.
+
+**Système sonore (`proto/audio.js`, `proto/audio-lib.json`, `assets/audio/`)**
+
+- **Pack :** 170 WAV d'origine dans `assets/audio/audio/` (inchangés, empreintes contrôlées), catalogue et contrats à côté ; dérivés MP3 servis par le jeu dans `assets/audio/web/` (3 Mo), produits par `tools/audio/optimise.py`, qui écrit aussi la bibliothèque compacte intégrée à la page (18 Ko). Les fichiers sont chargés après la première interaction, à côté de la page, comme les illustrations ; les voix, à la demande. Page ouverte depuis le disque ou fichier manquant : les sons synthétisés d'origine servent de repli.
+- **Un seul moteur :** le contexte audio existant. Bus ajoutés : ambiances, musique, interface, sonar, voix, alertes, armes, aux gains du contrat (−13, −17, −5, −4, −3, −3, −9 dB ; volume général 0,65), limiteur de sortie existant. Atténuation des fonds, de la musique et des armes pendant une voix.
+- **Fonds :** salle, mer, écoute sous-marine, tension ; ils remplacent les trois anciens fonds dès qu'ils sont chargés. Écoute sous-marine quand une unité de lutte sous-marine est sélectionnée ou qu'un dossier acoustique est ouvert : c'est un contexte d'interface, il ne dit rien d'un sous-marin caché. Tension selon les crises ouvertes et la tension visibles (`sndLoad01`). En pause, salle × 0,45.
+- **Sonar :** `sonar_emit` suit une émission réelle (sonar actif, impulsion de bouée) ; `sonar_contact` un écho reçu, au même motif quelle que soit la nature du contact. **Le ping décoratif des crises sous-marines et des fonds marins est supprimé.**
+- **Réponses des unités (`audSel`, `audResolve`, `audProfile`) :** après une sélection explicite (clic, toucher, touche N), 120 ms de stabilisation, puis la signature du profil et, selon le réglage, sa réplique. Jamais au survol. Douze profils. 5 s par unité, 0,7 s entre deux réponses. Un contact ne répond pas. Réseau de commandement coupé : réponse d'interface seule.
+- **Ordres (`audOrder`, `audCmd`, `audActPre`, `audActPost`, `audReject`) :** validation locale (signal d'interface), ordre en attente de transmission, réception par l'unité (un seul accusé du profil), refus (signal distinct et motif). Un ordre de domaine donne une seule réponse. L'accusé d'interface et le clic générique sont supprimés quand la réponse d'une unité les remplace.
+- **Armes, avaries, crises :** départs du joueur et départs adverses observés, impact contenu, avarie ; deux alertes (attention, critique) ; un signal par crise ; l'alerte critique pour le seuil humanitaire et une unité perdue.
+- **File commune (`audEnq`, `audNext`) :** une voix à la fois, deux messages en attente, priorités, péremption de 6 s, revalidation avant lecture, sous-titres (`#subt`). Une alerte retire les réponses de sélection.
+- **Langues :** fichier exact, sinon voix de l'appareil si le joueur l'active, sinon signature et sous-titre. Jamais de voix anglaise à la place du français sans choix explicite. Les 100 répliques n'existent qu'en anglais (voix de synthèse) ; les 18 comptes rendus de mission ne sont pas enregistrés : ils passent en sous-titres.
+- **Réglages (menu, `seuil.aud`) :** complet, effets, silence (inchangé) ; huit niveaux ; voix (langue du jeu, anglaises, aucune) ; voix de l'appareil ; sous-titres ; accusés détaillés ; mono ; confort d'écoute ; onglet masqué ; « Écouter un exemple ».
+- **Garde-fous :** le son ne lit jamais `truth`, n'utilise que `Math.random`, et ne porte aucune information exclusive : tout reste au journal ou à l'écran.
+
+**Tests**
+
+- `uiv56.js` (60 contrôles, FR 1440 et EN 390), `v56speed.js`, `v56monkey.js`, `uiaud.js` (79 contrôles, jeu servi en HTTP), `tools/audio/test-resolver.mjs` (22 tests du résolveur du pack), `tools/audio/optimise.py --check`.
+- `build.py` écrit `window.__noV3D=1` dans `t.html` seulement : les anciens tests gardent la carte 2D à tout zoom ; `uiv56.js` et `v56monkey.js` rallument la vue.
+
+**Mesures du 26 novembre 2026, scripts seulement**
+
+- **Moteur inchangé :** banc `stress.js 2 inv exploit labo monkey` : les 2 310 parties du volet `exploit` donnent le même score, la même issue, les mêmes crises et les mêmes tirs qu'en version 55, partie par partie. Comparaison directe des deux pages (version 55 et version 56) sur 304 parties (76 scénarios × 1 tirage × référence, omniscient, aucun ordre, tir sans vérifier) : identiques. Référence 753 et 78 %, omniscient 827 et 95 %, tir sans vérifier 424 et 26 % avec 59 % de seuil 1, aucun ordre 257 et 1 %, aucune force 231 et 0 %. 616 parties finies et reproductibles. 53 537 clics au hasard sans blocage ni texte manquant, sur la page publiée, vue rapprochée active.
+- Les compteurs « crise ouverte plus de 8 tours » du volet `inv` changent d'une exécution à l'autre du même code (`ghost` : 2 054 dans le relevé de la version 55, 2 313 en relançant la page de la version 55, 2 036 ici) : ils ne se comparent pas d'une version à l'autre.
+- **Vitesse neutre (`v56speed.js`, tirage 21, vraie boucle de la page) :** `c1` (score 873, 39 601 pas), `asw` (735, 34 201 pas) et `hc` (712, 55 801 pas) : score, issues des crises, état final et journal identiques à ×¼, ×1, ×4 et à ×2 avec des images irrégulières. Le journal est comparé sans les deux avis « vitesse ramenée à ×½ ou ×¼ », qui dépendent par nature de la vitesse choisie. Une mission par tirage : la preuve porte sur la boucle, pas sur l'équilibre.
+- **Vue :** `uiv56.js` 60 contrôles ; `v56monkey.js` 900 gestes au hasard sur trois missions, 26 entrées dans la vue et 23 sorties, aucun blocage, aucune erreur, aucun texte manquant.
+- **Son :** `uiaud.js` 79 contrôles (cas AUDIO-01 à 17 et COMBINED-01 à 04 du pack ; AUDIO-18, l'écoute humaine, n'est pas exécutable par un script) ; résolveur du pack 22 tests ; 170 fichiers d'origine, empreintes conformes au catalogue.
+- **Poids :** page +100 Ko (9,72 Mo ; cible du prompt : moins de 150 Ko) ; fichiers audio servis à côté 3,0 Mo ; WAV d'origine dans le dépôt 37 Mo.
+- **Temps par image :** sous rendu logiciel, `v3dFrame` prend 7 à 29 ms sur `asw` (12 à 27 modèles à l'écran, relief chargé). Cette mesure ne vaut pas pour une vraie carte graphique.
+- **Suite d'interface, sur l'assemblage final :** les 36 tests de la suite, `uiv51` à `uiv55`, `uiv56` (62 contrôles sur l'assemblage final), `uiaud`, `v56monkey` et `navlab.js 3` sans erreur ni texte manquant. `uiaud.js` a échoué une fois sur un contrôle au format téléphone (le second toucher ne tombait plus sur l'unité) : le test recalcule maintenant le point visé ; relancé deux fois, 79 contrôles réussis. Les anciens tests tournent sur la page de test, vue rapprochée coupée ; le banc, les clics au hasard et `navlab.js` tournent sur la page publiée, vue active.
+- `tourcmp.js` : tour par tour sur `d3`, 31 arrêts, mission réussie, 807 contre 866 pour la référence en temps réel ; semi-réel sur `la` non fini dans les 420 s du script (tour 20 sur 22), comme en version 55, avec le même état à l'arrêt.
+
+**Non vérifié**
+
+- Aucun vrai joueur, aucun téléphone réel. Rien ne dit si le rythme lent plaît, s'il aide à décider, ni si la vue rapprochée sert à autre chose qu'à regarder.
+- **Aucune écoute humaine :** ni au casque, ni sur haut-parleurs, ni sur téléphone, ni en session longue. Les niveaux sont ceux du contrat, pas un mixage réglé à l'oreille. Les boucles MP3 n'ont pas été écoutées.
+- La vue n'a tourné que sous Chromium avec un rendu logiciel : ni carte graphique réelle, ni Safari, ni Firefox. Le temps par image mesuré ne vaut rien pour une vraie machine.
+- La voix de l'appareil (synthèse du navigateur) n'a pas été testée.
+- Les scripts ne zooment pas et n'écoutent pas.
+- Le dossier de conception, le manuel, les captures du README et la vidéo ne sont pas mis à jour.
+
+
 ## 6. Structure du code
 
 `src.html` est volontairement compact : certaines lignes sont très longues. Cherche par nom de fonction ou par chaîne exacte. Ne reformate pas tout le fichier, sauf si Naully demande une migration.
@@ -1863,6 +1977,7 @@ Demande de Naully du 26 novembre 2026 : « Supprime le compteur token. Retravail
 | Interface | `screenHome`, `screenHow`, `renderDock`, `coachTick`, `renderLay`, `actsHtml`, `coaMeta`, `screenMode`, `screenBrief`, `screenDeck`, `showFrago`, `renderLeft`, `renderRight`, `renderHud`, `draw` |
 | Affichage par exception | `dOpen`, `DOPEN`, `hudDelta`, `HUDP`, `advOn`, `unitAdv`, `thrHtml` |
 | Charte et symboles V2 | tokens `:root`, `V2C`, `v2St`, `v2Path`, `drawV2`, `v2URL`, `v2Ships`, `SYM.ships`, `V2D`, `v2Glyph`, `V2K`, `V2S` |
+| Version 56 | `STEP`, `loop.acc`, `loop.nl`, `lerpList`, `lerpSnap`, `lerpOn`, `lerpOff`, `RNG`, `uRanges`, `rngOf`, `thrR`, `fxEv`, `engLines`, `engAdd`, `ENGL` ; vue : `V3D`, `v3dCan`, `v3dPref`, `v3dElig`, `v3dAlive`, `v3dNear`, `v3dTick`, `v3dCam`, `v3dFrame`, `v3dOn`, `v3dOff`, `v3dEnter`, `v3dExit`, `v3dToggle`, `v3dDrag`, `v3dKey`, `v3dCenter`, `v3dClick`, `v3dHit`, `v3dNo`, `v3dEngage`, `v3dFx`, `v3FxUpd`, `v3Parts`, `v3Geo`, `v3Obj`, `v3dModel`, `v3Relief`, `v3Cloud`, `v3Air`, `v3dProj`, `v3dState` ; son : `AUD`, `AUDLIB`, `audInit`, `audLoad`, `audPlay`, `audSfx`, `audFx`, `audSel`, `audResolve`, `audProfile`, `audOrder`, `audCmd`, `audActPre`, `audActPost`, `audReject`, `audGB`, `audGE`, `audEnq`, `audNext`, `audReport`, `audSub`, `audTick`, `audHidden`, `audSet`, `audMenu`, `audExample`, `audState`, `audLog`, `sndOut` ; `domOrder0` ; `tools/audio/optimise.py` ; `assets/audio/` |
 | Version 55 | `hid`, `c.found`, `c.hint`, `hintName`, `subPub`, `subFound`, `sonR`, `followSet`, `standOff`, `ASW.fol`, `ASW.folIn`, `ASW.folOut`, `sb.wr`, `CFG.subzone`, `window.__subZone` ; catalogue (`screenCat`) sans accès |
 | Version 54 | `seekUnits`, `seekSet`, `seekStep`, `u.seek`, `c.seekK`, `subWait`, `subSpawn`, `S.subReal`, `ASW.vQ`, `ASW.vF`, `ASW.vT`, `ASW.seekB`, `dtFuse` (recherche négative), `dtInit`, `dtSpd`, `fzItems` (écho daté), actions `seekall` et `seek:<unité>` |
 | Version 53 | `FREE_N`, `anaCap` et `anaFull` neutralisés, `coord`, `comm`, `score` (axe O retiré), `newTurn` (contrôle de phase), `opordHtml`, `useEnd` ; `spendSortie`, `useTeam`, `newTurn`, `coordWait`, `commWait` exposés aux tests |
@@ -1970,6 +2085,8 @@ node uiv35.js; node ewcmp.js 4                     # version 35 : vues, ordres p
 node uiv36.js                                      # version 36 : pistes de missile, états, dossier, légende
 node navlab.js 4                                   # mécaniques navales : tests ciblés et parties au hasard (environ 10 minutes)
 node uiv48.js; node v48m.js t.html c1,f2,asw,l12,g3,a4,e6,m6 8; node v48p.js t.html all 2   # version 48 : présomption, relèvements, variantes ; mesure par mission ; justesse des présomptions
+node uiv56.js; node v56speed.js; node v56monkey.js   # version 56 : vue rapprochée 3D ; vitesse neutre (×¼, ×1, ×4, images irrégulières) ; gestes au hasard avec la vue
+node uiaud.js; node ../tools/audio/test-resolver.mjs; python3 ../tools/audio/optimise.py --check   # version 56 : son sur le vrai jeu (HTTP local), résolveur du pack, 170 fichiers et empreintes
 node uiv55.js                                      # version 55 : sans zone de départ, portée du sonar, suivi à distance, catalogue retiré
 node uiv54.js                                      # version 54 : chasse sous-marine retravaillée
 node uiv53.js                                      # version 53 : options hors du score, actions sans limite d'emploi
@@ -2001,6 +2118,8 @@ Ces commandes sont longues : lance-les en arrière-plan quand l'environnement le
 | `deck` | Valeur des cartes sur des decks au hasard | Aucune carte indispensable ni inutile partout |
 | `monkey` | Clics au hasard dans les deux langues | Aucune erreur page, aucun texte manquant, bilan toujours atteint |
 | `dq` | Bilan « Décision ou chance ? » sur cinq stratégies | Réussite annoncée proche de l'observée, tirages recopiés exacts, le hasard fait plus de choix fragiles que la référence |
+
+**Résultats du 26 novembre 2026, version 56 (vue rapprochée 3D, rythme ×¼, pas fixe, système sonore) :** voir « Mesures » en 5.56. Branche `v56-vue-rapprochee`.
 
 **Résultats du 26 novembre 2026, version 55 (sans zone de départ, portée du sonar, suivi à distance, catalogue retiré), niveau Complet, 2 parties par scénario, jeu réel :** référence 753 et 78 %, omniscient 827 et 95 %, tir sans vérifier 424 et 26 % avec 59 % de seuil 1, aucun ordre 257 et 1 %, aucune force 230 et 0 %. 616 parties finies et reproductibles. `asw`, 20 tirages : référence 17, omniscient 20, aucun ordre 0. Tests d'interface : `uiv55` (48), `uiv54`, `uiv53`, `uiv52`, `uiv51` et les 36 autres de la suite sans erreur ; `navlab.js 3` : 110 contrôles ciblés, 24 parties au hasard sans défaut ; 53 814 clics au hasard sans blocage ni texte manquant, sur la page de test, qui garde la zone de départ. Détail : section 5.55. Branche `v55-recherche`, fusionnée dans `main` le 26 novembre 2026 à la demande de Naully.
 
@@ -2095,12 +2214,17 @@ Vérifie ces points avant de chercher ailleurs :
 - Une ligne vérifiée par échantillons peut couper le coin d'une case de terre entre deux points : `navLos` parcourt toutes les cases traversées. Une unité qui atteint un point de passage « à peu près » (rayon de 1,6) peut ne plus voir le suivant : finir l'approche au point exact (5.44).
 - Deux règles CSS ne doivent pas partager une classe générique entre deux composants (`fzlv` servait à l'indicateur et à la légende).
 - Le temps de jeu ne doit jamais dépendre de la fluidité de l'affichage : ne plafonne pas le temps par image sous 1 s, et règle tout lissage visuel sur `loop.dt`, pas sur le nombre d'images (5.43). Le seul ralenti voulu est `zTime`.
+- Depuis la version 56, la boucle joue des pas fixes de 1/60 s. Ne remets pas un pas qui dépend de la vitesse ou du temps d'une image : `v56speed.js` le détecte.
+- Ne pousse jamais dans un tableau pendant que tu le filtres : les éclats et les marques créés par une animation en fin de course disparaissaient (`v3FxUpd`).
+- Dans three.js, un objet translucide (`transparent: true`) est trié par distance et peut être recouvert par un autre objet translucide plus proche qui écrit la profondeur : le plan de mer masquait tout ce qui se trouvait derrière le centre de la vue. Le décor reste opaque.
+- `fetch` ne lit pas `file://` : les tests du son servent le dépôt par un serveur HTTP local (`uiaud.js`) ; depuis le disque, le jeu se rabat sur les sons synthétisés.
+- Un test qui compare deux sorties sonores dans la même image se heurte aux délais minimaux et au nombre de sources : laisse passer le temps entre les deux.
 
 ## 10. Publication
 
 - Publie toujours `proto/seuil-prototype.html` sur le même artifact : https://claude.ai/artifact/KaK2ridxo66GrAZPuQUVU7. Depuis une autre conversation, lis-le d'abord avec l'action de lecture, puis publie avec son URL.
 - Ne publie pas si un test obligatoire échoue ou si un texte manque.
-- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google. La page pèse environ 9,2 Mo.
+- Le son démarre après un clic. Tout est embarqué dans la page, sauf les polices Google, les illustrations (`assets/missions/web/`, `assets/crises/web/`) et, depuis la version 56, les fichiers audio (`assets/audio/web/`, 3 Mo, chargés après le premier clic). La page pèse environ 9,7 Mo. Un artifact doit recevoir ces dossiers avec la page.
 - Après publication, résume le changement en une phrase. Le lien apparaît déjà dans la carte.
 - L'artifact est privé tant que Naully ne le partage pas.
 
@@ -2405,6 +2529,36 @@ Une évolution est terminée si :
 149. **Défaut :** le cercle de sonar affiche la portée nominale ; la couche peut la réduire d'un tiers sans que rien ne le montre.
 
 **Tranché le 26 novembre 2026** (« Valide les décisions et déploie la version »), lu comme la validation des choix en place : l'indice de l'alerte est gardé (142) ; la chasse automatique reste refusée avant le premier écho et permise après (143) ; les ordres par unité restent ouverts au niveau Simple (144) ; la distance de suivi reste de 22 à 40 unités, environ 55 milles (145) ; le suivi reste réservé aux sous-marins (146) ; le code du catalogue est gardé sans accès (147) ; les autres crises à zone gardent leur cercle (148). Les versions 54 et 55 sont fusionnées dans `main`. Le défaut 149 reste ouvert.
+
+### Décisions ouvertes de la version 56
+
+150. **Pas fixe de la boucle :** 1/60 s, pour que la vitesse de jeu ne change plus le résultat. Une partie jouée dans la page ne suit donc plus exactement la trajectoire de la version 55. Garder, ou revenir à l'ancien pas.
+151. **Canon rapproché :** habillage d'une interception à moins de 20 unités du défenseur (`V3D.gun`) et des pistes d'essaim. Garder ce seuil, ou réserver le canon aux essaims.
+152. **Défense à deux étages :** aujourd'hui un seul étage dans les règles. En créer un second est un changement de règle, hors de cette version.
+153. **Ordres au clic dans la vue 3D :** refusés avec leur motif. Les permettre dans une version suivante, ou non.
+154. **Modèles :** génériques par classe, construits en code. Les garder, ou passer à des modèles fidèles (droits et poids à vérifier).
+155. **Vitesse d'entrée dans la vue :** ×¼. La garder, ou ajouter ×⅛ si ×¼ paraît encore rapide pour les avions.
+156. **Vitesses de table :** inchangées. Les baisser aussi est un changement d'équilibre, à mesurer au banc avant toute décision.
+157. **×¼ sur la carte :** la carte garde ×½ par défaut. Étendre ×¼, ou non.
+158. **Bruits d'armes :** départs et impacts « contenus », demandés par le prompt sonore, contre la règle 5.13 octies. Garder, ou revenir à la règle.
+159. **Hélicoptère :** rattaché à son bâtiment. Le garder, ou en faire une unité de l'ordre de bataille sans porteur.
+160. **Seuils de la vue :** entrée au facteur 6, inclinaison complète à 12, 57° au plus, altitudes d'affichage. Valeurs de Claude, à régler à l'œil.
+161. **Mixage :** gains du contrat du pack, jamais écoutés. Faire l'écoute humaine (cas AUDIO-18) avant de les tenir pour bons.
+162. **Voix :** répliques en anglais de synthèse seulement ; en français, signal et sous-titre, ou voix de l'appareil si le joueur l'active. Enregistrer des voix françaises et les 18 comptes rendus de mission, ou garder ce repli.
+163. **Anciens sons :** les trois anciens fonds sont remplacés ; les bruits de salle (clavier, téléscripteur) et les signaux par type de crise restent. Les garder, ou tout passer au pack.
+164. **Poids du dépôt :** 37 Mo de WAV d'origine dans git. Les garder dans le dépôt, ou les sortir (archive, Git LFS).
+165. **Sous-titre « Nouvelle crise signalée » :** il s'ajoute à la fenêtre de crise. Le garder, ou le retirer.
+166. **Réponses à la sélection :** signature à chaque sélection d'une unité (5 s par unité). Les garder au niveau Simple, ou les réserver au niveau Complet.
+
+**Défauts connus de la version 56**
+
+- La vue centre l'unité sans tenir compte du panneau de droite ; seul le cadrage d'un engagement en tient compte.
+- Les étiquettes de la vue ne s'évitent pas : elles se recouvrent quand plusieurs objets sont proches.
+- Le relief du décor vient d'une grille de 18 km : la côte de la vue est plus grossière que celle de la carte.
+- Pendant une interception, la piste d'affichage avance moins vite que la vraie : la marque de la vue ne tombe pas exactement sur celle de la carte.
+- Les objets au-delà d'une fois et demie la distance de la caméra restent de simples repères.
+- `tourcmp.js` : la partie en semi-réel ne finit plus dans les 420 s du script (tour 20 sur 22), déjà en version 55 depuis l'allongement des missions ; même état final dans les deux versions.
+- `uiv38.js` : toujours en échec depuis la version 47.
 
 ### Demandes à garder en mémoire
 
